@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design Challenge: Gamification (036-GMF)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  .vote-card { transition: all 0.15s ease; }
+  .vote-card.selected { ring-width: 3px; }
+  .student-btn { transition: all 0.15s ease; }
+  .variation-btn { transition: all 0.15s ease; }
+  .fade-in { animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen">
+
+  <!-- Top Bar -->
+  <div class="sticky top-0 z-50 bg-gray-900/95 backdrop-blur border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <h1 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">036-GMF Gamification</h1>
+        <span class="text-gray-600">|</span>
+        <span class="text-xs text-gray-500">Design Challenge</span>
+      </div>
+      <div class="flex items-center gap-2" id="studentButtons">
+        <button onclick="selectStudent(0)" data-student="0"
+          class="student-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-800 text-gray-400 hover:text-white flex items-center gap-2">
+          <span class="w-5 h-5 rounded-full bg-purple-600 text-[10px] font-bold flex items-center justify-center text-white">R</span>
+          1. Rachel
+        </button>
+        <button onclick="selectStudent(1)" data-student="1"
+          class="student-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-800 text-gray-400 hover:text-white flex items-center gap-2">
+          <span class="w-5 h-5 rounded-full bg-emerald-600 text-[10px] font-bold flex items-center justify-center text-white">F</span>
+          2. Frankie
+        </button>
+        <button onclick="selectStudent(2)" data-student="2"
+          class="student-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-800 text-gray-400 hover:text-white flex items-center gap-2">
+          <span class="w-5 h-5 rounded-full bg-sky-600 text-[10px] font-bold flex items-center justify-center text-white">A</span>
+          3. Alex
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Info Bar -->
+  <div id="studentInfo" class="bg-gray-900 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div id="studentIcon" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold bg-purple-600">R</div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="studentName" class="font-semibold text-white">Ring Rachel</span>
+              <span id="studentMotto" class="text-xs text-gray-500 italic">"Everything radiates from the rings"</span>
+            </div>
+            <p id="studentFocus" class="text-xs text-gray-400 mt-0.5">Circular progress everywhere -- rings, donuts, radial gauges. Dense widget grids.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1" id="variationButtons">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Iframe Viewer -->
+  <div class="max-w-7xl mx-auto px-4 py-4">
+    <div class="rounded-xl overflow-hidden border border-gray-800 bg-white" style="height: 80vh;">
+      <iframe id="mockupFrame" class="w-full h-full fade-in" src="" frameborder="0"></iframe>
+    </div>
+
+    <!-- Scroll prompt -->
+    <div class="text-center mt-4 mb-2">
+      <button onclick="document.getElementById('comparison').scrollIntoView({ behavior: 'smooth' })"
+        class="text-xs text-gray-500 hover:text-gray-300 transition flex items-center gap-1 mx-auto">
+        <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+        </svg>
+        Scroll down to compare patterns &amp; vote
+      </button>
+    </div>
+  </div>
+
+  <!-- Comparison Section -->
+  <div id="comparison" class="bg-gray-900 border-t border-gray-800 mt-8">
+    <div class="max-w-7xl mx-auto px-4 py-12">
+      <h2 class="text-2xl font-bold text-white mb-2">Compare &amp; Vote</h2>
+      <p class="text-gray-400 text-sm mb-8">Click cards to select your preferred patterns. Export your picks as markdown when done.</p>
+
+      <!-- Vote Cards Grid -->
+      <div class="space-y-10">
+
+        <!-- Section: Dashboard -->
+        <div>
+          <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Dashboard Gamification Surface</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Progress Rings" data-student="Ring Rachel">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">Ring Rachel</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Progress Rings</h4>
+              <p class="text-xs text-gray-400 mt-1">Apple Watch-style concentric progress rings as the primary dashboard visual</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Activity Feed" data-student="Feed Frankie">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Feed Frankie</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Activity Feed</h4>
+              <p class="text-xs text-gray-400 mt-1">Scrollable timeline of gamification events with colored left borders</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Ambient Sidebar" data-student="Ambient Alex">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-sky-100 text-sky-700">Ambient Alex</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Ambient Sidebar</h4>
+              <p class="text-xs text-gray-400 mt-1">Streak flames and badge counts inline in sidebar navigation</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: All Clear Celebration -->
+        <div>
+          <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">"All Clear" Celebration</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Ring Completion Celebration" data-student="Ring Rachel">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">Ring Rachel</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Ring Completion Celebration</h4>
+              <p class="text-xs text-gray-400 mt-1">All Clear shown as a ring animating to 100% with glow pulse</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Hero Feed Event" data-student="Feed Frankie">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Feed Frankie</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Hero Feed Event</h4>
+              <p class="text-xs text-gray-400 mt-1">Oversized feed item for All Clear, celebration IN the feed</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Toast Celebration" data-student="Ambient Alex">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-sky-100 text-sky-700">Ambient Alex</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Toast Celebration</h4>
+              <p class="text-xs text-gray-400 mt-1">Contextual toast notification, user stays on page</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Challenge Management -->
+        <div>
+          <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Challenge Management</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Ring Cards Grid" data-student="Ring Rachel">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">Ring Rachel</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Ring Cards Grid</h4>
+              <p class="text-xs text-gray-400 mt-1">Each challenge displayed as a card dominated by a progress ring</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Feed Challenges" data-student="Feed Frankie">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Feed Frankie</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Feed Challenges</h4>
+              <p class="text-xs text-gray-400 mt-1">Challenges as pinned feed items with compact progress bars</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Slide-out Panel" data-student="Ambient Alex">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-sky-100 text-sky-700">Ambient Alex</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Slide-out Panel</h4>
+              <p class="text-xs text-gray-400 mt-1">Challenges in a drawer overlay, no dedicated page</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Badge Display -->
+        <div>
+          <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Badge Display</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Circular Badge Frames" data-student="Ring Rachel">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">Ring Rachel</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Circular Badge Frames</h4>
+              <p class="text-xs text-gray-400 mt-1">Badges inside ring borders with tier-colored glow</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Badge Timeline" data-student="Feed Frankie">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Feed Frankie</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Badge Timeline</h4>
+              <p class="text-xs text-gray-400 mt-1">Chronological timeline of badge achievements</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Profile Dropdown Badges" data-student="Ambient Alex">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-sky-100 text-sky-700">Ambient Alex</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Profile Dropdown Badges</h4>
+              <p class="text-xs text-gray-400 mt-1">Badges in expanded user avatar dropdown</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Practice Manager View -->
+        <div>
+          <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Practice Manager View</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Health Ring Gauges" data-student="Ring Rachel">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">Ring Rachel</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Health Ring Gauges</h4>
+              <p class="text-xs text-gray-400 mt-1">Circular fill gauges per workspace (90%+ teal, 50-89% amber)</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Multi-Workspace Feed" data-student="Feed Frankie">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Feed Frankie</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Multi-Workspace Feed</h4>
+              <p class="text-xs text-gray-400 mt-1">Color-coded cross-client activity stream with filters</p>
+            </div>
+            <div class="vote-card cursor-pointer rounded-xl border-2 border-gray-800 bg-gray-800/50 p-4 hover:border-gray-600" onclick="toggleVote(this)" data-pattern="Health Dots + Tooltips" data-student="Ambient Alex">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-sky-100 text-sky-700">Ambient Alex</span>
+                <span class="vote-check hidden text-green-400 text-lg">&#10003;</span>
+              </div>
+              <h4 class="font-semibold text-white text-sm">Health Dots + Tooltips</h4>
+              <p class="text-xs text-gray-400 mt-1">Tiny dots on existing table rows with hover detail</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Feedback & Export -->
+      <div class="mt-12 border-t border-gray-800 pt-8">
+        <h3 class="text-lg font-semibold text-white mb-4">Notes &amp; Feedback</h3>
+        <textarea id="feedbackText" rows="4" placeholder="Add any notes about your pattern preferences, trade-offs you see, or hybrid ideas..."
+          class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+        <div class="flex items-center gap-3 mt-4">
+          <button onclick="exportVotes()"
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-lg transition">
+            Export Votes as Markdown
+          </button>
+          <span id="exportStatus" class="text-xs text-gray-500"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Keyboard Hints -->
+  <div class="fixed bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur border-t border-gray-800 py-2 px-4 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-6 text-xs text-gray-500">
+      <span><kbd class="px-1.5 py-0.5 rounded bg-gray-800 text-gray-400 font-mono">1</kbd>-<kbd class="px-1.5 py-0.5 rounded bg-gray-800 text-gray-400 font-mono">3</kbd> Switch student</span>
+      <span><kbd class="px-1.5 py-0.5 rounded bg-gray-800 text-gray-400 font-mono">&larr;</kbd> <kbd class="px-1.5 py-0.5 rounded bg-gray-800 text-gray-400 font-mono">&rarr;</kbd> Cycle screens</span>
+      <span><kbd class="px-1.5 py-0.5 rounded bg-gray-800 text-gray-400 font-mono">V</kbd> Jump to voting</span>
+    </div>
+  </div>
+
+  <div class="h-12"></div><!-- spacer for fixed bottom bar -->
+
+<script>
+const students = [
+  {
+    name: 'Ring Rachel',
+    icon: 'R',
+    iconBg: 'bg-purple-600',
+    accent: 'purple',
+    motto: '"Everything radiates from the rings"',
+    focus: 'Circular progress everywhere \u2014 rings, donuts, radial gauges. Dense widget grids.',
+    folder: 'student-1-rings',
+    variations: {
+      dashboard:  { label: 'Dashboard',  file: 'student-1-rings/01-dashboard.html' },
+      allclear:   { label: 'All Clear',  file: 'student-1-rings/02-all-clear.html' },
+      challenges: { label: 'Challenges', file: 'student-1-rings/03-challenges.html' },
+      badges:     { label: 'Badges',     file: 'student-1-rings/04-badges.html' },
+      practice:   { label: 'Practice',   file: 'student-1-rings/05-practice.html' }
+    }
+  },
+  {
+    name: 'Feed Frankie',
+    icon: 'F',
+    iconBg: 'bg-emerald-600',
+    accent: 'emerald',
+    motto: '"Everything is a story"',
+    focus: 'Scrollable activity feed. Events, timelines, chronological streams.',
+    folder: 'student-2-feed',
+    variations: {
+      dashboard:  { label: 'Dashboard',  file: 'student-2-feed/01-dashboard.html' },
+      allclear:   { label: 'All Clear',  file: 'student-2-feed/02-all-clear.html' },
+      challenges: { label: 'Challenges', file: 'student-2-feed/03-challenges.html' },
+      badges:     { label: 'Badges',     file: 'student-2-feed/04-badges.html' },
+      practice:   { label: 'Practice',   file: 'student-2-feed/05-practice.html' }
+    }
+  },
+  {
+    name: 'Ambient Alex',
+    icon: 'A',
+    iconBg: 'bg-sky-600',
+    accent: 'sky',
+    motto: '"Felt, not visited"',
+    focus: 'No new pages. Sidebar badges, toast celebrations, inline enhancements.',
+    folder: 'student-3-ambient',
+    variations: {
+      dashboard:  { label: 'Dashboard',  file: 'student-3-ambient/01-dashboard.html' },
+      allclear:   { label: 'All Clear',  file: 'student-3-ambient/02-all-clear.html' },
+      challenges: { label: 'Challenges', file: 'student-3-ambient/03-challenges.html' },
+      badges:     { label: 'Badges',     file: 'student-3-ambient/04-badges.html' },
+      practice:   { label: 'Practice',   file: 'student-3-ambient/05-practice.html' }
+    }
+  }
+];
+
+const variationKeys = ['dashboard', 'allclear', 'challenges', 'badges', 'practice'];
+let currentStudent = 0;
+let currentVariation = 'dashboard';
+
+function selectStudent(index) {
+  currentStudent = index;
+  currentVariation = 'dashboard';
+  updateUI();
+}
+
+function selectVariation(key) {
+  currentVariation = key;
+  updateUI();
+}
+
+function updateUI() {
+  const student = students[currentStudent];
+
+  // Update student buttons
+  document.querySelectorAll('#studentButtons .student-btn').forEach((btn, i) => {
+    if (i === currentStudent) {
+      const colors = { purple: 'ring-purple-500', emerald: 'ring-emerald-500', sky: 'ring-sky-500' };
+      btn.className = `student-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-700 text-white ring-2 ${colors[students[i].accent]} flex items-center gap-2`;
+    } else {
+      btn.className = 'student-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-800 text-gray-400 hover:text-white flex items-center gap-2';
+    }
+  });
+
+  // Update student info
+  const iconEl = document.getElementById('studentIcon');
+  iconEl.textContent = student.icon;
+  iconEl.className = `w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${student.iconBg}`;
+  document.getElementById('studentName').textContent = student.name;
+  document.getElementById('studentMotto').textContent = student.motto;
+  document.getElementById('studentFocus').textContent = student.focus;
+
+  // Build variation buttons
+  const varContainer = document.getElementById('variationButtons');
+  varContainer.innerHTML = '';
+  variationKeys.forEach((key, i) => {
+    const v = student.variations[key];
+    const btn = document.createElement('button');
+    const isActive = key === currentVariation;
+    const accentRing = { purple: 'ring-purple-500 bg-purple-900/30 text-purple-300', emerald: 'ring-emerald-500 bg-emerald-900/30 text-emerald-300', sky: 'ring-sky-500 bg-sky-900/30 text-sky-300' };
+    if (isActive) {
+      btn.className = `variation-btn px-3 py-1 rounded-md text-xs font-medium ring-1 ${accentRing[student.accent]}`;
+    } else {
+      btn.className = 'variation-btn px-3 py-1 rounded-md text-xs font-medium bg-gray-800 text-gray-400 hover:text-gray-200';
+    }
+    btn.textContent = v.label;
+    btn.onclick = () => selectVariation(key);
+    varContainer.appendChild(btn);
+  });
+
+  // Load iframe
+  const frame = document.getElementById('mockupFrame');
+  frame.classList.remove('fade-in');
+  void frame.offsetWidth; // trigger reflow
+  frame.classList.add('fade-in');
+  frame.src = student.variations[currentVariation].file;
+}
+
+function toggleVote(el) {
+  el.classList.toggle('selected');
+  const check = el.querySelector('.vote-check');
+  if (el.classList.contains('selected')) {
+    el.classList.remove('border-gray-800');
+    el.classList.add('border-green-500');
+    check.classList.remove('hidden');
+  } else {
+    el.classList.add('border-gray-800');
+    el.classList.remove('border-green-500');
+    check.classList.add('hidden');
+  }
+}
+
+function exportVotes() {
+  const selected = document.querySelectorAll('.vote-card.selected');
+  const feedback = document.getElementById('feedbackText').value.trim();
+
+  let md = '# Gamification Design Votes (036-GMF)\n\n';
+  md += '## Selected Patterns\n\n';
+
+  if (selected.length === 0) {
+    md += '_No patterns selected._\n';
+  } else {
+    selected.forEach(card => {
+      const pattern = card.dataset.pattern;
+      const student = card.dataset.student;
+      md += `- **${pattern}** (${student})\n`;
+    });
+  }
+
+  if (feedback) {
+    md += `\n## Notes\n\n${feedback}\n`;
+  }
+
+  md += `\n---\n_Exported ${new Date().toISOString().split('T')[0]}_\n`;
+
+  navigator.clipboard.writeText(md).then(() => {
+    const status = document.getElementById('exportStatus');
+    status.textContent = 'Copied to clipboard!';
+    setTimeout(() => { status.textContent = ''; }, 3000);
+  }).catch(() => {
+    const status = document.getElementById('exportStatus');
+    status.textContent = 'Copy failed -- check browser permissions.';
+  });
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  // Skip if in input/textarea
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+
+  // 1-3 for student selection
+  if (e.key >= '1' && e.key <= '3') {
+    e.preventDefault();
+    selectStudent(parseInt(e.key) - 1);
+    return;
+  }
+
+  // Left/right arrows for screen cycling
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    const idx = variationKeys.indexOf(currentVariation);
+    const prev = idx <= 0 ? variationKeys.length - 1 : idx - 1;
+    selectVariation(variationKeys[prev]);
+    return;
+  }
+  if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    const idx = variationKeys.indexOf(currentVariation);
+    const next = idx >= variationKeys.length - 1 ? 0 : idx + 1;
+    selectVariation(variationKeys[next]);
+    return;
+  }
+
+  // V to jump to voting
+  if (e.key === 'v' || e.key === 'V') {
+    e.preventDefault();
+    document.getElementById('comparison').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+});
+
+// Initialize
+updateUI();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+epic_code: QPO
+epic_number: "031"
+name: Quotes & Purchase Orders
+initiative: FL-financial-ledger
+status: design
+stage: design
+created: "2026-03-15"
+author: William Whitelaw
+branch: feature/031-QPO-quotes-purchase-orders
+depends_on:
+  - 005-IAR-invoicing-ar-ap
+  - 023-EML-email-infrastructure
+gates:
+  idea:
+    passed: true
+    date: "2026-03-15"
+    notes: "M effort (2 sprints), extends existing Invoice model with new types"
+  spec:
+    passed: true
+    date: "2026-03-15"
+    notes: "5 stories, 20 FRs, extends InvoiceType/InvoiceStatus enums, no new tables"

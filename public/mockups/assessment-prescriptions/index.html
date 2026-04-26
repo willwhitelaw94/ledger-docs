@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASS1 - Assessment Prescriptions Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<!-- Top Nav -->
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4 overflow-x-auto sticky top-0 z-50">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">ASS1 - Assessment Prescriptions</span>
+  <div class="flex gap-1 ml-4">
+    <button onclick="showScreen('screen1')" id="btn-screen1" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap tab-active">Assessment Requests</button>
+    <button onclick="showScreen('screen2')" id="btn-screen2" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Create Request</button>
+    <button onclick="showScreen('screen3')" id="btn-screen3" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Assessor Upload</button>
+    <button onclick="showScreen('screen4')" id="btn-screen4" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">AI Extraction Review</button>
+    <button onclick="showScreen('screen5')" id="btn-screen5" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">CP Review & Accept</button>
+  </div>
+</nav>
+
+<!-- Screen 1: Assessment Requests Dashboard -->
+<div id="screen1" class="screen active p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+      <h1 class="text-2xl font-bold text-gray-900">Assessment Requests</h1>
+    </div>
+    <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">+ New Assessment Request</button>
+  </div>
+
+  <!-- Status Cards -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-sm text-gray-500">Total Requests</p>
+      <p class="text-2xl font-bold text-gray-900">5</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-sm text-gray-500">In Progress</p>
+      <p class="text-2xl font-bold text-amber-600">2</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-sm text-gray-500">Submitted</p>
+      <p class="text-2xl font-bold text-blue-600">2</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-sm text-gray-500">Accepted</p>
+      <p class="text-2xl font-bold text-green-600">1</p>
+    </div>
+  </div>
+
+  <!-- Assessment Requests Table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Request ID</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Supplier</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Recommendations</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-teal-700">AR-001</td>
+          <td class="px-6 py-4 text-sm"><span class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">OT Assessment</span></td>
+          <td class="px-6 py-4 text-sm text-gray-900">ActiveOT Solutions</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Accepted</span></td>
+          <td class="px-6 py-4 text-sm text-gray-900">4 items</td>
+          <td class="px-6 py-4 text-sm text-gray-500">12 Mar 2026</td>
+          <td class="px-6 py-4 text-sm"><a href="#" class="text-teal-700 hover:underline">View</a></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-teal-700">AR-002</td>
+          <td class="px-6 py-4 text-sm"><span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Physio</span></td>
+          <td class="px-6 py-4 text-sm text-gray-500">-</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Submitted</span></td>
+          <td class="px-6 py-4 text-sm text-gray-900">6 items</td>
+          <td class="px-6 py-4 text-sm text-gray-500">15 Mar 2026</td>
+          <td class="px-6 py-4 text-sm"><a href="#" class="text-teal-700 hover:underline">Review</a></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-teal-700">AR-003</td>
+          <td class="px-6 py-4 text-sm"><span class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">OT Assessment</span></td>
+          <td class="px-6 py-4 text-sm text-gray-900">HomeSafe Assessors</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">In Progress</span></td>
+          <td class="px-6 py-4 text-sm text-gray-500">-</td>
+          <td class="px-6 py-4 text-sm text-gray-500">18 Mar 2026</td>
+          <td class="px-6 py-4 text-sm"><a href="#" class="text-teal-700 hover:underline">Track</a></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-teal-700">AR-004</td>
+          <td class="px-6 py-4 text-sm"><span class="inline-flex items-center rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700">Nurse</span></td>
+          <td class="px-6 py-4 text-sm text-gray-500">-</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">In Progress</span></td>
+          <td class="px-6 py-4 text-sm text-gray-500">-</td>
+          <td class="px-6 py-4 text-sm text-gray-500">20 Mar 2026</td>
+          <td class="px-6 py-4 text-sm"><a href="#" class="text-teal-700 hover:underline">Track</a></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-teal-700">AR-005</td>
+          <td class="px-6 py-4 text-sm"><span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">Contractor</span></td>
+          <td class="px-6 py-4 text-sm text-gray-900">BuildRight Mods</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Submitted</span></td>
+          <td class="px-6 py-4 text-sm text-gray-900">3 items</td>
+          <td class="px-6 py-4 text-sm text-gray-500">21 Mar 2026</td>
+          <td class="px-6 py-4 text-sm"><a href="#" class="text-teal-700 hover:underline">Review</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Screen 2: Create Assessment Request -->
+<div id="screen2" class="screen p-6 max-w-3xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">New Assessment Request</h1>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Assessment Type</label>
+      <div class="grid grid-cols-2 gap-3">
+        <label class="flex items-center gap-3 border-2 border-teal-700 bg-teal-50 rounded-lg p-4 cursor-pointer">
+          <input type="radio" name="type" checked class="text-teal-700">
+          <div>
+            <p class="font-medium text-gray-900">OT Assessment</p>
+            <p class="text-xs text-gray-500">Occupational Therapy — requires supplier selection</p>
+          </div>
+        </label>
+        <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-gray-300">
+          <input type="radio" name="type" class="text-teal-700">
+          <div>
+            <p class="font-medium text-gray-900">Physio</p>
+            <p class="text-xs text-gray-500">Physiotherapy assessment</p>
+          </div>
+        </label>
+        <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-gray-300">
+          <input type="radio" name="type" class="text-teal-700">
+          <div>
+            <p class="font-medium text-gray-900">Nurse</p>
+            <p class="text-xs text-gray-500">Nursing assessment</p>
+          </div>
+        </label>
+        <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-gray-300">
+          <input type="radio" name="type" class="text-teal-700">
+          <div>
+            <p class="font-medium text-gray-900">Contractor</p>
+            <p class="text-xs text-gray-500">Home modification contractor</p>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Select Onboarded Supplier</label>
+      <p class="text-xs text-gray-500 mb-2">Showing suppliers verified for OT assessments</p>
+      <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <option>Choose a supplier...</option>
+        <option selected>ActiveOT Solutions — Verified OT</option>
+        <option>HomeSafe Assessors — Verified OT</option>
+        <option>CareFirst OT Services — Verified OT</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Notes for Assessor (optional)</label>
+      <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-20" placeholder="Any specific concerns or areas to assess...">Client has experienced two falls in the past month. Please assess bathroom and bedroom accessibility.</textarea>
+    </div>
+
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <p class="text-sm text-blue-800"><strong>What happens next:</strong> A secure link will be generated and sent to the selected supplier. The assessor will upload their assessment documents through the Portal.</p>
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">Cancel</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Create Request &amp; Send Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 3: Assessor Upload Portal -->
+<div id="screen3" class="screen p-6 max-w-3xl mx-auto">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-1">
+      <span class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">OT Assessment</span>
+      <span class="text-sm text-gray-500">AR-003</span>
+    </div>
+    <h1 class="text-2xl font-bold text-gray-900">Upload Assessment Documents</h1>
+    <p class="text-sm text-gray-500 mt-1">Client: Margaret Thompson &middot; Assessor: Dr. Sarah Mitchell, HomeSafe Assessors</p>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
+    <!-- Upload Zone -->
+    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-teal-500 transition-colors">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+      <p class="mt-2 text-sm text-gray-600">Drag and drop files here, or <span class="text-teal-700 font-medium cursor-pointer">browse</span></p>
+      <p class="text-xs text-gray-400 mt-1">PDF and images accepted. Max 50MB per file.</p>
+    </div>
+
+    <!-- Uploaded Files -->
+    <div class="space-y-3">
+      <h3 class="text-sm font-medium text-gray-700">Uploaded Documents</h3>
+      <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+        <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center"><span class="text-xs font-bold text-red-700">PDF</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">OT_Assessment_Report_Thompson.pdf</p>
+          <p class="text-xs text-gray-500">2.4 MB &middot; Uploaded 21 Mar 2026</p>
+        </div>
+        <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Report</span>
+        <button class="text-gray-400 hover:text-gray-600 text-sm">Change type</button>
+      </div>
+      <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+        <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center"><span class="text-xs font-bold text-red-700">PDF</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">Bathroom_Modification_Quote.pdf</p>
+          <p class="text-xs text-gray-500">1.1 MB &middot; Uploaded 21 Mar 2026</p>
+        </div>
+        <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Quote</span>
+        <button class="text-gray-400 hover:text-gray-600 text-sm">Change type</button>
+      </div>
+      <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+        <div class="flex-shrink-0 w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"><span class="text-xs font-bold text-green-700">IMG</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-900 truncate">bathroom_current_photo.jpg</p>
+          <p class="text-xs text-gray-500">3.8 MB &middot; Uploaded 21 Mar 2026</p>
+        </div>
+        <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Amendment</span>
+        <button class="text-gray-400 hover:text-gray-600 text-sm">Change type</button>
+      </div>
+    </div>
+
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+      <p class="text-sm text-amber-800"><strong>AI Processing:</strong> After upload, our system will extract ATHM items and suggest Tier-5 classifications. You'll review and confirm each recommendation before submission.</p>
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">Save Draft</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Process Documents &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 4: AI Extraction Review (Assessor) -->
+<div id="screen4" class="screen p-6 max-w-5xl mx-auto">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-1">
+      <span class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">OT Assessment</span>
+      <span class="text-sm text-gray-500">AR-003</span>
+    </div>
+    <h1 class="text-2xl font-bold text-gray-900">Review AI Extractions</h1>
+    <p class="text-sm text-gray-500 mt-1">Confirm each recommendation before submitting to the Care Partner</p>
+  </div>
+
+  <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+    <p class="text-sm text-amber-800"><strong>3 of 5 confirmed</strong> &mdash; All recommendations must be confirmed before you can submit.</p>
+    <div class="w-full bg-amber-200 rounded-full h-2 mt-2"><div class="bg-amber-600 h-2 rounded-full" style="width:60%"></div></div>
+  </div>
+
+  <div class="space-y-4">
+    <!-- Recommendation 1 - Confirmed -->
+    <div class="bg-white rounded-xl shadow-sm border-2 border-green-200 p-5">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Confirmed</span>
+            <span class="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+            <span class="text-xs text-gray-400">Confidence: 94%</span>
+          </div>
+          <h3 class="font-medium text-gray-900">Grab Rail &mdash; Bathroom Entry</h3>
+          <p class="text-sm text-gray-600 mt-1">Stainless steel grab rail, 600mm, mounted at bathroom entry doorframe</p>
+          <div class="mt-2 flex items-center gap-4 text-xs text-gray-500">
+            <span>Tier-5: <span class="font-medium text-gray-700">03.06.04.001 &mdash; Grab Rails, Fixed</span></span>
+            <span>Qty: 1</span>
+            <span>Est: $285</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 ml-4">
+          <svg class="h-6 w-6 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation 2 - Confirmed -->
+    <div class="bg-white rounded-xl shadow-sm border-2 border-green-200 p-5">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Confirmed</span>
+            <span class="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+            <span class="text-xs text-gray-400">Confidence: 91%</span>
+          </div>
+          <h3 class="font-medium text-gray-900">Shower Seat &mdash; Fold-down</h3>
+          <p class="text-sm text-gray-600 mt-1">Wall-mounted fold-down shower seat with padded surface and adjustable legs</p>
+          <div class="mt-2 flex items-center gap-4 text-xs text-gray-500">
+            <span>Tier-5: <span class="font-medium text-gray-700">03.06.07.003 &mdash; Shower Seats, Wall-Mounted</span></span>
+            <span>Qty: 1</span>
+            <span>Est: $450</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 ml-4">
+          <svg class="h-6 w-6 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation 3 - Low Confidence, Needs Review -->
+    <div class="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-5">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Needs Review</span>
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Advice</span>
+            <span class="text-xs text-red-500 font-medium">Confidence: 52%</span>
+          </div>
+          <h3 class="font-medium text-gray-900">Non-slip Floor Treatment</h3>
+          <p class="text-sm text-gray-600 mt-1">Anti-slip treatment for bathroom floor tiles</p>
+          <div class="mt-2 flex items-center gap-4 text-xs text-gray-500">
+            <span>Tier-5: <span class="font-medium text-amber-700">03.06.99.000 &mdash; Other Bathroom Aids (suggested)</span></span>
+            <span>Qty: 1</span>
+            <span>Est: $350</span>
+          </div>
+          <div class="mt-3 flex items-center gap-2">
+            <label class="text-xs text-gray-500">Correct classification:</label>
+            <input type="text" class="border border-amber-300 rounded px-2 py-1 text-xs w-64" placeholder="Search Tier-5 codes..." value="03.06.99.000">
+            <button class="text-xs text-teal-700 font-medium">Search</button>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 ml-4">
+          <button class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation 4 - Confirmed -->
+    <div class="bg-white rounded-xl shadow-sm border-2 border-green-200 p-5">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Confirmed</span>
+            <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">Low Risk</span>
+            <span class="text-xs text-gray-400">Confidence: 88%</span>
+          </div>
+          <h3 class="font-medium text-gray-900">Night Light &mdash; Hallway</h3>
+          <p class="text-sm text-gray-600 mt-1">Motion-activated LED night light for hallway</p>
+          <div class="mt-2 flex items-center gap-4 text-xs text-gray-500">
+            <span>Tier-3: <span class="font-medium text-gray-700">09.01 &mdash; Lighting Aids</span></span>
+            <span>Qty: 2</span>
+            <span>Est: $45</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 ml-4">
+          <svg class="h-6 w-6 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation 5 - Unconfirmed -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">Draft</span>
+            <span class="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+            <span class="text-xs text-gray-400">Confidence: 87%</span>
+          </div>
+          <h3 class="font-medium text-gray-900">Raised Toilet Seat</h3>
+          <p class="text-sm text-gray-600 mt-1">Elevated toilet seat with armrests, 100mm rise</p>
+          <div class="mt-2 flex items-center gap-4 text-xs text-gray-500">
+            <span>Tier-5: <span class="font-medium text-gray-700">03.06.03.002 &mdash; Raised Toilet Seats</span></span>
+            <span>Qty: 1</span>
+            <span>Est: $180</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 ml-4">
+          <button class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex justify-end gap-3">
+    <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">Save Progress</button>
+    <button class="bg-gray-300 text-gray-500 px-4 py-2 rounded-lg text-sm font-medium cursor-not-allowed" disabled>Submit to Care Partner (2 unconfirmed)</button>
+  </div>
+</div>
+
+<!-- Screen 5: CP Review & Accept -->
+<div id="screen5" class="screen p-6 max-w-5xl mx-auto">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-1">
+      <span class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</span>
+    </div>
+    <h1 class="text-2xl font-bold text-gray-900">Review Submitted Recommendations</h1>
+    <p class="text-sm text-gray-500 mt-1">Aggregated view from 2 assessments (OT + Physio)</p>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-xs text-gray-500 uppercase font-medium">Assessment 1 &mdash; OT</p>
+      <p class="text-sm text-gray-900 mt-1">ActiveOT Solutions &middot; Dr. Sarah Mitchell</p>
+      <p class="text-xs text-gray-500">Submitted 14 Mar 2026 &middot; 4 recommendations</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-xs text-gray-500 uppercase font-medium">Assessment 2 &mdash; Physio</p>
+      <p class="text-sm text-gray-900 mt-1">Independent Assessor</p>
+      <p class="text-xs text-gray-500">Submitted 16 Mar 2026 &middot; 6 recommendations</p>
+    </div>
+  </div>
+
+  <div class="space-y-3">
+    <!-- Accepted -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="flex-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Accepted</span>
+          <span class="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+          <span class="text-xs text-gray-400">OT Assessment</span>
+        </div>
+        <p class="font-medium text-gray-900 text-sm">Grab Rail &mdash; Bathroom Entry</p>
+        <p class="text-xs text-gray-500">Tier-5: 03.06.04.001 &middot; Est: $285</p>
+      </div>
+      <button class="text-teal-700 text-sm font-medium border border-teal-700 px-3 py-1.5 rounded-lg hover:bg-teal-50">Add to Service Plan</button>
+    </div>
+
+    <!-- Submitted - awaiting decision -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="flex-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Submitted</span>
+          <span class="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+          <span class="text-xs text-gray-400">OT Assessment</span>
+        </div>
+        <p class="font-medium text-gray-900 text-sm">Shower Seat &mdash; Fold-down</p>
+        <p class="text-xs text-gray-500">Tier-5: 03.06.07.003 &middot; Est: $450</p>
+      </div>
+      <button class="bg-teal-700 text-white text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-teal-800">Accept</button>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="flex-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Submitted</span>
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Advice</span>
+          <span class="text-xs text-gray-400">OT Assessment</span>
+        </div>
+        <p class="font-medium text-gray-900 text-sm">Non-slip Floor Treatment</p>
+        <p class="text-xs text-gray-500">Tier-5: 03.06.99.000 &middot; Est: $350</p>
+      </div>
+      <button class="bg-teal-700 text-white text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-teal-800">Accept</button>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="flex-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Submitted</span>
+          <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">Low Risk</span>
+          <span class="text-xs text-gray-400">OT Assessment</span>
+        </div>
+        <p class="font-medium text-gray-900 text-sm">Night Light &mdash; Hallway (x2)</p>
+        <p class="text-xs text-gray-500">Tier-3: 09.01 &middot; Est: $45</p>
+      </div>
+      <span class="text-xs text-gray-400 italic">No action needed (Low Risk)</span>
+    </div>
+
+    <!-- Physio recommendations -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="flex-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Submitted</span>
+          <span class="inline-flex items-center rounded-full bg-teal-100 px-2.5 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+          <span class="text-xs text-gray-400">Physio Assessment</span>
+        </div>
+        <p class="font-medium text-gray-900 text-sm">Walking Frame &mdash; 4-Wheeled Rollator</p>
+        <p class="text-xs text-gray-500">Tier-5: 03.03.06.001 &middot; Est: $320</p>
+      </div>
+      <button class="bg-teal-700 text-white text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-teal-800">Accept</button>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center gap-4">
+      <div class="flex-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Submitted</span>
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Advice</span>
+          <span class="text-xs text-gray-400">Physio Assessment</span>
+        </div>
+        <p class="font-medium text-gray-900 text-sm">Physiotherapy &mdash; 8 sessions balance training</p>
+        <p class="text-xs text-gray-500">Tier-3: 01.03 &mdash; Allied Health Services &middot; Est: $880</p>
+      </div>
+      <button class="bg-teal-700 text-white text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-teal-800">Accept</button>
+    </div>
+  </div>
+
+  <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+    <p class="text-sm text-blue-800"><strong>Note:</strong> Accepting a recommendation with <em>Advice</em> or <em>Prescribed</em> pathway silently creates an Inclusion Seed for downstream processing. <em>Low Risk</em> items require no action.</p>
+  </div>
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('tab-active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

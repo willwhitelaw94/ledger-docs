@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DTX - Digital Transactions Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">My Package</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">Transactions</span>
+  </div>
+  <div class="w-8 h-8 rounded-full bg-tc-teal-700 flex items-center justify-center text-white text-xs font-medium">MT</div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('transactions')" id="tab-transactions" class="py-3 text-sm tab-active">Transaction Log</button>
+    <button onclick="showScreen('filtered')" id="tab-filtered" class="py-3 text-sm tab-inactive">Filtered View</button>
+    <button onclick="showScreen('query')" id="tab-query" class="py-3 text-sm tab-inactive">Query Transaction</button>
+  </nav>
+</div>
+
+<!-- Transaction Log -->
+<div id="screen-transactions" class="max-w-5xl mx-auto p-6">
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">Transactions</h1>
+      <p class="text-sm text-gray-500 mt-1">Margaret Thompson &mdash; KF-273342 &bull; Real-time view</p>
+    </div>
+  </div>
+
+  <!-- Balance Summary -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-green-200 p-4">
+      <div class="text-xs text-gray-500">ON - Ongoing</div>
+      <div class="text-lg font-semibold text-green-600">$10,579.00</div>
+      <div class="mt-1 bg-green-100 rounded-full h-1.5"><div class="bg-green-500 h-1.5 rounded-full" style="width: 58%"></div></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-blue-200 p-4">
+      <div class="text-xs text-gray-500">HC - Home Care</div>
+      <div class="text-lg font-semibold text-blue-600">$16,250.00</div>
+      <div class="mt-1 bg-blue-100 rounded-full h-1.5"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 65%"></div></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-purple-200 p-4">
+      <div class="text-xs text-gray-500">AT-HM</div>
+      <div class="text-lg font-semibold text-purple-600">$8,500.00</div>
+      <div class="mt-1 bg-purple-100 rounded-full h-1.5"><div class="bg-purple-500 h-1.5 rounded-full" style="width: 85%"></div></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center justify-center">
+      <div class="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[10px] border-b-amber-500 mr-2 rotate-180"></div>
+      <div class="text-xs text-gray-500">RC expired<br><span class="font-medium text-gray-400">$0.00</span></div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex items-center gap-3 mb-4">
+    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      <option>All Funding Streams</option>
+      <option>ON - Ongoing Support</option>
+      <option>HC - Home Care</option>
+      <option>AT-HM</option>
+    </select>
+    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      <option>Current Financial Year</option>
+      <option>Last 3 Months</option>
+      <option>Last Month</option>
+      <option>Custom Range</option>
+    </select>
+    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      <option>All Service Types</option>
+      <option>Personal Care</option>
+      <option>Home Maintenance</option>
+      <option>Social Support</option>
+      <option>Meals</option>
+    </select>
+  </div>
+
+  <!-- Transaction table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Date</th>
+          <th class="px-6 py-3">Description</th>
+          <th class="px-6 py-3">Stream</th>
+          <th class="px-6 py-3">Service Type</th>
+          <th class="px-6 py-3 text-right">Amount</th>
+          <th class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 text-sm">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-gray-500">14 Mar 2026</td>
+          <td class="px-6 py-3 font-medium text-gray-900">Personal Care - Showering (3 sessions)</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">ON</span></td>
+          <td class="px-6 py-3 text-gray-500">Personal Care</td>
+          <td class="px-6 py-3 text-right font-medium">$263.25</td>
+          <td class="px-6 py-3"><button class="text-xs text-tc-teal-700 hover:underline">Query</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-gray-500">12 Mar 2026</td>
+          <td class="px-6 py-3 font-medium text-gray-900">Coord Overheads</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">ON</span></td>
+          <td class="px-6 py-3 text-gray-500">Coordination</td>
+          <td class="px-6 py-3 text-right font-medium">$31.59</td>
+          <td class="px-6 py-3"><button class="text-xs text-tc-teal-700 hover:underline">Query</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-gray-500">10 Mar 2026</td>
+          <td class="px-6 py-3 font-medium text-gray-900">Social Support Group (4 hrs)</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">HC</span></td>
+          <td class="px-6 py-3 text-gray-500">Social Support</td>
+          <td class="px-6 py-3 text-right font-medium">$140.00</td>
+          <td class="px-6 py-3"><button class="text-xs text-tc-teal-700 hover:underline">Query</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-gray-500">7 Mar 2026</td>
+          <td class="px-6 py-3 font-medium text-gray-900">Personal Care - Showering (3 sessions)</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">ON</span></td>
+          <td class="px-6 py-3 text-gray-500">Personal Care</td>
+          <td class="px-6 py-3 text-right font-medium">$263.25</td>
+          <td class="px-6 py-3"><button class="text-xs text-tc-teal-700 hover:underline">Query</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50 bg-green-50/50">
+          <td class="px-6 py-3 text-gray-500">5 Mar 2026</td>
+          <td class="px-6 py-3 font-medium text-green-700">Adjustment - Overcharge Correction</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">ON</span></td>
+          <td class="px-6 py-3 text-gray-500">Reversal</td>
+          <td class="px-6 py-3 text-right font-medium text-green-600">+$45.00</td>
+          <td class="px-6 py-3"><button class="text-xs text-tc-teal-700 hover:underline">Query</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-gray-500">3 Mar 2026</td>
+          <td class="px-6 py-3 font-medium text-gray-900">Meals on Wheels (5 meals)</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">ON</span></td>
+          <td class="px-6 py-3 text-gray-500">Meals</td>
+          <td class="px-6 py-3 text-right font-medium">$62.50</td>
+          <td class="px-6 py-3"><button class="text-xs text-tc-teal-700 hover:underline">Query</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+      <span class="text-xs text-gray-500">Showing 1-6 of 24 transactions</span>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-1 text-xs border border-gray-300 rounded text-gray-400" disabled>Previous</button>
+        <button class="px-3 py-1 text-xs border border-gray-300 rounded text-gray-700">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filtered View -->
+<div id="screen-filtered" class="max-w-5xl mx-auto p-6 hidden">
+  <h1 class="text-lg font-semibold text-gray-900 mb-1">Filtered: Personal Care Only</h1>
+  <p class="text-sm text-gray-500 mb-4">Showing ON stream, Personal Care, Jan-Mar 2026</p>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-4">
+    <div class="px-6 py-3 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">ON</span>
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">Personal Care</span>
+      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">Jan - Mar 2026</span>
+      <button class="text-xs text-red-500 ml-2 hover:underline">Clear Filters</button>
+    </div>
+    <table class="w-full text-sm">
+      <thead><tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><th class="px-6 py-2">Date</th><th class="px-6 py-2">Description</th><th class="px-6 py-2 text-right">Amount</th></tr></thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr><td class="px-6 py-2 text-gray-500">14 Mar</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right">$263.25</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">7 Mar</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right">$263.25</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">28 Feb</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right">$263.25</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">21 Feb</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right">$263.25</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">14 Feb</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right">$263.25</td></tr>
+      </tbody>
+      <tfoot><tr class="bg-gray-50"><td class="px-6 py-2 font-semibold" colspan="2">Filtered Total</td><td class="px-6 py-2 text-right font-semibold">$1,316.25</td></tr></tfoot>
+    </table>
+  </div>
+  <div class="text-xs text-gray-400">Note: Balance summary always shows overall current balance, not filtered subtotals.</div>
+</div>
+
+<!-- Query -->
+<div id="screen-query" class="max-w-2xl mx-auto p-6 hidden">
+  <h1 class="text-lg font-semibold text-gray-900 mb-6">Query a Transaction</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+      <div class="text-sm font-medium text-gray-900 mb-1">Personal Care - Showering (3 sessions)</div>
+      <div class="text-xs text-gray-500">14 March 2026 &bull; $263.25 &bull; ON Stream &bull; Bill #B-4890</div>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">What is your question about this transaction?</label>
+      <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="4" placeholder="e.g., I don't think I received this service on 14 March..."></textarea>
+    </div>
+    <div class="flex items-center justify-end gap-3">
+      <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700">Cancel</button>
+      <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Submit Query</button>
+    </div>
+    <p class="text-xs text-gray-400 mt-3">Your query will be sent to your Care Partner and Finance team for review.</p>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

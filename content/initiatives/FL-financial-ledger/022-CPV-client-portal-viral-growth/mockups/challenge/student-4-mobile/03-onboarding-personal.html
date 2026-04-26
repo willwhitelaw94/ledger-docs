@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoneyQuest — What are you tracking?</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background: #f3f4f6;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    .tile {
+      transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .tile:active {
+      transform: scale(0.98);
+    }
+
+    .tile.selected {
+      border-color: #43C0BE;
+      background-color: #F0FAFA;
+      box-shadow: 0 0 0 1px #43C0BE;
+    }
+
+    .tile .checkmark {
+      display: none;
+    }
+
+    .tile.selected .checkmark {
+      display: flex;
+    }
+
+    .tile.unselected {
+      border-color: #e5e7eb;
+      background-color: #ffffff;
+    }
+
+    .cta-btn {
+      transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+      cursor: pointer;
+    }
+    .cta-btn:active {
+      transform: scale(0.97);
+      background-color: #2F9E9C;
+    }
+
+    .back-btn {
+      transition: background-color 0.15s ease;
+      cursor: pointer;
+    }
+    .back-btn:active {
+      background-color: #f3f4f6;
+    }
+
+    /* Safe area insets */
+    .pb-safe-cta {
+      padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+
+    /* Input focus */
+    .space-input:focus {
+      outline: none;
+      border-color: #43C0BE;
+      box-shadow: 0 0 0 3px rgba(67, 192, 190, 0.15);
+    }
+
+    /* Progress bar animation */
+    .progress-fill {
+      transition: width 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="flex justify-center min-h-screen min-h-dvh bg-gray-200">
+    <div class="w-full max-w-[480px] bg-white min-h-screen min-h-dvh flex flex-col">
+
+      <!-- Top nav bar -->
+      <div class="flex items-center justify-between px-4 pt-5 pb-2">
+        <!-- Back button -->
+        <button class="back-btn w-10 h-10 rounded-full flex items-center justify-center -ml-1">
+          <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <!-- Step indicator -->
+        <div class="flex flex-col items-center gap-1">
+          <span class="text-gray-500 text-xs font-medium">Step 1 of 3</span>
+          <div class="flex gap-1.5">
+            <div class="h-1 w-8 rounded-full bg-teal-500"></div>
+            <div class="h-1 w-8 rounded-full bg-gray-200"></div>
+            <div class="h-1 w-8 rounded-full bg-gray-200"></div>
+          </div>
+        </div>
+
+        <!-- Skip -->
+        <button class="text-gray-400 text-sm font-medium py-2 px-1">Skip</button>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="flex-1 overflow-y-auto px-5 pt-6 pb-36">
+
+        <!-- Question -->
+        <h1 class="text-gray-900 font-bold leading-tight mb-2" style="font-size: 1.75rem;">What are you tracking?</h1>
+        <p class="text-gray-400 text-base mb-8">We'll set up your workspace to match.</p>
+
+        <!-- Option tiles -->
+        <div class="space-y-3 mb-8">
+
+          <!-- Tile 1: Home renovation — PRE-SELECTED -->
+          <div class="tile selected border-2 rounded-2xl px-4" style="min-height: 72px; padding-top: 16px; padding-bottom: 16px;" id="tile-home">
+            <div class="flex items-start gap-3">
+              <span class="text-2xl leading-none mt-0.5">🏠</span>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-2">
+                  <p class="text-gray-900 font-semibold text-base leading-tight">My home &amp; renovation</p>
+                  <!-- Checkmark -->
+                  <div class="checkmark w-6 h-6 rounded-full bg-teal-500 items-center justify-center flex-shrink-0">
+                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </div>
+                </div>
+                <p class="text-gray-400 text-sm mt-0.5">Costs, budget, progress</p>
+              </div>
+            </div>
+            <!-- Context badge — only on pre-selected tile -->
+            <div class="mt-3 flex items-center gap-2 bg-teal-50 border border-teal-200 rounded-xl px-3 py-2">
+              <span class="text-sm">👋</span>
+              <p class="text-teal-700 text-xs font-medium">We saw you on Harrington Builders' portal</p>
+            </div>
+          </div>
+
+          <!-- Tile 2: Personal finances -->
+          <div class="tile unselected border-2 rounded-2xl px-4" style="min-height: 72px; padding-top: 16px; padding-bottom: 16px;" id="tile-personal">
+            <div class="flex items-start gap-3">
+              <span class="text-2xl leading-none mt-0.5">💰</span>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-2">
+                  <p class="text-gray-900 font-semibold text-base leading-tight">Personal finances</p>
+                  <!-- Checkmark (hidden by default) -->
+                  <div class="checkmark w-6 h-6 rounded-full bg-teal-500 items-center justify-center flex-shrink-0">
+                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </div>
+                </div>
+                <p class="text-gray-400 text-sm mt-0.5">Income, expenses, savings</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tile 3: Freelance -->
+          <div class="tile unselected border-2 rounded-2xl px-4" style="min-height: 72px; padding-top: 16px; padding-bottom: 16px;" id="tile-freelance">
+            <div class="flex items-start gap-3">
+              <span class="text-2xl leading-none mt-0.5">💼</span>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-2">
+                  <p class="text-gray-900 font-semibold text-base leading-tight">Freelance work</p>
+                  <!-- Checkmark (hidden by default) -->
+                  <div class="checkmark w-6 h-6 rounded-full bg-teal-500 items-center justify-center flex-shrink-0">
+                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </div>
+                </div>
+                <p class="text-gray-400 text-sm mt-0.5">Invoices, expenses, profit</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Space name input -->
+        <div>
+          <label class="block text-gray-700 font-semibold text-sm mb-2" for="space-name">Your space name</label>
+          <input
+            id="space-name"
+            type="text"
+            value="My Home Project"
+            class="space-input w-full border-2 border-gray-200 rounded-2xl px-4 text-gray-900 font-medium text-base bg-gray-50"
+            style="height: 52px;"
+            placeholder="e.g. My Home Project"
+          />
+          <p class="text-gray-400 text-xs mt-2">You can change this anytime from settings.</p>
+        </div>
+
+      </div>
+
+      <!-- Fixed bottom CTA -->
+      <div class="fixed bottom-0 left-0 right-0 flex justify-center pointer-events-none">
+        <div class="w-full max-w-[480px] pointer-events-auto">
+          <div class="bg-white/95 backdrop-blur-sm px-5 pt-3 pb-safe-cta border-t border-gray-100">
+            <button class="cta-btn w-full bg-teal-500 text-white font-bold text-lg rounded-2xl flex items-center justify-center gap-2 shadow-lg" style="height: 56px; box-shadow: 0 8px 24px rgba(67,192,190,0.35);">
+              <span>Let's go</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Tile selection logic
+    const tiles = ['home', 'personal', 'freelance'];
+    let selectedTile = 'home';
+
+    tiles.forEach(id => {
+      const el = document.getElementById('tile-' + id);
+      el.addEventListener('click', () => {
+        // Deselect all
+        tiles.forEach(t => {
+          const tile = document.getElementById('tile-' + t);
+          tile.classList.remove('selected');
+          tile.classList.add('unselected');
+        });
+        // Select clicked
+        el.classList.remove('unselected');
+        el.classList.add('selected');
+        selectedTile = id;
+
+        // Update space name input based on selection
+        const nameInput = document.getElementById('space-name');
+        if (id === 'home') {
+          nameInput.value = 'My Home Project';
+        } else if (id === 'personal') {
+          nameInput.value = 'My Finances';
+        } else if (id === 'freelance') {
+          nameInput.value = 'My Freelance Business';
+        }
+      });
+    });
+  </script>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

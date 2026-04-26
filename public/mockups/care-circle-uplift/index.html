@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCU - Care Circle Uplift Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4 overflow-x-auto sticky top-0 z-50">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">CCU - Care Circle Uplift</span>
+  <div class="flex gap-1 ml-4">
+    <button onclick="showScreen('screen1')" id="btn-screen1" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap tab-active">Contacts Grid</button>
+    <button onclick="showScreen('screen2')" id="btn-screen2" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Add Contact</button>
+    <button onclick="showScreen('screen3')" id="btn-screen3" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">MAC Import</button>
+    <button onclick="showScreen('screen4')" id="btn-screen4" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Private Partners</button>
+  </div>
+</nav>
+
+<!-- Screen 1: Contacts Grid -->
+<div id="screen1" class="screen active p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+      <h1 class="text-2xl font-bold text-gray-900">Care Circle</h1>
+    </div>
+    <div class="flex gap-2">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">Resync MAC</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">+ Add Contact</button>
+    </div>
+  </div>
+
+  <!-- Main Contacts Section -->
+  <div class="mb-8">
+    <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Main Contacts</h2>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50 sticky top-0">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role(s)</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Authority</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Phone</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tags</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Login</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50 bg-teal-50/30">
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center text-xs font-bold text-teal-700">JT</div>
+                <div>
+                  <p class="text-sm font-medium text-gray-900">James Thompson</p>
+                  <div class="flex items-center gap-1"><span class="inline-flex items-center rounded-full bg-teal-100 px-1.5 py-0.5 text-[10px] font-bold text-teal-700">PRIMARY</span></div>
+                </div>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">Supporter Rep</span></td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">Decision-Maker</span></td>
+            <td class="px-4 py-3 text-sm"><a href="tel:0412345678" class="text-teal-700 hover:underline">0412 345 678</a></td>
+            <td class="px-4 py-3 text-sm"><a href="mailto:james.t@email.com" class="text-teal-700 hover:underline">james.t@email.com</a></td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">PoA</span></td>
+            <td class="px-4 py-3 text-sm text-gray-500">2 days ago</td>
+            <td class="px-4 py-3 text-sm"><a href="#" class="text-teal-700 hover:underline mr-2">Edit</a><a href="#" class="text-teal-700 hover:underline">Email</a></td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-xs font-bold text-blue-700">ST</div>
+                <p class="text-sm font-medium text-gray-900">Sarah Thompson</p>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Secondary Supporter</span></td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">Advisor</span></td>
+            <td class="px-4 py-3 text-sm"><a href="tel:0498765432" class="text-teal-700 hover:underline">0498 765 432</a></td>
+            <td class="px-4 py-3 text-sm"><a href="mailto:sarah.t@email.com" class="text-teal-700 hover:underline">sarah.t@email.com</a></td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Lives Close By</span></td>
+            <td class="px-4 py-3 text-sm text-gray-500">5 days ago</td>
+            <td class="px-4 py-3 text-sm"><a href="#" class="text-teal-700 hover:underline mr-2">Edit</a><a href="#" class="text-teal-700 hover:underline">Email</a></td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center text-xs font-bold text-pink-700">LB</div>
+                <p class="text-sm font-medium text-gray-900">Lisa Brown</p>
+              </div>
+            </td>
+            <td class="px-4 py-3">
+              <div class="flex gap-1 flex-wrap">
+                <span class="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700">Informal Carer</span>
+                <span class="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">Emergency Contact</span>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">View-Only</span></td>
+            <td class="px-4 py-3 text-sm"><a href="tel:0423456789" class="text-teal-700 hover:underline">0423 456 789</a></td>
+            <td class="px-4 py-3 text-sm"><a href="mailto:lisa.b@email.com" class="text-teal-700 hover:underline">lisa.b@email.com</a></td>
+            <td class="px-4 py-3">-</td>
+            <td class="px-4 py-3 text-sm text-gray-400">Never</td>
+            <td class="px-4 py-3 text-sm"><a href="#" class="text-teal-700 hover:underline mr-2">Edit</a><a href="#" class="text-teal-700 hover:underline">Email</a></td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold text-gray-700">MK</div>
+                <p class="text-sm font-medium text-gray-900">Michael Kim</p>
+              </div>
+            </td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Other</span></td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">View-Only</span></td>
+            <td class="px-4 py-3 text-sm"><a href="tel:0434567890" class="text-teal-700 hover:underline">0434 567 890</a></td>
+            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+            <td class="px-4 py-3">-</td>
+            <td class="px-4 py-3 text-sm text-gray-400">Never</td>
+            <td class="px-4 py-3 text-sm"><a href="#" class="text-teal-700 hover:underline mr-2">Edit</a><a href="#" class="text-gray-400">Archive</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Private Partners Section -->
+  <div>
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Private Partners</h2>
+      <button class="text-teal-700 text-sm font-medium hover:underline">+ Add Private Partner</button>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Practice</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Phone</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900">Dr. Alan Nguyen</td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">GP</span></td>
+            <td class="px-4 py-3 text-sm text-gray-500">Southside Medical Centre</td>
+            <td class="px-4 py-3 text-sm"><a href="tel:0738901234" class="text-teal-700 hover:underline">07 3890 1234</a></td>
+            <td class="px-4 py-3 text-sm"><a href="mailto:a.nguyen@southside.com.au" class="text-teal-700 hover:underline">a.nguyen@southside.com.au</a></td>
+            <td class="px-4 py-3 text-sm"><a href="#" class="text-teal-700 hover:underline mr-2">Edit</a><a href="#" class="text-teal-700 hover:underline">Email</a></td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900">Dr. Rebecca Patel</td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">Specialist</span></td>
+            <td class="px-4 py-3 text-sm text-gray-500">Brisbane Geriatrics</td>
+            <td class="px-4 py-3 text-sm"><a href="tel:0732109876" class="text-teal-700 hover:underline">07 3210 9876</a></td>
+            <td class="px-4 py-3 text-sm"><a href="mailto:r.patel@brisgeriatrics.com.au" class="text-teal-700 hover:underline">r.patel@brisgeriatrics.com.au</a></td>
+            <td class="px-4 py-3 text-sm"><a href="#" class="text-teal-700 hover:underline mr-2">Edit</a><a href="#" class="text-teal-700 hover:underline">Email</a></td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900">Jenny Marks</td>
+            <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Pharmacist</span></td>
+            <td class="px-4 py-3 text-sm text-gray-500">CarePharm Toowong</td>
+            <td class="px-4 py-3 text-sm"><a href="tel:0738765432" class="text-teal-700 hover:underline">07 3876 5432</a></td>
+            <td class="px-4 py-3 text-sm text-gray-400">-</td>
+            <td class="px-4 py-3 text-sm"><a href="#" class="text-teal-700 hover:underline">Edit</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 2: Add Contact Form -->
+<div id="screen2" class="screen p-6 max-w-2xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">Add Contact</h1>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-5">
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label><input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="Robert"></div>
+      <div><label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label><input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="Thompson"></div>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone</label><input type="tel" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="0445 678 901"></div>
+      <div><label class="block text-sm font-medium text-gray-700 mb-1">Email</label><input type="email" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="rob.t@email.com"></div>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Role(s) *</label>
+      <div class="flex flex-wrap gap-2">
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Supporter Rep</label>
+        <label class="inline-flex items-center gap-1.5 border-2 border-teal-700 bg-teal-50 rounded-lg px-3 py-2 text-sm cursor-pointer"><input type="checkbox" checked class="rounded text-teal-700"> Secondary Supporter</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> GP</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Specialist</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Informal Carer</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Emergency Contact</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Other</label>
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Authority Level</label>
+      <div class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+        <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Advisor</span>
+        <span class="text-xs text-gray-500 ml-2">Auto-mapped from selected role(s)</span>
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Tags (optional)</label>
+      <div class="flex flex-wrap gap-2">
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Registered Supporter</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> PoA</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Guardian</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Emergency</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-teal-500"><input type="checkbox" class="rounded text-teal-700"> Lives Close By</label>
+      </div>
+    </div>
+    <div class="flex justify-end gap-3 pt-2">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">Cancel</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Save Contact</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 3: MAC Import Diff Modal -->
+<div id="screen3" class="screen p-6 max-w-4xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">MAC Contact Reconciliation</h1>
+    <p class="text-sm text-gray-500 mt-1">3 contacts found in My Aged Care sync &middot; Last synced: 21 Mar 2026</p>
+  </div>
+
+  <div class="space-y-4">
+    <!-- Match with conflict -->
+    <div class="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Conflict</span>
+        <span class="text-sm font-medium text-gray-900">James Thompson</span>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="border border-gray-200 rounded-lg p-3">
+          <p class="text-xs font-medium text-gray-500 uppercase mb-2">Portal Record</p>
+          <p class="text-sm text-gray-900">Phone: 0412 345 678</p>
+          <p class="text-sm text-gray-900">Email: james.t@email.com</p>
+          <p class="text-sm text-gray-900">Role: Supporter Representative</p>
+        </div>
+        <div class="border-2 border-amber-200 bg-amber-50 rounded-lg p-3">
+          <p class="text-xs font-medium text-amber-700 uppercase mb-2">MAC Record (new data)</p>
+          <p class="text-sm text-gray-900">Phone: <span class="bg-amber-200 px-1 rounded">0412 345 999</span></p>
+          <p class="text-sm text-gray-900">Email: james.t@email.com</p>
+          <p class="text-sm text-gray-900">Role: Supporter Representative</p>
+        </div>
+      </div>
+      <div class="flex gap-2 mt-3">
+        <button class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Accept MAC Data</button>
+        <button class="border border-gray-300 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium">Keep Portal Data</button>
+        <button class="border border-gray-300 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium">Map Fields</button>
+      </div>
+    </div>
+
+    <!-- New Contact from MAC -->
+    <div class="bg-white rounded-xl shadow-sm border-2 border-green-200 p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">New Contact</span>
+        <span class="text-sm font-medium text-gray-900">Helen Waters</span>
+      </div>
+      <div class="border border-green-200 bg-green-50 rounded-lg p-3">
+        <p class="text-xs font-medium text-green-700 uppercase mb-2">MAC Record</p>
+        <p class="text-sm text-gray-900">Phone: 0456 789 012</p>
+        <p class="text-sm text-gray-900">Email: helen.w@email.com</p>
+        <p class="text-sm text-gray-900">Role: Contact Person</p>
+      </div>
+      <div class="flex gap-2 mt-3">
+        <button class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Import Contact</button>
+        <button class="border border-gray-300 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium">Skip</button>
+      </div>
+    </div>
+
+    <!-- Flagged for review -->
+    <div class="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Flagged for Review</span>
+        <span class="text-sm font-medium text-gray-900">David Thompson (removed from MAC)</span>
+      </div>
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+        <p class="text-sm text-blue-800">This contact exists in Portal but was not found in the latest MAC sync. MAC does not push deletes &mdash; this may mean the record was removed at MAC or was never synced. Please review manually.</p>
+      </div>
+      <div class="flex gap-2 mt-3">
+        <button class="border border-gray-300 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium">Keep in Portal</button>
+        <button class="border border-red-300 text-red-700 px-3 py-1.5 rounded-lg text-xs font-medium">Archive Contact</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 4: Private Partners -->
+<div id="screen4" class="screen p-6 max-w-2xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">Add Private Partner</h1>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-5">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Partner Type *</label>
+      <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <option>Select type...</option>
+        <option selected>GP</option>
+        <option>Pharmacist</option>
+        <option>Specialist</option>
+        <option>Optometrist</option>
+        <option>Geriatrician</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label><input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="Dr. Alan"></div>
+      <div><label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label><input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="Nguyen"></div>
+    </div>
+    <div><label class="block text-sm font-medium text-gray-700 mb-1">Practice Name</label><input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="Southside Medical Centre"></div>
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone</label><input type="tel" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="07 3890 1234"></div>
+      <div><label class="block text-sm font-medium text-gray-700 mb-1">Email</label><input type="email" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="a.nguyen@southside.com.au"></div>
+    </div>
+    <div class="flex justify-end gap-3 pt-2">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">Cancel</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Save Partner</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('tab-active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

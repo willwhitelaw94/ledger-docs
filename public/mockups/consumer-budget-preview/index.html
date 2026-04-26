@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBP - Consumer Budget Preview Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">My Package</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">Budget Preview</span>
+  </div>
+  <div class="w-8 h-8 rounded-full bg-tc-teal-700 flex items-center justify-center text-white text-xs font-medium">MT</div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('summary')" id="tab-summary" class="py-3 text-sm tab-active">Budget Summary</button>
+    <button onclick="showScreen('services')" id="tab-services" class="py-3 text-sm tab-inactive">Services & Costs</button>
+    <button onclick="showScreen('athm')" id="tab-athm" class="py-3 text-sm tab-inactive">AT & Home Modifications</button>
+    <button onclick="showScreen('pdf')" id="tab-pdf" class="py-3 text-sm tab-inactive">PDF Preview</button>
+  </nav>
+</div>
+
+<!-- Budget Summary -->
+<div id="screen-summary" class="max-w-4xl mx-auto p-6">
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center gap-2 mb-4">
+      <div class="w-10 h-10 rounded-full bg-tc-teal-700 flex items-center justify-center text-white text-lg font-bold">TC</div>
+      <div>
+        <h1 class="text-lg font-semibold text-gray-900">Your Budget &mdash; Q1 2026</h1>
+        <p class="text-sm text-gray-500">Prepared in partnership with you, reflecting your preferences, goals, and needs as per your care plan.</p>
+      </div>
+    </div>
+    <div class="text-sm text-gray-600 mb-4 italic">
+      Period: 1 January 2026 &ndash; 31 March 2026
+    </div>
+    <!-- Funding summary -->
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="bg-tc-teal-700/5 border border-tc-teal-700/20 rounded-xl p-4">
+        <div class="text-sm text-gray-600">Total Ongoing Funding</div>
+        <div class="text-2xl font-bold text-tc-teal-700 mt-1">$18,240.00</div>
+        <div class="text-xs text-gray-500 mt-1">Classification: Level 4 (High)</div>
+        <div class="text-xs text-gray-500">Quarterly Amount: $18,240.00</div>
+      </div>
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div class="text-sm text-gray-600">Government Funding (incl. supplements)</div>
+        <div class="text-2xl font-bold text-tc-blue-700 mt-1">$16,392.00</div>
+        <div class="text-xs text-gray-500 mt-1">Includes: Oxygen $1,200 + Dementia $800</div>
+        <div class="text-xs text-gray-500">Subsidy: Provider eligible for $16,392.00</div>
+      </div>
+    </div>
+    <!-- Contribution -->
+    <div class="bg-white border border-gray-200 rounded-xl p-4 mb-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">Your Contribution</h2>
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <div class="text-xs text-gray-500">Contribution Rate</div>
+          <div class="text-lg font-semibold">$415.83/month</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500">Quarterly Contribution</div>
+          <div class="text-lg font-semibold">$1,247.50</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500">Your % of Total</div>
+          <div class="text-lg font-semibold">6.8%</div>
+        </div>
+      </div>
+    </div>
+    <!-- Missed care -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+      <div class="flex items-start gap-3">
+        <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z" clip-rule="evenodd"></path></svg>
+        <div>
+          <div class="text-sm font-semibold text-amber-800">You may lose up to $2,340.00 this quarter that will not roll over</div>
+          <p class="text-sm text-amber-700 mt-1">unless your planned services are fully delivered. Please contact your Care Partner Sarah Mitchell to review your service plan if needed.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Unspent/carry-over -->
+    <div class="bg-white border border-gray-200 rounded-xl p-4">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">Carry-Over Funds</h2>
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <div class="text-xs text-gray-500">Maximum Carry-Over Allowed</div>
+          <div class="text-sm font-semibold">$36,480.00</div>
+          <div class="text-xs text-gray-400">(200% of quarterly funding)</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500">Current Carry-Over</div>
+          <div class="text-sm font-semibold">$4,821.00</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500">Usage Conditions</div>
+          <div class="text-xs text-gray-600">Must be used within the next 2 quarters or it will be returned to the government.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Disclaimer -->
+  <div class="bg-gray-100 border border-gray-200 rounded-xl p-4 text-xs text-gray-500">
+    <p class="font-semibold text-gray-600 mb-1">Important Disclaimers</p>
+    <p class="mb-1">* Contribution rates are calculated based on current information and are subject to confirmation by the Department of Health and Aged Care. Actual contributions may vary.</p>
+    <p>* Quarterly and carry-over funding amounts are estimates based on your current classification level. These amounts may change if your classification is reviewed.</p>
+  </div>
+</div>
+
+<!-- Services & Costs -->
+<div id="screen-services" class="max-w-4xl mx-auto p-6 hidden">
+  <h1 class="text-lg font-semibold text-gray-900 mb-1">Services & Costs</h1>
+  <p class="text-sm text-gray-500 mb-6">A list of services planned with you for Q1 2026</p>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Service</th>
+          <th class="px-6 py-3">Frequency</th>
+          <th class="px-6 py-3 text-right">FAP Per Service</th>
+          <th class="px-6 py-3 text-right">Est. Quarterly Cost</th>
+          <th class="px-6 py-3 text-right">Your Contribution</th>
+          <th class="px-6 py-3 text-right">Govt Subsidy</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Personal Care - Showering</td>
+          <td class="px-6 py-4 text-sm text-gray-500">3x Weekly x 1.5 hrs</td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$65.52/hr</td>
+          <td class="px-6 py-4 text-sm text-right">$3,835.00</td>
+          <td class="px-6 py-4 text-sm text-right text-amber-700">$260.78</td>
+          <td class="px-6 py-4 text-sm text-right text-green-700">$3,574.22</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Home Maintenance</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Fortnightly x 2 hrs</td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$61.60/hr</td>
+          <td class="px-6 py-4 text-sm text-right">$800.00</td>
+          <td class="px-6 py-4 text-sm text-right text-amber-700">$54.40</td>
+          <td class="px-6 py-4 text-sm text-right text-green-700">$745.60</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Social Support Group</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Weekly x 4 hrs</td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$39.20/hr</td>
+          <td class="px-6 py-4 text-sm text-right">$2,039.00</td>
+          <td class="px-6 py-4 text-sm text-right text-amber-700">$138.65</td>
+          <td class="px-6 py-4 text-sm text-right text-green-700">$1,900.35</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Meals on Wheels</td>
+          <td class="px-6 py-4 text-sm text-gray-500">5x Weekly</td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$12.50/meal</td>
+          <td class="px-6 py-4 text-sm text-right">$812.50</td>
+          <td class="px-6 py-4 text-sm text-right text-amber-700">$55.25</td>
+          <td class="px-6 py-4 text-sm text-right text-green-700">$757.25</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="bg-gray-50 font-semibold text-sm">
+          <td class="px-6 py-3" colspan="3">Total Ongoing Services</td>
+          <td class="px-6 py-3 text-right">$7,486.50</td>
+          <td class="px-6 py-3 text-right text-amber-700">$509.08</td>
+          <td class="px-6 py-3 text-right text-green-700">$6,977.42</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- AT & Home Mods -->
+<div id="screen-athm" class="max-w-4xl mx-auto p-6 hidden">
+  <h1 class="text-lg font-semibold text-gray-900 mb-1">Assistive Technology & Home Modifications</h1>
+  <p class="text-sm text-gray-500 mb-6">Itemised budgets for AT and HM services</p>
+  <!-- AT section -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-4">
+    <div class="px-6 py-3 bg-purple-50 border-b border-purple-200">
+      <h2 class="text-sm font-semibold text-purple-800">Assistive Technology (AT)</h2>
+    </div>
+    <table class="w-full">
+      <thead>
+        <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Item</th>
+          <th class="px-6 py-3 text-right">Cost</th>
+          <th class="px-6 py-3 text-right">Your Contribution</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-4 text-sm text-gray-900">Falls Alarm System - Tunstall Personal Response</td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$2,450.00</td>
+          <td class="px-6 py-4 text-sm text-right text-amber-700">$166.60</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-sm text-gray-900">Mobility Walker - 4 Wheel Rollator</td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$378.00</td>
+          <td class="px-6 py-4 text-sm text-right text-amber-700">$25.70</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="bg-purple-50/50 font-semibold text-sm">
+          <td class="px-6 py-3">AT Total</td>
+          <td class="px-6 py-3 text-right">$2,828.00</td>
+          <td class="px-6 py-3 text-right text-amber-700">$192.30</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <!-- HM section -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div class="px-6 py-3 bg-indigo-50 border-b border-indigo-200">
+      <h2 class="text-sm font-semibold text-indigo-800">Home Modifications (HM)</h2>
+    </div>
+    <table class="w-full">
+      <thead>
+        <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Item</th>
+          <th class="px-6 py-3 text-right">Cost</th>
+          <th class="px-6 py-3 text-right">Your Contribution</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-4 text-sm text-gray-900">Bathroom Grab Rails Installation (x3)</td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$1,200.00</td>
+          <td class="px-6 py-4 text-sm text-right text-amber-700">$81.60</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-sm text-gray-900">Ramp Installation - Front Entry</td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$2,600.00</td>
+          <td class="px-6 py-4 text-sm text-right text-amber-700">$176.80</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="bg-indigo-50/50 font-semibold text-sm">
+          <td class="px-6 py-3">HM Total</td>
+          <td class="px-6 py-3 text-right">$3,800.00</td>
+          <td class="px-6 py-3 text-right text-amber-700">$258.40</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- PDF Preview -->
+<div id="screen-pdf" class="max-w-4xl mx-auto p-6 hidden">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-lg font-semibold text-gray-900">PDF Preview</h1>
+    <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+      Download PDF
+    </button>
+  </div>
+  <div class="bg-white rounded-xl shadow-lg border border-gray-300 p-8" style="font-family: Georgia, serif; min-height: 800px;">
+    <div class="flex items-center justify-between mb-8 pb-4 border-b-2 border-tc-teal-700">
+      <div>
+        <div class="text-2xl font-bold text-tc-teal-700">Trilogy Care</div>
+        <div class="text-sm text-gray-500">ABN 23 622 981 205</div>
+      </div>
+      <div class="text-right">
+        <div class="text-lg font-bold text-gray-800">Individualised Budget</div>
+        <div class="text-sm text-gray-500">Q1 2026 (Jan - Mar)</div>
+      </div>
+    </div>
+    <div class="mb-6" style="font-size: 14px;">
+      <p class="text-gray-700 mb-2"><strong>Client:</strong> Margaret Thompson &mdash; KF-273342</p>
+      <p class="text-gray-700 mb-2"><strong>Classification:</strong> Level 4 (High) &mdash; $18,240.00 quarterly</p>
+      <p class="text-gray-600 italic">This budget has been prepared in partnership with you, reflecting your preferences, goals, and needs as per your care plan.</p>
+    </div>
+    <table class="w-full text-sm mb-6" style="font-size: 13px;">
+      <thead>
+        <tr class="border-b-2 border-gray-300">
+          <th class="text-left py-2 font-semibold">Service</th>
+          <th class="text-left py-2 font-semibold">Frequency</th>
+          <th class="text-right py-2 font-semibold">FAP</th>
+          <th class="text-right py-2 font-semibold">Quarterly</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr><td class="py-2">Personal Care</td><td class="py-2">3x Weekly</td><td class="py-2 text-right">$65.52/hr</td><td class="py-2 text-right">$3,835.00</td></tr>
+        <tr><td class="py-2">Home Maintenance</td><td class="py-2">Fortnightly</td><td class="py-2 text-right">$61.60/hr</td><td class="py-2 text-right">$800.00</td></tr>
+        <tr><td class="py-2">Social Support</td><td class="py-2">Weekly</td><td class="py-2 text-right">$39.20/hr</td><td class="py-2 text-right">$2,039.00</td></tr>
+      </tbody>
+    </table>
+    <div class="bg-gray-100 rounded-lg p-4 text-xs text-gray-500 mt-8">
+      <p class="mb-1">* Final Agreed Price (FAP) is the all-inclusive figure per Section 155-50 of the Aged Care Rules.</p>
+      <p>* Contribution rates are estimated and subject to confirmation by the Department of Health and Aged Care.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

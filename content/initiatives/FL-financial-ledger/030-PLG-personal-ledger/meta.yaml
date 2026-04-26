@@ -1,0 +1,26 @@
+epic_code: PLG
+epic_number: "030"
+name: Personal Ledger
+initiative: FL-financial-ledger
+status: design
+stage: design
+gates:
+  idea:
+    passed: true
+    date: "2026-03-15"
+    notes: "William Whitelaw (PO/Dev), L effort (4 sprints), HIGH risk: scope creep into budgeting"
+  spec:
+    passed: true
+    date: "2026-03-15"
+    notes: "7 stories, 22 FRs, 5 architectural decisions baked in — modular UI, valuations as JEs, role override, personal CoA template"
+  architecture:
+    passed: true
+    date: "2026-03-15"
+    notes: "Gate 3 all sections passed. 3 new tables, ~15 endpoints, ModuleConfig service, PersonalTemplate CoA, 24 tests planned."
+created: "2026-03-15"
+author: William Whitelaw
+branch: feature/030-PLG-personal-ledger
+depends_on:
+  - 002-CLE-core-ledger-engine
+  - 028-CFT-consolidation-family-tree
+  - 010-PLT-platform-integrations

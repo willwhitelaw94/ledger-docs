@@ -1,0 +1,21 @@
+epic: 105-TCE
+title: Transaction Coding Engine
+initiative: FL — Financial Ledger Platform
+status: Draft
+effort: XL
+created: 2026-04-25
+author: William Whitelaw
+depends_on:
+  - 048-FPL
+  - 021-BRR
+  - 087-TXC
+  - 002-CLE
+  - 044-TAX
+  - 018-ITR
+gates:
+  idea: pending
+  spec: pending
+  design: not_started
+  dev: not_started
+  qa: not_started
+  release: not_started

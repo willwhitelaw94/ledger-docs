@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC Portal — Middleware Pipeline Visualizer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --border: #334155;
+    --teal-700: #007F7E;
+    --teal-500: #43C0BE;
+    --blue-700: #2C4C79;
+    --green: #4ade80;
+    --green-dim: #16a34a;
+    --red: #f87171;
+    --red-dim: #dc2626;
+    --yellow: #fbbf24;
+    --orange: #e07040;
+    --purple: #9b72cf;
+    --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---- Header ---- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--teal-500);
+  }
+  header h1 span { color: var(--text-muted); font-weight: 400; }
+  header .badge {
+    font-size: 11px;
+    background: var(--teal-700);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---- Layout ---- */
+  .app {
+    display: grid;
+    grid-template-columns: 320px 1fr 320px;
+    flex: 1;
+    overflow: hidden;
+  }
+  @media (max-width: 1100px) {
+    .app {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr auto;
+      overflow: auto;
+    }
+    .sidebar-left, .sidebar-right { border-right: none; border-left: none; border-bottom: 1px solid var(--border); }
+    .pipeline-area { min-height: 600px; }
+  }
+
+  /* ---- Sidebars ---- */
+  .sidebar-left, .sidebar-right {
+    background: var(--bg-secondary);
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .sidebar-left { border-right: 1px solid var(--border); }
+  .sidebar-right { border-left: 1px solid var(--border); }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--teal-500);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ---- Route Group Tabs ---- */
+  .route-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .route-tab {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+    font-family: var(--font-ui);
+  }
+  .route-tab:hover { border-color: var(--teal-500); color: var(--text); }
+  .route-tab.active {
+    background: var(--teal-700);
+    border-color: var(--teal-500);
+    color: white;
+  }
+
+  /* ---- User State Cards ---- */
+  .state-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .state-card:hover { border-color: var(--teal-500); transform: translateX(2px); }
+  .state-card.active {
+    border-color: var(--teal-500);
+    background: rgba(67, 192, 190, 0.08);
+    box-shadow: 0 0 0 1px var(--teal-500);
+  }
+  .state-card .state-num {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+  .state-card.active .state-num {
+    background: var(--teal-700);
+    color: white;
+  }
+  .state-card .state-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .state-card .state-outcome {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    font-family: var(--font-mono);
+  }
+  .state-card .state-outcome.pass { color: var(--green); }
+  .state-card .state-outcome.fail { color: var(--red); }
+
+  /* ---- Pipeline Area ---- */
+  .pipeline-area {
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pipeline-container {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+  }
+
+  /* Connector line */
+  .pipeline-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+
+  /* ---- Middleware Node ---- */
+  .mw-node {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 4px;
+    transition: all 0.3s;
+  }
+  .mw-bar {
+    display: flex;
+    align-items: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .mw-bar:hover { border-color: var(--text-dim); }
+  .mw-bar .mw-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    margin-right: 10px;
+    flex-shrink: 0;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+  .mw-bar .mw-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+  .mw-bar .mw-type {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--bg-tertiary);
+    color: var(--text-dim);
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+
+  /* Progress fill bar behind content */
+  .mw-bar::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: transparent;
+    transition: width 0.3s, background 0.3s;
+    border-radius: 8px;
+    z-index: -1;
+  }
+
+  /* State: passed */
+  .mw-node.passed .mw-bar {
+    border-color: var(--green-dim);
+    background: rgba(74, 222, 128, 0.06);
+  }
+  .mw-node.passed .mw-bar::after {
+    width: 100%;
+    background: rgba(74, 222, 128, 0.08);
+  }
+  .mw-node.passed .mw-icon {
+    background: var(--green-dim);
+    color: white;
+  }
+
+  /* State: blocked */
+  .mw-node.blocked .mw-bar {
+    border-color: var(--red-dim);
+    background: rgba(248, 113, 113, 0.08);
+    box-shadow: 0 0 20px rgba(248, 113, 113, 0.15);
+  }
+  .mw-node.blocked .mw-bar::after {
+    width: 100%;
+    background: rgba(248, 113, 113, 0.1);
+  }
+  .mw-node.blocked .mw-icon {
+    background: var(--red-dim);
+    color: white;
+    animation: pulse-blocked 1.5s infinite;
+  }
+
+  @keyframes pulse-blocked {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(248, 113, 113, 0); }
+  }
+
+  /* State: pending (not yet reached) */
+  .mw-node.pending .mw-bar {
+    opacity: 0.35;
+  }
+
+  /* ---- Group Labels ---- */
+  .group-label {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin: 12px 0 8px;
+  }
+  .group-label span {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+    background: var(--bg);
+    padding: 2px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* ---- Request Ball ---- */
+  .request-ball {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--teal-500);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 0 0 12px var(--teal-500);
+    display: none;
+    transition: top 0.35s ease-in-out, background 0.3s, box-shadow 0.3s;
+  }
+  .request-ball.active { display: block; }
+  .request-ball.passed {
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+  }
+  .request-ball.blocked {
+    background: var(--red);
+    box-shadow: 0 0 16px var(--red);
+  }
+  .request-ball.success {
+    background: var(--green);
+    box-shadow: 0 0 20px var(--green);
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ---- Controller endpoint ---- */
+  .controller-node {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    margin-top: 8px;
+    padding: 14px;
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  .controller-node.reached {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(74, 222, 128, 0.06);
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.1);
+  }
+  .controller-node .ctrl-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* ---- Error / Success Block ---- */
+  .block-message {
+    position: relative;
+    z-index: 1;
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    line-height: 1.6;
+    display: none;
+  }
+  .block-message.visible { display: block; }
+  .block-message.error {
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid var(--red-dim);
+    color: var(--red);
+  }
+  .block-message.success {
+    background: rgba(74, 222, 128, 0.08);
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+  }
+  .block-message .status-code {
+    font-weight: 800;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ---- Detail Panel (right sidebar) ---- */
+  .detail-panel {
+    margin-bottom: 16px;
+  }
+  .detail-panel h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .detail-panel .detail-field {
+    margin-bottom: 10px;
+  }
+  .detail-field label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-dim);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .detail-field .detail-value {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .detail-field code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--bg-tertiary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--teal-500);
+  }
+
+  /* ---- Response Preview ---- */
+  .response-preview {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--text-muted);
+    margin-top: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+  }
+  .response-preview .res-status { font-weight: 800; font-size: 13px; }
+  .response-preview .res-status.s2xx { color: var(--green); }
+  .response-preview .res-status.s4xx { color: var(--red); }
+
+  /* ---- Drag builder ---- */
+  .builder-area {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 200px;
+  }
+  .builder-area.visible { display: flex; }
+
+  .builder-source {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+    padding: 8px;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    min-height: 50px;
+  }
+
+  .builder-chip {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: grab;
+    user-select: none;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .builder-chip:hover {
+    border-color: var(--teal-500);
+    color: var(--text);
+  }
+  .builder-chip.in-stack {
+    background: var(--teal-700);
+    border-color: var(--teal-500);
+    color: white;
+  }
+  .builder-chip.dragging {
+    opacity: 0.5;
+  }
+
+  .builder-stack {
+    min-height: 150px;
+    padding: 8px;
+    background: var(--bg);
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.2s;
+  }
+  .builder-stack.dragover {
+    border-color: var(--teal-500);
+    background: rgba(67, 192, 190, 0.04);
+  }
+  .builder-stack .placeholder-text {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 12px;
+    padding: 40px 10px;
+  }
+
+  .builder-controls {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .btn {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--teal-700);
+    border-color: var(--teal-500);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--teal-500); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text-dim); }
+
+  /* ---- Prompt bar ---- */
+  .prompt-bar {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    padding: 10px 20px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    line-height: 1.5;
+    min-height: 42px;
+    flex-shrink: 0;
+  }
+  .prompt-bar strong { color: var(--teal-500); }
+
+  /* ---- Scrollbar ---- */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+  /* ---- Animation ---- */
+  @keyframes flow-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .mw-node.animating {
+    animation: flow-in 0.25s ease-out;
+  }
+
+  /* Mode Toggle */
+  .mode-toggle {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid var(--border);
+  }
+  .mode-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-dim);
+    background: transparent;
+    border: none;
+    font-family: var(--font-ui);
+    transition: all 0.2s;
+  }
+  .mode-btn:hover { color: var(--text); }
+  .mode-btn.active {
+    background: var(--teal-700);
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Middleware Pipeline <span>Visualizer</span></h1>
+  <span class="badge">TC Portal v2</span>
+</header>
+
+<div class="app">
+  <!-- Left Sidebar: Route Groups + User States -->
+  <div class="sidebar-left">
+    <div class="section-title">Route Group</div>
+    <div class="route-tabs" id="routeTabs"></div>
+
+    <div class="section-title">User State</div>
+    <div id="stateCards"></div>
+
+    <div style="margin-top: 16px;">
+      <div class="section-title">Mode</div>
+      <div class="mode-toggle">
+        <button class="mode-btn active" data-mode="simulate" onclick="setMode('simulate')">Simulate</button>
+        <button class="mode-btn" data-mode="build" onclick="setMode('build')">Build Stack</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Center: Pipeline Viz -->
+  <div class="pipeline-area" id="pipelineArea">
+    <div class="pipeline-container" id="pipelineContainer">
+      <div class="request-ball" id="requestBall"></div>
+    </div>
+  </div>
+
+  <!-- Right Sidebar: Detail + Response -->
+  <div class="sidebar-right">
+    <div class="detail-panel" id="detailPanel">
+      <div class="section-title">Middleware Detail</div>
+      <div id="detailContent">
+        <p style="font-size: 12px; color: var(--text-dim);">Click any middleware bar to inspect it.</p>
+      </div>
+    </div>
+
+    <div class="section-title">Response Preview</div>
+    <div class="response-preview" id="responsePreview">
+Select a user state to see the HTTP response.
+    </div>
+  </div>
+</div>
+
+<div class="prompt-bar" id="promptBar">
+  Select a <strong>route group</strong> and <strong>user state</strong> to simulate the middleware pipeline.
+</div>
+
+<script>
+// =============================================================================
+// DATA
+// =============================================================================
+
+const MW = {
+  // Global
+  trustProxies:       { id: 'trustProxies',       name: 'TrustProxies',                    group: 'global',  type: 'Global',   desc: 'Trust load balancer/proxy headers so request IP, scheme, and host are correct.',            onFail: 'N/A (infra config)',                status: null },
+  handleCors:         { id: 'handleCors',         name: 'HandleCors',                      group: 'global',  type: 'Global',   desc: 'Adds CORS headers. Rejects disallowed cross-origin requests.',                             onFail: '403 — CORS policy violation',       status: 403 },
+  maintenance:        { id: 'maintenance',        name: 'PreventRequestsDuringMaintenance', group: 'global',  type: 'Global',   desc: 'Returns 503 when the app is in maintenance mode (php artisan down).',                      onFail: '503 — Service Unavailable',         status: 503 },
+  validatePostSize:   { id: 'validatePostSize',   name: 'ValidatePostSize',                group: 'global',  type: 'Global',   desc: 'Rejects requests whose body exceeds upload_max_filesize.',                                 onFail: '413 — Payload Too Large',           status: 413 },
+  trimStrings:        { id: 'trimStrings',        name: 'TrimStrings',                     group: 'global',  type: 'Global',   desc: 'Trims leading/trailing whitespace from all string input.',                                 onFail: 'N/A (transform only)',              status: null },
+  convertEmpty:       { id: 'convertEmpty',       name: 'ConvertEmptyStringsToNull',       group: 'global',  type: 'Global',   desc: 'Converts empty string input values to null for cleaner DB storage.',                       onFail: 'N/A (transform only)',              status: null },
+
+  // Web group
+  encryptCookies:     { id: 'encryptCookies',     name: 'EncryptCookies',                  group: 'web',     type: 'Web',      desc: 'Encrypts/decrypts cookie values using the APP_KEY.',                                       onFail: 'N/A (transparent)',                 status: null },
+  queueCookies:       { id: 'queueCookies',       name: 'AddQueuedCookiesToResponse',      group: 'web',     type: 'Web',      desc: 'Attaches any cookies queued via Cookie::queue() to the response.',                         onFail: 'N/A (response transform)',          status: null },
+  startSession:       { id: 'startSession',       name: 'StartSession',                    group: 'web',     type: 'Web',      desc: 'Starts the session and reads/writes the session cookie.',                                  onFail: 'N/A (always runs)',                 status: null },
+  shareErrors:        { id: 'shareErrors',        name: 'ShareErrorsFromSession',          group: 'web',     type: 'Web',      desc: 'Shares flashed validation errors with all views.',                                         onFail: 'N/A (view helper)',                 status: null },
+  verifyCsrf:         { id: 'verifyCsrf',         name: 'VerifyCsrfToken',                 group: 'web',     type: 'Web',      desc: 'Validates the CSRF token on state-changing requests (POST, PUT, DELETE).',                 onFail: '419 — Page Expired (token mismatch)', status: 419 },
+  substituteBindings: { id: 'substituteBindings', name: 'SubstituteBindings',              group: 'web',     type: 'Web',      desc: 'Resolves route model bindings (e.g., {supplier} to Supplier model).',                      onFail: '404 — Model Not Found',             status: 404 },
+  handleInertia:      { id: 'handleInertia',      name: 'HandleInertiaRequests',           group: 'web',     type: 'Web',      desc: 'Handles Inertia.js partial reloads, versioning, and shared data.',                         onFail: 'N/A (always runs)',                 status: null },
+
+  // API group
+  throttleApi:        { id: 'throttleApi',        name: 'throttle:api',                    group: 'api',     type: 'API',      desc: 'Rate limits API requests (default: 60/min per user). Returns 429 when exceeded.',          onFail: '429 — Too Many Requests',           status: 429 },
+  substituteBindingsApi: { id: 'substituteBindingsApi', name: 'SubstituteBindings',         group: 'api',     type: 'API',      desc: 'Resolves route model bindings for API routes.',                                           onFail: '404 — Model Not Found',             status: 404 },
+
+  // Auth
+  authSanctum:        { id: 'authSanctum',        name: 'auth:sanctum',                    group: 'auth',    type: 'Auth',     desc: 'Authenticates the request via Sanctum token (Bearer) or session cookie.',                  onFail: '401 — Unauthenticated',             status: 401 },
+  authWeb:            { id: 'authWeb',             name: 'auth',                            group: 'auth',    type: 'Auth',     desc: 'Authenticates the request via session cookie (web guard).',                                onFail: '302 — Redirect to /login',          status: 302 },
+
+  // Custom V2
+  ensureSupplier:     { id: 'ensureSupplier',     name: 'EnsureSupplierContext',            group: 'custom',  type: 'Custom',   desc: 'Checks the authenticated user has at least one supplier association.',                     onFail: '403 — "You need a supplier account"', status: 403 },
+  ensureActive:       { id: 'ensureActive',       name: 'EnsureActiveSupplierContext',      group: 'custom',  type: 'Custom',   desc: 'Checks the user has selected an active supplier (active_supplier_id on user).',            onFail: '403 — "Select a supplier"',          status: 403 },
+  ensurePortal:       { id: 'ensurePortal',       name: 'EnsureSupplierPortalEnabled',      group: 'custom',  type: 'Custom',   desc: 'Checks the SupplierPortalV2 Pennant feature flag is active for this organisation.',        onFail: '403 — "Feature not enabled"',        status: 403 },
+  ensureOnboarding:   { id: 'ensureOnboarding',   name: 'EnsureOnboardingAccess',           group: 'custom',  type: 'Custom',   desc: 'Checks supplier is in onboarding state. Redirects completed suppliers away from onboarding routes.', onFail: '403 — Redirect to portal dashboard', status: 403 },
+  ensureAdmin:        { id: 'ensureAdmin',        name: 'EnsureOrganisationAdministrator',  group: 'custom',  type: 'Custom',   desc: 'Checks the user is an administrator of the current organisation.',                         onFail: '403 — "Insufficient permissions"',   status: 403 },
+};
+
+const ROUTE_GROUPS = {
+  'api-v2': {
+    label: 'API V2 Supplier',
+    path: '/api/v2/supplier/*',
+    middleware: ['trustProxies','handleCors','maintenance','validatePostSize','trimStrings','convertEmpty',
+                 'throttleApi','substituteBindingsApi',
+                 'authSanctum','ensureSupplier','ensureActive','ensurePortal'],
+    groups: [
+      { label: 'Global Middleware', start: 0, end: 5 },
+      { label: 'API Middleware Group', start: 6, end: 7 },
+      { label: 'Auth', start: 8, end: 8 },
+      { label: 'Custom V2 Middleware', start: 9, end: 11 },
+    ],
+  },
+  'api-v2-onboarding': {
+    label: 'API V2 Onboarding',
+    path: '/api/v2/supplier/onboarding/*',
+    middleware: ['trustProxies','handleCors','maintenance','validatePostSize','trimStrings','convertEmpty',
+                 'throttleApi','substituteBindingsApi',
+                 'authSanctum','ensureSupplier','ensureActive','ensurePortal','ensureOnboarding'],
+    groups: [
+      { label: 'Global Middleware', start: 0, end: 5 },
+      { label: 'API Middleware Group', start: 6, end: 7 },
+      { label: 'Auth', start: 8, end: 8 },
+      { label: 'Custom V2 Middleware', start: 9, end: 12 },
+    ],
+  },
+  'api-v2-admin': {
+    label: 'API V2 Admin',
+    path: '/api/v2/supplier/admin/*',
+    middleware: ['trustProxies','handleCors','maintenance','validatePostSize','trimStrings','convertEmpty',
+                 'throttleApi','substituteBindingsApi',
+                 'authSanctum','ensureSupplier','ensureActive','ensurePortal','ensureAdmin'],
+    groups: [
+      { label: 'Global Middleware', start: 0, end: 5 },
+      { label: 'API Middleware Group', start: 6, end: 7 },
+      { label: 'Auth', start: 8, end: 8 },
+      { label: 'Custom V2 Middleware', start: 9, end: 12 },
+    ],
+  },
+  'web': {
+    label: 'Web',
+    path: '/supplier/*',
+    middleware: ['trustProxies','handleCors','maintenance','validatePostSize','trimStrings','convertEmpty',
+                 'encryptCookies','queueCookies','startSession','shareErrors','verifyCsrf','substituteBindings','handleInertia',
+                 'authWeb','ensureSupplier','ensureActive','ensurePortal'],
+    groups: [
+      { label: 'Global Middleware', start: 0, end: 5 },
+      { label: 'Web Middleware Group', start: 6, end: 12 },
+      { label: 'Auth', start: 13, end: 13 },
+      { label: 'Custom V2 Middleware', start: 14, end: 16 },
+    ],
+  },
+};
+
+const USER_STATES = [
+  {
+    id: 'unauth',
+    label: 'Unauthenticated',
+    outcome: 'Blocked at auth (401)',
+    pass: false,
+    blocksAt: { authSanctum: true, authWeb: true },
+    errorStatus: 401,
+    errorBody: '{"message": "Unauthenticated."}',
+    promptText: 'Unauthenticated request. No Bearer token or session cookie present.',
+  },
+  {
+    id: 'no-supplier',
+    label: 'Authenticated, no supplier',
+    outcome: 'Blocked at EnsureSupplierContext (403)',
+    pass: false,
+    blocksAt: { ensureSupplier: true },
+    errorStatus: 403,
+    errorBody: '{"message": "You need a supplier account to access this area.", "error": "no_supplier_context"}',
+    promptText: 'User is authenticated but has no supplier association. Blocked at EnsureSupplierContext.',
+  },
+  {
+    id: 'no-active',
+    label: 'Authenticated, has supplier, none active',
+    outcome: 'Blocked at EnsureActiveSupplierContext (403)',
+    pass: false,
+    blocksAt: { ensureActive: true },
+    errorStatus: 403,
+    errorBody: '{"message": "Please select a supplier to continue.", "error": "no_active_supplier"}',
+    promptText: 'User has supplier associations but has not selected an active supplier.',
+  },
+  {
+    id: 'feature-disabled',
+    label: 'Active supplier, feature disabled',
+    outcome: 'Blocked at EnsureSupplierPortalEnabled (403)',
+    pass: false,
+    blocksAt: { ensurePortal: true },
+    errorStatus: 403,
+    errorBody: '{"message": "The Supplier Portal V2 feature is not enabled for this organisation.", "error": "feature_disabled"}',
+    promptText: 'User state: Authenticated with active supplier but feature disabled. Request passes auth:sanctum, EnsureSupplierContext, EnsureActiveSupplierContext, then BLOCKED at EnsureSupplierPortalEnabled (403). The supplier portal V2 feature flag is not enabled for this organisation.',
+  },
+  {
+    id: 'onboarding-incomplete',
+    label: 'Active supplier, onboarding incomplete',
+    outcome: 'Passes all — onboarding routes accessible',
+    pass: true,
+    blocksAt: {},
+    errorStatus: null,
+    errorBody: null,
+    promptText: 'Supplier is still onboarding. Full access to onboarding routes. EnsureOnboardingAccess allows the request through.',
+    note: 'On non-onboarding routes, EnsureOnboardingAccess is not present, so this user has full access.',
+  },
+  {
+    id: 'onboarding-complete',
+    label: 'Active supplier, onboarding complete',
+    outcome: 'Full access to portal routes',
+    pass: true,
+    blocksAt: {},
+    onboardingBlocked: true,
+    errorStatus: null,
+    errorBody: null,
+    promptText: 'Supplier onboarding is complete. Full access to all portal routes. Blocked from onboarding routes by EnsureOnboardingAccess (redirects to dashboard).',
+  },
+  {
+    id: 'not-admin',
+    label: 'Active supplier, NOT admin',
+    outcome: 'Blocked at EnsureOrganisationAdministrator (403)',
+    pass: false,
+    blocksAt: { ensureAdmin: true },
+    errorStatus: 403,
+    errorBody: '{"message": "You do not have administrator permissions for this organisation.", "error": "insufficient_permissions"}',
+    promptText: 'User has full supplier portal access but is not an organisation administrator. Blocked on admin routes.',
+    passOnNonAdmin: true,
+  },
+  {
+    id: 'admin',
+    label: 'Active supplier, admin',
+    outcome: 'Full access including admin routes',
+    pass: true,
+    blocksAt: {},
+    errorStatus: null,
+    errorBody: null,
+    promptText: 'Organisation administrator with active supplier. Full access to all routes including admin endpoints.',
+  },
+  {
+    id: 'api-invalid-token',
+    label: 'API request, invalid token',
+    outcome: 'Blocked at auth:sanctum (401)',
+    pass: false,
+    blocksAt: { authSanctum: true, authWeb: true },
+    errorStatus: 401,
+    errorBody: '{"message": "Unauthenticated."}',
+    promptText: 'API request with invalid or expired Bearer token. Rejected at auth:sanctum.',
+    apiOnly: true,
+  },
+  {
+    id: 'api-rate-limited',
+    label: 'API request, rate limited',
+    outcome: 'Blocked at throttle:api (429)',
+    pass: false,
+    blocksAt: { throttleApi: true },
+    errorStatus: 429,
+    errorBody: '{"message": "Too Many Attempts.", "retry_after": 58}',
+    promptText: 'API request exceeds rate limit (60 requests/minute). Blocked at throttle:api with 429 status and Retry-After header.',
+    apiOnly: true,
+  },
+];
+
+// =============================================================================
+// STATE
+// =============================================================================
+
+let currentRoute = 'api-v2';
+let currentState = null;
+let currentMode = 'simulate';
+let selectedMw = null;
+let animationTimer = null;
+let builderStack = [];
+
+// =============================================================================
+// RENDER
+// =============================================================================
+
+function init() {
+  renderRouteTabs();
+  renderStateCards();
+  renderPipeline();
+}
+
+function renderRouteTabs() {
+  const container = document.getElementById('routeTabs');
+  container.innerHTML = '';
+  Object.entries(ROUTE_GROUPS).forEach(([key, rg]) => {
+    const tab = document.createElement('button');
+    tab.className = 'route-tab' + (key === currentRoute ? ' active' : '');
+    tab.textContent = rg.label;
+    tab.onclick = () => { currentRoute = key; renderRouteTabs(); renderStateCards(); renderPipeline(); runSimulation(); };
+    container.appendChild(tab);
+  });
+}
+
+function renderStateCards() {
+  const container = document.getElementById('stateCards');
+  container.innerHTML = '';
+  const isApi = currentRoute.startsWith('api-');
+  USER_STATES.forEach((s, idx) => {
+    // Filter web-only / api-only states
+    if (s.apiOnly && !isApi) return;
+    // Show rate-limited only on API routes
+    if (s.id === 'api-rate-limited' && !isApi) return;
+
+    const card = document.createElement('div');
+    card.className = 'state-card' + (currentState && currentState.id === s.id ? ' active' : '');
+    const isPass = getEffectivePass(s);
+    card.innerHTML = `
+      <div style="display:flex;align-items:flex-start;">
+        <span class="state-num">${idx + 1}</span>
+        <div>
+          <div class="state-label">${s.label}</div>
+          <div class="state-outcome ${isPass ? 'pass' : 'fail'}">${getEffectiveOutcome(s)}</div>
+        </div>
+      </div>
+    `;
+    card.onclick = () => { currentState = s; renderStateCards(); runSimulation(); };
+    container.appendChild(card);
+  });
+}
+
+function getEffectivePass(state) {
+  if (!state) return false;
+  const rg = ROUTE_GROUPS[currentRoute];
+  // Special: onboarding-complete on onboarding route = blocked
+  if (state.id === 'onboarding-complete' && currentRoute === 'api-v2-onboarding') return false;
+  // Special: not-admin on non-admin routes = pass
+  if (state.passOnNonAdmin && currentRoute !== 'api-v2-admin') return true;
+  // Check if any blocking MW is in this route's stack
+  const mwIds = rg.middleware;
+  for (const mwId of mwIds) {
+    if (state.blocksAt[mwId]) return false;
+  }
+  return state.pass;
+}
+
+function getEffectiveOutcome(state) {
+  if (!state) return '';
+  if (state.id === 'onboarding-complete' && currentRoute === 'api-v2-onboarding') {
+    return 'Blocked at EnsureOnboardingAccess (403)';
+  }
+  if (state.passOnNonAdmin && currentRoute !== 'api-v2-admin') {
+    return 'Full access (no admin check on this route)';
+  }
+  // If blocking middleware not in route, it passes
+  const rg = ROUTE_GROUPS[currentRoute];
+  const mwIds = rg.middleware;
+  for (const mwId of mwIds) {
+    if (state.blocksAt[mwId]) return state.outcome;
+  }
+  if (!state.pass) {
+    // The blocking MW is not in this route's stack
+    return 'Full access (blocking middleware not on this route)';
+  }
+  return state.outcome;
+}
+
+function renderPipeline() {
+  const container = document.getElementById('pipelineContainer');
+  // Preserve the request ball
+  const ball = document.getElementById('requestBall');
+  container.innerHTML = '';
+  container.appendChild(ball);
+
+  if (currentMode === 'build') {
+    renderBuilder(container);
+    return;
+  }
+
+  const rg = ROUTE_GROUPS[currentRoute];
+  let nodeIndex = 0;
+  rg.groups.forEach(g => {
+    const label = document.createElement('div');
+    label.className = 'group-label';
+    label.innerHTML = `<span>${g.label}</span>`;
+    container.appendChild(label);
+    for (let i = g.start; i <= g.end; i++) {
+      const mwId = rg.middleware[i];
+      const mw = MW[mwId];
+      if (!mw) continue;
+      const node = createMwNode(mw, nodeIndex);
+      container.appendChild(node);
+      nodeIndex++;
+    }
+  });
+
+  // Controller endpoint
+  const ctrl = document.createElement('div');
+  ctrl.className = 'controller-node';
+  ctrl.id = 'controllerNode';
+  ctrl.innerHTML = `<span class="ctrl-icon">&#9889;</span>Controller Action<br><code style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">${rg.path}</code>`;
+  container.appendChild(ctrl);
+
+  // Block message
+  const blockMsg = document.createElement('div');
+  blockMsg.className = 'block-message';
+  blockMsg.id = 'blockMessage';
+  container.appendChild(blockMsg);
+}
+
+function createMwNode(mw, index) {
+  const node = document.createElement('div');
+  node.className = 'mw-node';
+  node.dataset.mwId = mw.id;
+  node.dataset.index = index;
+
+  const typeColors = {
+    'Global': 'var(--blue-700)',
+    'Web': 'var(--purple)',
+    'API': 'var(--orange)',
+    'Auth': 'var(--yellow)',
+    'Custom': 'var(--teal-700)',
+  };
+
+  const iconLetters = {
+    'Global': 'G',
+    'Web': 'W',
+    'API': 'A',
+    'Auth': mw.id.includes('sanctum') ? 'S' : 'A',
+    'Custom': 'C',
+  };
+
+  const bgColor = typeColors[mw.type] || 'var(--bg-tertiary)';
+
+  node.innerHTML = `
+    <div class="mw-bar" onclick="showMwDetail('${mw.id}')">
+      <div class="mw-icon" style="background:${bgColor};color:white;">${iconLetters[mw.type]}</div>
+      <span class="mw-name">${mw.name}</span>
+      <span class="mw-type" style="color:${bgColor};border:1px solid ${bgColor};background:transparent;">${mw.type}</span>
+    </div>
+  `;
+  return node;
+}
+
+function showMwDetail(mwId) {
+  selectedMw = MW[mwId];
+  const panel = document.getElementById('detailContent');
+  if (!selectedMw) return;
+  panel.innerHTML = `
+    <div class="detail-field">
+      <label>Middleware</label>
+      <div class="detail-value"><code>${selectedMw.name}</code></div>
+    </div>
+    <div class="detail-field">
+      <label>Group</label>
+      <div class="detail-value">${selectedMw.type}</div>
+    </div>
+    <div class="detail-field">
+      <label>What It Does</label>
+      <div class="detail-value">${selectedMw.desc}</div>
+    </div>
+    <div class="detail-field">
+      <label>On Failure</label>
+      <div class="detail-value" style="color: ${selectedMw.status ? 'var(--red)' : 'var(--text-dim)'};">${selectedMw.onFail}</div>
+    </div>
+    ${selectedMw.status ? `<div class="detail-field"><label>HTTP Status</label><div class="detail-value"><code>${selectedMw.status}</code></div></div>` : ''}
+  `;
+}
+
+// =============================================================================
+// SIMULATION
+// =============================================================================
+
+function runSimulation() {
+  if (currentMode !== 'simulate' || !currentState) return;
+
+  clearTimeout(animationTimer);
+  const rg = ROUTE_GROUPS[currentRoute];
+  const mwIds = rg.middleware;
+  const nodes = document.querySelectorAll('.mw-node');
+  const ball = document.getElementById('requestBall');
+  const ctrl = document.getElementById('controllerNode');
+  const blockMsg = document.getElementById('blockMessage');
+  const responsePreview = document.getElementById('responsePreview');
+  const promptBar = document.getElementById('promptBar');
+
+  // Reset
+  nodes.forEach(n => { n.className = 'mw-node'; });
+  ball.className = 'request-ball';
+  ball.style.display = 'none';
+  if (ctrl) ctrl.className = 'controller-node';
+  blockMsg.className = 'block-message';
+  blockMsg.innerHTML = '';
+
+  // Determine where it blocks
+  let blockIndex = -1;
+  let blockMwId = null;
+
+  // Special: onboarding-complete on onboarding route
+  if (currentState.id === 'onboarding-complete' && currentRoute === 'api-v2-onboarding') {
+    const idx = mwIds.indexOf('ensureOnboarding');
+    if (idx >= 0) { blockIndex = idx; blockMwId = 'ensureOnboarding'; }
+  } else {
+    for (let i = 0; i < mwIds.length; i++) {
+      const mwId = mwIds[i];
+      if (currentState.blocksAt[mwId]) {
+        // Special: not-admin only blocks on admin routes
+        if (currentState.passOnNonAdmin && mwId === 'ensureAdmin' && currentRoute !== 'api-v2-admin') continue;
+        blockIndex = i;
+        blockMwId = mwId;
+        break;
+      }
+    }
+  }
+
+  const isPass = blockIndex === -1;
+
+  // Animate step by step
+  let step = 0;
+  ball.className = 'request-ball active';
+  ball.style.top = '0px';
+
+  function animateStep() {
+    if (step < nodes.length) {
+      const node = nodes[step];
+      const mwIdx = step;
+
+      // Position ball
+      const nodeRect = node.getBoundingClientRect();
+      const containerRect = document.getElementById('pipelineContainer').getBoundingClientRect();
+      ball.style.top = (nodeRect.top - containerRect.top + nodeRect.height / 2 - 6) + 'px';
+
+      if (mwIdx === blockIndex) {
+        // BLOCKED
+        node.classList.add('blocked');
+        ball.className = 'request-ball active blocked';
+
+        // Mark remaining as pending
+        for (let j = step + 1; j < nodes.length; j++) {
+          nodes[j].classList.add('pending');
+        }
+
+        // Show error
+        const mw = MW[blockMwId];
+        const errorStatus = currentState.id === 'onboarding-complete' ? 403 : (currentState.errorStatus || mw.status);
+        const errorBody = currentState.id === 'onboarding-complete'
+          ? '{"message": "Onboarding is complete. Redirecting to portal dashboard.", "redirect": "/supplier/dashboard"}'
+          : (currentState.errorBody || '{"message": "Forbidden"}');
+
+        blockMsg.className = 'block-message error visible';
+        blockMsg.innerHTML = `<span class="status-code">HTTP ${errorStatus}</span>Blocked at <strong>${mw.name}</strong><br>${mw.onFail}`;
+
+        responsePreview.innerHTML = `<span class="res-status s4xx">HTTP/${errorStatus}</span>\nContent-Type: application/json\n\n${errorBody}`;
+        promptBar.innerHTML = `<strong>User state:</strong> ${currentState.label}. ${currentState.promptText || ''}`;
+
+        return; // stop
+      }
+
+      // PASSED
+      node.classList.add('passed');
+      ball.className = 'request-ball active passed';
+      step++;
+      animationTimer = setTimeout(animateStep, 120);
+    } else {
+      // Reached controller
+      ball.className = 'request-ball active success';
+      if (ctrl) {
+        ctrl.classList.add('reached');
+        const ctrlRect = ctrl.getBoundingClientRect();
+        const containerRect = document.getElementById('pipelineContainer').getBoundingClientRect();
+        ball.style.top = (ctrlRect.top - containerRect.top + ctrlRect.height / 2 - 8) + 'px';
+      }
+
+      blockMsg.className = 'block-message success visible';
+      blockMsg.innerHTML = `<span class="status-code">HTTP 200</span>Request reached the controller successfully.`;
+
+      responsePreview.innerHTML = `<span class="res-status s2xx">HTTP/200 OK</span>\nContent-Type: application/json\n\n{\n  "data": { ... },\n  "message": "Request processed successfully."\n}`;
+      promptBar.innerHTML = `<strong>User state:</strong> ${currentState.label}. ${currentState.promptText || ''}`;
+    }
+  }
+
+  animationTimer = setTimeout(animateStep, 200);
+}
+
+// =============================================================================
+// MODE TOGGLE
+// =============================================================================
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  if (mode === 'build') {
+    builderStack = [];
+    document.getElementById('requestBall').style.display = 'none';
+  }
+  renderPipeline();
+  if (mode === 'simulate') runSimulation();
+}
+
+// =============================================================================
+// BUILD YOUR OWN STACK
+// =============================================================================
+
+function renderBuilder(container) {
+  // Stack drop zone
+  const stackLabel = document.createElement('div');
+  stackLabel.className = 'group-label';
+  stackLabel.innerHTML = '<span>Your Custom Stack</span>';
+  container.appendChild(stackLabel);
+
+  const stack = document.createElement('div');
+  stack.className = 'builder-stack';
+  stack.id = 'builderStack';
+  stack.ondragover = (e) => { e.preventDefault(); stack.classList.add('dragover'); };
+  stack.ondragleave = () => stack.classList.remove('dragover');
+  stack.ondrop = (e) => {
+    e.preventDefault();
+    stack.classList.remove('dragover');
+    const mwId = e.dataTransfer.getData('text/plain');
+    if (mwId && !builderStack.includes(mwId)) {
+      builderStack.push(mwId);
+      renderBuilder(container);
+    }
+  };
+
+  if (builderStack.length === 0) {
+    stack.innerHTML = '<div class="placeholder-text">Drag middleware here to build your stack.<br>Order matters!</div>';
+  } else {
+    builderStack.forEach((mwId, idx) => {
+      const mw = MW[mwId];
+      if (!mw) return;
+      const chip = document.createElement('div');
+      chip.className = 'builder-chip in-stack';
+      chip.draggable = true;
+      chip.textContent = `${idx + 1}. ${mw.name}`;
+      chip.style.cursor = 'grab';
+      chip.ondragstart = (e) => { e.dataTransfer.setData('text/plain', '__reorder__' + idx); chip.classList.add('dragging'); };
+      chip.ondragend = () => chip.classList.remove('dragging');
+      // Remove on double-click
+      chip.ondblclick = () => { builderStack.splice(idx, 1); renderBuilderInPlace(); };
+      chip.title = 'Double-click to remove';
+      chip.onclick = () => showMwDetail(mwId);
+      stack.appendChild(chip);
+    });
+  }
+  container.appendChild(stack);
+
+  // Controls
+  const controls = document.createElement('div');
+  controls.className = 'builder-controls';
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'btn btn-ghost';
+  clearBtn.textContent = 'Clear';
+  clearBtn.onclick = () => { builderStack = []; renderBuilderInPlace(); };
+  const presetBtn = document.createElement('button');
+  presetBtn.className = 'btn btn-ghost';
+  presetBtn.textContent = 'Load API V2 Preset';
+  presetBtn.onclick = () => { builderStack = [...ROUTE_GROUPS['api-v2'].middleware]; renderBuilderInPlace(); };
+  controls.appendChild(clearBtn);
+  controls.appendChild(presetBtn);
+  container.appendChild(controls);
+
+  // Source pool
+  const sourceLabel = document.createElement('div');
+  sourceLabel.className = 'group-label';
+  sourceLabel.style.marginTop = '16px';
+  sourceLabel.innerHTML = '<span>Available Middleware</span>';
+  container.appendChild(sourceLabel);
+
+  const source = document.createElement('div');
+  source.className = 'builder-source';
+  Object.values(MW).forEach(mw => {
+    const chip = document.createElement('div');
+    chip.className = 'builder-chip' + (builderStack.includes(mw.id) ? ' in-stack' : '');
+    chip.textContent = mw.name;
+    chip.draggable = true;
+    chip.ondragstart = (e) => { e.dataTransfer.setData('text/plain', mw.id); chip.classList.add('dragging'); };
+    chip.ondragend = () => chip.classList.remove('dragging');
+    chip.onclick = () => showMwDetail(mw.id);
+    source.appendChild(chip);
+  });
+  container.appendChild(source);
+
+  // Update prompt
+  document.getElementById('promptBar').innerHTML = builderStack.length > 0
+    ? `<strong>Custom stack:</strong> ${builderStack.map(id => MW[id]?.name || id).join(' → ')}`
+    : 'Drag middleware from the pool into the stack above. Order determines execution sequence.';
+}
+
+function renderBuilderInPlace() {
+  const container = document.getElementById('pipelineContainer');
+  const ball = document.getElementById('requestBall');
+  container.innerHTML = '';
+  container.appendChild(ball);
+  ball.style.display = 'none';
+  renderBuilder(container);
+}
+
+// =============================================================================
+// INIT
+// =============================================================================
+
+init();
+</script>
+</body>
+</html>

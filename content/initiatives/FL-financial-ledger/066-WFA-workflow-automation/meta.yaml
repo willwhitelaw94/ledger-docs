@@ -1,0 +1,5 @@
+title: 'Workflow Automation & Trigger Rules'
+prefix: WFA
+status: backlog
+summary: "Configurable 'when X happens, do Y' automation engine replacing hardcoded notification listeners"
+priority: P2

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Minimal Maya</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { 700: '#2C4C79', 800: '#1E3452' },
+            tc: { teal: '#007F7E', green: '#4DC375', orange: '#FF8F51', red: '#E04B51' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-4">
+
+  <!-- Subtle background pattern -->
+  <div class="fixed inset-0 opacity-[0.02]" style="background-image: radial-gradient(circle at 1px 1px, #2C4C79 1px, transparent 0); background-size: 40px 40px;"></div>
+
+  <!-- Login Card -->
+  <div class="relative w-full max-w-[380px]">
+
+    <!-- Logo & Title -->
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center justify-center w-14 h-14 bg-navy-700 rounded-2xl mb-5 shadow-lg shadow-navy-700/20">
+        <span class="text-white font-bold text-xl tracking-tight">TC</span>
+      </div>
+      <h1 class="text-2xl font-semibold text-gray-900 tracking-tight">Supplier Portal</h1>
+      <p class="text-sm text-gray-400 mt-1.5">Sign in to your account</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-8">
+
+      <!-- Error Alert (hidden by default, toggle to show) -->
+      <div id="error-alert" class="hidden mb-6 p-3.5 bg-red-50 border border-red-100 rounded-xl">
+        <div class="flex items-start gap-2.5">
+          <svg class="w-4.5 h-4.5 text-red-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+          <p class="text-sm text-red-600">The email or password you entered is incorrect.</p>
+        </div>
+      </div>
+
+      <form class="space-y-5" onsubmit="return false;">
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="you@company.com"
+            class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-tc-teal/30 focus:border-tc-teal transition"
+          >
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+          <div class="relative">
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              class="w-full h-11 px-4 pr-10 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-tc-teal/30 focus:border-tc-teal transition"
+            >
+            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Forgot Password -->
+        <div class="flex justify-end">
+          <a href="#" class="text-sm text-tc-teal hover:text-tc-teal/80 font-medium transition">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          onclick="document.getElementById('error-alert').classList.toggle('hidden')"
+          class="w-full h-12 bg-navy-700 hover:bg-navy-800 text-white text-sm font-semibold rounded-xl transition shadow-lg shadow-navy-700/20 active:scale-[0.98]"
+        >
+          Sign in
+        </button>
+      </form>
+    </div>
+
+    <!-- Register Link -->
+    <p class="text-center text-sm text-gray-400 mt-6">
+      Don't have an account? <a href="#" class="text-tc-teal hover:text-tc-teal/80 font-medium transition">Register here</a>
+    </p>
+  </div>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

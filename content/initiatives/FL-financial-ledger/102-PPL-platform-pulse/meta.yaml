@@ -1,0 +1,21 @@
+epic: 102-PPL
+name: Platform Pulse
+initiative: FL-financial-ledger
+status: backlog
+created: 2026-04-19
+effort: M
+summary: "Super admin platform ops command centre — AUM + transaction flow ticker, geographic map, and account graph."
+dependencies:
+  - 002-CLE
+  - 071-NOD
+gates:
+  idea:
+    passed: true
+    date: 2026-04-19
+    notes: "Will Whitelaw (PO/Dev/A). Effort M (2–3 sprints). Key risk: map library cost — mitigated via MapLibre. Linear integration N/A for FL."
+  spec: pending
+  design: pending
+  architecture: pending
+  code_quality: pending
+  qa: pending
+  release: pending

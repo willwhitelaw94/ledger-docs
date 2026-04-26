@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Modal Mockup — Task Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Roboto Flex', system-ui, sans-serif; color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+
+    /* Form field styles */
+    .field-label { font-size: 0.75rem; font-weight: 500; color: #666666; margin-bottom: 4px; display: block; }
+    .field-label .required { color: #EF4444; margin-left: 2px; }
+    .form-input {
+      width: 100%; border: 1px solid #D1D5DB; border-radius: 8px;
+      padding: 8px 12px; font-size: 0.875rem; color: #13171D;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+      font-family: 'Roboto Flex', system-ui, sans-serif;
+    }
+    .form-input:focus { border-color: #007F7E; box-shadow: 0 0 0 3px rgba(67, 192, 190, 0.2); }
+    .form-input::placeholder { color: #9CA3AF; }
+    textarea.form-input { min-height: 72px; resize: vertical; }
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 8px center; background-repeat: no-repeat; background-size: 20px; padding-right: 32px;
+    }
+    .form-input.error { border-color: #EF4444; }
+    .form-input.error:focus { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15); }
+    .error-text { font-size: 0.75rem; color: #EF4444; margin-top: 2px; }
+
+    /* Priority pills */
+    .priority-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; border: 2px solid transparent; transition: all 0.15s;
+    }
+    .priority-pill:hover { opacity: 0.85; }
+    .priority-pill.selected { box-shadow: 0 0 0 2px rgba(67, 192, 190, 0.5); }
+    .priority-pill[data-priority="urgent"] { background: #FEE2E2; color: #991B1B; }
+    .priority-pill[data-priority="urgent"].selected { border-color: #991B1B; }
+    .priority-pill[data-priority="high"] { background: #FEF3C7; color: #92400E; }
+    .priority-pill[data-priority="high"].selected { border-color: #92400E; }
+    .priority-pill[data-priority="medium"] { background: #D5F1F0; color: #007F7E; }
+    .priority-pill[data-priority="medium"].selected { border-color: #007F7E; }
+    .priority-pill[data-priority="low"] { background: #DBEAFE; color: #1E40AF; }
+    .priority-pill[data-priority="low"].selected { border-color: #1E40AF; }
+    .priority-pill[data-priority="none"] { background: #F3F4F6; color: #6B7280; }
+    .priority-pill[data-priority="none"].selected { border-color: #6B7280; }
+
+    /* Tag chips */
+    .tag-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 500;
+      background: #F0FAFA; color: #007F7E; border: 1px solid #BAE8E7;
+    }
+    .tag-chip button { color: #007F7E; opacity: 0.6; }
+    .tag-chip button:hover { opacity: 1; }
+
+    /* Avatar chip */
+    .avatar-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 2px 10px 2px 2px; border-radius: 9999px; font-size: 0.8125rem; font-weight: 500;
+      background: #F3F4F6; color: #374151; border: 1px solid #E5E7EB;
+    }
+    .avatar-chip .avatar {
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.625rem; font-weight: 700; color: white;
+    }
+
+    /* Stage badge */
+    .stage-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+    }
+    .stage-badge.not-started { background: #DBEAFE; color: #1E40AF; }
+    .stage-badge.in-progress { background: #FEF3C7; color: #92400E; }
+    .stage-badge.on-hold { background: #EDE9FE; color: #6D28D9; }
+    .stage-badge.approved { background: #D5F1F0; color: #007F7E; }
+    .stage-badge.completed { background: #F3F4F6; color: #6B7280; }
+
+    /* Checklist */
+    .checklist-item {
+      display: flex; align-items: center; gap: 8px; padding: 6px 0;
+      border-bottom: 1px solid #F3F4F6; font-size: 0.875rem;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input[type="checkbox"] {
+      width: 16px; height: 16px; border-radius: 4px; accent-color: #007F7E; cursor: pointer;
+    }
+    .checklist-item.done span { text-decoration: line-through; color: #9CA3AF; }
+
+    /* Step indicator */
+    .step-dot {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8125rem; font-weight: 600; transition: all 0.2s;
+    }
+    .step-dot.active { background: #007F7E; color: white; }
+    .step-dot.completed-step { background: #D5F1F0; color: #007F7E; }
+    .step-dot.upcoming { background: #F3F4F6; color: #9CA3AF; }
+    .step-connector { height: 2px; flex: 1; }
+    .step-connector.done { background: #007F7E; }
+    .step-connector.pending { background: #E5E7EB; }
+
+    /* Variation tabs */
+    .var-tab {
+      padding: 8px 16px; border-radius: 8px 8px 0 0; font-size: 0.8125rem; font-weight: 600;
+      cursor: pointer; border: 1px solid transparent; border-bottom: none;
+      transition: all 0.15s; color: #808080; background: transparent;
+    }
+    .var-tab:hover { color: #13171D; background: rgba(0,0,0,0.03); }
+    .var-tab.active {
+      color: #007F7E; background: white; border-color: #E5E7EB;
+      position: relative;
+    }
+    .var-tab.active::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 2px; background: white;
+    }
+
+    /* Slide-in panel */
+    .slide-panel {
+      position: fixed; right: 0; top: 0; bottom: 0; width: 480px;
+      background: white; box-shadow: -8px 0 30px rgba(0,0,0,0.15);
+      z-index: 60; overflow-y: auto;
+    }
+
+    /* Variation containers */
+    .variation { display: none; }
+    .variation.active { display: block; }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+
+    /* Quick-date buttons */
+    .quick-date-btn {
+      padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 500;
+      border: 1px solid #E5E7EB; color: #374151; cursor: pointer; transition: all 0.15s;
+    }
+    .quick-date-btn:hover { background: #F0FAFA; border-color: #BAE8E7; color: #007F7E; }
+    .quick-date-btn.selected { background: #D5F1F0; border-color: #007F7E; color: #007F7E; }
+
+    /* Comment bubble */
+    .comment-bubble {
+      background: #F9FAFB; border-radius: 8px; padding: 10px 14px;
+      border: 1px solid #F3F4F6;
+    }
+
+    /* Activity item */
+    .activity-item {
+      display: flex; gap: 10px; padding: 8px 0; font-size: 0.8125rem;
+    }
+    .activity-dot {
+      width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0;
+    }
+
+    /* Progress bar */
+    .progress-bar { height: 6px; border-radius: 3px; background: #E5E7EB; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; background: #007F7E; transition: width 0.3s; }
+
+    /* Inline editable */
+    .inline-editable {
+      padding: 2px 4px; border-radius: 4px; cursor: text; transition: background 0.15s;
+    }
+    .inline-editable:hover { background: #F3F4F6; }
+
+    /* Linked item */
+    .linked-item {
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+      border-radius: 8px; border: 1px solid #E5E7EB; font-size: 0.8125rem;
+      transition: all 0.15s; cursor: pointer;
+    }
+    .linked-item:hover { border-color: #BAE8E7; background: #F0FAFA; }
+  </style>
+</head>
+<body class="font-sans bg-gray-100 min-h-screen">
+
+  <!-- Variation selector tabs -->
+  <div class="fixed top-0 left-0 right-0 z-[200] bg-gray-100 border-b border-gray-200 px-4 pt-3 flex gap-1" id="tabBar">
+    <button class="var-tab active" data-var="a" onclick="showVariation('a')">
+      A: Center Modal &mdash; Create
+    </button>
+    <button class="var-tab" data-var="b" onclick="showVariation('b')">
+      B: Side Panel &mdash; Edit
+    </button>
+    <button class="var-tab" data-var="c" onclick="showVariation('c')">
+      C: Full-Width &mdash; Detail
+    </button>
+    <button class="var-tab" data-var="d" onclick="showVariation('d')">
+      D: Quick Create
+    </button>
+    <button class="var-tab" data-var="e" onclick="showVariation('e')">
+      E: Multi-Step Wizard
+    </button>
+  </div>
+
+  <!-- Shell: Sidebar + Main area -->
+  <div class="flex pt-[46px]">
+
+    <!-- Skeleton Sidebar -->
+    <aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-[46px]">
+      <div class="px-4 py-4 border-b border-gray-100">
+        <div class="flex items-center gap-2.5">
+          <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div>
+          <div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+      </div>
+      <div class="px-3 py-3">
+        <div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div>
+      </div>
+      <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+        <div class="flex items-center gap-2.5 px-3 py-2">
+          <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+          <div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <div class="flex items-center gap-2.5 px-3 py-2">
+          <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+          <div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50">
+          <div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div>
+          <div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div>
+        </div>
+        <div class="flex items-center gap-2.5 px-3 py-2">
+          <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+          <div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+      </nav>
+      <div class="border-t border-gray-100 px-3 py-3">
+        <div class="flex items-center gap-2.5">
+          <div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div>
+          <div class="flex-1 space-y-1.5">
+            <div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div>
+            <div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content area (dimmed backdrop for modals) -->
+    <main class="flex-1 min-h-screen relative">
+
+      <!-- Faint background content (task list placeholder) -->
+      <div class="p-6 opacity-30 pointer-events-none select-none">
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-xl font-semibold">Tasks</h1>
+          <div class="h-9 w-28 bg-gray-200 rounded-lg"></div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <div class="border-b border-gray-100 px-4 py-3 flex gap-6">
+            <div class="h-3 w-32 bg-gray-200 rounded"></div>
+            <div class="h-3 w-20 bg-gray-200 rounded"></div>
+            <div class="h-3 w-24 bg-gray-200 rounded"></div>
+            <div class="h-3 w-20 bg-gray-200 rounded"></div>
+            <div class="h-3 w-16 bg-gray-200 rounded"></div>
+          </div>
+          <div class="px-4 py-3 border-b border-gray-50 flex gap-6">
+            <div class="h-3 w-48 bg-gray-100 rounded"></div>
+            <div class="h-3 w-16 bg-gray-100 rounded"></div>
+            <div class="h-3 w-20 bg-gray-100 rounded"></div>
+            <div class="h-3 w-16 bg-gray-100 rounded"></div>
+            <div class="h-3 w-20 bg-gray-100 rounded"></div>
+          </div>
+          <div class="px-4 py-3 border-b border-gray-50 flex gap-6">
+            <div class="h-3 w-44 bg-gray-100 rounded"></div>
+            <div class="h-3 w-20 bg-gray-100 rounded"></div>
+            <div class="h-3 w-16 bg-gray-100 rounded"></div>
+            <div class="h-3 w-20 bg-gray-100 rounded"></div>
+            <div class="h-3 w-16 bg-gray-100 rounded"></div>
+          </div>
+          <div class="px-4 py-3 border-b border-gray-50 flex gap-6">
+            <div class="h-3 w-52 bg-gray-100 rounded"></div>
+            <div class="h-3 w-16 bg-gray-100 rounded"></div>
+            <div class="h-3 w-24 bg-gray-100 rounded"></div>
+            <div class="h-3 w-16 bg-gray-100 rounded"></div>
+            <div class="h-3 w-20 bg-gray-100 rounded"></div>
+          </div>
+          <div class="px-4 py-3 flex gap-6">
+            <div class="h-3 w-40 bg-gray-100 rounded"></div>
+            <div class="h-3 w-20 bg-gray-100 rounded"></div>
+            <div class="h-3 w-20 bg-gray-100 rounded"></div>
+            <div class="h-3 w-16 bg-gray-100 rounded"></div>
+            <div class="h-3 w-20 bg-gray-100 rounded"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- OPTION A: Center Modal - Create Task                        -->
+      <!-- ========================================================== -->
+      <div class="variation active" id="var-a">
+        <div class="fixed inset-0 bg-black/50 z-40" style="top:46px;"></div>
+        <div class="fixed inset-0 z-50 flex items-start justify-center pt-12 px-4" style="top:46px;">
+          <div class="bg-white rounded-lg shadow-2xl w-full max-w-[640px] max-h-[calc(100vh-100px)] flex flex-col">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <div class="flex items-center gap-3">
+                <h2 class="text-lg font-semibold">Create Task</h2>
+              </div>
+              <button class="p-1 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <!-- Scrollable body -->
+            <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+
+              <!-- Template selector -->
+              <div>
+                <label class="field-label">Template</label>
+                <select class="form-input text-tertiary">
+                  <option value="">Create from template...</option>
+                  <option>HCA Package Review</option>
+                  <option>Client Onboarding Checklist</option>
+                  <option>Care Plan Review</option>
+                  <option>Incident Follow-up</option>
+                </select>
+              </div>
+
+              <!-- Title -->
+              <div>
+                <label class="field-label">Title <span class="required">*</span></label>
+                <input type="text" class="form-input error" placeholder="Enter task title..." value="">
+                <p class="error-text">Title is required</p>
+              </div>
+
+              <!-- Description -->
+              <div>
+                <label class="field-label">Description</label>
+                <textarea class="form-input" rows="3" placeholder="Add a description..."></textarea>
+              </div>
+
+              <!-- Stage & Priority row -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="field-label">Stage</label>
+                  <select class="form-input">
+                    <option value="NOT_STARTED" selected>Not started</option>
+                    <option value="IN_PROGRESS">In progress</option>
+                    <option value="ON_HOLD">On hold</option>
+                    <option value="APPROVED">Approved</option>
+                    <option value="COMPLETED">Completed</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label">Priority</label>
+                  <div class="flex flex-wrap gap-1.5 mt-0.5">
+                    <span class="priority-pill" data-priority="urgent" onclick="selectPriority(this)">Urgent</span>
+                    <span class="priority-pill" data-priority="high" onclick="selectPriority(this)">High</span>
+                    <span class="priority-pill selected" data-priority="medium" onclick="selectPriority(this)">Medium</span>
+                    <span class="priority-pill" data-priority="low" onclick="selectPriority(this)">Low</span>
+                    <span class="priority-pill" data-priority="none" onclick="selectPriority(this)">None</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Date row -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="field-label">Due Date</label>
+                  <div class="relative">
+                    <input type="date" class="form-input" value="">
+                    <svg class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  </div>
+                </div>
+                <div>
+                  <label class="field-label">Start Date</label>
+                  <div class="relative">
+                    <input type="date" class="form-input" value="">
+                    <svg class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Assign To -->
+              <div>
+                <label class="field-label">Assign To</label>
+                <div class="flex flex-wrap gap-2 mb-2">
+                  <span class="avatar-chip">
+                    <span class="avatar bg-teal-700">SM</span>
+                    Sarah M.
+                    <button class="ml-1 text-gray-400 hover:text-gray-600">&times;</button>
+                  </span>
+                </div>
+                <select class="form-input text-tertiary">
+                  <option value="">Add team member...</option>
+                  <option>Sarah Mitchell</option>
+                  <option>David Chen</option>
+                  <option>Jacqueline Patel</option>
+                  <option>Lisa Thompson</option>
+                  <option>Mark Rodriguez</option>
+                </select>
+              </div>
+
+              <!-- Team -->
+              <div>
+                <label class="field-label">Team</label>
+                <select class="form-input">
+                  <option value="">Select team...</option>
+                  <option>Care Partners</option>
+                  <option>Coordinators</option>
+                  <option>Clinical Team</option>
+                  <option>Finance</option>
+                </select>
+              </div>
+
+              <!-- Tags -->
+              <div>
+                <label class="field-label">Tags</label>
+                <div class="flex flex-wrap gap-2 mb-2">
+                  <span class="tag-chip">
+                    care-plan
+                    <button>&times;</button>
+                  </span>
+                </div>
+                <input type="text" class="form-input" placeholder="Add tag and press Enter...">
+              </div>
+
+              <!-- Checklist -->
+              <div>
+                <label class="field-label">Checklist</label>
+                <div class="border border-gray-200 rounded-lg p-3">
+                  <div class="checklist-item">
+                    <input type="checkbox">
+                    <span>Review current care plan documentation</span>
+                  </div>
+                  <div class="checklist-item">
+                    <input type="checkbox">
+                    <span>Contact client's GP for updated medical summary</span>
+                  </div>
+                  <div class="checklist-item">
+                    <input type="checkbox">
+                    <span>Schedule reassessment meeting with family</span>
+                  </div>
+                  <div class="mt-2">
+                    <div class="flex items-center gap-2">
+                      <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                      <input type="text" class="flex-1 text-sm border-none outline-none placeholder:text-gray-400 py-1" placeholder="Add checklist item...">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Link to -->
+              <div>
+                <label class="field-label">Link to</label>
+                <div class="relative">
+                  <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                  <input type="text" class="form-input pl-9" placeholder="Search clients, packages, bills...">
+                </div>
+                <!-- Sample linked items -->
+                <div class="mt-2 space-y-2">
+                  <div class="linked-item">
+                    <svg class="w-4 h-4 text-primary-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <span>Margaret Thompson &mdash; HCP-00471</span>
+                    <button class="ml-auto text-gray-400 hover:text-red-500 shrink-0">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 bg-gray-50 rounded-b-lg">
+              <button class="px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition">
+                Cancel
+              </button>
+              <button class="px-5 py-2 text-sm font-semibold rounded-lg bg-teal-700 text-white hover:bg-teal-600 transition shadow-sm">
+                Create Task
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- OPTION B: Right Side Panel - Edit Task                      -->
+      <!-- ========================================================== -->
+      <div class="variation" id="var-b">
+        <div class="fixed inset-0 bg-black/50 z-40" style="top:46px;"></div>
+        <div class="slide-panel" style="top: 46px;">
+          <!-- Panel header -->
+          <div class="sticky top-0 bg-white z-10 px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+            <h2 class="text-lg font-semibold">Edit Task</h2>
+            <div class="flex items-center gap-2">
+              <!-- Kebab menu -->
+              <div class="relative">
+                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition" onclick="toggleKebab()">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                </button>
+                <div id="kebabMenu" class="hidden absolute right-0 top-full mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+                  <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center gap-2 text-gray-700">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    Duplicate
+                  </button>
+                  <hr class="my-1 border-gray-100">
+                  <button class="w-full text-left px-3 py-2 text-sm hover:bg-red-50 flex items-center gap-2 text-red-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    Delete
+                  </button>
+                </div>
+              </div>
+              <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Panel body -->
+          <div class="px-5 py-5 space-y-4">
+
+            <!-- Title -->
+            <div>
+              <label class="field-label">Title <span class="required">*</span></label>
+              <input type="text" class="form-input" value="Complete Margaret's HCA package review">
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label class="field-label">Description</label>
+              <textarea class="form-input" rows="2">Review all current service agreements, check budget utilisation, and prepare summary report for care plan meeting scheduled next week.</textarea>
+            </div>
+
+            <!-- Stage & Priority row -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="field-label">Stage</label>
+                <select class="form-input">
+                  <option value="NOT_STARTED">Not started</option>
+                  <option value="IN_PROGRESS" selected>In progress</option>
+                  <option value="ON_HOLD">On hold</option>
+                  <option value="APPROVED">Approved</option>
+                  <option value="COMPLETED">Completed</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label">Priority</label>
+                <div class="flex flex-wrap gap-1.5 mt-0.5">
+                  <span class="priority-pill" data-priority="urgent" onclick="selectPriority(this)">Urgent</span>
+                  <span class="priority-pill selected" data-priority="high" onclick="selectPriority(this)">High</span>
+                  <span class="priority-pill" data-priority="medium" onclick="selectPriority(this)">Medium</span>
+                  <span class="priority-pill" data-priority="low" onclick="selectPriority(this)">Low</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dates -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="field-label">Due Date</label>
+                <input type="date" class="form-input" value="2026-03-10">
+              </div>
+              <div>
+                <label class="field-label">Start Date</label>
+                <input type="date" class="form-input" value="2026-03-03">
+              </div>
+            </div>
+
+            <!-- Assigned -->
+            <div>
+              <label class="field-label">Assign To</label>
+              <div class="flex flex-wrap gap-2 mb-2">
+                <span class="avatar-chip">
+                  <span class="avatar bg-teal-700">SM</span>
+                  Sarah M.
+                  <button class="ml-1 text-gray-400 hover:text-gray-600">&times;</button>
+                </span>
+              </div>
+              <select class="form-input text-tertiary">
+                <option value="">Add team member...</option>
+                <option>David Chen</option>
+                <option>Jacqueline Patel</option>
+                <option>Lisa Thompson</option>
+              </select>
+            </div>
+
+            <!-- Tags -->
+            <div>
+              <label class="field-label">Tags</label>
+              <div class="flex flex-wrap gap-2 mb-2">
+                <span class="tag-chip">care-plan <button>&times;</button></span>
+                <span class="tag-chip">review <button>&times;</button></span>
+              </div>
+              <input type="text" class="form-input" placeholder="Add tag...">
+            </div>
+
+            <!-- Checklist -->
+            <div>
+              <label class="field-label">Checklist (1/3)</label>
+              <div class="border border-gray-200 rounded-lg p-3">
+                <div class="progress-bar mb-3">
+                  <div class="progress-fill" style="width: 33%"></div>
+                </div>
+                <div class="checklist-item done">
+                  <input type="checkbox" checked>
+                  <span>Pull current HCA budget report from finance</span>
+                </div>
+                <div class="checklist-item">
+                  <input type="checkbox">
+                  <span>Review service agreements with all active suppliers</span>
+                </div>
+                <div class="checklist-item">
+                  <input type="checkbox">
+                  <span>Prepare summary document for care plan meeting</span>
+                </div>
+                <div class="mt-2 flex items-center gap-2">
+                  <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                  <input type="text" class="flex-1 text-sm border-none outline-none placeholder:text-gray-400 py-1" placeholder="Add item...">
+                </div>
+              </div>
+            </div>
+
+            <!-- Tabs: Details | Comments | Activity -->
+            <div class="border-t border-gray-200 pt-4 -mx-5 px-5">
+              <div class="flex gap-4 border-b border-gray-200 mb-4">
+                <button class="pb-2 text-sm font-semibold text-gray-400 hover:text-gray-600 transition" onclick="switchPanelTab(this, 'panel-details')">Details</button>
+                <button class="pb-2 text-sm font-semibold text-teal-700 border-b-2 border-teal-700 transition" onclick="switchPanelTab(this, 'panel-comments')">Comments (2)</button>
+                <button class="pb-2 text-sm font-semibold text-gray-400 hover:text-gray-600 transition" onclick="switchPanelTab(this, 'panel-activity')">Activity</button>
+              </div>
+
+              <!-- Comments content (default shown) -->
+              <div id="panel-comments" class="panel-tab-content space-y-3">
+                <div class="flex gap-3">
+                  <div class="w-7 h-7 rounded-full bg-primary-blue-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5">DC</div>
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-sm font-semibold">David Chen</span>
+                      <span class="text-xs text-tertiary">2 hours ago</span>
+                    </div>
+                    <div class="comment-bubble">
+                      <p class="text-sm">I've pulled the budget report. Margaret's Level 4 HCP has $4,280 remaining for this quarter. The allied health services are running slightly over.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex gap-3">
+                  <div class="w-7 h-7 rounded-full bg-teal-700 flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5">SM</div>
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-sm font-semibold">Sarah Mitchell</span>
+                      <span class="text-xs text-tertiary">45 minutes ago</span>
+                    </div>
+                    <div class="comment-bubble">
+                      <p class="text-sm">Thanks David. I'll check if the physio sessions need adjusting before the meeting. Can you also confirm the transport bookings?</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Comment input -->
+                <div class="flex gap-3 mt-4">
+                  <div class="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5">You</div>
+                  <div class="flex-1">
+                    <textarea class="form-input text-sm" rows="2" placeholder="Write a comment..."></textarea>
+                    <div class="flex justify-end mt-2">
+                      <button class="px-3 py-1.5 text-xs font-semibold rounded-md bg-teal-700 text-white hover:bg-teal-600 transition">Post</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Details tab (hidden) -->
+              <div id="panel-details" class="panel-tab-content hidden space-y-3">
+                <div class="text-sm"><span class="text-secondary">Created by:</span> <span class="font-medium">Jacqueline Patel</span></div>
+                <div class="text-sm"><span class="text-secondary">Created:</span> <span class="font-medium">1 Mar 2026</span></div>
+                <div class="text-sm"><span class="text-secondary">Last updated:</span> <span class="font-medium">5 Mar 2026, 2:14 PM</span></div>
+                <div class="text-sm"><span class="text-secondary">Team:</span> <span class="font-medium">Care Partners</span></div>
+              </div>
+
+              <!-- Activity tab (hidden) -->
+              <div id="panel-activity" class="panel-tab-content hidden space-y-1">
+                <div class="activity-item">
+                  <div class="activity-dot bg-teal-500"></div>
+                  <div>
+                    <span class="font-medium">Sarah Mitchell</span>
+                    <span class="text-secondary"> changed stage from </span>
+                    <span class="stage-badge not-started text-[10px] py-0.5 px-1.5">Not started</span>
+                    <span class="text-secondary"> to </span>
+                    <span class="stage-badge in-progress text-[10px] py-0.5 px-1.5">In progress</span>
+                    <div class="text-xs text-tertiary mt-0.5">3 Mar 2026, 9:30 AM</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot bg-blue-400"></div>
+                  <div>
+                    <span class="font-medium">David Chen</span>
+                    <span class="text-secondary"> completed checklist item &ldquo;Pull current HCA budget report&rdquo;</span>
+                    <div class="text-xs text-tertiary mt-0.5">5 Mar 2026, 10:15 AM</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot bg-gray-300"></div>
+                  <div>
+                    <span class="font-medium">Jacqueline Patel</span>
+                    <span class="text-secondary"> created this task</span>
+                    <div class="text-xs text-tertiary mt-0.5">1 Mar 2026, 3:22 PM</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sticky footer -->
+          <div class="sticky bottom-0 bg-white border-t border-gray-200 px-5 py-4 flex items-center justify-end gap-3">
+            <button class="px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition">
+              Cancel
+            </button>
+            <button class="px-5 py-2 text-sm font-semibold rounded-lg bg-teal-700 text-white hover:bg-teal-600 transition shadow-sm">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- OPTION C: Full-Width Modal - Task Detail View               -->
+      <!-- ========================================================== -->
+      <div class="variation" id="var-c">
+        <div class="fixed inset-0 bg-black/50 z-40" style="top:46px;"></div>
+        <div class="fixed inset-0 z-50 flex items-start justify-center pt-8 px-4" style="top:46px;">
+          <div class="bg-white rounded-lg shadow-2xl w-full max-w-[900px] max-h-[calc(100vh-90px)] flex flex-col">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-6 py-3.5 border-b border-gray-200">
+              <div class="flex items-center gap-3">
+                <span class="stage-badge in-progress">In progress</span>
+                <span class="text-xs text-tertiary">TSK-00142</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="px-3 py-1.5 text-xs font-medium rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 transition flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                  Edit
+                </button>
+                <div class="relative">
+                  <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition" onclick="toggleDetailActions()">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                  </button>
+                  <div id="detailActionsMenu" class="hidden absolute right-0 top-full mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+                    <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 text-gray-700">Duplicate</button>
+                    <hr class="my-1 border-gray-100">
+                    <button class="w-full text-left px-3 py-2 text-sm hover:bg-red-50 text-red-600">Delete</button>
+                  </div>
+                </div>
+                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Two-column body -->
+            <div class="flex-1 overflow-y-auto">
+              <div class="flex divide-x divide-gray-200">
+                <!-- Left column (60%) -->
+                <div class="flex-[3] p-6 space-y-5">
+                  <!-- Title -->
+                  <h1 class="text-xl font-semibold inline-editable">Complete Margaret's HCA package review</h1>
+
+                  <!-- Description -->
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Description</h3>
+                    <div class="text-sm leading-relaxed text-gray-700">
+                      <p>Review all current service agreements for Margaret Thompson's Level 4 Home Care Package. Check budget utilisation across all service categories and prepare a summary report for the upcoming care plan meeting.</p>
+                      <p class="mt-2">Key areas to review:</p>
+                      <ul class="list-disc ml-5 mt-1 space-y-0.5 text-sm">
+                        <li>Allied health service frequency and costs</li>
+                        <li>Transport and social support hours</li>
+                        <li>Equipment and modifications budget</li>
+                        <li>Unspent funds allocation</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- Checklist with progress -->
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider">Checklist</h3>
+                      <span class="text-xs text-secondary">2 of 4 completed</span>
+                    </div>
+                    <div class="progress-bar mb-3">
+                      <div class="progress-fill" style="width: 50%"></div>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-3">
+                      <div class="checklist-item done">
+                        <input type="checkbox" checked>
+                        <span>Pull current HCA budget report from finance</span>
+                      </div>
+                      <div class="checklist-item done">
+                        <input type="checkbox" checked>
+                        <span>Review service agreements with active suppliers</span>
+                      </div>
+                      <div class="checklist-item">
+                        <input type="checkbox">
+                        <span>Prepare summary document for care plan meeting</span>
+                      </div>
+                      <div class="checklist-item">
+                        <input type="checkbox">
+                        <span>Schedule meeting with Margaret and her daughter</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Subtasks -->
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider">Subtasks</h3>
+                      <button class="text-xs text-teal-700 font-medium hover:underline flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        Add subtask
+                      </button>
+                    </div>
+                    <div class="space-y-2">
+                      <div class="flex items-center gap-3 p-2.5 rounded-lg border border-gray-200 hover:border-gray-300 transition cursor-pointer">
+                        <span class="stage-badge completed text-[10px] py-0.5 px-1.5">Completed</span>
+                        <span class="text-sm flex-1">Pull budget report from finance system</span>
+                        <div class="w-5 h-5 rounded-full bg-primary-blue-600 flex items-center justify-center text-white text-[8px] font-bold">DC</div>
+                      </div>
+                      <div class="flex items-center gap-3 p-2.5 rounded-lg border border-gray-200 hover:border-gray-300 transition cursor-pointer">
+                        <span class="stage-badge in-progress text-[10px] py-0.5 px-1.5">In progress</span>
+                        <span class="text-sm flex-1">Contact physio provider about session changes</span>
+                        <div class="w-5 h-5 rounded-full bg-teal-700 flex items-center justify-center text-white text-[8px] font-bold">SM</div>
+                      </div>
+                      <div class="flex items-center gap-3 p-2.5 rounded-lg border border-gray-200 hover:border-gray-300 transition cursor-pointer">
+                        <span class="stage-badge not-started text-[10px] py-0.5 px-1.5">Not started</span>
+                        <span class="text-sm flex-1">Draft care plan meeting agenda</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Linked items -->
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Linked Items</h3>
+                    <div class="space-y-2">
+                      <div class="linked-item">
+                        <svg class="w-4 h-4 text-primary-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        <span class="text-sm">Margaret Thompson</span>
+                        <span class="text-xs text-tertiary ml-auto">Client</span>
+                      </div>
+                      <div class="linked-item">
+                        <svg class="w-4 h-4 text-teal-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <span class="text-sm">HCP Level 4 &mdash; HCP-00471</span>
+                        <span class="text-xs text-tertiary ml-auto">Package</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Activity feed -->
+                  <div class="border-t border-gray-200 pt-5">
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-3">Activity</h3>
+                    <div class="space-y-1">
+                      <div class="activity-item">
+                        <div class="activity-dot bg-teal-500"></div>
+                        <div class="flex-1">
+                          <div class="text-sm">
+                            <span class="font-medium">Sarah Mitchell</span>
+                            <span class="text-secondary"> posted a comment</span>
+                          </div>
+                          <div class="comment-bubble mt-1.5 text-sm">Thanks David. I'll check the physio sessions before the meeting.</div>
+                          <div class="text-xs text-tertiary mt-1">5 Mar 2026, 2:30 PM</div>
+                        </div>
+                      </div>
+                      <div class="activity-item">
+                        <div class="activity-dot bg-blue-400"></div>
+                        <div class="flex-1">
+                          <div class="text-sm">
+                            <span class="font-medium">David Chen</span>
+                            <span class="text-secondary"> completed checklist item</span>
+                          </div>
+                          <div class="text-xs text-tertiary mt-0.5">5 Mar 2026, 10:15 AM</div>
+                        </div>
+                      </div>
+                      <div class="activity-item">
+                        <div class="activity-dot bg-orange-400"></div>
+                        <div class="flex-1">
+                          <div class="text-sm">
+                            <span class="font-medium">Sarah Mitchell</span>
+                            <span class="text-secondary"> changed stage to </span>
+                            <span class="stage-badge in-progress text-[10px] py-0.5 px-1.5">In progress</span>
+                          </div>
+                          <div class="text-xs text-tertiary mt-0.5">3 Mar 2026, 9:30 AM</div>
+                        </div>
+                      </div>
+                      <div class="activity-item">
+                        <div class="activity-dot bg-gray-300"></div>
+                        <div class="flex-1">
+                          <div class="text-sm">
+                            <span class="font-medium">Jacqueline Patel</span>
+                            <span class="text-secondary"> created this task</span>
+                          </div>
+                          <div class="text-xs text-tertiary mt-0.5">1 Mar 2026, 3:22 PM</div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Comment input at bottom of activity -->
+                    <div class="flex gap-3 mt-4 pt-3 border-t border-gray-100">
+                      <div class="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center text-white text-[10px] font-bold shrink-0 mt-0.5">You</div>
+                      <div class="flex-1">
+                        <textarea class="form-input text-sm" rows="2" placeholder="Write a comment..."></textarea>
+                        <div class="flex justify-end mt-2">
+                          <button class="px-3 py-1.5 text-xs font-semibold rounded-md bg-teal-700 text-white hover:bg-teal-600 transition">Post</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right column (40%) - Metadata sidebar -->
+                <div class="flex-[2] p-6 bg-gray-50/50 space-y-5">
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Stage</h3>
+                    <span class="stage-badge in-progress">
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4"/></svg>
+                      In progress
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Priority</h3>
+                    <span class="priority-pill selected" data-priority="high" style="cursor:default;">
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+                      High
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Due Date</h3>
+                    <div class="flex items-center gap-2 text-sm">
+                      <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                      <span class="font-medium text-orange-700">10 Mar 2026</span>
+                      <span class="text-xs text-orange-500">(5 days)</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Start Date</h3>
+                    <div class="flex items-center gap-2 text-sm">
+                      <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                      <span class="font-medium">3 Mar 2026</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Assignees</h3>
+                    <div class="flex items-center gap-2">
+                      <div class="flex -space-x-2">
+                        <div class="w-7 h-7 rounded-full bg-teal-700 flex items-center justify-center text-white text-[10px] font-bold border-2 border-white" title="Sarah Mitchell">SM</div>
+                        <div class="w-7 h-7 rounded-full bg-primary-blue-600 flex items-center justify-center text-white text-[10px] font-bold border-2 border-white" title="David Chen">DC</div>
+                      </div>
+                      <span class="text-sm text-secondary">Sarah M., David C.</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Team</h3>
+                    <span class="text-sm font-medium">Care Partners</span>
+                  </div>
+
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Tags</h3>
+                    <div class="flex flex-wrap gap-1.5">
+                      <span class="tag-chip">care-plan</span>
+                      <span class="tag-chip">review</span>
+                      <span class="tag-chip">hca</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Created</h3>
+                    <div class="text-sm">
+                      <span class="text-secondary">by</span> <span class="font-medium">Jacqueline Patel</span>
+                      <div class="text-xs text-tertiary mt-0.5">1 Mar 2026, 3:22 PM</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Last Updated</h3>
+                    <div class="text-xs text-tertiary">5 Mar 2026, 2:30 PM</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- OPTION D: Minimal Quick-Create                              -->
+      <!-- ========================================================== -->
+      <div class="variation" id="var-d">
+        <div class="fixed inset-0 bg-black/50 z-40" style="top:46px;"></div>
+        <div class="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4" style="top:46px;">
+          <div class="bg-white rounded-lg shadow-2xl w-full max-w-[480px] flex flex-col">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-5 py-3.5 border-b border-gray-200">
+              <h2 class="text-base font-semibold">Quick Create Task</h2>
+              <button class="p-1 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <!-- Body -->
+            <div class="px-5 py-5 space-y-4">
+
+              <!-- Title (auto-focused) -->
+              <div>
+                <input type="text" class="form-input text-base font-medium" placeholder="What needs to be done?" autofocus style="border-color: #007F7E; box-shadow: 0 0 0 3px rgba(67, 192, 190, 0.2);">
+              </div>
+
+              <!-- Priority pills inline -->
+              <div>
+                <label class="field-label">Priority</label>
+                <div class="flex gap-1.5">
+                  <span class="priority-pill" data-priority="urgent" onclick="selectPriority(this)">Urgent</span>
+                  <span class="priority-pill" data-priority="high" onclick="selectPriority(this)">High</span>
+                  <span class="priority-pill selected" data-priority="medium" onclick="selectPriority(this)">Medium</span>
+                  <span class="priority-pill" data-priority="low" onclick="selectPriority(this)">Low</span>
+                  <span class="priority-pill" data-priority="none" onclick="selectPriority(this)">None</span>
+                </div>
+              </div>
+
+              <!-- Due date with quick buttons -->
+              <div>
+                <label class="field-label">Due Date</label>
+                <div class="flex items-center gap-2 mb-2">
+                  <button class="quick-date-btn" onclick="selectQuickDate(this)">Today</button>
+                  <button class="quick-date-btn selected" onclick="selectQuickDate(this)">Tomorrow</button>
+                  <button class="quick-date-btn" onclick="selectQuickDate(this)">Next Week</button>
+                  <button class="quick-date-btn" onclick="selectQuickDate(this)">Next Month</button>
+                </div>
+                <input type="date" class="form-input" value="2026-03-06">
+              </div>
+
+              <!-- Expandable "More options" -->
+              <div>
+                <button class="text-sm text-teal-700 font-medium hover:underline flex items-center gap-1.5" onclick="toggleMoreOptions()">
+                  <svg id="moreOptionsChevron" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  More options
+                </button>
+
+                <div id="moreOptionsPanel" class="hidden mt-3 space-y-4 pt-3 border-t border-gray-100">
+                  <div>
+                    <label class="field-label">Description</label>
+                    <textarea class="form-input" rows="2" placeholder="Add details..."></textarea>
+                  </div>
+                  <div>
+                    <label class="field-label">Stage</label>
+                    <select class="form-input">
+                      <option selected>Not started</option>
+                      <option>In progress</option>
+                      <option>On hold</option>
+                      <option>Approved</option>
+                      <option>Completed</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="field-label">Assign To</label>
+                    <select class="form-input text-tertiary">
+                      <option value="">Select team member...</option>
+                      <option>Sarah Mitchell</option>
+                      <option>David Chen</option>
+                      <option>Jacqueline Patel</option>
+                      <option>Lisa Thompson</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="field-label">Team</label>
+                    <select class="form-input text-tertiary">
+                      <option value="">Select team...</option>
+                      <option>Care Partners</option>
+                      <option>Coordinators</option>
+                      <option>Clinical Team</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="field-label">Tags</label>
+                    <input type="text" class="form-input" placeholder="Add tags...">
+                  </div>
+                  <div>
+                    <label class="field-label">Link to</label>
+                    <div class="relative">
+                      <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                      <input type="text" class="form-input pl-9" placeholder="Search clients, packages...">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-5 py-3.5 border-t border-gray-200 flex items-center justify-between bg-gray-50 rounded-b-lg">
+              <span class="text-xs text-tertiary">Press <kbd class="px-1.5 py-0.5 rounded border border-gray-300 bg-white text-gray-600 font-mono text-[10px]">&#8984;+Enter</kbd> to save</span>
+              <button class="px-5 py-2 text-sm font-semibold rounded-lg bg-teal-700 text-white hover:bg-teal-600 transition shadow-sm">
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================== -->
+      <!-- OPTION E: Multi-Step Wizard                                 -->
+      <!-- ========================================================== -->
+      <div class="variation" id="var-e">
+        <div class="fixed inset-0 bg-black/50 z-40" style="top:46px;"></div>
+        <div class="fixed inset-0 z-50 flex items-start justify-center pt-12 px-4" style="top:46px;">
+          <div class="bg-white rounded-lg shadow-2xl w-full max-w-[640px] max-h-[calc(100vh-100px)] flex flex-col">
+
+            <!-- Header with step indicator -->
+            <div class="px-6 py-4 border-b border-gray-200">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold">Create Task</h2>
+                <button class="p-1 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+
+              <!-- Step indicator -->
+              <div class="flex items-center gap-0">
+                <div class="flex items-center gap-2">
+                  <div class="step-dot active" id="stepDot1">1</div>
+                  <span class="text-sm font-medium text-teal-700" id="stepLabel1">Basics</span>
+                </div>
+                <div class="step-connector done flex-1 mx-3" id="stepConn1"></div>
+                <div class="flex items-center gap-2">
+                  <div class="step-dot upcoming" id="stepDot2">2</div>
+                  <span class="text-sm font-medium text-gray-400" id="stepLabel2">Schedule</span>
+                </div>
+                <div class="step-connector pending flex-1 mx-3" id="stepConn2"></div>
+                <div class="flex items-center gap-2">
+                  <div class="step-dot upcoming" id="stepDot3">3</div>
+                  <span class="text-sm font-medium text-gray-400" id="stepLabel3">Details</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 1: Basics -->
+            <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4 wizard-step" id="wizStep1">
+              <div>
+                <label class="field-label">Title <span class="required">*</span></label>
+                <input type="text" class="form-input" placeholder="Enter task title..." value="Review Robert's transport service booking">
+              </div>
+
+              <div>
+                <label class="field-label">Description</label>
+                <textarea class="form-input" rows="3" placeholder="What needs to be done?">Robert Chen requires transport service adjustment following his recent fall risk reassessment. The weekly community transport booking needs to be reviewed against his updated mobility assessment.</textarea>
+              </div>
+
+              <div>
+                <label class="field-label">Priority</label>
+                <div class="flex gap-1.5">
+                  <span class="priority-pill" data-priority="urgent" onclick="selectPriority(this)">Urgent</span>
+                  <span class="priority-pill selected" data-priority="high" onclick="selectPriority(this)">High</span>
+                  <span class="priority-pill" data-priority="medium" onclick="selectPriority(this)">Medium</span>
+                  <span class="priority-pill" data-priority="low" onclick="selectPriority(this)">Low</span>
+                  <span class="priority-pill" data-priority="none" onclick="selectPriority(this)">None</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="field-label">Stage</label>
+                <select class="form-input">
+                  <option selected>Not started</option>
+                  <option>In progress</option>
+                  <option>On hold</option>
+                  <option>Approved</option>
+                  <option>Completed</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Step 2: Schedule & Assignment (hidden by default) -->
+            <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4 wizard-step hidden" id="wizStep2">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="field-label">Due Date <span class="required">*</span></label>
+                  <input type="date" class="form-input" value="2026-03-12">
+                </div>
+                <div>
+                  <label class="field-label">Start Date</label>
+                  <input type="date" class="form-input" value="2026-03-06">
+                </div>
+              </div>
+
+              <div>
+                <label class="field-label">Assign To</label>
+                <div class="flex flex-wrap gap-2 mb-2">
+                  <span class="avatar-chip">
+                    <span class="avatar bg-primary-blue-600">JP</span>
+                    Jacqueline P.
+                    <button class="ml-1 text-gray-400 hover:text-gray-600">&times;</button>
+                  </span>
+                </div>
+                <select class="form-input text-tertiary">
+                  <option value="">Add another team member...</option>
+                  <option>Sarah Mitchell</option>
+                  <option>David Chen</option>
+                  <option>Lisa Thompson</option>
+                  <option>Mark Rodriguez</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="field-label">Team</label>
+                <select class="form-input">
+                  <option value="">Select team...</option>
+                  <option selected>Coordinators</option>
+                  <option>Care Partners</option>
+                  <option>Clinical Team</option>
+                  <option>Finance</option>
+                </select>
+              </div>
+
+              <!-- Recurring option -->
+              <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex items-center gap-3">
+                  <input type="checkbox" id="recurringCheck" class="w-4 h-4 rounded accent-teal-700 cursor-pointer">
+                  <label for="recurringCheck" class="text-sm font-medium cursor-pointer">Make this a recurring task</label>
+                </div>
+                <div class="mt-3 ml-7 text-sm text-secondary">
+                  <div class="flex items-center gap-2">
+                    <span>Repeat every</span>
+                    <input type="number" class="form-input w-16 text-center py-1" value="7" min="1">
+                    <span>days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Details (hidden by default) -->
+            <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4 wizard-step hidden" id="wizStep3">
+              <!-- Template selection -->
+              <div>
+                <label class="field-label">Template</label>
+                <select class="form-input text-tertiary">
+                  <option value="">Apply a template...</option>
+                  <option>HCA Package Review</option>
+                  <option>Client Onboarding Checklist</option>
+                  <option>Care Plan Review</option>
+                  <option>Incident Follow-up</option>
+                  <option>Transport Review</option>
+                </select>
+              </div>
+
+              <!-- Tags -->
+              <div>
+                <label class="field-label">Tags</label>
+                <div class="flex flex-wrap gap-2 mb-2">
+                  <span class="tag-chip">transport <button>&times;</button></span>
+                  <span class="tag-chip">mobility <button>&times;</button></span>
+                </div>
+                <input type="text" class="form-input" placeholder="Add tag and press Enter...">
+              </div>
+
+              <!-- Checklist -->
+              <div>
+                <label class="field-label">Checklist</label>
+                <div class="border border-gray-200 rounded-lg p-3">
+                  <div class="checklist-item">
+                    <input type="checkbox">
+                    <span>Review current transport schedule and provider</span>
+                  </div>
+                  <div class="checklist-item">
+                    <input type="checkbox">
+                    <span>Check updated mobility assessment from OT</span>
+                  </div>
+                  <div class="checklist-item">
+                    <input type="checkbox">
+                    <span>Contact transport provider about wheelchair-accessible vehicle</span>
+                  </div>
+                  <div class="checklist-item">
+                    <input type="checkbox">
+                    <span>Update service agreement if changes needed</span>
+                  </div>
+                  <div class="mt-2 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <input type="text" class="flex-1 text-sm border-none outline-none placeholder:text-gray-400 py-1" placeholder="Add checklist item...">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Link to -->
+              <div>
+                <label class="field-label">Link to</label>
+                <div class="space-y-2">
+                  <div class="linked-item">
+                    <svg class="w-4 h-4 text-primary-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <span class="text-sm">Robert Chen &mdash; HCP-00312</span>
+                    <button class="ml-auto text-gray-400 hover:text-red-500 shrink-0">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="relative mt-2">
+                  <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                  <input type="text" class="form-input pl-9" placeholder="Link another item...">
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer with navigation -->
+            <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-gray-50 rounded-b-lg">
+              <button class="text-sm text-teal-700 font-medium hover:underline" id="wizardSaveDraft">Save as draft</button>
+              <div class="flex items-center gap-3">
+                <button class="px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition hidden" id="wizBackBtn" onclick="wizardBack()">
+                  Back
+                </button>
+                <button class="px-5 py-2 text-sm font-semibold rounded-lg bg-teal-700 text-white hover:bg-teal-600 transition shadow-sm" id="wizNextBtn" onclick="wizardNext()">
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // ============================================================
+    // Variation toggling
+    // ============================================================
+    function showVariation(id) {
+      document.querySelectorAll('.variation').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.var-tab').forEach(el => el.classList.remove('active'));
+      document.getElementById('var-' + id).classList.add('active');
+      document.querySelector('.var-tab[data-var="' + id + '"]').classList.add('active');
+    }
+
+    // ============================================================
+    // Priority pill selection
+    // ============================================================
+    function selectPriority(el) {
+      const container = el.parentElement;
+      container.querySelectorAll('.priority-pill').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    // ============================================================
+    // Quick date selection (Option D)
+    // ============================================================
+    function selectQuickDate(el) {
+      el.parentElement.querySelectorAll('.quick-date-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+
+      const today = new Date();
+      let target = new Date(today);
+      const label = el.textContent.trim();
+      if (label === 'Today') target = today;
+      else if (label === 'Tomorrow') target.setDate(today.getDate() + 1);
+      else if (label === 'Next Week') target.setDate(today.getDate() + 7);
+      else if (label === 'Next Month') target.setMonth(today.getMonth() + 1);
+
+      const dateInput = el.closest('.space-y-4').querySelector('input[type="date"]');
+      if (dateInput) {
+        dateInput.value = target.toISOString().split('T')[0];
+      }
+    }
+
+    // ============================================================
+    // More options toggle (Option D)
+    // ============================================================
+    function toggleMoreOptions() {
+      const panel = document.getElementById('moreOptionsPanel');
+      const chevron = document.getElementById('moreOptionsChevron');
+      panel.classList.toggle('hidden');
+      chevron.style.transform = panel.classList.contains('hidden') ? '' : 'rotate(180deg)';
+    }
+
+    // ============================================================
+    // Kebab menu toggle (Option B)
+    // ============================================================
+    function toggleKebab() {
+      document.getElementById('kebabMenu').classList.toggle('hidden');
+    }
+
+    // ============================================================
+    // Detail actions toggle (Option C)
+    // ============================================================
+    function toggleDetailActions() {
+      document.getElementById('detailActionsMenu').classList.toggle('hidden');
+    }
+
+    // ============================================================
+    // Panel tab switching (Option B)
+    // ============================================================
+    function switchPanelTab(btn, tabId) {
+      // Reset all tabs
+      btn.parentElement.querySelectorAll('button').forEach(b => {
+        b.classList.remove('text-teal-700', 'border-b-2', 'border-teal-700');
+        b.classList.add('text-gray-400');
+      });
+      // Activate clicked tab
+      btn.classList.remove('text-gray-400');
+      btn.classList.add('text-teal-700', 'border-b-2', 'border-teal-700');
+
+      // Show/hide content
+      document.querySelectorAll('.panel-tab-content').forEach(c => c.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+    }
+
+    // ============================================================
+    // Wizard navigation (Option E)
+    // ============================================================
+    let wizardCurrentStep = 1;
+    const wizardTotalSteps = 3;
+
+    function updateWizardUI() {
+      // Show/hide steps
+      for (let i = 1; i <= wizardTotalSteps; i++) {
+        document.getElementById('wizStep' + i).classList.toggle('hidden', i !== wizardCurrentStep);
+      }
+
+      // Update dots
+      for (let i = 1; i <= wizardTotalSteps; i++) {
+        const dot = document.getElementById('stepDot' + i);
+        const label = document.getElementById('stepLabel' + i);
+        dot.classList.remove('active', 'completed-step', 'upcoming');
+        if (i < wizardCurrentStep) {
+          dot.classList.add('completed-step');
+          dot.innerHTML = '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>';
+          label.classList.remove('text-gray-400');
+          label.classList.add('text-teal-700');
+        } else if (i === wizardCurrentStep) {
+          dot.classList.add('active');
+          dot.textContent = i;
+          label.classList.remove('text-gray-400');
+          label.classList.add('text-teal-700');
+        } else {
+          dot.classList.add('upcoming');
+          dot.textContent = i;
+          label.classList.remove('text-teal-700');
+          label.classList.add('text-gray-400');
+        }
+      }
+
+      // Update connectors
+      for (let i = 1; i < wizardTotalSteps; i++) {
+        const conn = document.getElementById('stepConn' + i);
+        conn.classList.toggle('done', i < wizardCurrentStep);
+        conn.classList.toggle('pending', i >= wizardCurrentStep);
+      }
+
+      // Update buttons
+      document.getElementById('wizBackBtn').classList.toggle('hidden', wizardCurrentStep === 1);
+      document.getElementById('wizNextBtn').textContent = wizardCurrentStep === wizardTotalSteps ? 'Create Task' : 'Next';
+    }
+
+    function wizardNext() {
+      if (wizardCurrentStep < wizardTotalSteps) {
+        wizardCurrentStep++;
+        updateWizardUI();
+      }
+    }
+
+    function wizardBack() {
+      if (wizardCurrentStep > 1) {
+        wizardCurrentStep--;
+        updateWizardUI();
+      }
+    }
+
+    // ============================================================
+    // Close dropdowns on outside click
+    // ============================================================
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#kebabMenu') && !e.target.closest('button[onclick="toggleKebab()"]')) {
+        document.getElementById('kebabMenu')?.classList.add('hidden');
+      }
+      if (!e.target.closest('#detailActionsMenu') && !e.target.closest('button[onclick="toggleDetailActions()"]')) {
+        document.getElementById('detailActionsMenu')?.classList.add('hidden');
+      }
+    });
+  </script>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

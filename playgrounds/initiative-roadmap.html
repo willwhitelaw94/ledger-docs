@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC Portal — Initiative Roadmap Board</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#1a1a2e;
+    --surface:#16213e;
+    --surface-2:#0f3460;
+    --border:#1e3a5f;
+    --text:#e0e0e0;
+    --text-muted:#8899aa;
+    --text-dim:#556677;
+    --teal-700:#007F7E;
+    --teal-500:#43C0BE;
+    --blue-700:#2C4C79;
+    --purple:#7C3AED;
+    --orange:#F7A81A;
+    --green:#22C55E;
+    --dark-green:#003D3D;
+    --grey:#6B7280;
+    --red:#EF4444;
+    --card-bg:#1e2a45;
+    --card-hover:#243352;
+    --sidebar-w:340px;
+    --header-h:64px;
+    --stats-h:88px;
+    --toolbar-h:52px;
+  }
+  html{font-size:14px}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
+  }
+  code,pre,.mono{font-family:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace}
+
+  /* Header */
+  .header{
+    height:var(--header-h);display:flex;align-items:center;justify-content:space-between;
+    padding:0 24px;background:var(--surface);border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:100;
+  }
+  .header h1{font-size:1.25rem;font-weight:700;color:var(--teal-500)}
+  .header h1 span{color:var(--text-muted);font-weight:400;font-size:.875rem;margin-left:8px}
+  .header-actions{display:flex;gap:8px;align-items:center}
+
+  /* Stats Bar */
+  .stats-bar{
+    display:flex;gap:16px;padding:16px 24px;background:var(--surface);
+    border-bottom:1px solid var(--border);flex-wrap:wrap;
+  }
+  .stat-card{
+    background:var(--surface-2);border:1px solid var(--border);border-radius:8px;
+    padding:12px 20px;min-width:140px;flex:1;
+  }
+  .stat-card .stat-value{font-size:1.75rem;font-weight:700;color:var(--teal-500)}
+  .stat-card .stat-label{font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+
+  /* Toolbar */
+  .toolbar{
+    display:flex;align-items:center;gap:12px;padding:10px 24px;
+    background:var(--bg);border-bottom:1px solid var(--border);position:sticky;
+    top:var(--header-h);z-index:90;
+  }
+  .search-box{
+    background:var(--surface);border:1px solid var(--border);border-radius:6px;
+    padding:6px 12px 6px 32px;color:var(--text);font-size:.875rem;width:260px;
+    outline:none;transition:border-color .2s;position:relative;
+  }
+  .search-box:focus{border-color:var(--teal-500)}
+  .search-wrap{position:relative;display:inline-flex;align-items:center}
+  .search-wrap svg{position:absolute;left:10px;pointer-events:none;color:var(--text-muted)}
+
+  .btn{
+    background:var(--surface);border:1px solid var(--border);border-radius:6px;
+    padding:6px 14px;color:var(--text);font-size:.8rem;cursor:pointer;
+    transition:all .15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  }
+  .btn:hover{background:var(--surface-2);border-color:var(--teal-500)}
+  .btn.active{background:var(--teal-700);border-color:var(--teal-500);color:#fff}
+  .btn-sm{padding:4px 10px;font-size:.75rem}
+
+  .stage-filters{display:flex;gap:4px;flex-wrap:wrap}
+  .stage-chip{
+    font-size:.7rem;padding:3px 10px;border-radius:12px;cursor:pointer;
+    border:1px solid transparent;transition:all .15s;opacity:.7;
+  }
+  .stage-chip:hover,.stage-chip.active{opacity:1;border-color:currentColor}
+
+  /* View Toggle */
+  .view-toggle{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .view-toggle .btn{border:none;border-radius:0;border-right:1px solid var(--border)}
+  .view-toggle .btn:last-child{border-right:none}
+
+  /* Main Layout */
+  .main-wrap{display:flex;height:calc(100vh - var(--header-h) - var(--stats-h) - var(--toolbar-h))}
+
+  /* Kanban */
+  .kanban{
+    flex:1;overflow-x:auto;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:0;
+  }
+  .kanban.hidden{display:none}
+
+  /* Swim lane */
+  .swim-lane{
+    border:1px solid var(--border);border-radius:8px;margin-bottom:12px;overflow:hidden;
+    background:var(--surface);
+  }
+  .swim-lane-header{
+    display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;
+    background:var(--surface);border-bottom:1px solid var(--border);user-select:none;
+    transition:background .15s;
+  }
+  .swim-lane-header:hover{background:var(--surface-2)}
+  .swim-lane-header .chevron{
+    transition:transform .2s;font-size:.75rem;color:var(--text-muted);width:16px;
+  }
+  .swim-lane.collapsed .chevron{transform:rotate(-90deg)}
+  .swim-lane.collapsed .swim-lane-body{display:none}
+  .swim-lane-title{font-weight:600;font-size:.9rem}
+  .swim-lane-desc{font-size:.75rem;color:var(--text-muted);margin-left:8px}
+  .swim-lane-badge{
+    font-size:.65rem;background:var(--surface-2);border:1px solid var(--border);
+    border-radius:10px;padding:2px 8px;color:var(--text-muted);margin-left:auto;
+  }
+
+  .swim-lane-body{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(160px,1fr));
+    gap:0;min-height:60px;
+  }
+  .stage-col{
+    border-right:1px solid var(--border);padding:8px;min-height:60px;
+    display:flex;flex-direction:column;gap:6px;
+    transition:background .15s;
+  }
+  .stage-col:last-child{border-right:none}
+  .stage-col.highlight{background:rgba(67,192,190,.06)}
+  .stage-col.drag-over{background:rgba(67,192,190,.12);outline:2px dashed var(--teal-500);outline-offset:-2px}
+
+  /* Column headers (top row) */
+  .col-headers{
+    display:grid;grid-template-columns:repeat(7,minmax(160px,1fr));
+    gap:0;padding:0 0 0 0;margin:0 0 12px 0;
+    position:sticky;top:0;z-index:10;background:var(--bg);
+  }
+  .col-header{
+    text-align:center;padding:8px;font-size:.75rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:.06em;border-bottom:3px solid;
+  }
+
+  /* Epic Card */
+  .epic-card{
+    background:var(--card-bg);border:1px solid var(--border);border-radius:6px;
+    padding:10px;cursor:grab;transition:all .15s;position:relative;
+    border-left:3px solid;
+  }
+  .epic-card:hover{background:var(--card-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+  .epic-card:active{cursor:grabbing}
+  .epic-card.dragging{opacity:.5;transform:rotate(2deg)}
+  .epic-card .card-title{font-size:.8rem;font-weight:600;margin-bottom:4px;line-height:1.3}
+  .epic-card .card-code{font-size:.65rem;color:var(--text-muted);font-family:var(--mono);margin-bottom:6px}
+  .epic-card .card-meta{display:flex;align-items:center;justify-content:space-between;gap:4px}
+  .epic-card .gate-progress{
+    font-size:.65rem;color:var(--text-muted);display:flex;align-items:center;gap:4px;
+  }
+  .gate-dots{display:flex;gap:2px}
+  .gate-dot{
+    width:6px;height:6px;border-radius:50%;background:var(--border);
+  }
+  .gate-dot.passed{background:var(--teal-500)}
+  .gate-dot.current{background:var(--orange);box-shadow:0 0 4px var(--orange)}
+
+  .card-stage-badge{
+    font-size:.6rem;padding:2px 6px;border-radius:8px;font-weight:500;
+    white-space:nowrap;
+  }
+
+  /* Empty column placeholder */
+  .empty-col{
+    font-size:.7rem;color:var(--text-dim);text-align:center;padding:16px 4px;
+    font-style:italic;
+  }
+
+  /* Timeline View */
+  .timeline{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .timeline.hidden{display:none}
+  .timeline-header{
+    display:grid;grid-template-columns:200px repeat(7,1fr);gap:0;
+    position:sticky;top:0;z-index:10;background:var(--bg);
+  }
+  .timeline-header-cell{
+    text-align:center;padding:8px;font-size:.7rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:.06em;
+    border-bottom:2px solid;
+  }
+  .timeline-header-label{
+    padding:8px;font-size:.75rem;font-weight:600;color:var(--text-muted);
+    border-bottom:2px solid var(--border);
+  }
+  .timeline-row{
+    display:grid;grid-template-columns:200px repeat(7,1fr);gap:0;
+    border-bottom:1px solid var(--border);min-height:40px;align-items:center;
+  }
+  .timeline-row:hover{background:rgba(67,192,190,.04)}
+  .timeline-epic-name{
+    padding:8px 12px;font-size:.8rem;font-weight:500;display:flex;align-items:center;gap:6px;
+  }
+  .timeline-epic-name .initiative-tag{
+    font-size:.6rem;color:var(--text-muted);background:var(--surface-2);
+    padding:1px 6px;border-radius:8px;
+  }
+  .timeline-cell{position:relative;height:100%;min-height:36px}
+  .timeline-bar{
+    position:absolute;top:50%;transform:translateY(-50%);height:20px;border-radius:4px;
+    opacity:.85;transition:opacity .15s;
+  }
+  .timeline-bar:hover{opacity:1}
+  .timeline-bar.single{left:10%;right:10%;border-radius:4px}
+
+  /* Initiative detail sidebar */
+  .sidebar{
+    width:0;overflow:hidden;background:var(--surface);border-left:1px solid var(--border);
+    transition:width .25s ease;flex-shrink:0;
+  }
+  .sidebar.open{width:var(--sidebar-w)}
+  .sidebar-inner{width:var(--sidebar-w);padding:20px;overflow-y:auto;height:100%}
+  .sidebar-close{
+    background:none;border:none;color:var(--text-muted);font-size:1.2rem;
+    cursor:pointer;float:right;padding:4px 8px;
+  }
+  .sidebar-close:hover{color:var(--text)}
+  .sidebar h2{font-size:1.1rem;font-weight:700;margin-bottom:4px;padding-right:30px}
+  .sidebar .sidebar-desc{color:var(--text-muted);font-size:.85rem;margin-bottom:16px;line-height:1.5}
+  .sidebar .detail-section{margin-bottom:16px}
+  .sidebar .detail-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px}
+  .sidebar .detail-value{font-size:.9rem;line-height:1.5}
+  .sidebar .epic-list-item{
+    background:var(--card-bg);border:1px solid var(--border);border-radius:6px;
+    padding:10px;margin-bottom:6px;cursor:pointer;transition:background .15s;
+  }
+  .sidebar .epic-list-item:hover{background:var(--card-hover)}
+  .sidebar .epic-list-item .epic-name{font-weight:600;font-size:.85rem}
+  .sidebar .epic-list-item .epic-stage{font-size:.7rem;margin-top:4px}
+
+  /* Card detail panel (inside sidebar) */
+  .card-detail{display:none}
+  .card-detail.visible{display:block}
+  .card-detail .gate-list{list-style:none;padding:0}
+  .card-detail .gate-list li{
+    padding:6px 0;border-bottom:1px solid var(--border);font-size:.8rem;
+    display:flex;align-items:center;gap:8px;
+  }
+  .card-detail .gate-list li:last-child{border-bottom:none}
+  .gate-icon{width:16px;height:16px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0}
+  .gate-icon.done{background:var(--teal-700);color:#fff}
+  .gate-icon.current{background:var(--orange);color:#fff}
+  .gate-icon.pending{background:var(--border);color:var(--text-dim)}
+  .artifact-tag{
+    display:inline-block;font-size:.65rem;background:var(--surface-2);
+    border:1px solid var(--border);border-radius:4px;padding:2px 6px;margin:2px;
+    color:var(--text-muted);
+  }
+
+  /* Responsive */
+  @media(max-width:900px){
+    .stats-bar{flex-direction:column}
+    .stat-card{min-width:auto}
+    .swim-lane-body,.col-headers{grid-template-columns:repeat(7,140px)}
+    .sidebar.open{width:280px}
+    .sidebar-inner{width:280px}
+    .search-box{width:160px}
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  ::-webkit-scrollbar-thumb:hover{background:var(--text-dim)}
+
+  /* Animations */
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+  .swim-lane{animation:fadeIn .3s ease}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>Initiative Roadmap Board <span>TC Portal</span></h1>
+  <div class="header-actions">
+    <span style="font-size:.7rem;color:var(--text-dim);margin-right:8px">Demo data &mdash; reflects known project state</span>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar" id="statsBar"></div>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input class="search-box" type="text" id="searchInput" placeholder="Search initiatives or epics...">
+  </div>
+
+  <div class="view-toggle">
+    <button class="btn active" data-view="kanban" onclick="setView('kanban')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="10" rx="1"/></svg>
+      Kanban
+    </button>
+    <button class="btn" data-view="timeline" onclick="setView('timeline')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h12M3 18h8"/></svg>
+      Timeline
+    </button>
+  </div>
+
+  <div style="border-left:1px solid var(--border);height:24px;margin:0 4px"></div>
+
+  <span style="font-size:.7rem;color:var(--text-muted);margin-right:4px">Stages:</span>
+  <div class="stage-filters" id="stageFilters"></div>
+
+  <div style="margin-left:auto">
+    <button class="btn btn-sm" onclick="toggleAllLanes()" id="toggleAllBtn">Collapse All</button>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-wrap">
+  <!-- Kanban View -->
+  <div class="kanban" id="kanbanView">
+    <div class="col-headers" id="colHeaders"></div>
+    <div id="swimLanes"></div>
+  </div>
+
+  <!-- Timeline View -->
+  <div class="timeline hidden" id="timelineView"></div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-inner" id="sidebarContent"></div>
+  </div>
+</div>
+
+<script>
+// ─── Data ───────────────────────────────────────────────────────────────
+
+const STAGES = [
+  { id: 'backlog',    name: 'Backlog',    color: '#6B7280' },
+  { id: 'planned',    name: 'Planned',    color: '#2C4C79' },
+  { id: 'design',     name: 'Design',     color: '#7C3AED' },
+  { id: 'dev',        name: 'Dev',        color: '#007F7E' },
+  { id: 'qa',         name: 'QA',         color: '#F7A81A' },
+  { id: 'release',    name: 'Release',    color: '#22C55E' },
+  { id: 'completed',  name: 'Completed',  color: '#003D3D' },
+];
+
+const GATES = [
+  { id: 0, name: 'Gate 0 — Idea',         artifact: 'idea-brief.md' },
+  { id: 1, name: 'Gate 1 — Business',     artifact: 'spec.md, business.md' },
+  { id: 2, name: 'Gate 2 — Design',       artifact: 'design.md, mockups/' },
+  { id: 3, name: 'Gate 3 — Architecture', artifact: 'plan.md' },
+  { id: 4, name: 'Gate 4 — Code Quality', artifact: 'PR, tests' },
+  { id: 5, name: 'Gate 5 — QA',           artifact: 'test-report.md' },
+  { id: 6, name: 'Gate 6 — Release',      artifact: 'release notes' },
+];
+
+const INITIATIVES = [
+  {
+    id: 'work-management',
+    name: 'Work Management',
+    desc: 'Task management, check-ins, care coordination workflows',
+    epics: [
+      {
+        id: 'chk',
+        name: 'Care Partner Check-Ins',
+        code: 'CHK',
+        stage: 'qa',
+        gatesPassed: 5,
+        lastGate: 'Gate 4 — Code Quality',
+        nextGate: 'Gate 5 — QA',
+        artifacts: ['idea-brief.md', 'spec.md', 'business.md', 'design.md', 'plan.md'],
+        notes: 'Coordinator cadence, CSV import/export, Hybrid type, new feature flag',
+      },
+      {
+        id: 'task-mgmt',
+        name: 'Task Management',
+        code: 'TASKS-V2',
+        stage: 'dev',
+        gatesPassed: 3,
+        lastGate: 'Gate 2 — Design',
+        nextGate: 'Gate 3 — Architecture',
+        artifacts: ['idea-brief.md', 'spec.md', 'design.md'],
+        notes: 'Asana Ada design, Index.vue needs clean rewrite, backend done',
+      },
+    ],
+  },
+  {
+    id: 'clinical-care',
+    name: 'Clinical & Care Plan',
+    desc: 'Clinical assessments, care plans, incident management',
+    epics: [
+      {
+        id: 'care-plan-v2',
+        name: 'Care Plan Enhancements',
+        code: 'CP-V2',
+        stage: 'planned',
+        gatesPassed: 1,
+        lastGate: 'Gate 0 — Idea',
+        nextGate: 'Gate 1 — Business',
+        artifacts: ['idea-brief.md'],
+        notes: 'Planned improvements to care plan workflows',
+      },
+    ],
+  },
+  {
+    id: 'consumer-lifecycle',
+    name: 'Consumer Lifecycle',
+    desc: 'Onboarding, home care agreements, lead management',
+    epics: [
+      {
+        id: 'onboarding-v2',
+        name: 'Consumer Onboarding V2',
+        code: 'ONB-V2',
+        stage: 'planned',
+        gatesPassed: 1,
+        lastGate: 'Gate 0 — Idea',
+        nextGate: 'Gate 1 — Business',
+        artifacts: ['idea-brief.md'],
+        notes: 'Streamlined intake and agreement flow',
+      },
+    ],
+  },
+  {
+    id: 'consumer-mobile',
+    name: 'Consumer Mobile',
+    desc: 'Mobile experiences for participants and coordinators',
+    epics: [
+      {
+        id: 'mobile-app',
+        name: 'Participant Mobile App',
+        code: 'MOB',
+        stage: 'backlog',
+        gatesPassed: 0,
+        lastGate: '(none)',
+        nextGate: 'Gate 0 — Idea',
+        artifacts: [],
+        notes: 'Early exploration phase',
+      },
+    ],
+  },
+  {
+    id: 'coordinator-mgmt',
+    name: 'Coordinator Management',
+    desc: 'Coordinator portal, workload, dashboards',
+    epics: [
+      {
+        id: 'coord-dashboard',
+        name: 'Coordinator Dashboard',
+        code: 'COORD',
+        stage: 'planned',
+        gatesPassed: 1,
+        lastGate: 'Gate 0 — Idea',
+        nextGate: 'Gate 1 — Business',
+        artifacts: ['idea-brief.md'],
+        notes: 'Workload visibility and caseload management',
+      },
+    ],
+  },
+  {
+    id: 'budgets-finance',
+    name: 'Budgets & Finance',
+    desc: 'Budget planning, billing, statements, collections',
+    epics: [
+      {
+        id: 'budget-planner',
+        name: 'Budget Planner V2',
+        code: 'BUD',
+        stage: 'planned',
+        gatesPassed: 1,
+        lastGate: 'Gate 0 — Idea',
+        nextGate: 'Gate 1 — Business',
+        artifacts: ['idea-brief.md'],
+        notes: 'Enhanced budget planning with forecasting',
+      },
+    ],
+  },
+  {
+    id: 'supplier-mgmt',
+    name: 'Supplier Management',
+    desc: 'Supplier onboarding, agreements, portal',
+    epics: [
+      {
+        id: 'supplier-onboard',
+        name: 'Supplier Onboarding Flow',
+        code: 'SUP-ONB',
+        stage: 'backlog',
+        gatesPassed: 0,
+        lastGate: '(none)',
+        nextGate: 'Gate 0 — Idea',
+        artifacts: [],
+        notes: 'Existing supplier portal improvements',
+      },
+    ],
+  },
+  {
+    id: 'supplier-redone',
+    name: 'Supplier REDONE',
+    desc: 'Complete supplier portal rebuild (React, shadcn)',
+    epics: [
+      {
+        id: 'supplier-v2',
+        name: 'Supplier Portal V2',
+        code: 'SUP-V2',
+        stage: 'dev',
+        gatesPassed: 3,
+        lastGate: 'Gate 2 — Design',
+        nextGate: 'Gate 3 — Architecture',
+        artifacts: ['idea-brief.md', 'spec.md', 'design.md'],
+        notes: 'Full React + shadcn rebuild, new API layer, V2 controllers & routes',
+      },
+    ],
+  },
+  {
+    id: 'infrastructure',
+    name: 'Infrastructure',
+    desc: 'Platform, auth, feature flags, CI/CD',
+    epics: [
+      {
+        id: 'feature-flags',
+        name: 'Feature Flag Framework',
+        code: 'FF',
+        stage: 'completed',
+        gatesPassed: 7,
+        lastGate: 'Gate 6 — Release',
+        nextGate: '(done)',
+        artifacts: ['idea-brief.md', 'spec.md', 'business.md', 'design.md', 'plan.md', 'test-report.md', 'release notes'],
+        notes: 'Laravel Pennant integration complete',
+      },
+      {
+        id: 'ci-cd',
+        name: 'CI/CD Pipeline',
+        code: 'CICD',
+        stage: 'release',
+        gatesPassed: 6,
+        lastGate: 'Gate 5 — QA',
+        nextGate: 'Gate 6 — Release',
+        artifacts: ['idea-brief.md', 'spec.md', 'plan.md', 'test-report.md'],
+        notes: 'GitHub Actions workflow refinements',
+      },
+      {
+        id: 'db-snapshots',
+        name: 'Database Snapshots',
+        code: 'SNAP',
+        stage: 'completed',
+        gatesPassed: 7,
+        lastGate: 'Gate 6 — Release',
+        nextGate: '(done)',
+        artifacts: ['idea-brief.md', 'spec.md', 'plan.md', 'test-report.md', 'release notes'],
+        notes: 'Fast DB restore for dev/test environments',
+      },
+    ],
+  },
+  {
+    id: 'adhoc',
+    name: 'ADHOC',
+    desc: 'One-off improvements and fixes',
+    epics: [
+      {
+        id: 'perf-fixes',
+        name: 'N+1 Query Fixes',
+        code: 'PERF',
+        stage: 'completed',
+        gatesPassed: 7,
+        lastGate: 'Gate 6 — Release',
+        nextGate: '(done)',
+        artifacts: ['plan.md', 'test-report.md', 'release notes'],
+        notes: 'Eager loading across key pages',
+      },
+      {
+        id: 'care-plan-nav',
+        name: 'Care Plan Nav Fix',
+        code: 'FIX-NAV',
+        stage: 'release',
+        gatesPassed: 6,
+        lastGate: 'Gate 5 — QA',
+        nextGate: 'Gate 6 — Release',
+        artifacts: ['test-report.md'],
+        notes: 'Fix care plan navigation regression',
+      },
+      {
+        id: 'budget-dup',
+        name: 'Budget Duplicate Streams Fix',
+        code: 'FUE-129',
+        stage: 'release',
+        gatesPassed: 6,
+        lastGate: 'Gate 5 — QA',
+        nextGate: 'Gate 6 — Release',
+        artifacts: ['test-report.md'],
+        notes: 'Prevent duplicate, $0 and closed funding streams appearing on the budget',
+      },
+    ],
+  },
+];
+
+// ─── Derived State ──────────────────────────────────────────────────────
+
+let currentView = 'kanban';
+let searchTerm = '';
+let activeStageFilter = null;
+let sidebarOpen = false;
+let allCollapsed = false;
+let draggedCard = null;
+
+function getStageIndex(stageId) {
+  return STAGES.findIndex(s => s.id === stageId);
+}
+
+function getStageColor(stageId) {
+  const s = STAGES.find(s => s.id === stageId);
+  return s ? s.color : '#6B7280';
+}
+
+function getAllEpics() {
+  return INITIATIVES.flatMap(i => i.epics.map(e => ({ ...e, initiative: i })));
+}
+
+function getFilteredData() {
+  const term = searchTerm.toLowerCase();
+  return INITIATIVES.map(i => {
+    const matchesInit = i.name.toLowerCase().includes(term) || i.desc.toLowerCase().includes(term);
+    const filteredEpics = i.epics.filter(e => {
+      const matchesSearch = matchesInit || e.name.toLowerCase().includes(term) || (e.code && e.code.toLowerCase().includes(term));
+      const matchesStage = !activeStageFilter || e.stage === activeStageFilter;
+      return matchesSearch && matchesStage;
+    });
+    return { ...i, epics: filteredEpics };
+  }).filter(i => i.epics.length > 0 || (!searchTerm && !activeStageFilter));
+}
+
+// ─── Stats ──────────────────────────────────────────────────────────────
+
+function renderStats() {
+  const allEpics = getAllEpics();
+  const inFlight = allEpics.filter(e => ['design', 'dev', 'qa'].includes(e.stage)).length;
+  const completed = allEpics.filter(e => e.stage === 'completed').length;
+
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${INITIATIVES.length}</div><div class="stat-label">Initiatives</div></div>
+    <div class="stat-card"><div class="stat-value">${allEpics.length}</div><div class="stat-label">Total Epics</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--orange)">${inFlight}</div><div class="stat-label">In Flight (Design/Dev/QA)</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--green)">${completed}</div><div class="stat-label">Completed</div></div>
+  `;
+}
+
+// ─── Stage Filters ──────────────────────────────────────────────────────
+
+function renderStageFilters() {
+  const container = document.getElementById('stageFilters');
+  container.innerHTML = STAGES.map(s => `
+    <span class="stage-chip ${activeStageFilter === s.id ? 'active' : ''}"
+          style="background:${s.color}22;color:${s.color}"
+          onclick="toggleStageFilter('${s.id}')">${s.name}</span>
+  `).join('');
+}
+
+function toggleStageFilter(stageId) {
+  activeStageFilter = activeStageFilter === stageId ? null : stageId;
+  renderStageFilters();
+  renderKanban();
+  renderTimeline();
+}
+
+// ─── Kanban View ────────────────────────────────────────────────────────
+
+function renderColHeaders() {
+  document.getElementById('colHeaders').innerHTML = STAGES.map(s =>
+    `<div class="col-header" style="border-color:${s.color};color:${s.color}">${s.name}</div>`
+  ).join('');
+}
+
+function makeGateDots(gatesPassed, total) {
+  return GATES.map((g, i) => {
+    let cls = 'pending';
+    if (i < gatesPassed) cls = 'passed';
+    else if (i === gatesPassed) cls = 'current';
+    return `<span class="gate-dot ${cls}" title="${g.name}"></span>`;
+  }).join('');
+}
+
+function makeCard(epic, initiative) {
+  const color = getStageColor(epic.stage);
+  return `
+    <div class="epic-card" draggable="true" data-epic-id="${epic.id}" data-initiative-id="${initiative.id}"
+         style="border-left-color:${color}"
+         onclick="showEpicDetail('${initiative.id}','${epic.id}')"
+         ondragstart="onDragStart(event,'${epic.id}','${initiative.id}')"
+         ondragend="onDragEnd(event)">
+      <div class="card-title">${epic.name}</div>
+      ${epic.code ? `<div class="card-code mono">${epic.code}</div>` : ''}
+      <div class="card-meta">
+        <div class="gate-progress">
+          <div class="gate-dots">${makeGateDots(epic.gatesPassed, GATES.length)}</div>
+          <span>${epic.gatesPassed}/${GATES.length}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderKanban() {
+  const data = getFilteredData();
+  const container = document.getElementById('swimLanes');
+
+  container.innerHTML = data.map(initiative => {
+    const epicsByStage = {};
+    STAGES.forEach(s => epicsByStage[s.id] = []);
+    initiative.epics.forEach(e => {
+      if (epicsByStage[e.stage]) epicsByStage[e.stage].push(e);
+    });
+
+    const cols = STAGES.map(s => {
+      const epics = epicsByStage[s.id];
+      const cards = epics.map(e => makeCard(e, initiative)).join('');
+      const empty = epics.length === 0 ? '<div class="empty-col">&mdash;</div>' : '';
+      return `<div class="stage-col" data-stage="${s.id}" data-initiative="${initiative.id}"
+                   ondragover="onDragOver(event)" ondragleave="onDragLeave(event)"
+                   ondrop="onDrop(event,'${s.id}','${initiative.id}')">${cards}${empty}</div>`;
+    }).join('');
+
+    return `
+      <div class="swim-lane" data-initiative="${initiative.id}">
+        <div class="swim-lane-header" onclick="toggleLane(this)">
+          <span class="chevron">&#9660;</span>
+          <span class="swim-lane-title">${initiative.name}</span>
+          <span class="swim-lane-desc">${initiative.desc}</span>
+          <span class="swim-lane-badge">${initiative.epics.length} epic${initiative.epics.length !== 1 ? 's' : ''}</span>
+          <button class="btn btn-sm" style="margin-left:8px" onclick="event.stopPropagation();showInitiativeDetail('${initiative.id}')">Details</button>
+        </div>
+        <div class="swim-lane-body">${cols}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ─── Timeline View ──────────────────────────────────────────────────────
+
+function renderTimeline() {
+  const data = getFilteredData();
+  const allEpics = data.flatMap(i => i.epics.map(e => ({ ...e, initiative: i })));
+
+  const headerCells = STAGES.map(s =>
+    `<div class="timeline-header-cell" style="border-color:${s.color};color:${s.color}">${s.name}</div>`
+  ).join('');
+
+  const rows = allEpics.map(epic => {
+    const stageIdx = getStageIndex(epic.stage);
+    const color = getStageColor(epic.stage);
+
+    const cells = STAGES.map((s, i) => {
+      if (i <= stageIdx) {
+        const opacity = i === stageIdx ? 1 : 0.35;
+        const isCurrent = i === stageIdx;
+        return `<div class="timeline-cell">
+          <div class="timeline-bar" style="background:${getStageColor(s.id)};opacity:${opacity};left:4px;right:4px;
+            ${isCurrent ? 'box-shadow:0 0 8px ' + color + '44;' : ''}"></div>
+        </div>`;
+      }
+      return '<div class="timeline-cell"></div>';
+    }).join('');
+
+    return `
+      <div class="timeline-row" onclick="showEpicDetail('${epic.initiative.id}','${epic.id}')" style="cursor:pointer">
+        <div class="timeline-epic-name">
+          ${epic.name}
+          <span class="initiative-tag">${epic.initiative.name}</span>
+        </div>
+        ${cells}
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('timelineView').innerHTML = `
+    <div class="timeline-header">
+      <div class="timeline-header-label">Epic</div>
+      ${headerCells}
+    </div>
+    ${rows}
+    ${allEpics.length === 0 ? '<div style="text-align:center;padding:40px;color:var(--text-dim)">No epics match the current filters.</div>' : ''}
+  `;
+}
+
+// ─── View Toggle ────────────────────────────────────────────────────────
+
+function setView(view) {
+  currentView = view;
+  document.getElementById('kanbanView').classList.toggle('hidden', view !== 'kanban');
+  document.getElementById('timelineView').classList.toggle('hidden', view !== 'timeline');
+  document.querySelectorAll('.view-toggle .btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === view);
+  });
+  if (view === 'timeline') renderTimeline();
+}
+
+// ─── Swim Lane Toggle ───────────────────────────────────────────────────
+
+function toggleLane(header) {
+  header.closest('.swim-lane').classList.toggle('collapsed');
+}
+
+function toggleAllLanes() {
+  allCollapsed = !allCollapsed;
+  document.querySelectorAll('.swim-lane').forEach(lane => {
+    lane.classList.toggle('collapsed', allCollapsed);
+  });
+  document.getElementById('toggleAllBtn').textContent = allCollapsed ? 'Expand All' : 'Collapse All';
+}
+
+// ─── Drag & Drop ────────────────────────────────────────────────────────
+
+function onDragStart(e, epicId, initiativeId) {
+  draggedCard = { epicId, initiativeId };
+  e.dataTransfer.effectAllowed = 'move';
+  e.target.classList.add('dragging');
+}
+
+function onDragEnd(e) {
+  e.target.classList.remove('dragging');
+  document.querySelectorAll('.stage-col').forEach(col => col.classList.remove('drag-over'));
+  draggedCard = null;
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drag-over');
+}
+
+function onDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function onDrop(e, stageId, initiativeId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (!draggedCard) return;
+
+  const initiative = INITIATIVES.find(i => i.id === draggedCard.initiativeId);
+  if (!initiative) return;
+  const epic = initiative.epics.find(ep => ep.id === draggedCard.epicId);
+  if (!epic) return;
+
+  const newStageIdx = getStageIndex(stageId);
+  const gatesForStage = Math.min(newStageIdx + 1, GATES.length);
+
+  epic.stage = stageId;
+  epic.gatesPassed = Math.max(epic.gatesPassed, gatesForStage);
+  if (gatesForStage > 0 && gatesForStage <= GATES.length) {
+    epic.lastGate = GATES[gatesForStage - 1].name;
+  }
+  if (gatesForStage < GATES.length) {
+    epic.nextGate = GATES[gatesForStage].name;
+  } else {
+    epic.nextGate = '(done)';
+  }
+
+  renderKanban();
+  renderTimeline();
+  renderStats();
+  draggedCard = null;
+}
+
+// ─── Sidebar ────────────────────────────────────────────────────────────
+
+function openSidebar(html) {
+  document.getElementById('sidebarContent').innerHTML = html;
+  document.getElementById('sidebar').classList.add('open');
+  sidebarOpen = true;
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  sidebarOpen = false;
+}
+
+function showInitiativeDetail(initId) {
+  const initiative = INITIATIVES.find(i => i.id === initId);
+  if (!initiative) return;
+
+  const stageBreakdown = STAGES.map(s => {
+    const count = initiative.epics.filter(e => e.stage === s.id).length;
+    return count > 0 ? `<span style="color:${s.color}">${s.name}: ${count}</span>` : '';
+  }).filter(Boolean).join(' &middot; ');
+
+  const epicList = initiative.epics.map(e => `
+    <div class="epic-list-item" onclick="showEpicDetail('${initId}','${e.id}')">
+      <div class="epic-name">${e.name} ${e.code ? `<span class="mono" style="color:var(--text-muted);font-size:.7rem">${e.code}</span>` : ''}</div>
+      <div class="epic-stage">
+        <span class="card-stage-badge" style="background:${getStageColor(e.stage)}22;color:${getStageColor(e.stage)}">${STAGES.find(s=>s.id===e.stage)?.name}</span>
+        &nbsp;${e.gatesPassed}/${GATES.length} gates
+      </div>
+    </div>
+  `).join('');
+
+  openSidebar(`
+    <button class="sidebar-close" onclick="closeSidebar()">&times;</button>
+    <h2>${initiative.name}</h2>
+    <p class="sidebar-desc">${initiative.desc}</p>
+
+    <div class="detail-section">
+      <div class="detail-label">Stage Breakdown</div>
+      <div class="detail-value" style="font-size:.8rem">${stageBreakdown || '<span style="color:var(--text-dim)">No epics</span>'}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">Epics (${initiative.epics.length})</div>
+      ${epicList || '<div style="color:var(--text-dim);font-size:.8rem">No epics yet</div>'}
+    </div>
+  `);
+}
+
+function showEpicDetail(initId, epicId) {
+  const initiative = INITIATIVES.find(i => i.id === initId);
+  if (!initiative) return;
+  const epic = initiative.epics.find(e => e.id === epicId);
+  if (!epic) return;
+
+  const color = getStageColor(epic.stage);
+  const stageName = STAGES.find(s => s.id === epic.stage)?.name || epic.stage;
+
+  const gateList = GATES.map((g, i) => {
+    let cls = 'pending';
+    let icon = '&middot;';
+    if (i < epic.gatesPassed) { cls = 'done'; icon = '&#10003;'; }
+    else if (i === epic.gatesPassed && epic.stage !== 'completed') { cls = 'current'; icon = '&#9654;'; }
+    return `<li>
+      <span class="gate-icon ${cls}">${icon}</span>
+      <span>${g.name}</span>
+    </li>`;
+  }).join('');
+
+  const artifacts = epic.artifacts && epic.artifacts.length > 0
+    ? epic.artifacts.map(a => `<span class="artifact-tag mono">${a}</span>`).join('')
+    : '<span style="color:var(--text-dim);font-size:.8rem">None yet</span>';
+
+  openSidebar(`
+    <button class="sidebar-close" onclick="closeSidebar()">&times;</button>
+    <div style="margin-bottom:12px">
+      <span class="card-stage-badge" style="background:${color}22;color:${color};font-size:.75rem;padding:4px 10px">${stageName}</span>
+    </div>
+    <h2>${epic.name}</h2>
+    ${epic.code ? `<div class="mono" style="color:var(--text-muted);font-size:.8rem;margin-bottom:8px">${epic.code}</div>` : ''}
+    <p class="sidebar-desc">${epic.notes || ''}</p>
+
+    <div class="detail-section">
+      <div class="detail-label">Initiative</div>
+      <div class="detail-value" style="cursor:pointer;color:var(--teal-500)" onclick="showInitiativeDetail('${initId}')">${initiative.name}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">Current Stage</div>
+      <div class="detail-value" style="color:${color}">${stageName}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">Last Gate Passed</div>
+      <div class="detail-value">${epic.lastGate}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">Next Gate</div>
+      <div class="detail-value">${epic.nextGate}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">Gate Progress (${epic.gatesPassed}/${GATES.length})</div>
+      <ul class="gate-list">${gateList}</ul>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-label">Artifacts Produced</div>
+      <div>${artifacts}</div>
+    </div>
+  `);
+}
+
+// ─── Search ─────────────────────────────────────────────────────────────
+
+document.getElementById('searchInput').addEventListener('input', function (e) {
+  searchTerm = e.target.value;
+  renderKanban();
+  renderTimeline();
+});
+
+// ─── Keyboard Shortcuts ─────────────────────────────────────────────────
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeSidebar();
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// ─── Init ───────────────────────────────────────────────────────────────
+
+renderStats();
+renderStageFilters();
+renderColHeaders();
+renderKanban();
+renderTimeline();
+</script>
+</body>
+</html>

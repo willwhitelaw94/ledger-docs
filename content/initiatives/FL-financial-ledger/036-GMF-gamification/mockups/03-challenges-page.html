@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Challenges — Gamification (036-GMF)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+    @keyframes ring-spin {
+      from { stroke-dashoffset: 100; }
+    }
+    .mini-ring {
+      stroke-dasharray: 100;
+      transition: stroke-dashoffset 1s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-60 bg-gray-900 border-r border-gray-800 flex flex-col fixed inset-y-0 left-0 z-40">
+      <div class="p-4 border-b border-gray-800">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-[#007F7E] rounded-lg flex items-center justify-center text-sm font-bold text-white">MQ</div>
+          <div>
+            <div class="text-sm font-semibold text-white">MoneyQuest</div>
+            <div class="text-xs text-gray-500">Acme Corp Pty Ltd</div>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 p-3 space-y-1">
+        <a href="01-dashboard-widget.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+          Dashboard
+          <kbd class="ml-auto text-[10px] text-gray-500 bg-gray-700 px-1 rounded font-mono">D</kbd>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Invoices
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+          Banking
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Journal
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Contacts
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-800 text-white text-sm font-medium">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Challenges
+        </a>
+        <a href="04-badges-profile.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+          Badges
+        </a>
+      </nav>
+      <div class="p-3 border-t border-gray-800">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.573-1.066z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Settings
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-60">
+      <header class="sticky top-[88px] z-30 bg-gray-950/80 backdrop-blur border-b border-gray-800 px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-xl font-semibold text-white">Challenges</h1>
+            <p class="text-sm text-gray-500 mt-0.5">Track your accounting habits and streaks</p>
+          </div>
+          <button class="inline-flex items-center gap-2 bg-[#007F7E] hover:bg-[#006665] text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+            New Challenge
+            <kbd class="text-[10px] text-white/50 bg-white/10 px-1.5 rounded font-mono">N</kbd>
+          </button>
+        </div>
+      </header>
+
+      <div class="p-8 space-y-8">
+
+        <!-- Active Challenges -->
+        <section>
+          <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Active Challenges</h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+            <!-- Challenge Card 1: Reconcile Weekly -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="relative flex-shrink-0">
+                  <svg width="48" height="48" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#007F7E" stroke-width="3" opacity="0.15"/>
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#007F7E" stroke-width="3" stroke-linecap="round"
+                      stroke-dasharray="126" stroke-dashoffset="20" transform="rotate(-90 24 24)"/>
+                  </svg>
+                  <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#43C0BE]">84%</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h3 class="text-sm font-semibold text-white">Reconcile Weekly</h3>
+                    <span class="text-sm">&#128293;</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Clear all unmatched bank transactions at least once per week</p>
+                  <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-[#007F7E]/10 text-[#43C0BE] border border-[#007F7E]/20">Weekly</span>
+                    <span class="text-xs text-gray-400">7 week streak</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-violet-500/10 text-violet-400 border border-violet-500/20">Perfect Month</span>
+                  </div>
+                </div>
+                <button class="flex-shrink-0 text-xs text-gray-500 hover:text-gray-300 border border-gray-700 rounded px-2.5 py-1 hover:bg-gray-800 transition-colors">Pause</button>
+              </div>
+            </div>
+
+            <!-- Challenge Card 2: Process Transactions Daily -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="relative flex-shrink-0">
+                  <svg width="48" height="48" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#D97706" stroke-width="3" opacity="0.15"/>
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#D97706" stroke-width="3" stroke-linecap="round"
+                      stroke-dasharray="126" stroke-dashoffset="50" transform="rotate(-90 24 24)"/>
+                  </svg>
+                  <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-amber-400">60%</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h3 class="text-sm font-semibold text-white">Process Transactions Daily</h3>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Categorise at least 5 transactions every business day</p>
+                  <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">Daily</span>
+                    <span class="text-xs text-gray-400">3 day streak</span>
+                  </div>
+                </div>
+                <button class="flex-shrink-0 text-xs text-gray-500 hover:text-gray-300 border border-gray-700 rounded px-2.5 py-1 hover:bg-gray-800 transition-colors">Pause</button>
+              </div>
+            </div>
+
+            <!-- Challenge Card 3: Invoice on Time -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="relative flex-shrink-0">
+                  <svg width="48" height="48" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#7C3AED" stroke-width="3" opacity="0.15"/>
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#7C3AED" stroke-width="3" stroke-linecap="round"
+                      stroke-dasharray="126" stroke-dashoffset="0" transform="rotate(-90 24 24)"/>
+                  </svg>
+                  <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-violet-400">100%</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h3 class="text-sm font-semibold text-white">Send Invoices Within 48h</h3>
+                    <span class="text-sm">&#128293;</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">Send all invoices within 48 hours of job completion</p>
+                  <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-violet-500/10 text-violet-400 border border-violet-500/20">Weekly</span>
+                    <span class="text-xs text-gray-400">12 week streak</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-violet-500/10 text-violet-400 border border-violet-500/20">Perfect Quarter</span>
+                  </div>
+                </div>
+                <button class="flex-shrink-0 text-xs text-gray-500 hover:text-gray-300 border border-gray-700 rounded px-2.5 py-1 hover:bg-gray-800 transition-colors">Pause</button>
+              </div>
+            </div>
+
+            <!-- Challenge Card 4: Review Reports Monthly -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="relative flex-shrink-0">
+                  <svg width="48" height="48" viewBox="0 0 48 48">
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#007F7E" stroke-width="3" opacity="0.15"/>
+                    <circle cx="24" cy="24" r="20" fill="none" stroke="#007F7E" stroke-width="3" stroke-linecap="round"
+                      stroke-dasharray="126" stroke-dashoffset="95" transform="rotate(-90 24 24)"/>
+                  </svg>
+                  <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#43C0BE]">25%</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h3 class="text-sm font-semibold text-white">Review Reports Monthly</h3>
+                  </div>
+                  <p class="text-xs text-gray-500 mb-3">View P&L and Balance Sheet at least once per month</p>
+                  <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-gray-700 text-gray-400 border border-gray-600">Monthly</span>
+                    <span class="text-xs text-gray-400">1 month streak</span>
+                  </div>
+                </div>
+                <button class="flex-shrink-0 text-xs text-green-500 hover:text-green-400 border border-green-800 rounded px-2.5 py-1 hover:bg-green-900/20 transition-colors">Resume</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Suggested by Practice -->
+        <section>
+          <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Suggested by Your Practice</h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+            <div class="bg-gray-900 border border-amber-800/30 rounded-xl p-5">
+              <div class="flex items-center gap-2 mb-3">
+                <div class="w-6 h-6 bg-amber-900/40 rounded flex items-center justify-center">
+                  <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                </div>
+                <span class="text-xs text-amber-400/70">Suggested by Smith & Co Advisors</span>
+              </div>
+              <h3 class="text-sm font-semibold text-white mb-1">BAS-Ready by Quarter End</h3>
+              <p class="text-xs text-gray-500 mb-4">Ensure all transactions are categorised and GST codes applied 7 days before each BAS due date</p>
+              <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-gray-700 text-gray-400 border border-gray-600">Quarterly</span>
+              </div>
+              <div class="flex items-center gap-2 mt-4">
+                <button class="bg-[#007F7E] hover:bg-[#006665] text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors">Activate</button>
+                <button class="text-gray-500 hover:text-gray-300 text-xs font-medium px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800 transition-colors">Dismiss</button>
+              </div>
+            </div>
+
+            <div class="bg-gray-900 border border-amber-800/30 rounded-xl p-5">
+              <div class="flex items-center gap-2 mb-3">
+                <div class="w-6 h-6 bg-amber-900/40 rounded flex items-center justify-center">
+                  <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                </div>
+                <span class="text-xs text-amber-400/70">Suggested by Smith & Co Advisors</span>
+              </div>
+              <h3 class="text-sm font-semibold text-white mb-1">Zero Overdue Invoices</h3>
+              <p class="text-xs text-gray-500 mb-4">Follow up on all overdue invoices within 3 days of due date</p>
+              <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">Weekly</span>
+              </div>
+              <div class="flex items-center gap-2 mt-4">
+                <button class="bg-[#007F7E] hover:bg-[#006665] text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors">Activate</button>
+                <button class="text-gray-500 hover:text-gray-300 text-xs font-medium px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800 transition-colors">Dismiss</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Completed History -->
+        <section>
+          <details class="group">
+            <summary class="flex items-center gap-2 cursor-pointer text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4 list-none">
+              <svg class="w-4 h-4 text-gray-500 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              Completed History
+              <span class="text-xs font-normal text-gray-600 ml-2">3 challenges</span>
+            </summary>
+            <div class="space-y-3 mt-2">
+              <div class="bg-gray-900/50 border border-gray-800/50 rounded-xl p-4 flex items-center gap-4 opacity-60">
+                <div class="w-8 h-8 bg-green-900/30 rounded-full flex items-center justify-center">
+                  <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="flex-1">
+                  <span class="text-sm text-gray-300">Year-End Close on Time</span>
+                  <p class="text-xs text-gray-600">Completed Jun 2025 &middot; 2 consecutive years</p>
+                </div>
+                <span class="text-xs text-gray-600">Earned: Gold Badge</span>
+              </div>
+              <div class="bg-gray-900/50 border border-gray-800/50 rounded-xl p-4 flex items-center gap-4 opacity-60">
+                <div class="w-8 h-8 bg-green-900/30 rounded-full flex items-center justify-center">
+                  <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="flex-1">
+                  <span class="text-sm text-gray-300">First Reconciliation</span>
+                  <p class="text-xs text-gray-600">Completed Jan 2025 &middot; Onboarding challenge</p>
+                </div>
+                <span class="text-xs text-gray-600">Earned: Bronze Badge</span>
+              </div>
+              <div class="bg-gray-900/50 border border-gray-800/50 rounded-xl p-4 flex items-center gap-4 opacity-60">
+                <div class="w-8 h-8 bg-green-900/30 rounded-full flex items-center justify-center">
+                  <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="flex-1">
+                  <span class="text-sm text-gray-300">Chart of Accounts Setup</span>
+                  <p class="text-xs text-gray-600">Completed Dec 2024 &middot; Onboarding challenge</p>
+                </div>
+                <span class="text-xs text-gray-600">Earned: Bronze Badge</span>
+              </div>
+            </div>
+          </details>
+        </section>
+
+      </div>
+    </main>
+  </div>
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

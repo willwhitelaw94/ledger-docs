@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback Records — Package</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Roboto Flex', ui-sans-serif, system-ui, sans-serif; }
+    #app-sidebar { transition: width 0.2s ease; }
+    #app-sidebar.collapsed { width: 77px; }
+    #app-sidebar.collapsed .nav-label,
+    #app-sidebar.collapsed .nav-section-title,
+    #app-sidebar.collapsed .sidebar-brand-name,
+    #app-sidebar.collapsed .sidebar-footer { display: none; }
+    #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+    .nav-item-active { background: rgba(0,127,126,0.12); color: #007F7E; font-weight: 600; }
+    .nav-item-active svg { color: #007F7E; }
+  </style>
+</head>
+<body class="bg-gray-100 flex">
+
+  <!-- Sidebar -->
+  <aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]"
+    style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-white/10">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #007F7E">
+        <span class="text-white font-bold text-sm">TC</span>
+      </div>
+      <span class="sidebar-brand-name text-sm font-semibold tracking-wide">Trilogy Care</span>
+    </div>
+    <nav class="flex-1 py-3 px-3 space-y-1 overflow-y-auto">
+      <p class="nav-section-title text-[10px] uppercase tracking-wider text-white/40 px-2 pt-2 pb-1">Staff</p>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="nav-label">Leads</span>
+      </a>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/></svg>
+        <span class="nav-label">Pipeline</span>
+      </a>
+      <a class="nav-item nav-item-active flex items-center gap-3 px-3 py-2 rounded-md text-sm transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        <span class="nav-label">Packages</span>
+      </a>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <span class="nav-label">Care Coordinators</span>
+      </a>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        <span class="nav-label">Suppliers</span>
+      </a>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>
+        <span class="nav-label">Invoices</span>
+      </a>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        <span class="nav-label">Tasks</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer border-t border-white/10 px-4 py-3">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-xs font-semibold">SH</div>
+        <div class="text-xs">
+          <div class="font-medium text-white/90">Sian Henderson</div>
+          <div class="text-white/40">Compliance Manager</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col ml-[240px] min-h-screen">
+
+    <!-- Package Header / Breadcrumb -->
+    <div class="bg-white border-b border-gray-200 px-6 py-4">
+      <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
+        <a href="#" class="hover:text-teal-700">Packages</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="#" class="hover:text-teal-700">Margaret Thompson</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-900 font-medium">HCP-00471</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-semibold text-gray-900">Margaret Thompson</h1>
+          <p class="text-sm text-gray-500 mt-0.5">Home Care Package — Level 4 &middot; DOB: 15 Mar 1942</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200">Active</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Package Tabs -->
+    <div class="bg-white border-b border-gray-200 px-6">
+      <nav class="flex gap-6 -mb-px">
+        <a href="#" class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Overview</a>
+        <a href="#" class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Services</a>
+        <a href="#" class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Budget</a>
+        <a href="#" class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Notes</a>
+        <a href="#" class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Documents</a>
+        <a href="#" class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Incidents</a>
+        <a href="#" class="py-3 text-sm font-medium text-teal-700 border-b-2 border-teal-700">Feedback Records</a>
+        <a href="#" class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Contacts</a>
+      </nav>
+    </div>
+
+    <!-- Feedback Records Content -->
+    <div class="p-6 space-y-4">
+
+      <!-- Header with Action -->
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900">Feedback Records</h2>
+          <p class="text-sm text-gray-500 mt-0.5">3 records &middot; 2 active, 1 closed</p>
+        </div>
+        <button class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md text-white shadow-sm" style="background-color: #007F7E">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          New Feedback Record
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded border border-gray-200 px-4 py-3 flex items-center gap-4">
+        <div class="flex items-center gap-2 flex-1">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" placeholder="Search by reference, complainant, or description..." class="text-sm border-0 outline-none flex-1 bg-transparent placeholder-gray-400">
+        </div>
+        <div class="flex items-center gap-2">
+          <select class="text-xs border border-gray-300 rounded-md px-2.5 py-1.5 bg-white text-gray-700">
+            <option>All Types</option>
+            <option>Complaint</option>
+            <option>Remediation</option>
+          </select>
+          <select class="text-xs border border-gray-300 rounded-md px-2.5 py-1.5 bg-white text-gray-700">
+            <option>All Stages</option>
+            <option>0. New</option>
+            <option>1. AP Assigned</option>
+            <option>2. AP Acknowledged</option>
+            <option>3. Owner Accepted</option>
+            <option>5. Resolution Proposed</option>
+            <option>Closed</option>
+          </select>
+          <select class="text-xs border border-gray-300 rounded-md px-2.5 py-1.5 bg-white text-gray-700">
+            <option>All Triage</option>
+            <option>Urgent</option>
+            <option>Medium</option>
+            <option>Standard</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Records Table -->
+      <div class="bg-white rounded border border-gray-200 overflow-hidden">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-gray-50 border-b border-gray-200">
+              <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Reference</th>
+              <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Type</th>
+              <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Stage</th>
+              <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Triage</th>
+              <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Accountable Person</th>
+              <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Due</th>
+              <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3">Last Note</th>
+              <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-3 w-10"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <!-- Row 1 — Active complaint, urgent -->
+            <tr class="hover:bg-gray-50 cursor-pointer transition">
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <a href="02-record-detail.html" class="text-sm font-medium text-teal-700 hover:underline">REF-00974</a>
+                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-50 text-orange-600 border border-orange-200" title="CRM sync pending">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    Sync pending
+                  </span>
+                </div>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-50 text-red-700 border border-red-200">Complaint</span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">3. Owner Accepted</span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-50 text-red-700 border border-red-200">Urgent</span>
+              </td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-primary-blue-100 text-primary-blue-700 flex items-center justify-center text-[10px] font-semibold">PH</div>
+                  <span class="text-sm text-gray-900">Patrick Harrison</span>
+                </div>
+              </td>
+              <td class="px-4 py-3">
+                <span class="text-sm text-red-600 font-medium">22 Feb 2026</span>
+                <span class="block text-[10px] text-red-500">4 days overdue</span>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-500">19 Feb 2026</td>
+              <td class="px-4 py-3">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </td>
+            </tr>
+
+            <!-- Row 2 — Active remediation, medium -->
+            <tr class="hover:bg-gray-50 cursor-pointer transition">
+              <td class="px-4 py-3">
+                <a href="#" class="text-sm font-medium text-teal-700 hover:underline">REF-01012</a>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">Remediation</span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">1. Issues Assigned</span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="text-xs text-gray-400">—</span>
+              </td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[10px] font-semibold">JB</div>
+                  <span class="text-sm text-gray-900">Jessica Brown</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-500">10 Mar 2026</td>
+              <td class="px-4 py-3 text-sm text-gray-500">25 Feb 2026</td>
+              <td class="px-4 py-3">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </td>
+            </tr>
+
+            <!-- Row 3 — Closed complaint -->
+            <tr class="hover:bg-gray-50 cursor-pointer transition opacity-70">
+              <td class="px-4 py-3">
+                <a href="#" class="text-sm font-medium text-teal-700 hover:underline">REF-00891</a>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-50 text-red-700 border border-red-200">Complaint</span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">6a. Closed - Resolved</span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500">Standard</span>
+              </td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-[10px] font-semibold">SH</div>
+                  <span class="text-sm text-gray-600">Sian Henderson</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-400">15 Jan 2026</td>
+              <td class="px-4 py-3 text-sm text-gray-400">14 Jan 2026</td>
+              <td class="px-4 py-3">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="border-t border-gray-200 bg-gray-50 px-4 py-3 flex items-center justify-between">
+          <p class="text-xs text-gray-500">Showing 1-3 of 3 records</p>
+          <div class="flex items-center gap-1">
+            <button class="px-2.5 py-1 text-xs rounded border border-gray-300 bg-white text-gray-400 cursor-not-allowed">Previous</button>
+            <button class="px-2.5 py-1 text-xs rounded border border-teal-600 text-white" style="background-color: #007F7E">1</button>
+            <button class="px-2.5 py-1 text-xs rounded border border-gray-300 bg-white text-gray-400 cursor-not-allowed">Next</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

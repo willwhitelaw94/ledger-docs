@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-In Completion Page — Care Partner Check-Ins</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: { 50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf', 500: '#43C0BE', 600: '#0d9488', 700: '#007F7E', 800: '#115e59', 900: '#134e4a' },
+                        primary: { 700: '#2C4C79' }
+                    },
+                    fontFamily: { sans: ['Roboto Flex', 'Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-50 flex font-sans">
+
+    <!-- ===== SIDEBAR (skeleton — framing only) ===== -->
+    <aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+        <div class="px-4 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2.5">
+                <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div>
+                <div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div>
+            </div>
+            <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+        </div>
+        <div class="px-3 py-3">
+            <div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div></div>
+        </nav>
+        <div class="border-t border-gray-100 px-3 py-3">
+            <div class="flex items-center gap-2.5">
+                <div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div>
+                <div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="flex-1 flex flex-col min-h-screen">
+
+        <!-- Page header -->
+        <header class="bg-white border-b border-gray-200 px-6 py-4">
+            <nav class="text-xs text-gray-400 mb-1">
+                <span>Dashboard</span> <span class="mx-1">/</span>
+                <span>My Activities</span> <span class="mx-1">/</span>
+                <span class="text-gray-700 font-medium">Check-In: Margaret Thompson</span>
+            </nav>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <h1 class="text-xl font-semibold text-gray-900">Check-In: Margaret Thompson</h1>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">47 days overdue</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-teal-50 text-teal-700">Internal</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Cancel Check-In</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Check-in content — two column layout -->
+        <div class="flex-1 p-6">
+            <div class="max-w-6xl mx-auto grid grid-cols-3 gap-6">
+
+                <!-- LEFT: Context panel (1/3) -->
+                <div class="col-span-1 space-y-4">
+
+                    <!-- Client Summary Card -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <h3 class="text-sm font-semibold text-gray-900">Client Summary</h3>
+                        </div>
+                        <div class="px-4 py-3 space-y-3">
+                            <div>
+                                <dt class="text-xs text-gray-500">Full Name</dt>
+                                <dd class="text-sm text-gray-900 font-medium">Margaret Thompson</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-gray-500">Preferred Name</dt>
+                                <dd class="text-sm text-gray-900">Maggie</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-gray-500">Primary Package</dt>
+                                <dd class="text-sm text-gray-900">Home Care Level 4</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-gray-500">Phone</dt>
+                                <dd class="text-sm text-gray-900">0412 345 678</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-gray-500">Care Partner</dt>
+                                <dd class="text-sm text-gray-900">Sarah Mitchell</dd>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Previous Check-In Summary -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <h3 class="text-sm font-semibold text-gray-900">Previous Check-In</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Completed 15 Oct 2025</p>
+                        </div>
+                        <div class="px-4 py-3 space-y-3">
+                            <div>
+                                <dt class="text-xs text-gray-500">Wellbeing</dt>
+                                <dd class="flex items-center gap-1 mt-0.5">
+                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-700 text-xs font-bold">4</span>
+                                    <span class="text-xs text-gray-500">/ 5</span>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-gray-500">Notes</dt>
+                                <dd class="text-sm text-gray-700">Client was in good spirits. Mentioned wanting to increase social activities. Daughter visiting from Melbourne next month.</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs text-gray-500">Follow-Up</dt>
+                                <dd class="text-sm text-gray-700">Check if Maggie has connected with the local social group by next check-in.</dd>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Risks -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <h3 class="text-sm font-semibold text-gray-900">Active Risks</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">From primary package</p>
+                        </div>
+                        <div class="px-4 py-2">
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between py-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                        <span class="text-sm text-gray-900">Falls Risk</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">2 questions</span>
+                                </div>
+                                <div class="flex items-center justify-between py-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                                        <span class="text-sm text-gray-900">Social Isolation</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">1 question</span>
+                                </div>
+                                <div class="flex items-center justify-between py-1.5">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                        <span class="text-sm text-gray-900">Medication Management</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">1 question</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Completion form (2/3) -->
+                <div class="col-span-2 space-y-4">
+
+                    <!-- Attempt tracking -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                            <span class="text-sm font-medium text-amber-800">3 failed attempts recorded</span>
+                        </div>
+                        <button class="text-xs font-medium text-amber-700 hover:text-amber-900 underline">View attempts</button>
+                    </div>
+
+                    <!-- Log Attempt (inline) -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-900">Log Failed Attempt</h3>
+                            <button class="text-xs font-medium text-teal-700 hover:text-teal-800">+ Log Attempt</button>
+                        </div>
+                    </div>
+
+                    <!-- Risk Questions Section -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <h3 class="text-sm font-semibold text-gray-900">Clinical Questions</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">4 questions from 3 active risks</p>
+                        </div>
+                        <div class="divide-y divide-gray-100">
+                            <!-- Falls Risk questions -->
+                            <div class="px-4 py-3">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Falls Risk</span>
+                                </div>
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-sm text-gray-700 mb-1">Have you had any falls or near-falls since our last check-in?</label>
+                                        <div class="flex gap-3">
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="q1" class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                                                <span class="text-sm text-gray-700">Yes</span>
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="q1" class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                                                <span class="text-sm text-gray-700">No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm text-gray-700 mb-1">Are you using the walking frame the OT provided?</label>
+                                        <div class="flex gap-3">
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="q2" class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                                                <span class="text-sm text-gray-700">Yes, always</span>
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="q2" class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                                                <span class="text-sm text-gray-700">Sometimes</span>
+                                            </label>
+                                            <label class="flex items-center gap-2 cursor-pointer">
+                                                <input type="radio" name="q2" class="w-4 h-4 text-teal-600 border-gray-300 focus:ring-teal-500">
+                                                <span class="text-sm text-gray-700">No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Social Isolation question -->
+                            <div class="px-4 py-3">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Social Isolation</span>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-700 mb-1">How often have you been in contact with friends or family this month?</label>
+                                    <select class="w-full rounded-lg border border-gray-300 text-sm py-2 px-3 text-gray-700 focus:border-teal-500 focus:ring-teal-500">
+                                        <option value="">Select...</option>
+                                        <option>Daily</option>
+                                        <option>A few times a week</option>
+                                        <option>Weekly</option>
+                                        <option>Less than weekly</option>
+                                        <option>Rarely or never</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Medication Management question -->
+                            <div class="px-4 py-3">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Medication Management</span>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-700 mb-1">Have there been any changes to your medications recently?</label>
+                                    <textarea rows="2" class="w-full rounded-lg border border-gray-300 text-sm py-2 px-3 text-gray-700 focus:border-teal-500 focus:ring-teal-500 resize-none" placeholder="Record the client's response..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wellbeing Rating -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <h3 class="text-sm font-semibold text-gray-900">Wellbeing Rating</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Rate the client's overall wellbeing (1 = very poor, 5 = excellent)</p>
+                        </div>
+                        <div class="px-4 py-4">
+                            <div class="flex items-center gap-2">
+                                <button class="w-12 h-12 rounded-lg border-2 border-gray-200 text-lg font-semibold text-gray-400 hover:border-teal-500 hover:text-teal-700 transition flex items-center justify-center">1</button>
+                                <button class="w-12 h-12 rounded-lg border-2 border-gray-200 text-lg font-semibold text-gray-400 hover:border-teal-500 hover:text-teal-700 transition flex items-center justify-center">2</button>
+                                <button class="w-12 h-12 rounded-lg border-2 border-gray-200 text-lg font-semibold text-gray-400 hover:border-teal-500 hover:text-teal-700 transition flex items-center justify-center">3</button>
+                                <button class="w-12 h-12 rounded-lg border-2 border-teal-500 bg-teal-50 text-lg font-semibold text-teal-700 shadow-sm flex items-center justify-center">4</button>
+                                <button class="w-12 h-12 rounded-lg border-2 border-gray-200 text-lg font-semibold text-gray-400 hover:border-teal-500 hover:text-teal-700 transition flex items-center justify-center">5</button>
+                                <span class="ml-3 text-sm text-gray-500">Selected: <span class="font-medium text-teal-700">4 — Good</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <h3 class="text-sm font-semibold text-gray-900">Check-In Notes</h3>
+                        </div>
+                        <div class="px-4 py-3">
+                            <textarea rows="4" class="w-full rounded-lg border border-gray-300 text-sm py-2 px-3 text-gray-700 focus:border-teal-500 focus:ring-teal-500 resize-none" placeholder="Record notes from the check-in call...">Spoke with Maggie today. She's been doing well overall. Mentioned she joined a local walking group since our last chat which has been helping with both exercise and socialising. Still using the walking frame indoors. No falls. Daughter visited last week and helped organise her medication box.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Follow-Up -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <h3 class="text-sm font-semibold text-gray-900">Follow-Up Actions</h3>
+                            <p class="text-xs text-gray-400 mt-0.5">Note any actions to follow up on before the next check-in</p>
+                        </div>
+                        <div class="px-4 py-3">
+                            <textarea rows="2" class="w-full rounded-lg border border-gray-300 text-sm py-2 px-3 text-gray-700 focus:border-teal-500 focus:ring-teal-500 resize-none" placeholder="Follow-up actions for next check-in..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Submit Actions -->
+                    <div class="flex items-center justify-between pt-2 pb-8">
+                        <a href="01-dashboard-checkins.html" class="text-sm font-medium text-gray-500 hover:text-gray-700">
+                            ← Back to Dashboard
+                        </a>
+                        <div class="flex items-center gap-3">
+                            <button class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Save Draft</button>
+                            <button class="px-6 py-2 text-sm font-medium text-white bg-teal-700 rounded-lg hover:bg-teal-800 transition shadow-sm">Complete Check-In</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

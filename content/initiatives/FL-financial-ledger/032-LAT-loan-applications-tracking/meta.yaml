@@ -1,0 +1,14 @@
+epic_code: LAT
+epic_number: "032"
+name: Loan Applications & Tracking
+initiative: FL-financial-ledger
+status: idea
+stage: idea
+gates:
+  idea:
+    passed: false
+created: "2026-03-15"
+author: William Whitelaw
+depends_on:
+  - 002-CLE-core-ledger-engine
+  - 030-PLG-personal-ledger

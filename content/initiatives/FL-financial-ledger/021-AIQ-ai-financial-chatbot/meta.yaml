@@ -1,0 +1,11 @@
+epic: 021-AIQ
+name: AI Financial Chatbot
+initiative: FL-financial-ledger
+status: complete
+created: 2026-03-14
+depends_on:
+  - 013-WSP
+  - 002-CLE
+blocks: []
+effort: L
+gates: {}

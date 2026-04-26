@@ -1,0 +1,14 @@
+title: Lead Management & Platform CRM
+code: LMS
+number: "063"
+status: spec
+effort: XL
+created: "2026-03-22"
+gates:
+  idea: pending
+  spec: pending
+  design: pending
+  architecture: pending
+  code_quality: pending
+  qa: pending
+  release: pending

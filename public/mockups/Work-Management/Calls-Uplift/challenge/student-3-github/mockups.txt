@@ -1,0 +1,298 @@
+================================================================================
+CALLS INBOX & REVIEW - GITHUB-INSPIRED MOCKUPS
+Design Student 3 - GitHub Pattern Application
+================================================================================
+
+================================================================================
+VARIATION A: "PR LIST" - Pull Request List Pattern
+================================================================================
+Pattern Applied: GitHub's PR list with tabs, filters, and status labels
+Target: Inbox view for scanning and selecting calls to review
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                      🔔 12    👤 Sarah C. ▼        │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  📞 Calls Inbox                                                              │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │ [ Pending Review (47) ]  [ Unlinked (12) ]  [ Completed ]  [ All ]     │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │ 🔍 is:unlinked caller:family sort:newest          ▼ Package  ▼ Date    │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │ ☐ Select all (12)                    [Mark Reviewed] [Link Selected]   │ │
+│  ├─────────────────────────────────────────────────────────────────────────┤ │
+│  │                                                                         │ │
+│  │ ☐ │ 🔴 UNLINKED │ +61 412 XXX XXX              │ 4:32 │ 2 min ago      │ │
+│  │   │             │ "...about Mum's medication schedule..."              │ │
+│  │   │             │ 📦 No package linked                                 │ │
+│  │   ├─────────────────────────────────────────────────────────────────────┤ │
+│  │ ☐ │ 🟢 LINKED   │ Margaret Wilson (Daughter)   │ 3:15 │ 15 min ago     │ │
+│  │   │             │ "...confirming the shower install time..."           │ │
+│  │   │             │ 📦 Wilson, John - HCP #4521                          │ │
+│  │   ├─────────────────────────────────────────────────────────────────────┤ │
+│  │ ☐ │ 🔴 UNLINKED │ +61 402 XXX XXX              │ 8:47 │ 32 min ago     │ │
+│  │   │             │ "...calling about the invoice we received..."        │ │
+│  │   │             │ 📦 No package linked                                 │ │
+│  │   ├─────────────────────────────────────────────────────────────────────┤ │
+│  │ ☐ │ 🟡 PENDING  │ Dr. Sarah Chen               │ 2:01 │ 1 hour ago     │ │
+│  │   │             │ "...following up on patient referral..."             │ │
+│  │   │             │ 📦 Auto-linked: Chen, Robert - HCP #3892             │ │
+│  │   ├─────────────────────────────────────────────────────────────────────┤ │
+│  │ ☐ │ 🟢 LINKED   │ James Brown (Son)            │ 5:23 │ 2 hours ago    │ │
+│  │   │             │ "...Mum needs her Wednesday visit moved..."          │ │
+│  │   │             │ 📦 Brown, Patricia - HCP #2156                       │ │
+│  │                                                                         │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  Showing 12 of 47 calls   ◀ 1 2 3 4 ▶                                       │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+PATTERN ANNOTATIONS:
+- Tab filters (GitHub: Open/Closed) → Status tabs for quick filtering
+- Status badges (Primer State Labels) → Color-coded UNLINKED/LINKED/PENDING
+- Search bar (GitHub query syntax) → Smart search with filter keywords
+- Checkbox selection (GitHub bulk ops) → Select multiple for batch actions
+- Preview line (GitHub PR description) → Transcript snippet for context
+- Package link (GitHub repo badge) → Shows linked/unlinked package status
+
+
+================================================================================
+VARIATION B: "PR REVIEW" - Pull Request Review Interface Pattern
+================================================================================
+Pattern Applied: GitHub's Files Changed + Review submission workflow
+Target: Individual call review screen with transcript and actions
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                      🔔 12    👤 Sarah C. ▼        │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ◀ Back to Inbox                                                             │
+│                                                                              │
+│  ┌──────────────────────────────────────────┬───────────────────────────────┐│
+│  │                                          │                               ││
+│  │  📞 Call from +61 412 XXX XXX            │  📦 LINK TO PACKAGE           ││
+│  │  🔴 Unlinked · 4:32 duration · 2 min ago │                               ││
+│  │                                          │  🔍 Search packages...        ││
+│  │  ┌────────────────────────────────────┐  │                               ││
+│  │  │ ▶ ───●─────────────────── 0:45     │  │  Recent packages:             ││
+│  │  │   4:32                             │  │  ├─ Wilson, John #4521        ││
+│  │  └────────────────────────────────────┘  │  ├─ Chen, Robert #3892        ││
+│  │                                          │  ├─ Brown, Patricia #2156     ││
+│  │  ┌────────────────────────────────────┐  │  └─ Smith, Mary #1847         ││
+│  │  │ 📄 Transcription           [Viewed]│  │                               ││
+│  │  ├────────────────────────────────────┤  │  Or create new:               ││
+│  │  │                                    │  │  [+ Create Package Link]      ││
+│  │  │  0:00  Caller: Hi, I'm calling    │  │                               ││
+│  │  │        about my Mum's medication  │  ├───────────────────────────────┤│
+│  │  │        schedule. She's been...    │  │                               ││
+│  │  │                            [+ 💬] │  │  📝 REVIEW NOTES              ││
+│  │  │                                    │  │                               ││
+│  │  │  0:23  Agent: Of course, can I    │  │  ┌───────────────────────────┐││
+│  │  │        get your mother's name...  │  │  │ Daughter calling about    │││
+│  │  │                            [+ 💬] │  │  │ medication timing. Needs  │││
+│  │  │                                    │  │  │ follow-up with nurse.     │││
+│  │  │  0:45  Caller: Yes, it's Mary     │  │  │                           │││
+│  │  │        Wilson. She's at 42...     │  │  └───────────────────────────┘││
+│  │  │                            [+ 💬] │  │                               ││
+│  │  │  1:12  Agent: I can see her       │  │  ☑ Flag for nurse follow-up  ││
+│  │  │        file here. What seems...   │  │  ☐ Urgent attention needed   ││
+│  │  │                            [+ 💬] │  │                               ││
+│  │  │  ...                              │  ├───────────────────────────────┤│
+│  │  │                                    │  │                               ││
+│  │  └────────────────────────────────────┘  │  ┌───────────────────────────┐││
+│  │                                          │  │  ⚪ Just Comment           │││
+│  │  ☑ Viewed: Transcription              │  │  🟢 Link & Complete ✓       │││
+│  │                                          │  │  🔴 Needs Attention        │││
+│  │                                          │  └───────────────────────────┘││
+│  │                                          │                               ││
+│  │                                          │  [Submit Review]              ││
+│  │                                          │                               ││
+│  └──────────────────────────────────────┴───────────────────────────────────┘│
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+PATTERN ANNOTATIONS:
+- Split pane (GitHub: Files + Sidebar) → Transcript left, actions right
+- [Viewed] checkbox (GitHub: Mark file as viewed) → Track review progress
+- Inline comment [+ 💬] (GitHub: Line comments) → Notes on specific moments
+- Three-state submit (GitHub: Comment/Approve/Request Changes):
+  - Just Comment = add note without completing
+  - Link & Complete = approve and close
+  - Needs Attention = flag for escalation
+- Audio player (analogous to diff view) → The content being reviewed
+- Timestamp navigation → Like clicking line numbers in diff
+
+
+================================================================================
+VARIATION C: "NOTIFICATION INBOX" - Triage-First Pattern
+================================================================================
+Pattern Applied: GitHub notifications with grouping and inline actions
+Target: High-volume processing with minimal clicks
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                      🔔 12    👤 Sarah C. ▼        │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  📞 Calls Inbox                                     [Group by Package ▼]    │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │ 🔍 Filter: reason:unlinked is:today              [Save Filter]          │ │
+│  │                                                                         │ │
+│  │ Saved: [Today's Unlinked ✕] [Family Calls ✕] [Urgent ✕]                │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │ 📦 Wilson, John - HCP #4521                              ▼ Expand (3)   │ │
+│  │   Last activity: 15 min ago                                             │ │
+│  │   ├── 🟢 Margaret Wilson · "shower install time" · 3:15 · [▶][✓][···]  │ │
+│  │   ├── 🟡 Unknown Caller · "medication question" · 2:01 · [▶][✓][···]   │ │
+│  │   └── 🟢 Margaret Wilson · "schedule change" · 1:45 · [▶][✓][···]      │ │
+│  ├─────────────────────────────────────────────────────────────────────────┤ │
+│  │ 🚨 UNLINKED CALLS (needs attention)                      ▼ Expand (12)  │ │
+│  │   Priority: Oldest first                                                │ │
+│  │   ├── 🔴 +61 412 XXX · "Mum's medication" · 4:32 · [▶][🔗][✓][···]     │ │
+│  │   │      💡 Suggested: Wilson, Mary #4521 (85% match)    [Link]        │ │
+│  │   ├── 🔴 +61 402 XXX · "invoice question" · 8:47 · [▶][🔗][✓][···]     │ │
+│  │   │      💡 No confident match found                     [Search]      │ │
+│  │   ├── 🔴 +61 433 XXX · "transport tomorrow" · 1:23 · [▶][🔗][✓][···]   │ │
+│  │   │      💡 Suggested: Chen, Robert #3892 (72% match)    [Link]        │ │
+│  │   └── + 9 more unlinked calls...                                       │ │
+│  ├─────────────────────────────────────────────────────────────────────────┤ │
+│  │ 📦 Brown, Patricia - HCP #2156                           ▼ Expand (1)   │ │
+│  │   Last activity: 2 hours ago                                            │ │
+│  │   └── 🟢 James Brown · "Wednesday visit moved" · 5:23 · [▶][✓][···]    │ │
+│  ├─────────────────────────────────────────────────────────────────────────┤ │
+│  │ 📦 Chen, Robert - HCP #3892                              ▼ Expand (2)   │ │
+│  │   Last activity: 1 hour ago                                             │ │
+│  │   ├── 🟡 Dr. Sarah Chen · "patient referral" · 2:01 · [▶][✓][···]      │ │
+│  │   └── 🟢 Lisa Chen · "equipment delivery" · 3:45 · [▶][✓][···]         │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ │
+│  INLINE ACTIONS LEGEND:                                                     │
+│  [▶] Play audio    [🔗] Link to package    [✓] Mark complete   [···] More   │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+EXPANDED INLINE QUICK-LINK MODAL (appears on hover/click of 🔗):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  🔗 Quick Link: +61 412 XXX ("Mum's medication schedule")                   │
+│                                                                              │
+│  💡 Wilson, Mary - HCP #4521                        [Link & Complete ✓]    │
+│     85% confidence · Keywords: "Mum", "Mary Wilson", "medication"           │
+│                                                                              │
+│  Or search: [________________________] [Search]                             │
+│                                                                              │
+│  [Cancel]                                                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+PATTERN ANNOTATIONS:
+- Grouped by repository (GitHub: Notification grouping) → Group by Package
+- Saved filters (GitHub: Custom filter presets) → Quick access to common views
+- Inline row actions (GitHub: Mark as read/Archive) → Play, Link, Complete in-row
+- Collapsible groups (GitHub: Expandable sections) → Focus on one package at a time
+- AI suggestions (GitHub Copilot pattern) → Auto-suggest package matches
+- Reason-based filtering → Filter by why call needs attention
+
+
+================================================================================
+VARIATION D: "TIMELINE VIEW" - Activity Feed Pattern
+================================================================================
+Pattern Applied: GitHub issue/PR timeline for audit trail
+Target: Call detail view showing complete history
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                      🔔 12    👤 Sarah C. ▼        │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ◀ Back to Inbox                                                             │
+│                                                                              │
+│  ┌──────────────────────────────────────────────────────────────────────────┐│
+│  │  📞 Call #4521-0823                                                      ││
+│  │  +61 412 XXX XXX → TC Portal · 4:32 duration                            ││
+│  │  🔴 UNLINKED                           [Link to Package ▼] [Complete ✓] ││
+│  └──────────────────────────────────────────────────────────────────────────┘│
+│                                                                              │
+│  ┌────────┬─────────────────────────────────────────────────────────────────┐│
+│  │        │                                                                 ││
+│  │   ●    │  📥 Call Received                                  2:34 PM     ││
+│  │   │    │  From: +61 412 XXX XXX                                         ││
+│  │   │    │  Duration: 4 minutes 32 seconds                                ││
+│  │   │    │  Agent: Reception Line 1                                       ││
+│  │   │    │                                                                 ││
+│  │   ●    │  🎙️ Transcription Completed                        2:39 PM     ││
+│  │   │    │  Confidence: 94%                                               ││
+│  │   │    │  ┌─────────────────────────────────────────────────────────┐   ││
+│  │   │    │  │ ▶ ──●───────────────────────────── 0:45 / 4:32         │   ││
+│  │   │    │  └─────────────────────────────────────────────────────────┘   ││
+│  │   │    │  ┌─────────────────────────────────────────────────────────┐   ││
+│  │   │    │  │ 0:00  Caller: Hi, I'm calling about my Mum's           │   ││
+│  │   │    │  │       medication schedule. She's been having trouble   │   ││
+│  │   │    │  │       remembering when to take her pills...            │   ││
+│  │   │    │  │                                                         │   ││
+│  │   │    │  │ 0:23  Agent: Of course, I'd be happy to help. Can I    │   ││
+│  │   │    │  │       get your mother's name and date of birth?        │   ││
+│  │   │    │  │                                                         │   ││
+│  │   │    │  │ 0:45  Caller: Yes, it's Mary Wilson, born 15th March   │   ││
+│  │   │    │  │       1942. She's at 42 Elm Street...                  │   ││
+│  │   │    │  │ ...                                    [Show full ▼]   │   ││
+│  │   │    │  └─────────────────────────────────────────────────────────┘   ││
+│  │   │    │                                                                 ││
+│  │   ●    │  💡 Auto-Link Suggested                            2:39 PM     ││
+│  │   │    │  System suggested: Wilson, Mary - HCP #4521                    ││
+│  │   │    │  Confidence: 85% · Match: "Mary Wilson", "medication"          ││
+│  │   │    │  [Accept Link] [Dismiss] [Search Different]                    ││
+│  │   │    │                                                                 ││
+│  │   ○    │  ⏳ Awaiting Review                                             ││
+│  │        │  This call has not been reviewed yet.                          ││
+│  │        │                                                                 ││
+│  └────────┴─────────────────────────────────────────────────────────────────┘│
+│                                                                              │
+│  ┌──────────────────────────────────────────────────────────────────────────┐│
+│  │  📝 Add Review Note                                                      ││
+│  │  ┌────────────────────────────────────────────────────────────────────┐ ││
+│  │  │                                                                    │ ││
+│  │  │                                                                    │ ││
+│  │  └────────────────────────────────────────────────────────────────────┘ ││
+│  │                                                                          ││
+│  │  ⚪ Comment only   🟢 Link & Complete   🔴 Flag for attention           ││
+│  │                                                     [Submit Review]      ││
+│  └──────────────────────────────────────────────────────────────────────────┘│
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+PATTERN ANNOTATIONS:
+- Vertical timeline (GitHub: Issue/PR timeline) → Chronological event history
+- Event nodes (GitHub: Different icons per event type) → Call received, transcribed, etc.
+- Collapsible content (GitHub: Expandable commit lists) → "Show full" for long transcripts
+- Action prompts (GitHub: Suggested actions) → AI suggestions inline in timeline
+- Review submission (GitHub: PR review box) → Bottom comment + state selection
+- Status badge (Primer State Label) → UNLINKED status prominently displayed
+
+
+================================================================================
+QUICK REFERENCE: PATTERN MAPPING
+================================================================================
+
+GitHub Pattern              →  TC Portal Application
+────────────────────────────────────────────────────────────────────────────────
+PR List with filters        →  Calls Inbox list (Variation A)
+Files Changed + Review      →  Transcript review pane (Variation B)
+Notification grouping       →  Group by Package (Variation C)
+Issue Timeline              →  Call activity feed (Variation D)
+State Labels (Primer)       →  UNLINKED/LINKED/PENDING badges (All)
+Three-state review submit   →  Comment/Complete/Flag actions (B, D)
+Inline row actions          →  Quick Play/Link/Complete buttons (C)
+Saved filter presets        →  "Today's Unlinked" quick filters (A, C)
+Mark as Viewed checkbox     →  Transcript progress tracking (B)
+Collapsible sections        →  Package groups, long transcripts (C, D)
+Query syntax search         →  Advanced filter search bar (A, C)
+
+================================================================================

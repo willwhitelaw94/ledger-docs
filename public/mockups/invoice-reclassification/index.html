@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRC - Invoice Reclassification Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">Accounts</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">Invoice Classification</span>
+  </div>
+  <div class="w-8 h-8 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-xs font-medium">AK</div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('modal')" id="tab-modal" class="py-3 text-sm tab-active">Classification Modal</button>
+    <button onclick="showScreen('bulk')" id="tab-bulk" class="py-3 text-sm tab-inactive">Bulk Accept View</button>
+    <button onclick="showScreen('metrics')" id="tab-metrics" class="py-3 text-sm tab-inactive">Accuracy Metrics</button>
+  </nav>
+</div>
+
+<!-- Classification Modal -->
+<div id="screen-modal" class="max-w-4xl mx-auto p-6">
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-lg font-semibold text-gray-900">Classify Invoice Line Items</h1>
+        <p class="text-sm text-gray-500 mt-1">Invoice #INV-2026-4521 &mdash; Sunrise Home Care Pty Ltd &mdash; ABN 45 812 345 678</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">5 of 7 classified</span>
+        <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg" disabled>Confirm All &amp; Proceed</button>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <!-- High confidence - pre-accepted -->
+      <div class="border border-green-200 bg-green-50/30 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+              <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-medium text-gray-900">Personal care - showering assistance (Mon/Wed/Fri)</div>
+              <div class="text-xs text-gray-500">4.5 hrs &bull; $263.25</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <div class="text-xs text-green-700 font-medium">94% confidence</div>
+              <div class="flex items-center gap-0.5">
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+            </div>
+            <select class="border border-green-300 rounded-lg px-3 py-1.5 text-sm bg-green-50 text-green-800">
+              <option selected>Personal Care (SERG-0001)</option>
+              <option>Home Support (SERG-0001)</option>
+              <option>Allied Health (SERG-0001)</option>
+            </select>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">Accepted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- High confidence - pre-accepted -->
+      <div class="border border-green-200 bg-green-50/30 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+              <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-medium text-gray-900">Home maintenance - lawn mowing and garden tidy</div>
+              <div class="text-xs text-gray-500">2.0 hrs &bull; $110.00</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <div class="text-xs text-green-700 font-medium">91% confidence</div>
+              <div class="flex items-center gap-0.5"><div class="w-2 h-2 rounded-full bg-green-500"></div><div class="w-2 h-2 rounded-full bg-green-500"></div><div class="w-2 h-2 rounded-full bg-green-500"></div></div>
+            </div>
+            <select class="border border-green-300 rounded-lg px-3 py-1.5 text-sm bg-green-50 text-green-800">
+              <option selected>Home Maintenance (SERG-0001)</option>
+            </select>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">Accepted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Medium confidence - needs review -->
+      <div class="border border-yellow-200 bg-yellow-50/30 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+              <svg class="w-4 h-4 text-yellow-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z" clip-rule="evenodd"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-medium text-gray-900">OT assessment - home safety evaluation</div>
+              <div class="text-xs text-gray-500">1.5 hrs &bull; $180.00</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <div class="text-xs text-yellow-700 font-medium">62% confidence</div>
+              <div class="flex items-center gap-0.5"><div class="w-2 h-2 rounded-full bg-yellow-500"></div><div class="w-2 h-2 rounded-full bg-yellow-500"></div><div class="w-2 h-2 rounded-full bg-gray-300"></div></div>
+            </div>
+            <select class="border border-yellow-300 rounded-lg px-3 py-1.5 text-sm bg-yellow-50 text-yellow-800">
+              <option selected>Allied Health (SERG-0001) - 62%</option>
+              <option>Assistive Technology (SERG-0002) - 28%</option>
+              <option>Home Modifications (SERG-0003) - 10%</option>
+            </select>
+            <button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Confirm</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Low confidence - must review -->
+      <div class="border-2 border-red-300 bg-red-50/30 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+              <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-medium text-gray-900">Misc supplies - continence aids + grab rail brackets</div>
+              <div class="text-xs text-gray-500">1 lot &bull; $245.00</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <div class="text-xs text-red-700 font-medium">31% confidence</div>
+              <div class="flex items-center gap-0.5"><div class="w-2 h-2 rounded-full bg-red-500"></div><div class="w-2 h-2 rounded-full bg-gray-300"></div><div class="w-2 h-2 rounded-full bg-gray-300"></div></div>
+            </div>
+            <select class="border border-red-300 rounded-lg px-3 py-1.5 text-sm bg-red-50 text-red-800">
+              <option>-- Select Category --</option>
+              <option>Ongoing Support (SERG-0001) - 31%</option>
+              <option>Assistive Technology (SERG-0002) - 29%</option>
+              <option>Home Modifications (SERG-0003) - 25%</option>
+            </select>
+            <button class="px-3 py-1.5 text-xs bg-red-600 text-white rounded-lg">Must Classify</button>
+          </div>
+        </div>
+        <div class="mt-2 ml-11 text-xs text-red-600">This item contains mixed supplies. Please split or assign a primary category.</div>
+      </div>
+
+      <!-- Unclassified -->
+      <div class="border-2 border-red-300 bg-red-50/30 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+              <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-medium text-gray-900">Admin fee - report preparation</div>
+              <div class="text-xs text-gray-500">1 &bull; $50.00</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <div class="text-xs text-red-700 font-medium">Unclassified</div>
+            </div>
+            <select class="border border-red-300 rounded-lg px-3 py-1.5 text-sm bg-red-50 text-red-800">
+              <option>-- Select Category --</option>
+              <option>Ongoing Support (SERG-0001)</option>
+              <option>Care Management</option>
+            </select>
+            <button class="px-3 py-1.5 text-xs bg-red-600 text-white rounded-lg">Must Classify</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bulk Accept -->
+<div id="screen-bulk" class="max-w-4xl mx-auto p-6 hidden">
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-lg font-semibold text-gray-900">Bulk Classification</h1>
+      <button class="px-4 py-2 text-sm bg-green-600 text-white rounded-lg">Accept All High Confidence (12 items)</button>
+    </div>
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+      <div class="text-sm text-green-800"><strong>12 items</strong> have confidence above 80% and can be bulk-accepted.</div>
+      <div class="text-xs text-green-600 mt-1">After bulk accept, 3 items remain for manual review.</div>
+    </div>
+    <div class="text-sm text-gray-500">After accepting high-confidence items, the view filters to show only remaining items requiring review.</div>
+  </div>
+</div>
+
+<!-- Metrics -->
+<div id="screen-metrics" class="max-w-4xl mx-auto p-6 hidden">
+  <h1 class="text-xl font-semibold text-gray-900 mb-6">Classification Accuracy</h1>
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Overall Accuracy</div>
+      <div class="text-3xl font-bold text-tc-teal-700">76%</div>
+      <div class="text-xs text-green-600 mt-1">+8% from last month</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">High Confidence Accuracy</div>
+      <div class="text-3xl font-bold text-green-600">96%</div>
+      <div class="text-xs text-gray-400">Items scored >80%</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Corrections This Month</div>
+      <div class="text-3xl font-bold text-amber-600">142</div>
+      <div class="text-xs text-gray-400">Training data generated</div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4">Accuracy by Category</h2>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3"><span class="text-sm w-40">Personal Care</span><div class="flex-1 bg-gray-200 rounded-full h-3"><div class="bg-green-500 h-3 rounded-full" style="width:92%"></div></div><span class="text-sm font-medium w-12 text-right">92%</span></div>
+      <div class="flex items-center gap-3"><span class="text-sm w-40">Home Maintenance</span><div class="flex-1 bg-gray-200 rounded-full h-3"><div class="bg-green-500 h-3 rounded-full" style="width:88%"></div></div><span class="text-sm font-medium w-12 text-right">88%</span></div>
+      <div class="flex items-center gap-3"><span class="text-sm w-40">Social Support</span><div class="flex-1 bg-gray-200 rounded-full h-3"><div class="bg-green-500 h-3 rounded-full" style="width:81%"></div></div><span class="text-sm font-medium w-12 text-right">81%</span></div>
+      <div class="flex items-center gap-3"><span class="text-sm w-40">Allied Health</span><div class="flex-1 bg-gray-200 rounded-full h-3"><div class="bg-yellow-500 h-3 rounded-full" style="width:65%"></div></div><span class="text-sm font-medium w-12 text-right">65%</span></div>
+      <div class="flex items-center gap-3"><span class="text-sm w-40">AT / HM</span><div class="flex-1 bg-gray-200 rounded-full h-3"><div class="bg-red-500 h-3 rounded-full" style="width:48%"></div></div><span class="text-sm font-medium w-12 text-right">48%</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

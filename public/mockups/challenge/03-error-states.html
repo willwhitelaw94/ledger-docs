@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error States — Minimal Maya</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { 50: '#F0F4FA', 700: '#2C4C79', 800: '#1E3452' },
+            tc: { teal: '#007F7E', green: '#4DC375', orange: '#FF8F51', red: '#E04B51' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+
+  <!-- Rate Limit Banner (sticky) -->
+  <div id="rate-banner" class="fixed top-0 left-0 right-0 z-50 bg-orange-50 border-b border-orange-200">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <svg class="w-4 h-4 text-tc-orange shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <p class="text-sm text-orange-800">Too many requests. Please wait <span class="font-semibold" id="countdown">45</span> seconds.</p>
+      </div>
+      <button onclick="document.getElementById('rate-banner').style.display='none'" class="text-orange-400 hover:text-orange-600 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- App Shell Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-[41px] z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-8">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-navy-700 rounded-lg flex items-center justify-center">
+              <span class="text-white font-bold text-xs">TC</span>
+            </div>
+            <span class="text-sm font-semibold text-gray-900">Supplier Portal</span>
+          </div>
+          <nav class="hidden md:flex items-center gap-1">
+            <a href="#" class="px-3 py-2 text-sm font-medium text-navy-700 bg-navy-50 rounded-lg">Dashboard</a>
+            <a href="#" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 rounded-lg">Bills</a>
+            <a href="#" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 rounded-lg">Documents</a>
+          </nav>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-tc-green"></span>
+          <span class="text-sm font-medium text-gray-700">Acme Care Pty Ltd</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-[41px]">
+
+    <!-- Section: Token Expiry Redirect -->
+    <div class="mb-12">
+      <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Token Expiry — Login Redirect</h2>
+      <div class="flex items-center justify-center py-16">
+        <div class="w-full max-w-[380px]">
+          <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-14 h-14 bg-navy-700 rounded-2xl mb-5">
+              <span class="text-white font-bold text-xl">TC</span>
+            </div>
+            <h1 class="text-2xl font-semibold text-gray-900">Supplier Portal</h1>
+          </div>
+          <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <!-- Session expired info alert (blue, not red) -->
+            <div class="mb-6 p-3.5 bg-blue-50 border border-blue-100 rounded-xl">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-4.5 h-4.5 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="text-sm text-blue-700">Your session has expired. Please sign in again.</p>
+              </div>
+            </div>
+            <form class="space-y-5" onsubmit="return false;">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+                <input type="email" placeholder="you@company.com" class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-tc-teal/30 focus:border-tc-teal">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                <input type="password" placeholder="Enter your password" class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-tc-teal/30 focus:border-tc-teal">
+              </div>
+              <button type="submit" class="w-full h-12 bg-navy-700 hover:bg-navy-800 text-white text-sm font-semibold rounded-xl transition">Sign in</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: API Error Display -->
+    <div class="mb-12">
+      <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">API Error — Inline Alert</h2>
+      <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Bills</h3>
+
+        <!-- Error alert -->
+        <div class="p-4 bg-red-50 border border-red-100 rounded-xl mb-6">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-tc-red mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+            <div>
+              <p class="text-sm font-medium text-red-800">Unable to load bills</p>
+              <p class="text-sm text-red-600 mt-0.5">Something went wrong. Please try again.</p>
+              <button class="mt-3 text-sm font-medium text-tc-red hover:text-red-700 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty table placeholder -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <div class="bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider grid grid-cols-4 gap-4">
+            <span>Invoice</span><span>Amount</span><span>Status</span><span>Date</span>
+          </div>
+          <div class="px-4 py-12 text-center text-sm text-gray-400">
+            No data to display
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Network Error -->
+    <div>
+      <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Network Error — Connection Banner</h2>
+      <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-gray-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m-2.829-2.829a5 5 0 000-7.07m-4.243 4.243a1 1 0 010-1.414"/></svg>
+            <div>
+              <p class="text-sm font-medium text-gray-700">Unable to connect</p>
+              <p class="text-sm text-gray-500 mt-0.5">Check your internet connection and try again.</p>
+              <button class="mt-3 text-sm font-medium text-tc-teal hover:text-tc-teal/80 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Countdown timer for rate limit banner
+    let seconds = 45;
+    const timer = setInterval(() => {
+      seconds--;
+      document.getElementById('countdown').textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(timer);
+        document.getElementById('rate-banner').style.display = 'none';
+      }
+    }, 1000);
+  </script>
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VCE - Voluntary Contributions Enhancements Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">Package KF-273342</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">Voluntary Contributions</span>
+  </div>
+  <div class="w-8 h-8 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-xs font-medium">SM</div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('edit-drawer')" id="tab-edit-drawer" class="py-3 text-sm tab-active">VC Edit Drawer</button>
+    <button onclick="showScreen('on-hold')" id="tab-on-hold" class="py-3 text-sm tab-inactive">On-Hold Bill (VC Approval)</button>
+    <button onclick="showScreen('dd-enroll')" id="tab-dd-enroll" class="py-3 text-sm tab-inactive">Client DD Enrollment</button>
+    <button onclick="showScreen('utilisation')" id="tab-utilisation" class="py-3 text-sm tab-inactive">100% Utilisation Prompt</button>
+  </nav>
+</div>
+
+<!-- VC Edit Drawer -->
+<div id="screen-edit-drawer" class="max-w-5xl mx-auto p-6">
+  <div class="flex gap-6">
+    <!-- Main content area -->
+    <div class="flex-1">
+      <h1 class="text-xl font-semibold text-gray-900 mb-1">Budget &mdash; Margaret Thompson</h1>
+      <p class="text-sm text-gray-500 mb-6">KF-273342 &bull; Q1 2026</p>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 class="text-sm font-semibold text-gray-700 mb-4">Funding Streams</h2>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+            <div><div class="text-sm font-medium text-green-800">ON - Ongoing Support</div><div class="text-xs text-green-600">$18,240.00 &bull; $10,579 remaining</div></div>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+            <div><div class="text-sm font-medium text-blue-800">HC - Home Care</div><div class="text-xs text-blue-600">$25,000.00 &bull; $16,250 remaining</div></div>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Active</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-tc-teal-700/5 rounded-lg border border-tc-teal-700/20 cursor-pointer hover:bg-tc-teal-700/10">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-tc-teal-700">VC - Voluntary Contribution</span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Pending Verification</span>
+              </div>
+              <div class="text-xs text-gray-500">$2,500.00 &bull; Click to edit</div>
+            </div>
+            <button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Edit VC</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Drawer (right panel) -->
+    <div class="w-96 bg-white rounded-xl shadow-lg border border-gray-200">
+      <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-gray-900">Edit Voluntary Contribution</h2>
+        <button class="text-gray-400 hover:text-gray-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Amount *</label>
+          <input type="text" value="$2,500.00" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <p class="text-xs text-gray-400 mt-1">No quarterly cap applies (configurable)</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
+            <input type="date" value="2026-01-01" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">End Date *</label>
+            <input type="date" value="2026-03-31" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs text-blue-700">
+          Dates aligned with ON period: 1 Jan - 31 Mar 2026
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Funding Model</label>
+          <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option selected>Preload (advance balance)</option>
+            <option>Reactive (charged on demand)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+          <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Optional notes...">Client requested additional personal care hours for Q1.</textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Pending Verification</span>
+            <span class="text-xs text-gray-400">Awaiting reviewer approval</span>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-gray-200 flex items-center justify-end gap-3">
+          <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700">Cancel</button>
+          <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- On-Hold Bill VC Approval -->
+<div id="screen-on-hold" class="max-w-4xl mx-auto p-6 hidden">
+  <h1 class="text-xl font-semibold text-gray-900 mb-1">On-Hold Bill &mdash; Insufficient Funds</h1>
+  <p class="text-sm text-gray-500 mb-6">Care Partner view</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-red-200 p-6 mb-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <div class="text-sm font-medium text-gray-900">Bill #B-4952 &mdash; Margaret Thompson</div>
+        <div class="text-xs text-gray-500">Personal Care &bull; $263.25 &bull; 21 Mar 2026</div>
+      </div>
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">On Hold</span>
+    </div>
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+      <div class="flex items-start gap-3">
+        <svg class="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+        <div>
+          <div class="text-sm font-semibold text-red-800">Insufficient Funds - Pending VC</div>
+          <p class="text-sm text-red-700 mt-1">ON funding stream has $45.75 remaining but bill requires $263.25. Shortfall: $217.50.</p>
+          <p class="text-sm text-red-700 mt-1">Contact the client to discuss voluntary contribution for this service. VC funds are drawn last (after ON, HC, AT-HM) with 0% loading.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VC Approval Section -->
+    <div class="border border-gray-200 rounded-lg p-4">
+      <h3 class="text-sm font-semibold text-gray-700 mb-3">VC Approval</h3>
+      <div class="mb-3">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Consent Notes (Required) *</label>
+        <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="3" placeholder="Document the client's verbal or written consent for VC usage...">Spoke with Margaret on 21 Mar. She agreed to use her voluntary contribution to cover the shortfall for this personal care session. She confirmed she understands VC has 0% loading.</textarea>
+      </div>
+      <div class="flex items-center gap-4">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-tc-teal-700">
+          <span class="text-sm text-gray-700">I confirm client consent has been obtained</span>
+        </label>
+      </div>
+      <div class="flex items-center justify-end gap-3 mt-4 pt-3 border-t border-gray-100">
+        <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700">Escalate</button>
+        <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Approve VC &amp; Release Bill</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-500">
+    <strong>Permission:</strong> Only Care Partners and Senior Care Partners can approve VC on bills. VC funding is applied with 0% coordination overhead.
+  </div>
+</div>
+
+<!-- Client DD Enrollment -->
+<div id="screen-dd-enroll" class="max-w-2xl mx-auto p-6 hidden">
+  <h1 class="text-xl font-semibold text-gray-900 mb-1">Voluntary Contribution Direct Debit</h1>
+  <p class="text-sm text-gray-500 mb-6">Set up automatic payments for your voluntary contributions</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <!-- Funding Model Selection -->
+    <div class="mb-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">How would you like to fund your contributions?</h2>
+      <div class="grid grid-cols-2 gap-3">
+        <label class="border-2 border-tc-teal-700 rounded-xl p-4 cursor-pointer bg-tc-teal-700/5">
+          <input type="radio" name="funding_model" checked class="hidden">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-5 h-5 rounded-full border-2 border-tc-teal-700 flex items-center justify-center"><div class="w-2.5 h-2.5 rounded-full bg-tc-teal-700"></div></div>
+            <span class="text-sm font-semibold text-tc-teal-700">Preload</span>
+          </div>
+          <p class="text-xs text-gray-600">Funds are deposited upfront as a reserve. Your account is drawn from only when your government funding is exhausted.</p>
+        </label>
+        <label class="border border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-gray-50">
+          <input type="radio" name="funding_model" class="hidden">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center"></div>
+            <span class="text-sm font-semibold text-gray-700">Reactive</span>
+          </div>
+          <p class="text-xs text-gray-600">Your bank account is only charged when services exceed your other funding. Pay only for what you use.</p>
+        </label>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">Contribution Amount</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Amount *</label>
+          <input type="text" value="$2,500.00" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Maximum Payment Limit</label>
+          <input type="text" placeholder="e.g., $500/month" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <p class="text-xs text-gray-400 mt-1">Optional. We will never draw more than this per month.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">Bank Account Details</h2>
+      <div class="grid grid-cols-2 gap-4 mb-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">BSB *</label>
+          <input type="text" placeholder="062-000" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Account Number *</label>
+          <input type="text" placeholder="1234 5678" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Account Name *</label>
+        <input type="text" value="Margaret J Thompson" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      </div>
+    </div>
+
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-6 text-xs text-amber-700">
+      <strong>How VC works:</strong> Voluntary contributions are drawn last in the funding hierarchy &mdash; after government funding (ON, HC, AT-HM). VC funds have 0% coordination overhead. Each service using VC requires your explicit consent.
+    </div>
+
+    <button class="w-full px-4 py-2.5 text-sm bg-tc-teal-700 text-white rounded-lg font-medium">Set Up Voluntary Contribution</button>
+    <p class="text-xs text-gray-400 text-center mt-2">A verification will be sent to your Care Partner for review.</p>
+  </div>
+</div>
+
+<!-- 100% Utilisation Prompt -->
+<div id="screen-utilisation" class="max-w-4xl mx-auto p-6 hidden">
+  <h1 class="text-xl font-semibold text-gray-900 mb-6">Budget View with Utilisation Prompt</h1>
+
+  <!-- Banner prompt -->
+  <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+    <div class="flex items-start justify-between">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92z" clip-rule="evenodd"></path></svg>
+        <div>
+          <div class="text-sm font-semibold text-amber-800">Margaret Thompson has reached 100% budget utilisation</div>
+          <p class="text-sm text-amber-700 mt-1">All primary funding streams (ON, HC) are fully consumed. Consider discussing a voluntary contribution with the client to cover additional services.</p>
+          <div class="flex items-center gap-3 mt-3">
+            <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Set Up VC</button>
+            <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700">Dismiss</button>
+          </div>
+        </div>
+      </div>
+      <button class="text-amber-400 hover:text-amber-600 flex-shrink-0">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Budget utilisation bars -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4">Funding Stream Utilisation</h2>
+    <div class="space-y-4">
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-sm text-gray-700">ON - Ongoing Support</span>
+          <span class="text-sm font-semibold text-red-600">100% ($0 remaining)</span>
+        </div>
+        <div class="bg-gray-200 rounded-full h-3"><div class="bg-red-500 h-3 rounded-full" style="width: 100%"></div></div>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-sm text-gray-700">HC - Home Care</span>
+          <span class="text-sm font-semibold text-red-600">100% ($0 remaining)</span>
+        </div>
+        <div class="bg-gray-200 rounded-full h-3"><div class="bg-red-500 h-3 rounded-full" style="width: 100%"></div></div>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-sm text-gray-700">AT-HM</span>
+          <span class="text-sm font-semibold text-green-600">15% ($8,500 remaining)</span>
+        </div>
+        <div class="bg-gray-200 rounded-full h-3"><div class="bg-green-500 h-3 rounded-full" style="width: 15%"></div></div>
+      </div>
+      <div class="border-t border-gray-200 pt-4">
+        <div class="flex items-center justify-between mb-1">
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-700">VC - Voluntary Contribution</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">Not Set Up</span>
+          </div>
+          <button class="text-sm text-tc-teal-700 font-medium hover:underline">Set Up VC</button>
+        </div>
+        <div class="bg-gray-200 rounded-full h-3"></div>
+        <p class="text-xs text-gray-400 mt-1">VC is drawn last in the funding hierarchy with 0% overhead.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

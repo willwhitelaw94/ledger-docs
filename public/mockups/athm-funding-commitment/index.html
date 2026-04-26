@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFC - ATHM Funding Commitment Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'tc-teal': { 500: '#43C0BE', 700: '#007F7E' },
+        'tc-blue': { 700: '#2C4C79' }
+      }
+    }
+  }
+}
+</script>
+<style>
+  .tab-active { border-bottom: 2px solid #007F7E; color: #007F7E; font-weight: 600; }
+  .tab-inactive { color: #6b7280; }
+  .tab-inactive:hover { color: #374151; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<!-- Top Nav -->
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">Budgets & Finance</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">ATHM Funding Commitment</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-xs font-medium">SM</div>
+  </div>
+</div>
+
+<!-- Screen Tabs -->
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('budget-edit')" id="tab-budget-edit" class="py-3 text-sm tab-active">Budget Item Edit (Hold Checkbox)</button>
+    <button onclick="showScreen('budget-list')" id="tab-budget-list" class="py-3 text-sm tab-inactive">Budget List (Visual Indicator)</button>
+    <button onclick="showScreen('allocation')" id="tab-allocation" class="py-3 text-sm tab-inactive">Allocation Priority View</button>
+  </nav>
+</div>
+
+<!-- Screen: Budget Item Edit -->
+<div id="screen-budget-edit" class="max-w-5xl mx-auto p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">Edit Budget Item</h1>
+      <p class="text-sm text-gray-500 mt-1">Package KF-273342 &mdash; Margaret Thompson</p>
+    </div>
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Draft</span>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Service Category</label>
+        <div class="flex items-center gap-2">
+          <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option selected>Assistive Technology (SERG-0002)</option>
+            <option>Home Modifications (SERG-0003)</option>
+          </select>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 whitespace-nowrap">AT-HM Eligible</span>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Service Description</label>
+        <input type="text" value="Falls Alarm System - Tunstall Personal Response" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-6 mb-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+        <input type="number" value="1" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Unit Price</label>
+        <input type="text" value="$2,450.00" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Total</label>
+        <div class="w-full border border-gray-200 bg-gray-50 rounded-lg px-3 py-2 text-sm font-medium text-gray-900">$2,450.00</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Funding Stream Allocations</label>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2 text-sm">
+            <span class="text-gray-700">AT (Assistive Technology)</span>
+            <span class="font-medium">$2,000.00</span>
+          </div>
+          <div class="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2 text-sm">
+            <span class="text-gray-700">HC (Home Care)</span>
+            <span class="font-medium">$450.00</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
+        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option>Once Off</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ATHM Hold Checkbox - Key Feature -->
+    <div class="border-t border-gray-200 pt-6 mt-6">
+      <div class="bg-purple-50 border border-purple-200 rounded-xl p-4">
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="checkbox" checked class="mt-1 h-5 w-5 rounded border-gray-300 text-tc-teal-700 focus:ring-tc-teal-500">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold text-gray-900">Hold ATHM funds for this budget item</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                Held
+              </span>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">Reserves the ATHM-specific funding stream allocations (AT: $2,000.00) for this item. Other funding streams (HC: $450.00) remain available for other services. The hold takes effect once an ATHM funding stream is assigned.</p>
+            <div class="mt-2 flex items-center gap-4 text-xs text-gray-500">
+              <span>Held streams: <strong class="text-purple-700">AT</strong></span>
+              <span>Held amount: <strong class="text-purple-700">$2,000.00</strong></span>
+              <span>Available to others: <strong class="text-gray-700">HC $450.00</strong></span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+      <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
+      <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg hover:bg-tc-teal-700/90">Save Budget Item</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Budget List with Visual Indicator -->
+<div id="screen-budget-list" class="max-w-5xl mx-auto p-6 hidden">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">Budget Plan &mdash; Q1 2026</h1>
+      <p class="text-sm text-gray-500 mt-1">Package KF-273342 &mdash; Margaret Thompson</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Published</span>
+      <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg hover:bg-tc-teal-700/90">Edit Budget</button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Service</th>
+          <th class="px-6 py-3">Category</th>
+          <th class="px-6 py-3">Frequency</th>
+          <th class="px-6 py-3 text-right">4-Weekly Total</th>
+          <th class="px-6 py-3">Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Personal Care - Showering</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Ongoing Support (SERG-0001)</td>
+          <td class="px-6 py-4 text-sm text-gray-500">3x Weekly</td>
+          <td class="px-6 py-4 text-sm text-right font-medium text-gray-900">$720.00</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Home Maintenance - Lawn Care</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Ongoing Support (SERG-0001)</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Fortnightly</td>
+          <td class="px-6 py-4 text-sm text-right font-medium text-gray-900">$180.00</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span></td>
+        </tr>
+        <!-- AT item with HELD badge -->
+        <tr class="hover:bg-gray-50 bg-purple-50/30">
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-gray-900">Falls Alarm System - Tunstall</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                ATHM Held
+              </span>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-500">Assistive Technology (SERG-0002)</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Once Off</td>
+          <td class="px-6 py-4 text-sm text-right font-medium text-gray-900">$2,450.00</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span></td>
+        </tr>
+        <!-- HM item with HELD badge -->
+        <tr class="hover:bg-gray-50 bg-purple-50/30">
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-gray-900">Bathroom Grab Rails Installation</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                ATHM Held
+              </span>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-500">Home Modifications (SERG-0003)</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Once Off</td>
+          <td class="px-6 py-4 text-sm text-right font-medium text-gray-900">$3,800.00</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Social Support Group</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Ongoing Support (SERG-0001)</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Weekly</td>
+          <td class="px-6 py-4 text-sm text-right font-medium text-gray-900">$280.00</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 bg-purple-50 border border-purple-200 rounded-xl p-4">
+    <div class="flex items-center gap-2 text-sm">
+      <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <span class="text-purple-800"><strong>2 items</strong> have ATHM funds held, reserving <strong>$5,800.00</strong> in AT/HM funding streams. These funds are reserved for contractually committed services.</span>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Allocation Priority View -->
+<div id="screen-allocation" class="max-w-5xl mx-auto p-6 hidden">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">Funding Allocation Preview</h1>
+      <p class="text-sm text-gray-500 mt-1">Package KF-273342 &mdash; Margaret Thompson &mdash; Q1 2026</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">AT Stream Total</div>
+      <div class="text-2xl font-semibold text-gray-900 mt-1">$10,000.00</div>
+      <div class="flex items-center gap-2 mt-2">
+        <div class="flex-1 bg-gray-200 rounded-full h-2">
+          <div class="bg-purple-600 h-2 rounded-full" style="width: 20%"></div>
+        </div>
+        <span class="text-xs text-purple-700 font-medium">$2,000 held</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">HM Stream Total</div>
+      <div class="text-2xl font-semibold text-gray-900 mt-1">$15,000.00</div>
+      <div class="flex items-center gap-2 mt-2">
+        <div class="flex-1 bg-gray-200 rounded-full h-2">
+          <div class="bg-purple-600 h-2 rounded-full" style="width: 25.3%"></div>
+        </div>
+        <span class="text-xs text-purple-700 font-medium">$3,800 held</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">HC Stream Total</div>
+      <div class="text-2xl font-semibold text-gray-900 mt-1">$25,000.00</div>
+      <div class="flex items-center gap-2 mt-2">
+        <div class="flex-1 bg-gray-200 rounded-full h-2">
+          <div class="bg-tc-teal-700 h-2 rounded-full" style="width: 12%"></div>
+        </div>
+        <span class="text-xs text-gray-500 font-medium">No holds</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h2 class="text-base font-semibold text-gray-900 mb-4">Allocation Order (Budget Submission)</h2>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-sm font-bold">1</div>
+        <div class="flex-1 bg-purple-50 border border-purple-200 rounded-lg p-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-sm font-medium text-purple-900">ATHM Held Items (Priority)</span>
+              <p class="text-xs text-purple-700 mt-0.5">Falls Alarm ($2,000 AT) + Grab Rails ($3,800 HM) allocated first</p>
+            </div>
+            <span class="text-sm font-semibold text-purple-700">$5,800.00</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-tc-teal-700 text-white flex items-center justify-center text-sm font-bold">2</div>
+        <div class="flex-1 bg-gray-50 border border-gray-200 rounded-lg p-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-sm font-medium text-gray-900">Remaining Budget Items</span>
+              <p class="text-xs text-gray-600 mt-0.5">Personal Care, Home Maintenance, Social Support allocated from remaining pool</p>
+            </div>
+            <span class="text-sm font-semibold text-gray-700">$1,180.00</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-gray-400 text-white flex items-center justify-center text-sm font-bold">3</div>
+        <div class="flex-1 bg-gray-50 border border-gray-200 rounded-lg p-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-sm font-medium text-gray-900">Overflow to HC/VC Streams</span>
+              <p class="text-xs text-gray-600 mt-0.5">If held item exceeds ATHM stream, remainder flows to HC/VC waterfall</p>
+            </div>
+            <span class="text-sm font-semibold text-gray-500">$450.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

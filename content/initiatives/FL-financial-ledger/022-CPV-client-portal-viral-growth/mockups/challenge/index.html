@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Challenge: CPV Client Portal & Viral Growth</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            },
+            'primary-blue': {
+              700: '#2C4C79'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    iframe { border: none; }
+    #main-panel { transition: transform 0.25s ease; }
+    #content-area { transition: padding-top 0.25s ease; }
+    .vote-card.selected { box-shadow: 0 0 0 2px #43C0BE; background: #F0FAFA; }
+    .vote-card.selected .vote-check { opacity: 1; }
+    .vote-check { opacity: 0; transition: opacity 0.15s; }
+    .screen-btn.active { background: #007F7E; color: white; box-shadow: 0 0 0 2px rgba(67,192,190,0.4); }
+    .student-btn.active { background: #007F7E; color: white; box-shadow: 0 0 0 2px rgba(67,192,190,0.4); }
+  </style>
+</head>
+<body class="bg-gray-900 min-h-screen" style="margin:0;padding:0;">
+
+  <!-- ===== FIXED PANEL ===== -->
+  <div id="main-panel" class="fixed top-0 left-0 right-0 z-[9999]" style="transform:translateY(0);">
+
+    <!-- Top bar -->
+    <div class="bg-gray-800/95 backdrop-blur border-b border-gray-700 px-4 py-2.5">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+
+        <!-- Left: Logo + title + student name -->
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-7 h-7 bg-teal-700 rounded-md flex items-center justify-center shrink-0">
+            <span class="text-white text-xs font-bold">MQ</span>
+          </div>
+          <div class="min-w-0">
+            <h1 class="text-sm font-semibold text-white leading-tight">CPV — Client Portal & Viral Growth</h1>
+            <p class="text-xs text-gray-400 truncate">
+              <span id="student-name">Minimal Maya</span>
+              <span class="mx-1 text-gray-600">·</span>
+              <span id="student-motto" class="italic">"Less, but better"</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: student buttons + Figma + toggle -->
+        <div class="flex items-center gap-2 shrink-0">
+          <!-- Student buttons -->
+          <div class="flex items-center gap-1" id="student-btn-row">
+            <button id="btn-1" onclick="selectStudent(1)" class="student-btn active px-2.5 py-1 text-xs rounded-md font-medium transition-all text-white">
+              <span class="w-4 h-4 rounded text-white text-[10px] font-bold inline-flex items-center justify-center mr-1" style="background:#007F7E;">M</span>Maya
+            </button>
+            <button id="btn-2" onclick="selectStudent(2)" class="student-btn px-2.5 py-1 text-xs rounded-md font-medium transition-all bg-gray-700 hover:bg-gray-600 text-gray-300">
+              <span class="w-4 h-4 rounded text-white text-[10px] font-bold inline-flex items-center justify-center mr-1" style="background:#d97706;">D</span>Dan
+            </button>
+            <button id="btn-3" onclick="selectStudent(3)" class="student-btn px-2.5 py-1 text-xs rounded-md font-medium transition-all bg-gray-700 hover:bg-gray-600 text-gray-300">
+              <span class="w-4 h-4 rounded text-white text-[10px] font-bold inline-flex items-center justify-center mr-1" style="background:#7c3aed;">T</span>Tim
+            </button>
+            <button id="btn-4" onclick="selectStudent(4)" class="student-btn px-2.5 py-1 text-xs rounded-md font-medium transition-all bg-gray-700 hover:bg-gray-600 text-gray-300">
+              <span class="w-4 h-4 rounded text-white text-[10px] font-bold inline-flex items-center justify-center mr-1" style="background:#e11d48;">M</span>Morgan
+            </button>
+          </div>
+          <span class="text-gray-600 text-xs">|</span>
+          <button id="figma-btn" onclick="openFigma()" class="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md font-medium bg-gray-700/80 text-gray-300 border border-gray-600 hover:bg-gray-600 hover:text-white transition-colors">
+            Copy Page <kbd class="ml-0.5 bg-gray-600 px-1 py-0.5 rounded text-[10px] text-gray-400 font-mono">F</kbd>
+          </button>
+          <button onclick="togglePanel()" class="p-1.5 text-gray-400 hover:text-white rounded transition-colors" title="Toggle panel (Esc)">
+            <svg id="icon-down" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+            <svg id="icon-up" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen bar -->
+    <div class="bg-gray-800/80 backdrop-blur border-b border-gray-700/50 px-4 py-2">
+      <div class="max-w-7xl mx-auto flex items-center gap-2">
+        <span class="text-xs text-gray-500 mr-1">Screen:</span>
+        <button id="screen-dashboard" onclick="selectScreen('dashboard')" class="screen-btn active px-3 py-1 text-xs rounded-md font-medium whitespace-nowrap transition-all text-white">
+          01 — Job Dashboard
+        </button>
+        <button id="screen-cta" onclick="selectScreen('cta')" class="screen-btn px-3 py-1 text-xs rounded-md font-medium whitespace-nowrap transition-all bg-gray-700 hover:bg-gray-600 text-gray-300">
+          02 — Registration CTA
+        </button>
+        <button id="screen-onboarding" onclick="selectScreen('onboarding')" class="screen-btn px-3 py-1 text-xs rounded-md font-medium whitespace-nowrap transition-all bg-gray-700 hover:bg-gray-600 text-gray-300">
+          03 — Onboarding
+        </button>
+        <span class="ml-auto text-xs text-gray-500" id="position-label">1 / 3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== IFRAME AREA ===== -->
+  <div id="content-area" style="padding-top:88px;">
+    <iframe id="mockup-frame" src="student-1-minimal/01-job-dashboard.html"
+      style="width:100%;height:calc(100vh - 88px);display:block;"></iframe>
+  </div>
+
+  <!-- ===== BELOW FOLD: Comparison & Voting ===== -->
+  <div class="bg-gray-50" id="below-fold">
+
+    <!-- Section header -->
+    <div class="bg-white border-t border-b border-gray-200 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900">Design Comparison & Voting</h2>
+          <p class="text-sm text-gray-500 mt-0.5">Vote on the patterns you want in the final unified design</p>
+        </div>
+        <button onclick="copySelections()" class="flex items-center gap-2 px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg hover:bg-teal-800 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          Copy Selections
+        </button>
+      </div>
+    </div>
+
+    <!-- Pattern comparison table -->
+    <div class="max-w-4xl mx-auto px-6 py-8">
+
+      <h3 class="text-base font-semibold text-gray-900 mb-4">Pattern Comparison</h3>
+
+      <div class="overflow-x-auto rounded-xl border border-gray-200 mb-10">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-gray-50 border-b border-gray-200">
+              <th class="text-left px-4 py-3 font-medium text-gray-600 w-36">Pattern</th>
+              <th class="text-left px-4 py-3 font-medium" style="color:#007F7E;">Minimal Maya</th>
+              <th class="text-left px-4 py-3 font-medium" style="color:#d97706;">Dashboard Dan</th>
+              <th class="text-left px-4 py-3 font-medium" style="color:#7c3aed;">Timeline Tim</th>
+              <th class="text-left px-4 py-3 font-medium" style="color:#e11d48;">Mobile Morgan</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Job Dashboard</td>
+              <td class="px-4 py-3 text-gray-600">Single-column scroll, 1px progress, phase table, footnote CTA</td>
+              <td class="px-4 py-3 text-gray-600">KPI tiles, progress ring, rich status cards, sticky CTA banner</td>
+              <td class="px-4 py-3 text-gray-600">Chronological activity feed, milestone timeline, event stream</td>
+              <td class="px-4 py-3 text-gray-600">Bottom-sheet cards, swipe-friendly, thumb nav, compact layout</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Registration CTA</td>
+              <td class="px-4 py-3 text-gray-600">Quiet "what if" framing, personal vs business card split</td>
+              <td class="px-4 py-3 text-gray-600">Feature-rich benefit grid, bold CTA, social proof snippet</td>
+              <td class="px-4 py-3 text-gray-600">Contextual hook from job history, "your story continues" framing</td>
+              <td class="px-4 py-3 text-gray-600">Full-screen takeover, single action, friction-free thumb tap</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Onboarding</td>
+              <td class="px-4 py-3 text-gray-600">Step wizard, option cards, context-aware pre-selection</td>
+              <td class="px-4 py-3 text-gray-600">Segment wizard with persona tiles, benefit previews</td>
+              <td class="px-4 py-3 text-gray-600">Conversational Q&amp;A, one-question-at-a-time progressive flow</td>
+              <td class="px-4 py-3 text-gray-600">Large touch targets, bottom-anchored CTAs, minimal fields</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">CTA Placement</td>
+              <td class="px-4 py-3 text-gray-600">Footnote — quiet, respectful</td>
+              <td class="px-4 py-3 text-gray-600">Sticky banner — persistent, hard to miss</td>
+              <td class="px-4 py-3 text-gray-600">Inline after milestones — contextual trigger</td>
+              <td class="px-4 py-3 text-gray-600">Full-screen interstitial — modal-style takeover</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Job Progress</td>
+              <td class="px-4 py-3 text-gray-600">1px hairline bar — understated</td>
+              <td class="px-4 py-3 text-gray-600">Circular ring + % label — dashboard feel</td>
+              <td class="px-4 py-3 text-gray-600">Milestones on a vertical timeline — story feel</td>
+              <td class="px-4 py-3 text-gray-600">Chunky progress bar with phase labels — thumb-scannable</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Spend Display</td>
+              <td class="px-4 py-3 text-gray-600">Phase breakdown table, net vs budget</td>
+              <td class="px-4 py-3 text-gray-600">KPI tiles + bar chart, real-time feel</td>
+              <td class="px-4 py-3 text-gray-600">Spend events in timeline, logged as they happen</td>
+              <td class="px-4 py-3 text-gray-600">Summary card, expandable detail drawer</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Trade-off matrix -->
+      <h3 class="text-base font-semibold text-gray-900 mb-4">Trade-off Matrix</h3>
+      <div class="overflow-x-auto rounded-xl border border-gray-200 mb-10">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-gray-50 border-b border-gray-200">
+              <th class="text-left px-4 py-3 font-medium text-gray-600">Criterion</th>
+              <th class="text-center px-4 py-3 font-medium" style="color:#007F7E;">Maya</th>
+              <th class="text-center px-4 py-3 font-medium" style="color:#d97706;">Dan</th>
+              <th class="text-center px-4 py-3 font-medium" style="color:#7c3aed;">Tim</th>
+              <th class="text-center px-4 py-3 font-medium" style="color:#e11d48;">Morgan</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">First impression (client trust)</td>
+              <td class="px-4 py-3 text-center">★★★★★</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+              <td class="px-4 py-3 text-center">★★★☆☆</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Viral CTA conversion potential</td>
+              <td class="px-4 py-3 text-center">★★★☆☆</td>
+              <td class="px-4 py-3 text-center">★★★★★</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Job progress clarity</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+              <td class="px-4 py-3 text-center">★★★★★</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Mobile usability</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+              <td class="px-4 py-3 text-center">★★★☆☆</td>
+              <td class="px-4 py-3 text-center">★★★☆☆</td>
+              <td class="px-4 py-3 text-center">★★★★★</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Onboarding completion rate</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+              <td class="px-4 py-3 text-center">★★★★★</td>
+              <td class="px-4 py-3 text-center">★★★★☆</td>
+            </tr>
+            <tr class="bg-white hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium text-gray-700">Design build complexity</td>
+              <td class="px-4 py-3 text-center text-green-600 font-medium">Low</td>
+              <td class="px-4 py-3 text-center text-amber-600 font-medium">High</td>
+              <td class="px-4 py-3 text-center text-amber-600 font-medium">Medium</td>
+              <td class="px-4 py-3 text-center text-green-600 font-medium">Low</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Vote cards -->
+      <h3 class="text-base font-semibold text-gray-900 mb-2">Cherry-Pick — Select Patterns to Adopt</h3>
+      <p class="text-sm text-gray-500 mb-5">Click cards to vote. Copy your selections when done.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+
+        <!-- Card 1: Maya dashboard layout -->
+        <div class="vote-card bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-teal-300 transition-all relative" onclick="toggleVote(this,'maya-dashboard')">
+          <div class="vote-check absolute top-3 right-3">
+            <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#007F7E;">Maya</span>
+            <span class="text-xs text-gray-500">Job Dashboard</span>
+          </div>
+          <h4 class="font-semibold text-gray-900 text-sm">Minimal public dashboard layout</h4>
+          <p class="text-xs text-gray-500 mt-1">Single-column, no-login experience with 1px progress bar and phase cost breakdown. Low noise, high trust — ideal first impression for homeowners.</p>
+        </div>
+
+        <!-- Card 2: Dan KPI tiles -->
+        <div class="vote-card bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-teal-300 transition-all relative" onclick="toggleVote(this,'dan-kpi')">
+          <div class="vote-check absolute top-3 right-3">
+            <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#d97706;">Dan</span>
+            <span class="text-xs text-gray-500">Job Dashboard</span>
+          </div>
+          <h4 class="font-semibold text-gray-900 text-sm">KPI summary tiles</h4>
+          <p class="text-xs text-gray-500 mt-1">Budget spent, remaining, and % complete as scannable metric tiles. Gives clients the key numbers instantly without reading prose.</p>
+        </div>
+
+        <!-- Card 3: Dan sticky CTA -->
+        <div class="vote-card bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-teal-300 transition-all relative" onclick="toggleVote(this,'dan-sticky-cta')">
+          <div class="vote-check absolute top-3 right-3">
+            <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#d97706;">Dan</span>
+            <span class="text-xs text-gray-500">Registration CTA</span>
+          </div>
+          <h4 class="font-semibold text-gray-900 text-sm">Sticky bottom registration banner</h4>
+          <p class="text-xs text-gray-500 mt-1">Persistent but unobtrusive CTA bar at the bottom of the job dashboard. Always visible without interrupting the content reading experience.</p>
+        </div>
+
+        <!-- Card 4: Tim contextual CTA trigger -->
+        <div class="vote-card bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-teal-300 transition-all relative" onclick="toggleVote(this,'tim-contextual-cta')">
+          <div class="vote-check absolute top-3 right-3">
+            <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#7c3aed;">Tim</span>
+            <span class="text-xs text-gray-500">Registration CTA</span>
+          </div>
+          <h4 class="font-semibold text-gray-900 text-sm">Contextual "this is your spend" hook</h4>
+          <p class="text-xs text-gray-500 mt-1">CTA appears inline after the spend section with a direct message: "This is your $68,500 spend — want to track it?" Higher intent, lower friction.</p>
+        </div>
+
+        <!-- Card 5: Maya onboarding wizard -->
+        <div class="vote-card bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-teal-300 transition-all relative" onclick="toggleVote(this,'maya-wizard')">
+          <div class="vote-check absolute top-3 right-3">
+            <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#007F7E;">Maya</span>
+            <span class="text-xs text-gray-500">Onboarding</span>
+          </div>
+          <h4 class="font-semibold text-gray-900 text-sm">3-step wizard with context-aware pre-selection</h4>
+          <p class="text-xs text-gray-500 mt-1">"Home Renovation" pre-selected with "Came from Harrington Builders' portal" context note. Reduces decisions and reinforces the viral referral origin.</p>
+        </div>
+
+        <!-- Card 6: Tim conversational onboarding -->
+        <div class="vote-card bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-teal-300 transition-all relative" onclick="toggleVote(this,'tim-conversational')">
+          <div class="vote-check absolute top-3 right-3">
+            <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#7c3aed;">Tim</span>
+            <span class="text-xs text-gray-500">Onboarding</span>
+          </div>
+          <h4 class="font-semibold text-gray-900 text-sm">Conversational one-question-at-a-time flow</h4>
+          <p class="text-xs text-gray-500 mt-1">Progressive disclosure — each question appears after the last answer. Feels fast and personal, reduces cognitive load vs seeing all fields at once.</p>
+        </div>
+
+        <!-- Card 7: Morgan mobile layout -->
+        <div class="vote-card bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-teal-300 transition-all relative" onclick="toggleVote(this,'morgan-mobile')">
+          <div class="vote-check absolute top-3 right-3">
+            <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#e11d48;">Morgan</span>
+            <span class="text-xs text-gray-500">Responsive Layout</span>
+          </div>
+          <h4 class="font-semibold text-gray-900 text-sm">Mobile-first responsive layout</h4>
+          <p class="text-xs text-gray-500 mt-1">Large touch targets, bottom-anchored CTAs, thumb-friendly navigation. Most clients will open the job link on mobile — this should be the default layout.</p>
+        </div>
+
+        <!-- Card 8: Dan personal vs business split -->
+        <div class="vote-card bg-white border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-teal-300 transition-all relative" onclick="toggleVote(this,'dan-split')">
+          <div class="vote-check absolute top-3 right-3">
+            <div class="w-5 h-5 rounded-full bg-teal-500 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs font-bold text-white px-2 py-0.5 rounded-full" style="background:#d97706;">Dan</span>
+            <span class="text-xs text-gray-500">Registration CTA</span>
+          </div>
+          <h4 class="font-semibold text-gray-900 text-sm">Personal vs Business split screen</h4>
+          <p class="text-xs text-gray-500 mt-1">Two-card choice between "Track my home project" and "Run my trade business" — captures both the homeowner AND the contractor as potential new users.</p>
+        </div>
+
+      </div>
+
+      <!-- Feedback -->
+      <h3 class="text-base font-semibold text-gray-900 mb-2">Additional Feedback</h3>
+      <textarea id="feedback-text" rows="4"
+        class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none mb-6"
+        placeholder="Any other direction for the unified design? e.g. 'Use Maya's dashboard but with Dan's KPI tiles' or 'Make the CTA less pushy'..."></textarea>
+
+      <button onclick="copySelections()" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-semibold py-3 rounded-xl transition text-sm mb-8">
+        Copy Selections to Clipboard — paste back in chat to generate unified design
+      </button>
+
+      <!-- Copy success toast -->
+      <div id="copy-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-5 py-3 rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-300 z-[99999]">
+        Selections copied! Paste in chat.
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const students = {
+      1: {
+        name: 'Minimal Maya',
+        motto: '"Less, but better"',
+        focus: 'Whitespace, no-login dashboard, quiet CTA footnote, 3-step wizard with context-aware pre-selection',
+        icon: 'M',
+        iconBg: '#007F7E',
+        folder: 'student-1-minimal',
+        screens: {
+          dashboard: { label: '01 — Job Dashboard', file: 'student-1-minimal/01-job-dashboard.html' },
+          cta:       { label: '02 — Registration CTA', file: 'student-1-minimal/02-registration-cta.html' },
+          onboarding:{ label: '03 — Onboarding', file: 'student-1-minimal/03-onboarding-personal.html' },
+        }
+      },
+      2: {
+        name: 'Dashboard Dan',
+        motto: '"See it all at a glance"',
+        focus: 'KPI tiles, progress ring, sticky CTA banner, segment wizard with persona tiles and benefit previews',
+        icon: 'D',
+        iconBg: '#d97706',
+        folder: 'student-2-dashboard',
+        screens: {
+          dashboard: { label: '01 — Job Dashboard', file: 'student-2-dashboard/01-job-dashboard.html' },
+          cta:       { label: '02 — Registration CTA', file: 'student-2-dashboard/02-registration-cta.html' },
+          onboarding:{ label: '03 — Onboarding', file: 'student-2-dashboard/03-onboarding-personal.html' },
+        }
+      },
+      3: {
+        name: 'Timeline Tim',
+        motto: '"Every project tells a story"',
+        focus: 'Chronological activity feed, milestone timeline, contextual CTA triggered by spend events',
+        icon: 'T',
+        iconBg: '#7c3aed',
+        folder: 'student-3-timeline',
+        screens: {
+          dashboard: { label: '01 — Job Dashboard', file: 'student-3-timeline/01-job-dashboard.html' },
+          cta:       { label: '02 — Registration CTA', file: 'student-3-timeline/02-registration-cta.html' },
+          onboarding:{ label: '03 — Onboarding', file: 'student-3-timeline/03-onboarding-personal.html' },
+        }
+      },
+      4: {
+        name: 'Mobile Morgan',
+        motto: '"Thumb-first, always"',
+        focus: 'Bottom-sheet cards, swipe-friendly panels, large touch targets, bottom-anchored CTAs, stacked mobile layout',
+        icon: 'M',
+        iconBg: '#e11d48',
+        folder: 'student-4-mobile',
+        screens: {
+          dashboard: { label: '01 — Job Dashboard', file: 'student-4-mobile/01-job-dashboard.html' },
+          cta:       { label: '02 — Registration CTA', file: 'student-4-mobile/02-registration-cta.html' },
+          onboarding:{ label: '03 — Onboarding', file: 'student-4-mobile/03-onboarding-personal.html' },
+        }
+      }
+    };
+
+    let currentStudent = 1;
+    let currentScreen = 'dashboard';
+    let panelVisible = true;
+    const votes = {};
+
+    function selectStudent(num) {
+      currentStudent = num;
+      const s = students[num];
+
+      // Update buttons
+      for (let i = 1; i <= 4; i++) {
+        const btn = document.getElementById('btn-' + i);
+        if (i === num) {
+          btn.classList.add('active');
+          btn.classList.remove('bg-gray-700', 'hover:bg-gray-600', 'text-gray-300');
+        } else {
+          btn.classList.remove('active');
+          btn.classList.add('bg-gray-700', 'text-gray-300');
+        }
+      }
+
+      document.getElementById('student-name').textContent = s.name;
+      document.getElementById('student-motto').textContent = s.motto;
+
+      updateFrame();
+    }
+
+    function selectScreen(screen) {
+      currentScreen = screen;
+
+      const keys = ['dashboard', 'cta', 'onboarding'];
+      const labels = ['01 — Job Dashboard', '02 — Registration CTA', '03 — Onboarding'];
+      const idx = keys.indexOf(screen) + 1;
+
+      keys.forEach((key, i) => {
+        const btn = document.getElementById('screen-' + key);
+        if (key === screen) {
+          btn.classList.add('active');
+          btn.classList.remove('bg-gray-700', 'hover:bg-gray-600', 'text-gray-300');
+        } else {
+          btn.classList.remove('active');
+          btn.classList.add('bg-gray-700', 'text-gray-300');
+        }
+      });
+
+      document.getElementById('position-label').textContent = idx + ' / 3';
+      updateFrame();
+    }
+
+    function updateFrame() {
+      const s = students[currentStudent];
+      const screen = s.screens[currentScreen];
+      document.getElementById('mockup-frame').src = screen.file;
+    }
+
+    function togglePanel() {
+      panelVisible = !panelVisible;
+      const panel = document.getElementById('main-panel');
+      const content = document.getElementById('content-area');
+      const frame = document.getElementById('mockup-frame');
+      const iconDown = document.getElementById('icon-down');
+      const iconUp = document.getElementById('icon-up');
+
+      if (panelVisible) {
+        panel.style.transform = 'translateY(0)';
+        content.style.paddingTop = '88px';
+        frame.style.height = 'calc(100vh - 88px)';
+        iconDown.classList.remove('hidden');
+        iconUp.classList.add('hidden');
+      } else {
+        panel.style.transform = 'translateY(-100%)';
+        content.style.paddingTop = '0';
+        frame.style.height = '100vh';
+        iconDown.classList.add('hidden');
+        iconUp.classList.remove('hidden');
+      }
+    }
+
+    function openFigma() {
+      const s = students[currentStudent];
+      const screen = s.screens[currentScreen];
+      // Open the direct HTML file in a new tab for clean Figma capture
+      const url = screen.file + '#figmacapture';
+      window.open(url, '_blank');
+    }
+
+    function toggleVote(card, id) {
+      card.classList.toggle('selected');
+      const label = card.querySelector('h4').textContent;
+      if (card.classList.contains('selected')) {
+        votes[id] = label;
+      } else {
+        delete votes[id];
+      }
+    }
+
+    function copySelections() {
+      const selected = Object.entries(votes).map(([id, label]) => '- [x] ' + label).join('\n');
+      const none = Object.keys(votes).length === 0 ? '(none selected)' : selected;
+      const feedback = document.getElementById('feedback-text').value.trim();
+      const text = `## Design Challenge Selections — CPV Client Portal & Viral Growth\n\n### Adopted Patterns\n${none}\n\n### Additional Feedback\n${feedback || '(none)'}\n`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('copy-toast');
+        toast.style.opacity = '1';
+        setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+      });
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.target.matches('input,textarea,select')) return;
+
+      if (e.key === 'Escape') { togglePanel(); return; }
+      if (e.key === 'f' || e.key === 'F') { openFigma(); return; }
+
+      // 1-4: select student
+      const num = parseInt(e.key);
+      if (num >= 1 && num <= 4) { selectStudent(num); return; }
+
+      // Arrow keys: navigate screens
+      const screens = ['dashboard', 'cta', 'onboarding'];
+      const idx = screens.indexOf(currentScreen);
+      if (e.key === 'ArrowRight' && idx < screens.length - 1) { selectScreen(screens[idx + 1]); return; }
+      if (e.key === 'ArrowLeft' && idx > 0) { selectScreen(screens[idx - 1]); return; }
+
+      // Tab: next student
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const next = (currentStudent % 4) + 1;
+        selectStudent(next);
+      }
+    });
+  </script>
+</body>
+</html>

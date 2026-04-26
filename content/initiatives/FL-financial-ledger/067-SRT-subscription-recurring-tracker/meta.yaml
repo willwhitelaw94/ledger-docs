@@ -1,0 +1,14 @@
+epic_code: SRT
+epic_number: "067"
+name: Subscription & Recurring Payment Tracker
+initiative: FL-financial-ledger
+status: idea
+stage: idea
+created: "2026-03-22"
+author: William Whitelaw
+depends_on:
+  - 004-BFR-bank-feeds-reconciliation
+  - 030-PLG-personal-ledger
+  - 040-AND-anomaly-detection
+  - 041-CFF-cash-flow-forecasting
+  - 006-CCM-contacts-client-management

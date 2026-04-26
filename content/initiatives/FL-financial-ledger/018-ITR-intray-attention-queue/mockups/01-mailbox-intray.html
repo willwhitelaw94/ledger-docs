@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Intray — Mailbox-style Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          border: 'hsl(214.3 31.8% 91.4%)',
+          background: 'hsl(0 0% 100%)',
+          foreground: 'hsl(222.2 84% 4.9%)',
+          muted: { DEFAULT: 'hsl(210 40% 96.1%)', foreground: 'hsl(215.4 16.3% 46.9%)' },
+          card: { DEFAULT: 'hsl(0 0% 100%)', foreground: 'hsl(222.2 84% 4.9%)' },
+          primary: { DEFAULT: 'hsl(183 100% 25%)', foreground: 'hsl(210 40% 98%)' }, // teal-700ish
+          accent: { DEFAULT: 'hsl(180 50% 51%)', foreground: 'hsl(222.2 47.4% 11.2%)' },
+        },
+        borderRadius: { lg: '0.5rem', md: '0.375rem', sm: '0.25rem' }
+      }
+    }
+  };
+</script>
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; }
+  kbd { font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; }
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+</style>
+</head>
+<body class="bg-slate-50 text-foreground">
+
+<div class="flex min-h-dvh">
+
+  <!-- ===== APP SIDEBAR (skeleton framing) ===== -->
+  <aside class="w-56 bg-white border-r border-slate-200 flex flex-col shrink-0 h-screen sticky top-0">
+    <div class="px-4 py-4 border-b border-slate-100">
+      <div class="flex items-center gap-2.5">
+        <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-teal-600 to-teal-700 flex items-center justify-center text-white font-bold text-sm">L</div>
+        <div class="text-sm font-semibold text-slate-900">Ledgerly</div>
+      </div>
+      <p class="mt-2 text-[9px] text-slate-300 uppercase tracking-widest text-center">Framing only</p>
+    </div>
+    <div class="px-3 py-3">
+      <div class="h-8 rounded-lg bg-slate-100 animate-pulse"></div>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+      <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-slate-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-slate-200 animate-pulse"></div></div>
+      <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-slate-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-slate-200 animate-pulse"></div></div>
+      <!-- Active: Intray -->
+      <div class="flex items-center justify-between gap-2.5 px-3 py-2 rounded-lg bg-teal-50 border border-teal-100">
+        <div class="flex items-center gap-2.5">
+          <svg class="h-4 w-4 text-teal-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7l8 6 8-6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg>
+          <span class="text-sm font-medium text-teal-900">Intray</span>
+        </div>
+        <span class="text-[11px] font-semibold text-teal-700 bg-white border border-teal-200 rounded px-1.5 py-0.5">12</span>
+      </div>
+      <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-slate-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-slate-200 animate-pulse"></div></div>
+      <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-slate-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-slate-200 animate-pulse"></div></div>
+      <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-slate-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-slate-200 animate-pulse"></div></div>
+    </nav>
+    <div class="border-t border-slate-100 px-3 py-3">
+      <div class="flex items-center gap-2.5">
+        <div class="h-8 w-8 rounded-full bg-slate-200 animate-pulse"></div>
+        <div class="flex-1 space-y-1.5">
+          <div class="h-3 w-24 rounded bg-slate-200 animate-pulse"></div>
+          <div class="h-2.5 w-20 rounded bg-slate-100 animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN AREA ===== -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- Top header -->
+    <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shrink-0">
+      <div>
+        <nav class="text-xs text-slate-400 mb-0.5">
+          <span>Workspace</span> <span class="mx-1">/</span>
+          <span class="text-slate-700 font-medium">Intray</span>
+        </nav>
+        <h1 class="text-lg font-semibold text-slate-900 flex items-center gap-2">
+          Intray
+          <span class="text-xs font-medium text-slate-500 bg-slate-100 rounded px-1.5 py-0.5">12 items need attention</span>
+        </h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- Forward address pill -->
+        <div class="hidden md:flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs">
+          <svg class="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 11-8 0 4 4 0 018 0zm0 0v1a3 3 0 006 0v-1a9 9 0 10-5.6 8.3"/></svg>
+          <span class="text-slate-500">Forward bills to:</span>
+          <code class="text-slate-900 font-medium">acme-co-a7b3c9@inbox.ledgerly.app</code>
+          <button class="text-teal-700 hover:text-teal-800 font-medium">Copy</button>
+        </div>
+        <button class="inline-flex items-center gap-1.5 h-8 px-3 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-xs font-medium text-slate-700">
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          Upload
+        </button>
+        <button class="inline-flex items-center gap-1.5 h-8 px-3 rounded-md bg-teal-700 hover:bg-teal-800 text-xs font-medium text-white">
+          Inbox zero? <kbd class="bg-teal-800 text-[10px] px-1 rounded">Z</kbd>
+        </button>
+      </div>
+    </header>
+
+    <!-- 3-pane mailbox layout -->
+    <div class="flex-1 grid grid-cols-[220px_420px_1fr] min-h-0">
+
+      <!-- ===== PANE 1: CATEGORY FOLDERS ===== -->
+      <aside class="bg-white border-r border-slate-200 overflow-y-auto scrollbar-thin">
+        <div class="px-3 py-3 border-b border-slate-100">
+          <div class="relative">
+            <svg class="absolute left-2.5 top-2 h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" placeholder="Search intray…" class="w-full h-8 pl-8 pr-2 text-xs rounded-md border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/20 focus:border-teal-600" />
+            <kbd class="absolute right-2 top-1.5 text-[10px] bg-white border border-slate-200 rounded px-1 py-0.5 text-slate-400">/</kbd>
+          </div>
+        </div>
+
+        <div class="py-2">
+          <div class="px-3 pb-1 text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Inbox</div>
+
+          <!-- All -->
+          <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 hover:bg-slate-50 text-left">
+            <span class="flex items-center gap-2 text-sm text-slate-700">
+              <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7l8 6 8-6M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg>
+              All
+            </span>
+            <span class="text-xs text-slate-500">12</span>
+          </button>
+
+          <!-- Forwarded emails (ACTIVE) -->
+          <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 bg-teal-50 border-l-2 border-teal-600 text-left">
+            <span class="flex items-center gap-2 text-sm font-medium text-teal-900">
+              <svg class="h-4 w-4 text-teal-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              Forwarded
+              <span class="h-1.5 w-1.5 rounded-full bg-teal-600 animate-pulse"></span>
+            </span>
+            <span class="text-xs font-semibold text-teal-700">3</span>
+          </button>
+
+          <div class="mt-3 px-3 pb-1 text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Categories</div>
+
+          <!-- Unmatched bank -->
+          <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 hover:bg-slate-50 text-left">
+            <span class="flex items-center gap-2 text-sm text-slate-700">
+              <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M5 6h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+              Unmatched bank
+            </span>
+            <span class="text-xs text-slate-500">4</span>
+          </button>
+
+          <!-- Draft invoices -->
+          <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 hover:bg-slate-50 text-left">
+            <span class="flex items-center gap-2 text-sm text-slate-700">
+              <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h4m-4-8h6m-9 12V4a2 2 0 012-2h7l5 5v13a2 2 0 01-2 2H7a2 2 0 01-2-2z"/></svg>
+              Draft invoices
+            </span>
+            <span class="text-xs text-slate-500">2</span>
+          </button>
+
+          <!-- Overdue -->
+          <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 hover:bg-slate-50 text-left">
+            <span class="flex items-center gap-2 text-sm text-slate-700">
+              <svg class="h-4 w-4 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Overdue
+            </span>
+            <span class="text-xs font-semibold text-red-600 bg-red-50 rounded px-1.5">2</span>
+          </button>
+
+          <!-- Bills due -->
+          <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 hover:bg-slate-50 text-left">
+            <span class="flex items-center gap-2 text-sm text-slate-700">
+              <svg class="h-4 w-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Bills due soon
+            </span>
+            <span class="text-xs text-slate-500">3</span>
+          </button>
+
+          <!-- Unreconciled -->
+          <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 hover:bg-slate-50 text-left">
+            <span class="flex items-center gap-2 text-sm text-slate-700">
+              <svg class="h-4 w-4 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M4 20l6-6M20 4l-6 6"/></svg>
+              Unreconciled
+            </span>
+            <span class="text-xs text-slate-500">1</span>
+          </button>
+
+          <div class="mt-4 px-3 pb-1 text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Archived</div>
+          <button class="w-full flex items-center justify-between gap-2 px-3 py-1.5 hover:bg-slate-50 text-left">
+            <span class="flex items-center gap-2 text-sm text-slate-500">
+              <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M6 8v10a2 2 0 002 2h8a2 2 0 002-2V8M10 12h4"/></svg>
+              Actioned today
+            </span>
+            <span class="text-xs text-slate-400">47</span>
+          </button>
+        </div>
+
+        <!-- Keyboard hint footer -->
+        <div class="mt-4 mx-3 mb-3 p-2.5 rounded-md bg-slate-50 border border-slate-200 text-[11px] text-slate-500 leading-relaxed">
+          <div class="font-semibold text-slate-600 mb-1">Keyboard</div>
+          <div><kbd class="bg-white border border-slate-200 px-1 rounded">J</kbd> <kbd class="bg-white border border-slate-200 px-1 rounded">K</kbd> navigate</div>
+          <div><kbd class="bg-white border border-slate-200 px-1 rounded">Enter</kbd> open</div>
+          <div><kbd class="bg-white border border-slate-200 px-1 rounded">E</kbd> action <kbd class="bg-white border border-slate-200 px-1 rounded ml-1">#</kbd> archive</div>
+        </div>
+      </aside>
+
+      <!-- ===== PANE 2: ITEM LIST ===== -->
+      <section class="bg-white border-r border-slate-200 overflow-y-auto scrollbar-thin min-w-0">
+        <!-- List header -->
+        <div class="sticky top-0 z-10 bg-white/95 backdrop-blur px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" class="rounded border-slate-300 text-teal-700 focus:ring-teal-600" />
+            <span class="text-xs text-slate-500">Forwarded · 3 items</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <button class="p-1 rounded hover:bg-slate-100" title="Sort">
+              <svg class="h-3.5 w-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg>
+            </button>
+            <button class="p-1 rounded hover:bg-slate-100" title="Filter">
+              <svg class="h-3.5 w-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M6 10h12M10 16h4"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ITEM 1: Forwarded bill (unread, SELECTED) -->
+        <article class="border-l-[3px] border-teal-600 bg-teal-50/50 px-4 py-3 border-b border-slate-100 cursor-pointer">
+          <div class="flex items-start gap-3">
+            <div class="h-1.5 w-1.5 rounded-full bg-teal-600 mt-2 shrink-0"></div>
+            <div class="h-9 w-9 rounded-md bg-orange-100 flex items-center justify-center shrink-0">
+              <span class="text-xs font-bold text-orange-700">OP</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="text-sm font-semibold text-slate-900 truncate">Optus Business</span>
+                <span class="text-[11px] text-slate-500 shrink-0">2 min ago</span>
+              </div>
+              <div class="text-sm text-slate-700 truncate mt-0.5">Your Optus tax invoice — April 2026</div>
+              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                <span class="inline-flex items-center gap-1 text-[10px] font-medium bg-teal-100 text-teal-800 rounded px-1.5 py-0.5">
+                  <svg class="h-2.5 w-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  Forwarded
+                </span>
+                <span class="text-[10px] font-medium bg-slate-100 text-slate-700 rounded px-1.5 py-0.5">Bill · draft</span>
+                <span class="text-xs font-semibold text-slate-900 ml-auto">$248.50</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ITEM 2: Forwarded bill (unread) -->
+        <article class="bg-white hover:bg-slate-50 px-4 py-3 border-b border-slate-100 cursor-pointer">
+          <div class="flex items-start gap-3">
+            <div class="h-1.5 w-1.5 rounded-full bg-teal-600 mt-2 shrink-0"></div>
+            <div class="h-9 w-9 rounded-md bg-blue-100 flex items-center justify-center shrink-0">
+              <span class="text-xs font-bold text-blue-700">AG</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="text-sm font-semibold text-slate-900 truncate">AGL Energy</span>
+                <span class="text-[11px] text-slate-500 shrink-0">17 min ago</span>
+              </div>
+              <div class="text-sm text-slate-700 truncate mt-0.5">Electricity invoice · 123 Main St</div>
+              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                <span class="text-[10px] font-medium bg-teal-100 text-teal-800 rounded px-1.5 py-0.5">Forwarded</span>
+                <span class="text-[10px] font-medium bg-amber-100 text-amber-800 rounded px-1.5 py-0.5">AI extracting…</span>
+                <span class="text-xs font-semibold text-slate-500 ml-auto">—</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ITEM 3: Forwarded bill (read) -->
+        <article class="bg-white hover:bg-slate-50 px-4 py-3 border-b border-slate-100 cursor-pointer">
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 shrink-0"></div>
+            <div class="h-9 w-9 rounded-md bg-slate-100 flex items-center justify-center shrink-0">
+              <span class="text-xs font-bold text-slate-600">SG</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="text-sm font-medium text-slate-700 truncate">Shell Energy</span>
+                <span class="text-[11px] text-slate-500 shrink-0">3 hr ago</span>
+              </div>
+              <div class="text-sm text-slate-500 truncate mt-0.5">Gas bill · March quarter</div>
+              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                <span class="text-[10px] font-medium bg-slate-100 text-slate-700 rounded px-1.5 py-0.5">Forwarded</span>
+                <span class="text-[10px] font-medium bg-slate-100 text-slate-600 rounded px-1.5 py-0.5">Bill · draft</span>
+                <span class="text-xs font-medium text-slate-700 ml-auto">$412.88</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Section divider: other categories -->
+        <div class="bg-slate-50 px-4 py-1.5 text-[10px] uppercase tracking-wider text-slate-500 font-semibold border-b border-slate-200">
+          Unmatched bank · 4 items
+        </div>
+
+        <!-- ITEM: Unmatched bank txn -->
+        <article class="bg-white hover:bg-slate-50 px-4 py-3 border-b border-slate-100 cursor-pointer">
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 shrink-0"></div>
+            <div class="h-9 w-9 rounded-md bg-blue-50 flex items-center justify-center shrink-0">
+              <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M5 6h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="text-sm font-medium text-slate-900 truncate">ANZ · CBA Direct Debit</span>
+                <span class="text-[11px] text-slate-500 shrink-0">12 Apr</span>
+              </div>
+              <div class="text-sm text-slate-600 truncate mt-0.5">RENTAL PAYMENT 0412345</div>
+              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                <span class="text-[10px] font-medium bg-blue-100 text-blue-800 rounded px-1.5 py-0.5">Unmatched</span>
+                <span class="text-[10px] font-medium bg-emerald-100 text-emerald-800 rounded px-1.5 py-0.5">2 suggestions</span>
+                <span class="text-xs font-semibold text-slate-900 ml-auto">-$1,245.00</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ITEM: Unmatched bank txn 2 -->
+        <article class="bg-white hover:bg-slate-50 px-4 py-3 border-b border-slate-100 cursor-pointer">
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 shrink-0"></div>
+            <div class="h-9 w-9 rounded-md bg-blue-50 flex items-center justify-center shrink-0">
+              <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M5 6h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="text-sm font-medium text-slate-900 truncate">ANZ · Deposit</span>
+                <span class="text-[11px] text-slate-500 shrink-0">11 Apr</span>
+              </div>
+              <div class="text-sm text-slate-600 truncate mt-0.5">FAST TRANSFER JONES DESIGN</div>
+              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                <span class="text-[10px] font-medium bg-blue-100 text-blue-800 rounded px-1.5 py-0.5">Unmatched</span>
+                <span class="text-xs font-semibold text-emerald-700 ml-auto">+$3,200.00</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Section divider: overdue -->
+        <div class="bg-slate-50 px-4 py-1.5 text-[10px] uppercase tracking-wider text-slate-500 font-semibold border-b border-slate-200">
+          Overdue · 2 items
+        </div>
+
+        <!-- ITEM: Overdue invoice -->
+        <article class="bg-white hover:bg-slate-50 px-4 py-3 border-b border-slate-100 cursor-pointer">
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 shrink-0"></div>
+            <div class="h-9 w-9 rounded-md bg-red-50 flex items-center justify-center shrink-0">
+              <svg class="h-4 w-4 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="text-sm font-medium text-slate-900 truncate">INV-2026-0042 · Blackwood Pty</span>
+                <span class="text-[11px] font-semibold text-red-600 shrink-0">45 days overdue</span>
+              </div>
+              <div class="text-sm text-slate-600 truncate mt-0.5">Consulting services · March</div>
+              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                <span class="text-[10px] font-medium bg-red-100 text-red-800 rounded px-1.5 py-0.5">Overdue</span>
+                <span class="text-[10px] font-medium bg-slate-100 text-slate-600 rounded px-1.5 py-0.5">2 reminders sent</span>
+                <span class="text-xs font-semibold text-red-700 ml-auto">$8,750.00</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Section divider: bills due -->
+        <div class="bg-slate-50 px-4 py-1.5 text-[10px] uppercase tracking-wider text-slate-500 font-semibold border-b border-slate-200">
+          Bills due soon · 3 items
+        </div>
+
+        <!-- ITEM: Bill due in 3 days -->
+        <article class="bg-white hover:bg-slate-50 px-4 py-3 border-b border-slate-100 cursor-pointer">
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 shrink-0"></div>
+            <div class="h-9 w-9 rounded-md bg-amber-50 flex items-center justify-center shrink-0">
+              <svg class="h-4 w-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="text-sm font-medium text-slate-900 truncate">BILL-884 · Telstra</span>
+                <span class="text-[11px] font-semibold text-amber-700 shrink-0">Due in 3 days</span>
+              </div>
+              <div class="text-sm text-slate-600 truncate mt-0.5">Business NBN · April</div>
+              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                <span class="text-[10px] font-medium bg-amber-100 text-amber-800 rounded px-1.5 py-0.5">Due soon</span>
+                <span class="text-xs font-semibold text-slate-900 ml-auto">$189.00</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ===== PANE 3: PREVIEW / DETAIL ===== -->
+      <section class="bg-slate-50 overflow-y-auto scrollbar-thin min-w-0">
+        <!-- Preview header -->
+        <div class="bg-white border-b border-slate-200 px-6 py-3 flex items-start justify-between gap-4 sticky top-0 z-10">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="h-10 w-10 rounded-md bg-orange-100 flex items-center justify-center shrink-0">
+              <span class="text-sm font-bold text-orange-700">OP</span>
+            </div>
+            <div class="min-w-0">
+              <h2 class="text-base font-semibold text-slate-900 truncate">Optus Business</h2>
+              <div class="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
+                <span>From</span>
+                <code class="bg-slate-100 rounded px-1">billing@optus.com.au</code>
+                <span>·</span>
+                <span>2 min ago</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button class="p-2 rounded-md hover:bg-slate-100" title="Previous (K)">
+              <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button class="p-2 rounded-md hover:bg-slate-100" title="Next (J)">
+              <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <div class="h-5 w-px bg-slate-200 mx-1"></div>
+            <button class="p-2 rounded-md hover:bg-slate-100" title="Archive (#)">
+              <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M6 8v10a2 2 0 002 2h8a2 2 0 002-2V8M10 12h4"/></svg>
+            </button>
+            <button class="p-2 rounded-md hover:bg-slate-100" title="More">
+              <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 grid grid-cols-[1fr_340px] gap-6">
+
+          <!-- LEFT: PDF preview -->
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mb-2">Attachment · optus-invoice-apr.pdf</div>
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+              <!-- Faux PDF -->
+              <div class="aspect-[1/1.3] bg-white p-8 relative">
+                <div class="absolute top-8 left-8 flex items-center gap-2">
+                  <div class="h-8 w-8 rounded bg-orange-500 flex items-center justify-center text-white font-bold text-sm">O</div>
+                  <div>
+                    <div class="text-sm font-bold text-slate-900">Optus Business</div>
+                    <div class="text-[10px] text-slate-500">ABN 92 000 000 000</div>
+                  </div>
+                </div>
+                <div class="absolute top-8 right-8 text-right">
+                  <div class="text-xs text-slate-400">TAX INVOICE</div>
+                  <div class="text-lg font-bold text-slate-900">INV-104882</div>
+                </div>
+                <div class="absolute top-28 left-8 right-8">
+                  <div class="h-2 rounded bg-slate-100 w-48 mb-2"></div>
+                  <div class="h-2 rounded bg-slate-100 w-36 mb-2"></div>
+                  <div class="h-2 rounded bg-slate-100 w-40"></div>
+                </div>
+                <div class="absolute top-52 left-8 right-8 border-t border-slate-200 pt-4">
+                  <div class="flex justify-between text-xs mb-2"><span class="text-slate-500">Description</span><span class="text-slate-500">Amount</span></div>
+                  <div class="flex justify-between text-sm mb-1.5"><span class="text-slate-700">Business Mobile · 5 lines</span><span class="text-slate-900">$180.00</span></div>
+                  <div class="flex justify-between text-sm mb-1.5"><span class="text-slate-700">International roaming</span><span class="text-slate-900">$45.00</span></div>
+                  <div class="flex justify-between text-sm"><span class="text-slate-700">GST</span><span class="text-slate-900">$23.50</span></div>
+                </div>
+                <div class="absolute bottom-8 right-8 text-right">
+                  <div class="text-xs text-slate-500">Total due</div>
+                  <div class="text-2xl font-bold text-slate-900">$248.50</div>
+                  <div class="text-xs text-slate-500 mt-1">Due 26 Apr 2026</div>
+                </div>
+              </div>
+              <div class="border-t border-slate-200 px-3 py-2 flex items-center justify-between bg-slate-50">
+                <span class="text-xs text-slate-500">Page 1 of 2</span>
+                <div class="flex items-center gap-1">
+                  <button class="p-1 rounded hover:bg-slate-200"><svg class="h-3.5 w-3.5 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/></svg></button>
+                  <button class="p-1 rounded hover:bg-slate-200"><svg class="h-3.5 w-3.5 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Extracted fields + actions -->
+          <div class="space-y-4">
+
+            <!-- AI extracted -->
+            <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+              <div class="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-teal-50 to-white">
+                <div class="flex items-center gap-1.5">
+                  <svg class="h-3.5 w-3.5 text-teal-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                  <span class="text-xs font-semibold text-slate-800">Extracted by AI</span>
+                  <span class="text-[10px] bg-emerald-100 text-emerald-800 rounded px-1.5 py-0.5 font-medium">98% confident</span>
+                </div>
+                <button class="text-[11px] text-teal-700 hover:text-teal-800 font-medium">Edit</button>
+              </div>
+              <dl class="divide-y divide-slate-100 text-sm">
+                <div class="px-4 py-2 grid grid-cols-[110px_1fr] gap-2">
+                  <dt class="text-slate-500 text-xs">Contact</dt>
+                  <dd class="text-slate-900 font-medium">Optus Business
+                    <span class="ml-1 text-[10px] bg-blue-100 text-blue-800 rounded px-1.5 py-0.5">Matched</span>
+                  </dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[110px_1fr] gap-2">
+                  <dt class="text-slate-500 text-xs">Document #</dt>
+                  <dd class="text-slate-900 font-medium">INV-104882</dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[110px_1fr] gap-2">
+                  <dt class="text-slate-500 text-xs">Issue date</dt>
+                  <dd class="text-slate-900">12 Apr 2026</dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[110px_1fr] gap-2">
+                  <dt class="text-slate-500 text-xs">Due date</dt>
+                  <dd class="text-slate-900">26 Apr 2026 <span class="text-[11px] text-amber-700">· 7 days</span></dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[110px_1fr] gap-2">
+                  <dt class="text-slate-500 text-xs">Subtotal</dt>
+                  <dd class="text-slate-900">$225.00</dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[110px_1fr] gap-2">
+                  <dt class="text-slate-500 text-xs">GST</dt>
+                  <dd class="text-slate-900">$23.50</dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[110px_1fr] gap-2 bg-slate-50">
+                  <dt class="text-slate-500 text-xs">Total</dt>
+                  <dd class="text-slate-900 font-bold text-base">$248.50</dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[110px_1fr] gap-2">
+                  <dt class="text-slate-500 text-xs">Category</dt>
+                  <dd class="text-slate-900">
+                    <span class="inline-flex items-center gap-1 bg-slate-100 rounded px-1.5 py-0.5 text-xs">
+                      6220 · Telecom
+                      <svg class="h-3 w-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            <!-- Primary actions -->
+            <div class="bg-white border border-slate-200 rounded-lg p-3 space-y-2">
+              <button class="w-full inline-flex items-center justify-center gap-2 h-9 rounded-md bg-teal-700 hover:bg-teal-800 text-white text-sm font-medium">
+                Create bill
+                <kbd class="bg-teal-800 text-[10px] px-1 rounded">E</kbd>
+              </button>
+              <div class="grid grid-cols-2 gap-2">
+                <button class="inline-flex items-center justify-center gap-1.5 h-8 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-xs font-medium text-slate-700">
+                  Attach to bill…
+                </button>
+                <button class="inline-flex items-center justify-center gap-1.5 h-8 rounded-md border border-slate-200 bg-white hover:bg-slate-50 text-xs font-medium text-slate-700">
+                  Reassign
+                </button>
+              </div>
+              <button class="w-full inline-flex items-center justify-center gap-1.5 h-8 rounded-md text-slate-500 hover:bg-slate-100 text-xs">
+                Archive without action
+                <kbd class="bg-slate-100 border border-slate-200 text-[10px] px-1 rounded">#</kbd>
+              </button>
+            </div>
+
+            <!-- Email metadata -->
+            <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+              <div class="px-4 py-2 border-b border-slate-100 text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Email metadata</div>
+              <dl class="divide-y divide-slate-100 text-xs">
+                <div class="px-4 py-2 grid grid-cols-[80px_1fr] gap-2">
+                  <dt class="text-slate-500">From</dt>
+                  <dd class="text-slate-800 truncate">billing@optus.com.au</dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[80px_1fr] gap-2">
+                  <dt class="text-slate-500">Forwarded by</dt>
+                  <dd class="text-slate-800">will@acme.co</dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[80px_1fr] gap-2">
+                  <dt class="text-slate-500">Received</dt>
+                  <dd class="text-slate-800">19 Apr 2026, 10:42</dd>
+                </div>
+                <div class="px-4 py-2 grid grid-cols-[80px_1fr] gap-2">
+                  <dt class="text-slate-500">Subject</dt>
+                  <dd class="text-slate-800">Your Optus tax invoice — April 2026</dd>
+                </div>
+              </dl>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ===== EMPTY STATE (hidden — shown when inbox is zero) ===== -->
+        <div class="hidden p-10">
+          <div class="max-w-md mx-auto text-center bg-white border border-slate-200 rounded-lg p-8">
+            <div class="h-16 w-16 mx-auto rounded-full bg-emerald-100 flex items-center justify-center">
+              <svg class="h-8 w-8 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h3 class="mt-4 text-base font-semibold text-slate-900">Inbox zero.</h3>
+            <p class="mt-1.5 text-sm text-slate-500">All caught up — no bank transactions to match, no invoices awaiting approval, no bills due soon.</p>
+            <p class="mt-4 text-xs text-slate-400">Forward bills to your workspace inbox to have them appear here automatically.</p>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

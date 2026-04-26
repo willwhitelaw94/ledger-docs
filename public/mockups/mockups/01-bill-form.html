@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Invoice — TC Portal Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4',
+                            400: '#2dd4bf', 500: '#43C0BE', 600: '#0d9488', 700: '#007F7E',
+                            800: '#115e59', 900: '#134e4a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [contenteditable]:focus { outline: 2px solid #007F7E; outline-offset: -1px; border-radius: 4px; }
+        .line-item-row td { border-bottom: 1px solid #f3f4f6; }
+        .line-item-row:hover { background: #f9fafb; }
+        .line-item-row:focus-within { background: #f0fdfa; }
+        input:focus, select:focus { outline: 2px solid #007F7E; outline-offset: -1px; }
+        .doc-preview-panel { transition: width 0.2s ease; }
+        .popover-arrow { position: absolute; top: -6px; right: 20px; width: 12px; height: 12px; background: white; border-left: 1px solid #e5e7eb; border-top: 1px solid #e5e7eb; transform: rotate(45deg); }
+    </style>
+</head>
+<body class="bg-gray-50 flex">
+
+<!-- ===== SIDEBAR (skeleton — framing only) ===== -->
+<aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+    <div class="px-4 py-4 border-b border-gray-100">
+        <div class="flex items-center gap-2.5">
+            <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div>
+            <div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+    </div>
+    <div class="px-3 py-3">
+        <div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div>
+    </div>
+    <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+        <div class="flex items-center gap-2.5 px-3 py-2">
+            <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+            <div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <div class="flex items-center gap-2.5 px-3 py-2">
+            <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+            <div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50">
+            <div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div>
+            <div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div>
+        </div>
+        <div class="flex items-center gap-2.5 px-3 py-2">
+            <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+            <div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <div class="flex items-center gap-2.5 px-3 py-2">
+            <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+            <div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+    </nav>
+    <div class="border-t border-gray-100 px-3 py-3">
+        <div class="flex items-center gap-2.5">
+            <div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div>
+            <div class="flex-1 space-y-1.5">
+                <div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div>
+                <div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="flex-1 flex flex-col min-h-screen">
+
+    <!-- Page header -->
+    <header class="bg-white border-b border-gray-200 px-6 py-4">
+        <nav class="text-xs text-gray-400 mb-1">
+            <span>Invoices</span> <span class="mx-1">/</span>
+            <span class="text-gray-700 font-medium">New Invoice</span>
+        </nav>
+        <div class="flex items-center justify-between">
+            <h1 class="text-xl font-semibold text-gray-900">New Invoice</h1>
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-500">
+                <span class="h-1.5 w-1.5 rounded-full bg-gray-400"></span>
+                Draft
+            </span>
+        </div>
+    </header>
+
+    <!-- Split layout: doc preview + form -->
+    <div class="flex flex-1 overflow-hidden">
+
+        <!-- ===== LEFT: Document Preview Panel ===== -->
+        <div id="docPanel" class="doc-preview-panel w-[380px] shrink-0 border-r border-gray-200 bg-white flex flex-col">
+            <!-- Panel header -->
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                <div class="flex items-center gap-2">
+                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span class="text-sm font-medium text-gray-700">CK-263341--03032026.pdf</span>
+                </div>
+                <button onclick="toggleDocPanel()" class="rounded p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100" title="Toggle panel">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
+                </button>
+            </div>
+
+            <!-- Preview area -->
+            <div class="flex-1 flex flex-col items-center justify-center bg-gray-100 p-6">
+                <div class="w-full max-w-[280px] aspect-[8.5/11] bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col items-center justify-center p-8">
+                    <!-- Fake PDF content -->
+                    <div class="w-full space-y-3">
+                        <div class="h-4 w-3/4 rounded bg-gray-200"></div>
+                        <div class="h-3 w-full rounded bg-gray-100"></div>
+                        <div class="h-3 w-5/6 rounded bg-gray-100"></div>
+                        <div class="h-3 w-full rounded bg-gray-100"></div>
+                        <div class="mt-4 h-px bg-gray-200"></div>
+                        <div class="h-3 w-2/3 rounded bg-gray-100"></div>
+                        <div class="h-3 w-3/4 rounded bg-gray-100"></div>
+                        <div class="h-3 w-1/2 rounded bg-gray-100"></div>
+                        <div class="mt-4 h-px bg-gray-200"></div>
+                        <div class="flex justify-end">
+                            <div class="h-4 w-24 rounded bg-gray-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview footer -->
+            <div class="flex items-center justify-between px-4 py-2.5 border-t border-gray-100 text-xs text-gray-500">
+                <span>Previewing 1 of 1</span>
+                <a href="#" class="font-medium text-teal-700 hover:text-teal-800">Download</a>
+            </div>
+        </div>
+
+        <!-- ===== RIGHT: Invoice Form ===== -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <div class="flex-1 p-6 max-w-5xl">
+
+                <!-- ── Invoice Header Fields ── -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                    <div class="grid grid-cols-12 gap-0">
+                        <!-- Care Recipient -->
+                        <div class="col-span-4 p-4 border-r border-gray-100">
+                            <label class="block text-[11px] font-medium uppercase tracking-wider text-gray-400 mb-1.5">Care Recipient</label>
+                            <div class="relative">
+                                <input type="text" value="Margaret Thompson" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400" />
+                                <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                                    <span class="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-[10px] text-gray-500">TC-14829</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Invoice Date -->
+                        <div class="col-span-2 p-4 border-r border-gray-100">
+                            <label class="block text-[11px] font-medium uppercase tracking-wider text-gray-400 mb-1.5">Invoice Date</label>
+                            <input type="text" value="9 Mar 2026" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900" />
+                        </div>
+
+                        <!-- Due Date -->
+                        <div class="col-span-2 p-4 border-r border-gray-100">
+                            <label class="block text-[11px] font-medium uppercase tracking-wider text-gray-400 mb-1.5">Due Date</label>
+                            <input type="text" value="23 Mar 2026" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900" />
+                        </div>
+
+                        <!-- Invoice Ref -->
+                        <div class="col-span-2 p-4 border-r border-gray-100">
+                            <label class="block text-[11px] font-medium uppercase tracking-wider text-gray-400 mb-1.5">Reference</label>
+                            <input type="text" value="CK-263341" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-mono text-gray-900" />
+                        </div>
+
+                        <!-- Files + Total -->
+                        <div class="col-span-2 p-4">
+                            <label class="block text-[11px] font-medium uppercase tracking-wider text-gray-400 mb-1.5">Total</label>
+                            <div class="flex items-center gap-2">
+                                <!-- File attachment icon -->
+                                <div class="relative">
+                                    <button onclick="toggleFilesPopover()" class="relative rounded-lg border border-gray-200 p-2 text-gray-400 hover:text-gray-600 hover:border-gray-300 transition">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                                        <span class="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-teal-700 text-[9px] font-bold text-white">1</span>
+                                    </button>
+
+                                    <!-- Files popover -->
+                                    <div id="filesPopover" class="hidden absolute right-0 top-full mt-3 w-72 rounded-xl border border-gray-200 bg-white shadow-lg z-50">
+                                        <div class="popover-arrow"></div>
+                                        <div class="px-4 py-3 border-b border-gray-100">
+                                            <span class="text-[11px] font-medium uppercase tracking-wider text-gray-400">Related Files</span>
+                                        </div>
+                                        <div class="p-3">
+                                            <div class="flex items-center gap-3 rounded-lg bg-gray-50 px-3 py-2.5">
+                                                <svg class="h-5 w-5 text-red-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9l-5-5H7a2 2 0 00-2 2v13a2 2 0 002 2zm2-7h6m-6 3h3"/></svg>
+                                                <div class="flex-1 min-w-0">
+                                                    <p class="text-sm font-medium text-gray-900 truncate">CK-263341--03032026.pdf</p>
+                                                    <p class="text-xs text-gray-400">219.2 KB · Uploaded just now</p>
+                                                </div>
+                                                <button class="text-gray-300 hover:text-red-500 transition">
+                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="flex border-t border-gray-100">
+                                            <button class="flex-1 px-4 py-2.5 text-xs font-medium text-teal-700 hover:bg-gray-50 transition">+ Upload files...</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <span class="text-lg font-bold text-gray-900">$1,540.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Line Items Table ── -->
+                <div class="mt-5 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50/80">
+                                <th class="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-gray-400 w-[240px]">Description</th>
+                                <th class="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-gray-400 w-[180px]">Service Type</th>
+                                <th class="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-gray-400 w-[110px]">Service Date</th>
+                                <th class="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-gray-400 w-[70px]">Qty</th>
+                                <th class="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-gray-400 w-[90px]">Unit Price</th>
+                                <th class="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-gray-400 w-[100px]">Tax</th>
+                                <th class="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-gray-400 w-[100px]">Amount</th>
+                                <th class="w-10"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Row 1 — filled -->
+                            <tr class="line-item-row">
+                                <td class="px-4 py-2.5">
+                                    <input type="text" value="Personal care assistance — morning routine" class="w-full border-0 bg-transparent text-sm text-gray-900 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="inline-flex items-center rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-medium text-teal-700">Personal Care</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <input type="text" value="03/03/2026" class="w-full border-0 bg-transparent text-sm text-gray-700 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" value="2.0" class="w-full border-0 bg-transparent text-sm text-gray-900 text-right focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" value="65.00" class="w-full border-0 bg-transparent text-sm text-gray-900 text-right focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <select class="border-0 bg-transparent text-sm text-gray-700 focus:ring-0 p-0 -ml-1">
+                                        <option>GST Free</option>
+                                        <option>GST 10%</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <span class="text-sm font-medium text-gray-900">$130.00</span>
+                                </td>
+                                <td class="px-2 py-2.5">
+                                    <button class="rounded p-1 text-gray-300 hover:text-red-500 hover:bg-red-50 transition">
+                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 — filled -->
+                            <tr class="line-item-row">
+                                <td class="px-4 py-2.5">
+                                    <input type="text" value="Community access — grocery shopping support" class="w-full border-0 bg-transparent text-sm text-gray-900 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700">Community Access</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <input type="text" value="04/03/2026" class="w-full border-0 bg-transparent text-sm text-gray-700 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" value="3.0" class="w-full border-0 bg-transparent text-sm text-gray-900 text-right focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" value="70.00" class="w-full border-0 bg-transparent text-sm text-gray-900 text-right focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <select class="border-0 bg-transparent text-sm text-gray-700 focus:ring-0 p-0 -ml-1">
+                                        <option>GST Free</option>
+                                        <option>GST 10%</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <span class="text-sm font-medium text-gray-900">$210.00</span>
+                                </td>
+                                <td class="px-2 py-2.5">
+                                    <button class="rounded p-1 text-gray-300 hover:text-red-500 hover:bg-red-50 transition">
+                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 — filled -->
+                            <tr class="line-item-row">
+                                <td class="px-4 py-2.5">
+                                    <input type="text" value="Domestic assistance — house cleaning" class="w-full border-0 bg-transparent text-sm text-gray-900 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">Domestic</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <input type="text" value="05/03/2026" class="w-full border-0 bg-transparent text-sm text-gray-700 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" value="4.0" class="w-full border-0 bg-transparent text-sm text-gray-900 text-right focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" value="55.00" class="w-full border-0 bg-transparent text-sm text-gray-900 text-right focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <select class="border-0 bg-transparent text-sm text-gray-700 focus:ring-0 p-0 -ml-1">
+                                        <option selected>GST 10%</option>
+                                        <option>GST Free</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <span class="text-sm font-medium text-gray-900">$220.00</span>
+                                </td>
+                                <td class="px-2 py-2.5">
+                                    <button class="rounded p-1 text-gray-300 hover:text-red-500 hover:bg-red-50 transition">
+                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 4 — filled -->
+                            <tr class="line-item-row">
+                                <td class="px-4 py-2.5">
+                                    <input type="text" value="Travel — transport to medical appointment" class="w-full border-0 bg-transparent text-sm text-gray-900 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="inline-flex items-center rounded-full bg-purple-50 px-2 py-0.5 text-[11px] font-medium text-purple-700">Transport</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <input type="text" value="06/03/2026" class="w-full border-0 bg-transparent text-sm text-gray-700 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" value="1.0" class="w-full border-0 bg-transparent text-sm text-gray-900 text-right focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" value="45.00" class="w-full border-0 bg-transparent text-sm text-gray-900 text-right focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <select class="border-0 bg-transparent text-sm text-gray-700 focus:ring-0 p-0 -ml-1">
+                                        <option>GST Free</option>
+                                        <option>GST 10%</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <span class="text-sm font-medium text-gray-900">$45.00</span>
+                                </td>
+                                <td class="px-2 py-2.5">
+                                    <button class="rounded p-1 text-gray-300 hover:text-red-500 hover:bg-red-50 transition">
+                                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Empty row (ready for input) -->
+                            <tr class="line-item-row">
+                                <td class="px-4 py-2.5">
+                                    <input type="text" placeholder="Enter description..." class="w-full border-0 bg-transparent text-sm text-gray-900 placeholder-gray-300 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <select class="border-0 bg-transparent text-sm text-gray-400 focus:ring-0 p-0 -ml-1">
+                                        <option value="">Select...</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <input type="text" placeholder="dd/mm/yyyy" class="w-full border-0 bg-transparent text-sm text-gray-400 placeholder-gray-300 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" placeholder="0" class="w-full border-0 bg-transparent text-sm text-gray-400 text-right placeholder-gray-300 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <input type="text" placeholder="0.00" class="w-full border-0 bg-transparent text-sm text-gray-400 text-right placeholder-gray-300 focus:ring-0 p-0" />
+                                </td>
+                                <td class="px-4 py-2.5">
+                                    <select class="border-0 bg-transparent text-sm text-gray-400 focus:ring-0 p-0 -ml-1">
+                                        <option>GST Free</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-2.5 text-right">
+                                    <span class="text-sm text-gray-300">$0.00</span>
+                                </td>
+                                <td class="px-2 py-2.5"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Add line + Totals -->
+                    <div class="flex items-end justify-between px-4 py-3 border-t border-gray-100">
+                        <button class="flex items-center gap-1.5 text-sm font-medium text-teal-700 hover:text-teal-800 transition">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            Add a new line
+                        </button>
+
+                        <div class="w-64">
+                            <div class="flex justify-between py-1.5 text-sm">
+                                <span class="text-gray-500">Subtotal</span>
+                                <span class="text-gray-900">$583.00</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 text-sm">
+                                <span class="text-gray-500">GST</span>
+                                <span class="text-gray-900">$22.00</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-t-2 border-gray-900 mt-1">
+                                <span class="text-base font-bold text-gray-900">TOTAL</span>
+                                <span class="text-xl font-bold text-gray-900">$605.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Bank Details (Collapsible) ── -->
+                <div class="mt-5 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <button onclick="toggleBankDetails()" class="flex w-full items-center justify-between px-5 py-3.5 hover:bg-gray-50 transition">
+                        <div class="flex items-center gap-2.5">
+                            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                            <span class="text-sm font-medium text-gray-700">Bank Details</span>
+                            <span class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-medium text-green-600">
+                                <svg class="h-2.5 w-2.5 mr-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                Confirmed
+                            </span>
+                        </div>
+                        <svg id="bankChevron" class="h-4 w-4 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+
+                    <div id="bankDetailsContent" class="hidden border-t border-gray-100">
+                        <div class="grid grid-cols-3 gap-6 px-5 py-4">
+                            <div>
+                                <dt class="text-[11px] font-medium uppercase tracking-wider text-gray-400">BSB</dt>
+                                <dd class="mt-1 text-sm font-mono text-gray-900">032-001</dd>
+                            </div>
+                            <div>
+                                <dt class="text-[11px] font-medium uppercase tracking-wider text-gray-400">Account Number</dt>
+                                <dd class="mt-1 text-sm font-mono text-gray-900">123456789</dd>
+                            </div>
+                            <div>
+                                <dt class="text-[11px] font-medium uppercase tracking-wider text-gray-400">Account Name</dt>
+                                <dd class="mt-1 text-sm text-gray-900">CareKind Support Services Pty Ltd</dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Declaration ── -->
+                <div class="mt-5 mb-24 flex items-start gap-3 rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
+                    <input type="checkbox" id="declaration" checked class="mt-0.5 h-4 w-4 rounded border-gray-300 text-teal-700 focus:ring-teal-500" />
+                    <label for="declaration" class="text-sm text-gray-600 leading-relaxed">
+                        I declare that the information provided is accurate, and the services listed were delivered to the care recipient as described. I confirm the bank details above are correct for payment.
+                    </label>
+                </div>
+
+            </div>
+
+            <!-- ── Sticky Action Bar ── -->
+            <div class="sticky bottom-0 border-t border-gray-200 bg-white px-6 py-3 flex items-center justify-between shadow-[0_-2px_8px_rgba(0,0,0,0.04)]">
+                <button class="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition">
+                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                    Save Draft
+                </button>
+
+                <div class="flex items-center gap-3">
+                    <button class="rounded-lg px-5 py-2.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition">
+                        Cancel
+                    </button>
+                    <button class="flex items-center gap-2 rounded-lg bg-teal-700 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-teal-800 transition">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Submit Invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDocPanel() {
+        const panel = document.getElementById('docPanel');
+        if (panel.classList.contains('w-[380px]')) {
+            panel.classList.remove('w-[380px]');
+            panel.classList.add('w-0', 'overflow-hidden');
+        } else {
+            panel.classList.remove('w-0', 'overflow-hidden');
+            panel.classList.add('w-[380px]');
+        }
+    }
+
+    function toggleFilesPopover() {
+        const popover = document.getElementById('filesPopover');
+        popover.classList.toggle('hidden');
+    }
+
+    function toggleBankDetails() {
+        const content = document.getElementById('bankDetailsContent');
+        const chevron = document.getElementById('bankChevron');
+        content.classList.toggle('hidden');
+        chevron.classList.toggle('rotate-180');
+    }
+
+    // Close popover on outside click
+    document.addEventListener('click', (e) => {
+        const popover = document.getElementById('filesPopover');
+        if (!e.target.closest('[onclick*="toggleFilesPopover"]') && !e.target.closest('#filesPopover')) {
+            popover.classList.add('hidden');
+        }
+    });
+</script>
+
+<script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

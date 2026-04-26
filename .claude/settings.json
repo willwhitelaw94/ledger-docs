@@ -1,0 +1,14 @@
+{
+  "enabledPlugins": {
+    "tc-wow@tc-wow": true
+  },
+  "extraKnownMarketplaces": {
+    "tc-wow": {
+      "source": {
+        "source": "github",
+        "repo": "Trilogy-Care/tc-wow"
+      },
+      "autoUpdate": true
+    }
+  }
+}

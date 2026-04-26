@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary & Concept Explorer - TC Portal</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-hover: #1f2b47;
+    --bg-panel: #0f3460;
+    --teal-700: #007F7E;
+    --teal-500: #43C0BE;
+    --blue-700: #2C4C79;
+    --text: #e0e0e0;
+    --text-muted: #8892a4;
+    --text-bright: #ffffff;
+    --border: #2a3a5c;
+    --radius: 8px;
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Menlo', 'Consolas', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+    --cat-government: #e74c3c;
+    --cat-services: #007F7E;
+    --cat-packages: #2C4C79;
+    --cat-finance: #f39c12;
+    --cat-roles: #9b59b6;
+    --cat-process: #27ae60;
+    --cat-compliance: #c0392b;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-panel) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header h1 {
+    font-size: 18px;
+    color: var(--text-bright);
+    white-space: nowrap;
+  }
+  .header h1 span { color: var(--teal-500); }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Search */
+  .search-wrapper {
+    position: relative;
+    width: 320px;
+  }
+  .search-wrapper input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text-bright);
+    font-size: 14px;
+    font-family: var(--sans);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrapper input:focus {
+    border-color: var(--teal-500);
+  }
+  .search-wrapper input::placeholder { color: var(--text-muted); }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  /* Toggle buttons */
+  .toggle-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: var(--sans);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .toggle-btn:hover { border-color: var(--teal-500); color: var(--text); }
+  .toggle-btn.active {
+    background: var(--teal-700);
+    border-color: var(--teal-700);
+    color: var(--text-bright);
+  }
+
+  /* Stat counter */
+  .stat-counter {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .stat-counter strong { color: var(--teal-500); }
+
+  /* Layout */
+  .layout {
+    display: flex;
+    min-height: calc(100vh - 60px);
+  }
+
+  /* Alphabet sidebar */
+  .alpha-sidebar {
+    width: 36px;
+    min-width: 36px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    gap: 1px;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  .alpha-sidebar button {
+    width: 28px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: var(--mono);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .alpha-sidebar button:hover { background: var(--bg-hover); color: var(--teal-500); }
+  .alpha-sidebar button.has-terms { color: var(--text); font-weight: 600; }
+  .alpha-sidebar button.active-letter { background: var(--teal-700); color: var(--text-bright); }
+
+  /* Main content area */
+  .main-content {
+    flex: 1;
+    padding: 20px 24px;
+    overflow-y: auto;
+    max-width: 100%;
+  }
+
+  /* Category filter bar */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .filter-bar .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+  .cat-filter {
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+    font-size: 12px;
+    font-family: var(--sans);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+  }
+  .cat-filter.active { color: var(--text-bright); }
+  .cat-filter:not(.active) { opacity: 0.4; }
+
+  /* Term cards grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+  }
+
+  /* Letter group header */
+  .letter-group {
+    grid-column: 1 / -1;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal-500);
+    font-family: var(--mono);
+    padding: 12px 0 4px;
+    border-bottom: 1px solid var(--border);
+    margin-top: 8px;
+    scroll-margin-top: 80px;
+  }
+
+  /* Term card */
+  .term-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .term-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    transition: background 0.2s;
+  }
+  .term-card:hover {
+    border-color: var(--teal-500);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .term-card.highlighted {
+    border-color: var(--teal-500);
+    box-shadow: 0 0 0 2px rgba(67, 192, 190, 0.3), 0 4px 20px rgba(0,0,0,0.3);
+    animation: pulse-highlight 1.5s ease-out;
+  }
+  @keyframes pulse-highlight {
+    0% { box-shadow: 0 0 0 4px rgba(67, 192, 190, 0.6); }
+    100% { box-shadow: 0 0 0 2px rgba(67, 192, 190, 0.3), 0 4px 20px rgba(0,0,0,0.3); }
+  }
+
+  .term-card[data-cat="government"]::before { background: var(--cat-government); }
+  .term-card[data-cat="services"]::before { background: var(--cat-services); }
+  .term-card[data-cat="packages"]::before { background: var(--cat-packages); }
+  .term-card[data-cat="finance"]::before { background: var(--cat-finance); }
+  .term-card[data-cat="roles"]::before { background: var(--cat-roles); }
+  .term-card[data-cat="process"]::before { background: var(--cat-process); }
+  .term-card[data-cat="compliance"]::before { background: var(--cat-compliance); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .card-abbrev {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: var(--mono);
+    color: var(--text-bright);
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  .card-fullname {
+    font-size: 13px;
+    color: var(--teal-500);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .card-cat-tag {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Flashcard mode: hide description */
+  .flashcard-mode .card-desc,
+  .flashcard-mode .card-fullname,
+  .flashcard-mode .card-meta { display: none; }
+  .flashcard-mode .term-card { min-height: 80px; display: flex; align-items: center; }
+  .flashcard-mode .term-card .card-header { margin-bottom: 0; }
+  .flashcard-mode .term-card.revealed .card-desc,
+  .flashcard-mode .term-card.revealed .card-fullname,
+  .flashcard-mode .term-card.revealed .card-meta { display: block; }
+  .flashcard-mode .term-card.revealed { display: block; }
+  .flashcard-mode .term-card.revealed .card-header { margin-bottom: 8px; }
+
+  /* Related terms & domain badges */
+  .card-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .related-pill {
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--teal-500);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--mono);
+  }
+  .related-pill:hover {
+    background: var(--teal-700);
+    color: var(--text-bright);
+    border-color: var(--teal-700);
+  }
+  .domain-badge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    background: var(--blue-700);
+    color: var(--text);
+    border: none;
+    opacity: 0.8;
+  }
+
+  /* Graph overlay */
+  .graph-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 46, 0.92);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .graph-overlay.visible { display: flex; }
+  .graph-container {
+    width: 90vw;
+    height: 80vh;
+    max-width: 900px;
+    max-height: 600px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+  .graph-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--text-muted);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s;
+  }
+  .graph-close:hover { color: var(--text-bright); border-color: var(--teal-500); }
+  .graph-title {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    font-size: 14px;
+    color: var(--text-muted);
+    z-index: 10;
+  }
+  .graph-title strong { color: var(--teal-500); }
+  canvas#graphCanvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 12px 16px; }
+    .search-wrapper { width: 100%; }
+    .alpha-sidebar { display: none; }
+    .main-content { padding: 16px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .header-controls { width: 100%; }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* New member badge */
+  .essential-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal-500);
+    box-shadow: 0 0 6px var(--teal-500);
+  }
+
+  /* Empty state */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3 { color: var(--text); font-size: 18px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span>TC</span> Glossary & Concept Explorer</h1>
+  <div class="header-controls">
+    <div class="search-wrapper">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Search terms, abbreviations, descriptions..." autofocus>
+    </div>
+    <button class="toggle-btn" id="newModeBtn" onclick="toggleNewMode()">I'm New</button>
+    <button class="toggle-btn" id="flashcardBtn" onclick="toggleFlashcard()">Flashcard</button>
+    <button class="toggle-btn" id="graphBtn" onclick="openGraph(null)">Graph View</button>
+    <span class="stat-counter" id="statCounter"></span>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="alpha-sidebar" id="alphaSidebar"></div>
+  <div class="main-content" id="mainContent">
+    <div class="filter-bar" id="filterBar">
+      <span class="label">Filter:</span>
+    </div>
+    <div class="cards-grid" id="cardsGrid"></div>
+  </div>
+</div>
+
+<div class="graph-overlay" id="graphOverlay">
+  <div class="graph-container">
+    <span class="graph-title" id="graphTitle">Relationship Graph</span>
+    <button class="graph-close" onclick="closeGraph()">&times;</button>
+    <canvas id="graphCanvas"></canvas>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// GLOSSARY DATA
+// ============================================================
+const GLOSSARY = [
+  // --- Government Programs & Funding ---
+  {
+    abbrev: "SAH", fullName: "Support at Home", cat: "government",
+    desc: "The Australian government's aged care program launched in 2025, replacing HCP and CHSP. Provides subsidized home and community care services for older Australians.",
+    related: ["HCP", "CHSP", "NOA", "IPA", "SERG", "PRODA"],
+    domains: ["All"],
+    essential: true
+  },
+  {
+    abbrev: "HCP", fullName: "Home Care Packages", cat: "government",
+    desc: "Predecessor program to SAH. Means-tested subsidies for older people needing home care. Replaced by Support at Home in 2025.",
+    related: ["SAH", "CHSP"],
+    domains: []
+  },
+  {
+    abbrev: "CHSP", fullName: "Commonwealth Home Support Programme", cat: "government",
+    desc: "Predecessor to SAH. Subsidized low-level care assistance for older Australians. Merged into Support at Home.",
+    related: ["SAH", "HCP"],
+    domains: []
+  },
+  {
+    abbrev: "IPA", fullName: "Individual Payment Agreement", cat: "government",
+    desc: "Funding entitlement issued by Services Australia specifying approved services and dollar amounts for a participant.",
+    related: ["NOA", "SAH", "Claims"],
+    domains: ["Claims", "Budget Management"],
+    essential: true
+  },
+  {
+    abbrev: "NOA", fullName: "Notice of Assessment", cat: "government",
+    desc: "Government-issued document confirming approved services, funding amounts, and eligibility for a participant under SAH.",
+    related: ["IPA", "SAH"],
+    domains: ["Budget Management", "Bill Processing"],
+    essential: true
+  },
+  {
+    abbrev: "PRODA", fullName: "Processor of Digital Accounts", cat: "government",
+    desc: "Services Australia's authentication system for government portals and APIs. Used for claims submission and eligibility verification.",
+    related: ["Services Australia API"],
+    domains: ["Claims"]
+  },
+
+  // --- Service Groups & Categories ---
+  {
+    abbrev: "SERG", fullName: "Service Group", cat: "services",
+    desc: "Service categories defined by SAH. SERG-0001: Home Support (personal care, domestic assistance). SERG-0002: Assistive Technology. SERG-0003: Home Modifications. SERG-0004: Care Management. SERG-0005: End of Life Pathway. SERG-0006: Restorative Care Pathway.",
+    related: ["SAH", "Budget Management", "Service Plan"],
+    domains: ["Budget Management", "Service Planning"],
+    essential: true
+  },
+
+  // --- Care Package Types ---
+  {
+    abbrev: "Self-Managed", fullName: "Self-Managed Package", cat: "packages",
+    desc: "Recipient directly engages suppliers and manages own services. Trilogy provides support and tracking tools but the participant retains full control.",
+    related: ["SM+", "Fully Coordinated", "Consumer Directed Care"],
+    domains: ["Care Management"],
+    essential: true
+  },
+  {
+    abbrev: "Fully Coordinated", fullName: "Fully Coordinated Package", cat: "packages",
+    desc: "Trilogy coordinates and manages all services on behalf of the participant. Attracts a Care Coordination fee (~20%).",
+    related: ["Self-Managed", "SM+", "Care Partner"],
+    domains: ["Care Management"]
+  },
+  {
+    abbrev: "SM+", fullName: "Self-Managed Plus", cat: "packages",
+    desc: "Enhanced self-managed package with Trilogy coordination support. The recipient retains control while receiving additional assistance with service management.",
+    related: ["Self-Managed", "Fully Coordinated"],
+    domains: ["Care Management"]
+  },
+  {
+    abbrev: "Consumer Directed Care", fullName: "Consumer Directed Care", cat: "packages",
+    desc: "Philosophy giving recipients maximum choice and control over their care services, funding, and service providers.",
+    related: ["Self-Managed", "Dignity of Risk"],
+    domains: ["Care Management"]
+  },
+  {
+    abbrev: "Dignity of Risk", fullName: "Dignity of Risk", cat: "packages",
+    desc: "Principle that clients have the right to make informed decisions about their care even when those decisions carry some risk. A core value in aged care.",
+    related: ["Consumer Directed Care", "Aged Care Quality Standards"],
+    domains: ["Care Management", "Compliance"],
+    essential: true
+  },
+
+  // --- Budget & Funding ---
+  {
+    abbrev: "Service Plan", fullName: "Service Plan", cat: "finance",
+    desc: "Document specifying: services approved, allocation per category (SERG), duration/frequency, and assigned suppliers for a participant.",
+    related: ["SERG", "Budget Management", "Funding Stream"],
+    domains: ["Budget Management", "Service Planning"],
+    essential: true
+  },
+  {
+    abbrev: "Funding Stream", fullName: "Funding Stream", cat: "finance",
+    desc: "Source classification for budget allocation. ON: Ongoing (primary quarterly). RC: Restorative Care. EL: End of Life. CU: Commonwealth Unspent (rollover). HC: Home Care Account (surpluses). VC: Voluntary Contribution (client top-ups).",
+    related: ["Budget Management", "Collections", "Contributions", "Quarterly Budget"],
+    domains: ["Budget Management", "Collections"],
+    essential: true
+  },
+  {
+    abbrev: "Quarterly Budget", fullName: "Quarterly Budget", cat: "finance",
+    desc: "Funding allocation reset each calendar quarter. The primary cycle for budget planning and expenditure tracking under SAH.",
+    related: ["Funding Stream", "Classification Level", "Service Plan"],
+    domains: ["Budget Management"]
+  },
+  {
+    abbrev: "Classification Level", fullName: "Classification Level", cat: "finance",
+    desc: "A 1-8 scale determining the funding amount per participant under SAH. Higher levels indicate greater care needs and higher funding.",
+    related: ["SAH", "Quarterly Budget", "NOA"],
+    domains: ["Budget Management"]
+  },
+  {
+    abbrev: "Loading Fee", fullName: "Loading Fee", cat: "finance",
+    desc: "10% Trilogy Care fee plus 20% participant contribution where applicable. Applied to service costs as part of the funding model.",
+    related: ["Funding Stream", "Quarterly Budget"],
+    domains: ["Budget Management", "Bill Processing"]
+  },
+  {
+    abbrev: "Unspent Funds", fullName: "Unspent Funds", cat: "finance",
+    desc: "Budget not utilized within the quarter. Subject to auto-rollover within 60 days under SAH funding rules.",
+    related: ["Quarterly Budget", "Funding Stream"],
+    domains: ["Budget Management"]
+  },
+
+  // --- Trilogy Roles ---
+  {
+    abbrev: "Care Partner", fullName: "Care Partner", cat: "roles",
+    desc: "TC staff responsible for case management, approvals, and budget oversight. PRIMARY field role at Trilogy Care managing clients daily.",
+    related: ["Care Coordinator", "Senior Care Partner", "POD Leader", "Participant"],
+    domains: ["Care Management", "Budget Management", "Bill Processing"],
+    essential: true
+  },
+  {
+    abbrev: "Care Coordinator", fullName: "Care Coordinator", cat: "roles",
+    desc: "Day-to-day coordination including calls, notes, and tasks. SECONDARY support/admin role at Trilogy Care.",
+    related: ["Care Partner", "Team Leader"],
+    domains: ["Care Management"],
+    essential: true
+  },
+  {
+    abbrev: "Senior Care Partner", fullName: "Senior Care Partner", cat: "roles",
+    desc: "Oversight of care partners. Handles complex case management, mentoring, and escalated decisions.",
+    related: ["Care Partner", "POD Leader"],
+    domains: ["Care Management"]
+  },
+  {
+    abbrev: "POD Leader", fullName: "Platform Operational Director", cat: "roles",
+    desc: "Portfolio-level oversight of care operations. Primary escalation point for complex issues and operational decisions.",
+    related: ["Senior Care Partner", "Care Partner", "Team Leader"],
+    domains: ["Care Management"]
+  },
+  {
+    abbrev: "Team Leader", fullName: "Team Leader", cat: "roles",
+    desc: "Day-to-day team operations, workload distribution, and immediate support for care partners and coordinators.",
+    related: ["POD Leader", "Care Coordinator"],
+    domains: ["Care Management"]
+  },
+  {
+    abbrev: "Bill Processor", fullName: "Bill Processor", cat: "roles",
+    desc: "Responsible for invoice processing. Target throughput of 90 bills per day at approximately 5 minutes each.",
+    related: ["Care Partner", "Supplier"],
+    domains: ["Bill Processing"]
+  },
+  {
+    abbrev: "Assessment Partner", fullName: "Assessment Partner", cat: "roles",
+    desc: "Conducts initial needs assessments, service planning, and budget setting for new participants.",
+    related: ["Care Partner", "Service Plan", "Classification Level"],
+    domains: ["Onboarding", "Service Planning"]
+  },
+  {
+    abbrev: "Clinical Nurse", fullName: "Clinical Nurse", cat: "roles",
+    desc: "AHPRA-registered nurse providing clinical escalation, incident response, and clinical oversight within care teams.",
+    related: ["AHPRA", "SIRS", "Care Partner"],
+    domains: ["Clinical", "Compliance"]
+  },
+  {
+    abbrev: "Supplier", fullName: "Supplier", cat: "roles",
+    desc: "Third-party service provider delivering care services such as personal care, allied health, equipment provision, and home modifications.",
+    related: ["Bill Processor", "Service Plan", "Participant"],
+    domains: ["Supplier Management", "Bill Processing"]
+  },
+  {
+    abbrev: "Participant", fullName: "Participant", cat: "roles",
+    desc: "Older Australian (65+, or 50+ for Indigenous Australians) receiving government-funded care through the SAH program.",
+    related: ["Care Partner", "Registered Supporter", "SAH", "NOA"],
+    domains: ["All"]
+  },
+  {
+    abbrev: "Registered Supporter", fullName: "Registered Supporter", cat: "roles",
+    desc: "Family member, carer, or advocate with delegated access to a participant's care information and decisions.",
+    related: ["Participant", "Care Partner"],
+    domains: ["Care Management"]
+  },
+  {
+    abbrev: "Collections Team", fullName: "Collections Team", cat: "roles",
+    desc: "Handles direct debit, fee collection, accounts receivable integration, and financial reconciliation.",
+    related: ["Funding Stream", "Loading Fee"],
+    domains: ["Collections", "Finance"]
+  },
+
+  // --- Trilogy Processes ---
+  {
+    abbrev: "BRP", fullName: "Business Review Planning", cat: "process",
+    desc: "Quarterly strategic meetings to review business performance, set priorities, and align operational and development efforts.",
+    related: ["Sprint", "Epic"],
+    domains: ["Operations"]
+  },
+  {
+    abbrev: "Sprint", fullName: "Sprint", cat: "process",
+    desc: "Two-week development cycle used by engineering pods to plan, build, and deliver features.",
+    related: ["Pod", "Epic", "Retrospective"],
+    domains: ["Engineering"],
+    essential: true
+  },
+  {
+    abbrev: "Retrospective", fullName: "Retrospective / Retro", cat: "process",
+    desc: "Reflection meeting at the end of each sprint to discuss what worked, what didn't, and improvements for the next cycle.",
+    related: ["Sprint", "Pod"],
+    domains: ["Engineering"]
+  },
+  {
+    abbrev: "RACI", fullName: "Responsible, Accountable, Consulted, Informed", cat: "process",
+    desc: "Decision-making matrix defining who is Responsible (does the work), Accountable (owns the outcome), Consulted (provides input), and Informed (kept in the loop).",
+    related: ["Triad", "Epic"],
+    domains: ["Operations", "Engineering"],
+    essential: true
+  },
+  {
+    abbrev: "Spec-Driven Development", fullName: "Spec-Driven Development", cat: "process",
+    desc: "Trilogy's development methodology: write detailed specifications before implementation. The SD pipeline defines gates from idea through release.",
+    related: ["Epic", "Sprint", "Triad", "Pod"],
+    domains: ["Engineering"],
+    essential: true
+  },
+  {
+    abbrev: "Pod", fullName: "Pod", cat: "process",
+    desc: "Cross-functional development team (Pod 1, Pod 2, etc.) responsible for a domain of the TC Portal product.",
+    related: ["Sprint", "Triad", "Epic"],
+    domains: ["Engineering"]
+  },
+  {
+    abbrev: "Triad", fullName: "Product Triad", cat: "process",
+    desc: "Leadership group of PM + Design Lead + Engineering Lead who collectively own product direction and decisions.",
+    related: ["Pod", "RACI", "Epic"],
+    domains: ["Product", "Engineering"]
+  },
+  {
+    abbrev: "Epic", fullName: "Epic", cat: "process",
+    desc: "Major feature initiative spanning multiple quarters. Tracked in Linear as a project with its own specification, design, and implementation phases.",
+    related: ["Sprint", "Pod", "Triad", "Spec-Driven Development"],
+    domains: ["Product", "Engineering"],
+    essential: true
+  },
+  {
+    abbrev: "Initiative", fullName: "Initiative", cat: "process",
+    desc: "Feature specification scoped to a squad and sprint. Smaller than an epic, tracked as issues within a Linear project.",
+    related: ["Epic", "Sprint", "Pod"],
+    domains: ["Product", "Engineering"]
+  },
+  {
+    abbrev: "Pennant", fullName: "Laravel Pennant", cat: "process",
+    desc: "Laravel's feature flag system used in TC Portal to control feature availability, gradual rollouts, and A/B testing across organisations.",
+    related: ["Spec-Driven Development", "Sprint"],
+    domains: ["Engineering"],
+    essential: true
+  },
+
+  // --- Compliance & Regulation ---
+  {
+    abbrev: "SIRS", fullName: "Serious Incident Response Scheme", cat: "compliance",
+    desc: "Mandatory reporting scheme for aged care incidents. Providers must report serious incidents within strict timeframes to the Aged Care Quality and Safety Commission.",
+    related: ["AHPRA", "Aged Care Quality Standards", "Clinical Nurse"],
+    domains: ["Compliance", "Clinical"]
+  },
+  {
+    abbrev: "AHPRA", fullName: "Australian Health Practitioner Regulation Agency", cat: "compliance",
+    desc: "National registration and regulation body for health practitioners. Clinical nurses and allied health workers must maintain AHPRA registration.",
+    related: ["Clinical Nurse", "SIRS"],
+    domains: ["Compliance", "Clinical"]
+  },
+  {
+    abbrev: "Aged Care Quality Standards", fullName: "Aged Care Quality Standards", cat: "compliance",
+    desc: "Eight standards governing aged care service delivery in Australia. Cover consumer dignity, ongoing assessment, personal/clinical care, services/supports, organisation's service environment, feedback/complaints, human resources, and organisational governance.",
+    related: ["Charter of Aged Care Rights", "SIRS", "Dignity of Risk"],
+    domains: ["Compliance"]
+  },
+  {
+    abbrev: "Charter of Aged Care Rights", fullName: "Charter of Aged Care Rights", cat: "compliance",
+    desc: "Rights document given to all participants. Outlines their entitlements including safe, quality care, being treated with dignity and respect, and having choices about care.",
+    related: ["Aged Care Quality Standards", "Dignity of Risk", "Participant"],
+    domains: ["Compliance"]
+  },
+  {
+    abbrev: "Police Check", fullName: "Federal Police Check", cat: "compliance",
+    desc: "Federal Police Check required for all care workers. Must be less than 3 years old. A mandatory screening requirement for anyone working in aged care.",
+    related: ["AHPRA", "Supplier"],
+    domains: ["Compliance", "Supplier Management"]
+  },
+
+  // --- Additional domain terms for cross-references ---
+  {
+    abbrev: "Claims", fullName: "Claims", cat: "finance",
+    desc: "The process of submitting service delivery records to Services Australia for reimbursement under SAH funding. Managed through PRODA-authenticated APIs.",
+    related: ["PRODA", "IPA", "SAH", "Services Australia API"],
+    domains: ["Claims"]
+  },
+  {
+    abbrev: "Services Australia API", fullName: "Services Australia API", cat: "government",
+    desc: "Government API endpoints used for eligibility checks, claims submission, and payment reconciliation. Authenticated via PRODA.",
+    related: ["PRODA", "SAH", "Claims"],
+    domains: ["Claims", "Integration"]
+  },
+  {
+    abbrev: "Budget Management", fullName: "Budget Management", cat: "finance",
+    desc: "TC Portal domain handling participant budgets, funding allocation, expenditure tracking, and quarterly rollover calculations.",
+    related: ["Funding Stream", "Quarterly Budget", "Service Plan", "SERG"],
+    domains: ["Budget Management"]
+  },
+  {
+    abbrev: "Collections", fullName: "Collections", cat: "finance",
+    desc: "TC Portal domain managing direct debit, fee collection, voluntary contributions, and accounts receivable reconciliation.",
+    related: ["Collections Team", "Funding Stream", "Loading Fee"],
+    domains: ["Collections"]
+  },
+  {
+    abbrev: "Contributions", fullName: "Contributions", cat: "finance",
+    desc: "Participant payments including mandatory co-contributions and voluntary top-ups (VC funding stream). Collected via direct debit.",
+    related: ["Funding Stream", "Collections", "Loading Fee"],
+    domains: ["Collections", "Budget Management"]
+  }
+];
+
+// ============================================================
+// CATEGORY DEFINITIONS
+// ============================================================
+const CATEGORIES = {
+  government:  { label: "Government",  color: "var(--cat-government)" },
+  services:    { label: "Services",    color: "var(--cat-services)" },
+  packages:    { label: "Packages",    color: "var(--cat-packages)" },
+  finance:     { label: "Finance",     color: "var(--cat-finance)" },
+  roles:       { label: "Roles",       color: "var(--cat-roles)" },
+  process:     { label: "Processes",   color: "var(--cat-process)" },
+  compliance:  { label: "Compliance",  color: "var(--cat-compliance)" }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let activeCats = new Set(Object.keys(CATEGORIES));
+let searchQuery = "";
+let newMode = false;
+let flashcardMode = false;
+let highlightedAbbrev = null;
+
+const ESSENTIAL_TERMS = [
+  "SAH", "SERG", "Care Partner", "Care Coordinator", "Service Plan",
+  "Funding Stream", "NOA", "IPA", "Self-Managed", "Dignity of Risk",
+  "RACI", "Epic", "Sprint", "Pennant", "Spec-Driven Development"
+];
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+  buildFilterBar();
+  buildAlphaSidebar();
+  renderCards();
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    searchQuery = e.target.value.trim().toLowerCase();
+    renderCards();
+  });
+});
+
+// ============================================================
+// FILTER BAR
+// ============================================================
+function buildFilterBar() {
+  const bar = document.getElementById("filterBar");
+  bar.innerHTML = '<span class="label">Filter:</span>';
+  for (const [key, cat] of Object.entries(CATEGORIES)) {
+    const btn = document.createElement("button");
+    btn.className = "cat-filter active";
+    btn.textContent = cat.label;
+    btn.style.borderColor = cat.color;
+    btn.style.color = cat.color;
+    btn.dataset.cat = key;
+    btn.addEventListener("click", () => {
+      if (activeCats.has(key)) {
+        activeCats.delete(key);
+        btn.classList.remove("active");
+      } else {
+        activeCats.add(key);
+        btn.classList.add("active");
+      }
+      renderCards();
+    });
+    bar.appendChild(btn);
+  }
+}
+
+// ============================================================
+// ALPHABET SIDEBAR
+// ============================================================
+function buildAlphaSidebar() {
+  const sidebar = document.getElementById("alphaSidebar");
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const usedLetters = new Set(GLOSSARY.map(t => t.abbrev.charAt(0).toUpperCase()));
+
+  for (const letter of letters) {
+    const btn = document.createElement("button");
+    btn.textContent = letter;
+    if (usedLetters.has(letter)) btn.classList.add("has-terms");
+    btn.addEventListener("click", () => {
+      const el = document.getElementById("letter-" + letter);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.querySelectorAll(".alpha-sidebar button").forEach(b => b.classList.remove("active-letter"));
+        btn.classList.add("active-letter");
+      }
+    });
+    sidebar.appendChild(btn);
+  }
+}
+
+// ============================================================
+// RENDER CARDS
+// ============================================================
+function renderCards() {
+  const grid = document.getElementById("cardsGrid");
+  grid.innerHTML = "";
+
+  const mainContent = document.getElementById("mainContent");
+  if (flashcardMode) {
+    mainContent.classList.add("flashcard-mode");
+  } else {
+    mainContent.classList.remove("flashcard-mode");
+  }
+
+  let filtered = GLOSSARY.filter(t => {
+    if (!activeCats.has(t.cat)) return false;
+    if (newMode && !t.essential) return false;
+    if (searchQuery) {
+      const haystack = (t.abbrev + " " + t.fullName + " " + t.desc).toLowerCase();
+      return haystack.includes(searchQuery);
+    }
+    return true;
+  });
+
+  // Sort alphabetically by abbreviation
+  filtered.sort((a, b) => a.abbrev.localeCompare(b.abbrev));
+
+  // Update stat counter
+  document.getElementById("statCounter").innerHTML =
+    `<strong>${filtered.length}</strong> / ${GLOSSARY.length} terms`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">&#128218;</div>
+        <h3>No terms found</h3>
+        <p>Try adjusting your search or filters.</p>
+      </div>`;
+    return;
+  }
+
+  // Group by first letter
+  let currentLetter = "";
+  for (const term of filtered) {
+    const firstLetter = term.abbrev.charAt(0).toUpperCase();
+    if (firstLetter !== currentLetter) {
+      currentLetter = firstLetter;
+      const letterHeader = document.createElement("div");
+      letterHeader.className = "letter-group";
+      letterHeader.id = "letter-" + currentLetter;
+      letterHeader.textContent = currentLetter;
+      grid.appendChild(letterHeader);
+    }
+    grid.appendChild(createCard(term));
+  }
+
+  // Highlight if needed
+  if (highlightedAbbrev) {
+    requestAnimationFrame(() => {
+      const card = document.querySelector(`.term-card[data-abbrev="${highlightedAbbrev}"]`);
+      if (card) {
+        card.classList.add("highlighted");
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => { highlightedAbbrev = null; }, 2000);
+      }
+    });
+  }
+}
+
+function createCard(term) {
+  const card = document.createElement("div");
+  card.className = "term-card";
+  card.dataset.cat = term.cat;
+  card.dataset.abbrev = term.abbrev;
+
+  if (flashcardMode) {
+    card.addEventListener("click", (e) => {
+      if (e.target.classList.contains("related-pill")) return;
+      card.classList.toggle("revealed");
+    });
+  }
+
+  const catInfo = CATEGORIES[term.cat];
+  const catTag = `<span class="card-cat-tag" style="background:${catInfo.color}22;color:${catInfo.color};border:1px solid ${catInfo.color}44;">${catInfo.label}</span>`;
+  const essentialDot = (term.essential && newMode) ? '<span class="essential-badge"></span>' : '';
+
+  // Related pills
+  let relatedHTML = "";
+  if (term.related && term.related.length > 0) {
+    relatedHTML = term.related.map(r =>
+      `<button class="related-pill" onclick="navigateToTerm('${r.replace(/'/g, "\\'")}')" title="Go to ${r}">${r}</button>`
+    ).join("");
+  }
+
+  // Domain badges
+  let domainsHTML = "";
+  if (term.domains && term.domains.length > 0) {
+    domainsHTML = term.domains.map(d =>
+      `<span class="domain-badge">${d}</span>`
+    ).join("");
+  }
+
+  // Graph button
+  const graphBtnHTML = (term.related && term.related.length > 0)
+    ? `<button class="related-pill" onclick="event.stopPropagation(); openGraph('${term.abbrev.replace(/'/g, "\\'")}')" title="View relationships" style="border-color:var(--teal-700);color:var(--teal-700);">&#9878; graph</button>`
+    : "";
+
+  card.innerHTML = `
+    ${essentialDot}
+    <div class="card-header">
+      <span class="card-abbrev">${term.abbrev}</span>
+      ${catTag}
+    </div>
+    <div class="card-fullname">${term.fullName}</div>
+    <div class="card-desc">${term.desc}</div>
+    <div class="card-meta">
+      ${relatedHTML}
+      ${graphBtnHTML}
+      ${domainsHTML}
+    </div>
+  `;
+
+  return card;
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function navigateToTerm(abbrev) {
+  // Reset filters to show the term
+  const term = GLOSSARY.find(t => t.abbrev === abbrev);
+  if (term) {
+    if (!activeCats.has(term.cat)) {
+      activeCats.add(term.cat);
+      const btn = document.querySelector(`.cat-filter[data-cat="${term.cat}"]`);
+      if (btn) btn.classList.add("active");
+    }
+    if (newMode && !term.essential) {
+      newMode = false;
+      document.getElementById("newModeBtn").classList.remove("active");
+    }
+  }
+
+  // Clear search if it would hide the term
+  const haystack = term ? (term.abbrev + " " + term.fullName + " " + term.desc).toLowerCase() : "";
+  if (searchQuery && !haystack.includes(searchQuery)) {
+    searchQuery = "";
+    document.getElementById("searchInput").value = "";
+  }
+
+  highlightedAbbrev = abbrev;
+  renderCards();
+}
+
+// ============================================================
+// TOGGLES
+// ============================================================
+function toggleNewMode() {
+  newMode = !newMode;
+  document.getElementById("newModeBtn").classList.toggle("active", newMode);
+  renderCards();
+}
+
+function toggleFlashcard() {
+  flashcardMode = !flashcardMode;
+  document.getElementById("flashcardBtn").classList.toggle("active", flashcardMode);
+  renderCards();
+}
+
+// ============================================================
+// FORCE-DIRECTED GRAPH
+// ============================================================
+let graphAnimFrame = null;
+
+function openGraph(centerAbbrev) {
+  const overlay = document.getElementById("graphOverlay");
+  overlay.classList.add("visible");
+
+  const canvas = document.getElementById("graphCanvas");
+  const ctx = canvas.getContext("2d");
+  const container = canvas.parentElement;
+
+  // High DPI
+  const dpr = window.devicePixelRatio || 1;
+  const rect = container.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + "px";
+  canvas.style.height = rect.height + "px";
+  ctx.scale(dpr, dpr);
+
+  const W = rect.width;
+  const H = rect.height;
+
+  // Build graph data
+  let nodes = [];
+  let edges = [];
+  let nodeMap = {};
+
+  // Determine which terms to show
+  let termsToShow;
+  if (centerAbbrev) {
+    const centerTerm = GLOSSARY.find(t => t.abbrev === centerAbbrev);
+    if (!centerTerm) { closeGraph(); return; }
+    const relatedSet = new Set(centerTerm.related || []);
+    relatedSet.add(centerAbbrev);
+
+    // Also include second-degree relations
+    for (const r of centerTerm.related || []) {
+      const rt = GLOSSARY.find(t => t.abbrev === r);
+      if (rt) {
+        for (const rr of rt.related || []) {
+          relatedSet.add(rr);
+        }
+      }
+    }
+
+    termsToShow = GLOSSARY.filter(t => relatedSet.has(t.abbrev));
+    document.getElementById("graphTitle").innerHTML = `Relationships: <strong>${centerAbbrev}</strong>`;
+  } else {
+    termsToShow = GLOSSARY;
+    document.getElementById("graphTitle").innerHTML = "Full Relationship Graph";
+  }
+
+  // Create nodes
+  for (let i = 0; i < termsToShow.length; i++) {
+    const t = termsToShow[i];
+    const angle = (2 * Math.PI * i) / termsToShow.length;
+    const radius = Math.min(W, H) * 0.35;
+    nodes.push({
+      id: t.abbrev,
+      x: W / 2 + radius * Math.cos(angle) + (Math.random() - 0.5) * 30,
+      y: H / 2 + radius * Math.sin(angle) + (Math.random() - 0.5) * 30,
+      vx: 0,
+      vy: 0,
+      cat: t.cat,
+      isCenter: t.abbrev === centerAbbrev
+    });
+    nodeMap[t.abbrev] = nodes.length - 1;
+  }
+
+  // Create edges
+  for (const t of termsToShow) {
+    for (const r of t.related || []) {
+      if (nodeMap[r] !== undefined && nodeMap[t.abbrev] !== undefined) {
+        const a = Math.min(nodeMap[t.abbrev], nodeMap[r]);
+        const b = Math.max(nodeMap[t.abbrev], nodeMap[r]);
+        const edgeKey = a + "-" + b;
+        if (!edges.find(e => e.key === edgeKey)) {
+          edges.push({ source: a, target: b, key: edgeKey });
+        }
+      }
+    }
+  }
+
+  // Simulation parameters
+  const SIM_STEPS = 200;
+  let step = 0;
+
+  function simulate() {
+    // Repulsion
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        let dx = nodes[j].x - nodes[i].x;
+        let dy = nodes[j].y - nodes[i].y;
+        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        let force = 3000 / (dist * dist);
+        let fx = (dx / dist) * force;
+        let fy = (dy / dist) * force;
+        nodes[i].vx -= fx;
+        nodes[i].vy -= fy;
+        nodes[j].vx += fx;
+        nodes[j].vy += fy;
+      }
+    }
+
+    // Attraction along edges
+    for (const edge of edges) {
+      const s = nodes[edge.source];
+      const t = nodes[edge.target];
+      let dx = t.x - s.x;
+      let dy = t.y - s.y;
+      let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      let force = (dist - 100) * 0.02;
+      let fx = (dx / dist) * force;
+      let fy = (dy / dist) * force;
+      s.vx += fx;
+      s.vy += fy;
+      t.vx -= fx;
+      t.vy -= fy;
+    }
+
+    // Center gravity
+    for (const n of nodes) {
+      n.vx += (W / 2 - n.x) * 0.001;
+      n.vy += (H / 2 - n.y) * 0.001;
+    }
+
+    // Update positions with damping
+    const damping = 0.85;
+    for (const n of nodes) {
+      n.vx *= damping;
+      n.vy *= damping;
+      n.x += n.vx;
+      n.y += n.vy;
+      // Keep in bounds
+      n.x = Math.max(40, Math.min(W - 40, n.x));
+      n.y = Math.max(50, Math.min(H - 20, n.y));
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw edges
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(42, 58, 92, 0.6)";
+    for (const edge of edges) {
+      const s = nodes[edge.source];
+      const t = nodes[edge.target];
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(t.x, t.y);
+      ctx.stroke();
+    }
+
+    // Draw nodes
+    for (const n of nodes) {
+      const catColor = CATEGORIES[n.cat] ? CATEGORIES[n.cat].color : "var(--text-muted)";
+      const radius = n.isCenter ? 10 : 6;
+
+      // Glow for center
+      if (n.isCenter) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 16, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(67, 192, 190, 0.15)";
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = getComputedColor(n.cat);
+      ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,0.2)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Label
+      ctx.fillStyle = n.isCenter ? "#ffffff" : "#c0c8d8";
+      ctx.font = n.isCenter ? "bold 12px -apple-system, sans-serif" : "10px -apple-system, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(n.id, n.x, n.y - radius - 6);
+    }
+  }
+
+  function getComputedColor(cat) {
+    const colorMap = {
+      government: "#e74c3c",
+      services: "#007F7E",
+      packages: "#2C4C79",
+      finance: "#f39c12",
+      roles: "#9b59b6",
+      process: "#27ae60",
+      compliance: "#c0392b"
+    };
+    return colorMap[cat] || "#8892a4";
+  }
+
+  function animate() {
+    if (step < SIM_STEPS) {
+      simulate();
+      step++;
+    }
+    draw();
+    graphAnimFrame = requestAnimationFrame(animate);
+  }
+
+  // Cancel any previous animation
+  if (graphAnimFrame) cancelAnimationFrame(graphAnimFrame);
+  animate();
+
+  // Allow clicking on graph overlay background to close
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeGraph();
+  });
+}
+
+function closeGraph() {
+  const overlay = document.getElementById("graphOverlay");
+  overlay.classList.remove("visible");
+  if (graphAnimFrame) {
+    cancelAnimationFrame(graphAnimFrame);
+    graphAnimFrame = null;
+  }
+}
+
+// Keyboard shortcut: Escape to close graph
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const overlay = document.getElementById("graphOverlay");
+    if (overlay.classList.contains("visible")) {
+      closeGraph();
+    }
+  }
+  // Focus search with /
+  if (e.key === "/" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+    e.preventDefault();
+    document.getElementById("searchInput").focus();
+  }
+});
+</script>
+</body>
+</html>

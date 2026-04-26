@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escalate Call — Calls Uplift</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Roboto Flex', -apple-system, BlinkMacSystemFont, sans-serif; }
+    #app-sidebar { transition: width 0.2s ease; }
+    #app-sidebar.collapsed { width: 77px; }
+    #app-sidebar.collapsed .nav-label, #app-sidebar.collapsed .nav-section-title, #app-sidebar.collapsed .sidebar-brand-name, #app-sidebar.collapsed .sidebar-footer { display: none; }
+    #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+    .nav-item-active { background: rgba(0,127,126,0.12); color: #007F7E; font-weight: 600; }
+    .nav-item-active svg { color: #007F7E; }
+    .call-row { transition: background 0.15s ease; }
+    .call-row:hover { background: #F9FAFB; }
+    .call-row.selected { background: #F0FAFA; border-left: 3px solid #007F7E; }
+    .modal-backdrop { background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); }
+  </style>
+  <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-100 flex">
+
+  <!-- Sidebar -->
+  <aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]" style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+    <div class="p-4 flex items-center gap-3">
+      <div class="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center text-sm font-bold">TC</div>
+      <span class="sidebar-brand-name text-sm font-semibold">Trilogy Care</span>
+    </div>
+    <nav class="flex-1 px-3 space-y-1 text-sm overflow-y-auto">
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        <span class="nav-label">Tasks and reminders</span>
+      </a>
+      <div class="pt-4 pb-1">
+        <p class="nav-section-title px-3 text-[11px] font-semibold uppercase tracking-wider text-white/40">Communication</p>
+      </div>
+      <a href="#" class="nav-item nav-item-active flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        <span class="nav-label">Calls</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        <span class="nav-label">Threads</span>
+      </a>
+      <div class="pt-4 pb-1">
+        <p class="nav-section-title px-3 text-[11px] font-semibold uppercase tracking-wider text-white/40">Operations</p>
+      </div>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span class="nav-label">Service Plans</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        <span class="nav-label">Bills</span>
+      </a>
+      <div class="pt-4 pb-1">
+        <p class="nav-section-title px-3 text-[11px] font-semibold uppercase tracking-wider text-white/40">Care Circle</p>
+      </div>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="nav-label">Clients</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+        <span class="nav-label">Care Coordinators</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        <span class="nav-label">Suppliers</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer p-4 border-t border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-xs font-bold">BP</div>
+        <div class="text-xs">
+          <p class="font-medium text-white">Beth Poultney</p>
+          <p class="text-white/50">Senior Care Partner</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content (dimmed behind modal) -->
+  <div class="flex-1 ml-[240px] min-h-screen flex flex-col opacity-50 pointer-events-none">
+    <!-- Page Header -->
+    <div class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+      <h1 class="text-xl font-semibold text-gray-900">Calls</h1>
+    </div>
+    <!-- Status Tabs -->
+    <div class="bg-white border-b border-gray-200 px-6">
+      <div class="flex items-center gap-1">
+        <button class="px-4 py-3 text-sm font-medium border-b-2 border-teal-700 text-teal-700 flex items-center gap-2">
+          Pending
+          <span class="bg-teal-700 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 min-w-[20px] text-center">12</span>
+        </button>
+        <button class="px-4 py-3 text-sm font-medium text-gray-500 border-b-2 border-transparent">Reviewed</button>
+        <button class="px-4 py-3 text-sm font-medium text-gray-500 border-b-2 border-transparent">Archived</button>
+        <button class="px-4 py-3 text-sm font-medium text-gray-500 border-b-2 border-transparent flex items-center gap-2">
+          Escalated
+          <span class="bg-orange-500 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 min-w-[20px] text-center">2</span>
+        </button>
+      </div>
+    </div>
+    <!-- Empty area behind modal -->
+    <div class="flex-1 bg-gray-100"></div>
+  </div>
+
+  <!-- Escalation Modal -->
+  <div class="modal-backdrop fixed inset-0 z-[200] flex items-center justify-center" style="margin-left: 240px;">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+            <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Escalate Call</h3>
+        </div>
+        <button class="text-gray-400 hover:text-gray-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="px-6 py-5 space-y-5">
+        <!-- Call Reference -->
+        <div class="p-3 bg-gray-50 rounded-lg flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-xs font-bold">JD</div>
+          <div>
+            <p class="text-sm font-medium text-gray-900">John Davis</p>
+            <p class="text-xs text-gray-500">Inbound · Oct 10, 1:12 PM · 12:34</p>
+          </div>
+        </div>
+
+        <!-- Escalation Reason -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Reason for escalation</label>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2.5 p-2.5 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+              <input type="radio" name="reason" class="text-orange-600 focus:ring-orange-500" checked>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Complaint or concern</p>
+                <p class="text-xs text-gray-500">Client expressed dissatisfaction or raised a complaint</p>
+              </div>
+            </label>
+            <label class="flex items-center gap-2.5 p-2.5 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+              <input type="radio" name="reason" class="text-orange-600 focus:ring-orange-500">
+              <div>
+                <p class="text-sm font-medium text-gray-900">Safeguarding risk</p>
+                <p class="text-xs text-gray-500">Potential safety or welfare concerns identified</p>
+              </div>
+            </label>
+            <label class="flex items-center gap-2.5 p-2.5 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+              <input type="radio" name="reason" class="text-orange-600 focus:ring-orange-500">
+              <div>
+                <p class="text-sm font-medium text-gray-900">Clinical decision required</p>
+                <p class="text-xs text-gray-500">Needs clinical review or registered nurse input</p>
+              </div>
+            </label>
+            <label class="flex items-center gap-2.5 p-2.5 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+              <input type="radio" name="reason" class="text-orange-600 focus:ring-orange-500">
+              <div>
+                <p class="text-sm font-medium text-gray-900">Other</p>
+                <p class="text-xs text-gray-500">Specify the reason below</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Assign To -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Assign to</label>
+          <div class="relative">
+            <select class="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 appearance-none focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white">
+              <option>Select team member...</option>
+              <option selected>Jane Foster — Team Leader</option>
+              <option>Dr. Sarah Chen — Clinical Lead</option>
+              <option>Michael Oates — Operations Manager</option>
+            </select>
+            <svg class="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+
+        <!-- Additional Notes -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Additional notes <span class="font-normal text-gray-400">(optional)</span></label>
+          <textarea class="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-orange-500 min-h-[80px] resize-y" placeholder="Add context for the person reviewing this escalation...">Client's daughter Betty called separately about the same issue (see call from 11:24 AM). Both callers mentioned unhappiness with the response time on the reimbursement.</textarea>
+        </div>
+
+        <!-- Priority -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+          <div class="flex items-center gap-2">
+            <button class="px-3 py-1.5 text-xs font-medium rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50">Low</button>
+            <button class="px-3 py-1.5 text-xs font-medium rounded-full border-2 border-orange-500 bg-orange-50 text-orange-700">Medium</button>
+            <button class="px-3 py-1.5 text-xs font-medium rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50">High</button>
+            <button class="px-3 py-1.5 text-xs font-medium rounded-full border border-gray-200 text-red-600 hover:bg-red-50">Urgent</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+        <button class="text-sm text-gray-500 hover:text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50">Cancel</button>
+        <button class="bg-orange-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-orange-700 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          Escalate Call
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

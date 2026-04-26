@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What do you want to track? — MoneyQuest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+
+    .radio-row {
+      cursor: pointer;
+      transition: border-color 0.12s ease, background-color 0.12s ease;
+    }
+    .radio-row:hover {
+      border-color: #BAE8E7;
+      background-color: #F0FAFA;
+    }
+    .radio-row.selected {
+      border-color: #43C0BE;
+      background-color: #F0FAFA;
+    }
+    .radio-row.selected .radio-outer {
+      border-color: #43C0BE;
+    }
+    .radio-row.selected .radio-inner {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center justify-center px-6 py-16">
+
+  <!-- Back link -->
+  <div class="w-full max-w-sm mb-8">
+    <a href="02-registration-cta.html" class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors">
+      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+      </svg>
+      Go back
+    </a>
+  </div>
+
+  <!-- Progress dots -->
+  <div class="flex flex-col items-center mb-10">
+    <p class="text-xs text-gray-400 mb-3">Step 1 of 3</p>
+    <div class="flex items-center gap-1.5">
+      <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+      <span class="w-2 h-2 rounded-full bg-gray-200"></span>
+      <span class="w-2 h-2 rounded-full bg-gray-200"></span>
+    </div>
+  </div>
+
+  <!-- Heading -->
+  <div class="text-center mb-8 max-w-sm">
+    <h1 class="text-2xl font-light text-gray-900 tracking-tight">What do you want to track?</h1>
+  </div>
+
+  <!-- Radio card rows -->
+  <div class="w-full max-w-sm space-y-2 mb-6">
+
+    <!-- Personal finances -->
+    <div class="radio-row border border-gray-200 rounded-xl px-5 py-4 flex items-center gap-4"
+         id="row-personal"
+         onclick="selectRow('personal')">
+      <div class="radio-outer flex-shrink-0 w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center transition-colors">
+        <div class="radio-inner w-2 h-2 rounded-full bg-teal-500 opacity-0 transition-opacity"></div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800">My personal finances</p>
+        <p class="text-xs text-gray-400 font-light mt-0.5">Income, expenses, net worth</p>
+      </div>
+    </div>
+
+    <!-- Home renovation — pre-selected -->
+    <div class="radio-row selected border border-gray-200 rounded-xl px-5 py-4 flex items-center gap-4"
+         id="row-renovation"
+         onclick="selectRow('renovation')">
+      <div class="radio-outer flex-shrink-0 w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center transition-colors">
+        <div class="radio-inner w-2 h-2 rounded-full bg-teal-500 opacity-0 transition-opacity"></div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800">A home renovation or project</p>
+        <p class="text-xs text-gray-400 font-light mt-0.5">Costs, budget, progress</p>
+      </div>
+    </div>
+
+    <!-- Freelance -->
+    <div class="radio-row border border-gray-200 rounded-xl px-5 py-4 flex items-center gap-4"
+         id="row-freelance"
+         onclick="selectRow('freelance')">
+      <div class="radio-outer flex-shrink-0 w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center transition-colors">
+        <div class="radio-inner w-2 h-2 rounded-full bg-teal-500 opacity-0 transition-opacity"></div>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800">Freelance or side income</p>
+        <p class="text-xs text-gray-400 font-light mt-0.5">Invoices, expenses, P&amp;L</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Context note -->
+  <div class="w-full max-w-sm mb-8">
+    <p class="text-xs text-gray-400 font-light leading-relaxed" id="context-note">
+      You came from Harrington Builders' project portal. We've pre-selected Home Renovation.
+    </p>
+  </div>
+
+  <!-- Continue CTA -->
+  <div class="w-full max-w-sm">
+    <button class="w-full sm:w-auto sm:px-8 bg-teal-500 hover:bg-teal-600 active:bg-teal-700 text-white text-sm font-medium py-2.5 rounded-full transition-colors flex items-center justify-center gap-2">
+      Continue
+      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    // Initialise the pre-selected state visually
+    document.addEventListener('DOMContentLoaded', function() {
+      const renovationRow = document.getElementById('row-renovation');
+      const outerCircle = renovationRow.querySelector('.radio-outer');
+      const innerDot = renovationRow.querySelector('.radio-inner');
+      outerCircle.style.borderColor = '#43C0BE';
+      innerDot.style.opacity = '1';
+    });
+
+    function selectRow(type) {
+      const rows = ['personal', 'renovation', 'freelance'];
+      rows.forEach(function(t) {
+        const row = document.getElementById('row-' + t);
+        row.classList.remove('selected');
+        const outer = row.querySelector('.radio-outer');
+        const inner = row.querySelector('.radio-inner');
+        outer.style.borderColor = '';
+        inner.style.opacity = '0';
+      });
+
+      const selected = document.getElementById('row-' + type);
+      selected.classList.add('selected');
+      const outer = selected.querySelector('.radio-outer');
+      const inner = selected.querySelector('.radio-inner');
+      outer.style.borderColor = '#43C0BE';
+      inner.style.opacity = '1';
+
+      // Update context note
+      const note = document.getElementById('context-note');
+      if (type === 'renovation') {
+        note.textContent = "You came from Harrington Builders' project portal. We've pre-selected Home Renovation.";
+        note.style.opacity = '1';
+      } else {
+        note.style.opacity = '0';
+      }
+    }
+  </script>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+epic: 019-YEA
+name: Year-End Close
+initiative: FL-financial-ledger
+status: Idea
+created: 2026-03-14
+depends_on:
+  - 002-CLE
+  - 007-FRC
+  - 003-AUT
+effort: L

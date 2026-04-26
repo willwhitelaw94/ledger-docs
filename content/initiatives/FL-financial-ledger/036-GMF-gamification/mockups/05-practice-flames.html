@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Flames — Gamification (036-GMF)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+    @keyframes flame-flicker {
+      0%, 100% { transform: scaleY(1) scaleX(1); }
+      25% { transform: scaleY(1.04) scaleX(0.97); }
+      50% { transform: scaleY(0.96) scaleX(1.02); }
+      75% { transform: scaleY(1.02) scaleX(0.98); }
+    }
+    .flame-svg { animation: flame-flicker 2s ease-in-out infinite; transform-origin: bottom center; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar (Practice variant) -->
+    <aside class="w-60 bg-gray-900 border-r border-gray-800 flex flex-col fixed inset-y-0 left-0 z-40">
+      <div class="p-4 border-b border-gray-800">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-[#007F7E] rounded-lg flex items-center justify-center text-sm font-bold text-white">MQ</div>
+          <div>
+            <div class="text-sm font-semibold text-white">MoneyQuest</div>
+            <div class="text-xs text-gray-500">Smith & Co Advisors</div>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 p-3 space-y-1">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+          Practice Home
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          Clients
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          Tasks
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-800 text-white text-sm font-medium">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"/></svg>
+          Workspace Health
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Team
+        </a>
+      </nav>
+      <div class="p-3 border-t border-gray-800">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.573-1.066z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Settings
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-60">
+      <header class="sticky top-[88px] z-30 bg-gray-950/80 backdrop-blur border-b border-gray-800 px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-xl font-semibold text-white">Client Workspace Health</h1>
+            <p class="text-sm text-gray-500 mt-0.5">Smith & Co Advisors</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="text-xs text-gray-400 hover:text-white border border-gray-700 rounded-lg px-3 py-1.5 hover:bg-gray-800 transition-colors" data-sort="status">Sort: Status</button>
+            <button class="text-xs text-gray-400 hover:text-white border border-gray-700 rounded-lg px-3 py-1.5 hover:bg-gray-800 transition-colors" data-sort="activity">Last Activity</button>
+            <button class="text-xs text-gray-400 hover:text-white border border-gray-700 rounded-lg px-3 py-1.5 hover:bg-gray-800 transition-colors" data-sort="name">Name</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="p-8 space-y-6">
+
+        <!-- Summary Stats Bar -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center gap-4">
+            <div class="w-10 h-10 bg-[#007F7E]/10 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 flame-svg" viewBox="0 0 24 32">
+                <defs>
+                  <linearGradient id="flame-healthy" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#007F7E"/>
+                    <stop offset="100%" stop-color="#43C0BE"/>
+                  </linearGradient>
+                </defs>
+                <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-[#43C0BE]">8</div>
+              <div class="text-xs text-gray-500">Healthy</div>
+            </div>
+          </div>
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center gap-4">
+            <div class="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 flame-svg" viewBox="0 0 24 32">
+                <defs>
+                  <linearGradient id="flame-atrisk" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#D97706"/>
+                    <stop offset="100%" stop-color="#F59E0B"/>
+                  </linearGradient>
+                </defs>
+                <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-atrisk)"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-amber-400">2</div>
+              <div class="text-xs text-gray-500">At Risk</div>
+            </div>
+          </div>
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center gap-4">
+            <div class="w-10 h-10 bg-gray-700/30 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6" viewBox="0 0 24 32">
+                <defs>
+                  <linearGradient id="flame-neglected" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#4B5563"/>
+                    <stop offset="100%" stop-color="#6B7280"/>
+                  </linearGradient>
+                </defs>
+                <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-neglected)"/>
+              </svg>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-gray-400">1</div>
+              <div class="text-xs text-gray-500">Neglected</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workspace Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+
+          <!-- Healthy Workspaces -->
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Acme Corp Pty Ltd</h3>
+                  <p class="text-xs text-gray-500">Company &middot; Manufacturing</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-gray-300">Today</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-[#43C0BE] font-medium">7 weeks &#128293;</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">3 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-[#43C0BE] hover:text-[#007F7E] opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">TechFlow Solutions</h3>
+                  <p class="text-xs text-gray-500">Company &middot; SaaS</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-gray-300">Yesterday</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-[#43C0BE] font-medium">12 weeks &#128293;</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">2 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-[#43C0BE] hover:text-[#007F7E] opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Green Valley Farm</h3>
+                  <p class="text-xs text-gray-500">Sole Trader &middot; Agriculture</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-gray-300">2 days ago</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-[#43C0BE] font-medium">5 weeks</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">1 / 2</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-[#43C0BE] hover:text-[#007F7E] opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Pacific Construction</h3>
+                  <p class="text-xs text-gray-500">Company &middot; Construction</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-gray-300">Today</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-[#43C0BE] font-medium">9 weeks &#128293;</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">3 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-[#43C0BE] hover:text-[#007F7E] opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Lakeview Dental</h3>
+                  <p class="text-xs text-gray-500">Company &middot; Healthcare</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-gray-300">3 days ago</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-[#43C0BE] font-medium">4 weeks</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">2 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-[#43C0BE] hover:text-[#007F7E] opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Bright Ideas Marketing</h3>
+                  <p class="text-xs text-gray-500">Company &middot; Marketing</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-gray-300">Yesterday</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-[#43C0BE] font-medium">6 weeks</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">2 / 2</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-[#43C0BE] hover:text-[#007F7E] opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Summit Real Estate</h3>
+                  <p class="text-xs text-gray-500">Trust &middot; Property</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-gray-300">Today</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-[#43C0BE] font-medium">3 weeks</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">1 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-[#43C0BE] hover:text-[#007F7E] opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-healthy)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Oceanic Imports</h3>
+                  <p class="text-xs text-gray-500">Company &middot; Import/Export</p>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-gray-300">4 days ago</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-[#43C0BE] font-medium">8 weeks &#128293;</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">3 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-[#43C0BE] hover:text-[#007F7E] opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <!-- At Risk Workspaces -->
+          <div class="bg-gray-900 border-l-2 border-amber-600 border-t border-r border-b border-t-gray-800 border-r-gray-800 border-b-gray-800 rounded-xl p-5 hover:border-t-gray-700 hover:border-r-gray-700 hover:border-b-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-atrisk)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Riverside Cafe</h3>
+                  <p class="text-xs text-gray-500">Sole Trader &middot; Hospitality</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-medium text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded px-2 py-0.5">At Risk</span>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-amber-400">12 days ago</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-amber-400">Streak at risk</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">1 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-amber-400 hover:text-amber-300 opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <div class="bg-gray-900 border-l-2 border-amber-600 border-t border-r border-b border-t-gray-800 border-r-gray-800 border-b-gray-800 rounded-xl p-5 hover:border-t-gray-700 hover:border-r-gray-700 hover:border-b-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7 flame-svg" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-atrisk)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Urban Fitness Studio</h3>
+                  <p class="text-xs text-gray-500">Company &middot; Fitness</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-medium text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded px-2 py-0.5">At Risk</span>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-amber-400">9 days ago</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-amber-400">2 days left</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">0 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-amber-400 hover:text-amber-300 opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+          <!-- Neglected Workspace -->
+          <div class="bg-gray-900 border-l-2 border-red-600 border-t border-r border-b border-t-gray-800 border-r-gray-800 border-b-gray-800 rounded-xl p-5 hover:border-t-gray-700 hover:border-r-gray-700 hover:border-b-gray-700 transition-colors group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <svg class="w-7 h-7" viewBox="0 0 24 32">
+                  <path d="M12 2C12 2 4 12 4 20C4 26 8 30 12 30C16 30 20 26 20 20C20 16 18 14 16 12C16 16 14 18 12 18C10 18 8 16 10 12C10 8 12 2 12 2Z" fill="url(#flame-neglected)"/>
+                </svg>
+                <div>
+                  <h3 class="text-sm font-semibold text-white">Johnson Family Trust</h3>
+                  <p class="text-xs text-gray-500">Trust &middot; Investment</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-medium text-red-400 bg-red-500/10 border border-red-500/20 rounded px-2 py-0.5">Neglected</span>
+            </div>
+            <div class="space-y-2 mb-4">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Last reconciled</span>
+                <span class="text-red-400">34 days ago</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Reconcile streak</span>
+                <span class="text-red-400">Broken</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-gray-500">Challenges adopted</span>
+                <span class="text-gray-300">0 / 3</span>
+              </div>
+            </div>
+            <a href="#" class="text-xs text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-opacity">View workspace &rarr;</a>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

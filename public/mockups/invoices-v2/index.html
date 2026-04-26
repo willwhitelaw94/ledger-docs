@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoices V2 — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">IV2 — Invoices V2</span>
+  <button onclick="show('dashboard')" id="nav-dashboard" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Invoice Dashboard</button>
+  <button onclick="show('anomaly')" id="nav-anomaly" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">AI Anomaly Detection</button>
+  <button onclick="show('query')" id="nav-query" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Query Workflow</button>
+  <button onclick="show('dispute')" id="nav-dispute" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Dispute Workflow</button>
+  <button onclick="show('autoapprove')" id="nav-autoapprove" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Auto-Approval</button>
+</nav>
+
+<!-- Unified Invoice Dashboard -->
+<div id="dashboard" class="screen active p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Invoice Pipeline</h1>
+    <div class="flex gap-2">
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>All Suppliers</option></select>
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>Last 30 days</option></select>
+    </div>
+  </div>
+
+  <!-- Status cards -->
+  <div class="grid grid-cols-4 lg:grid-cols-8 gap-3 mb-6">
+    <div class="bg-white rounded-lg border border-gray-200 p-3 text-center"><p class="text-2xl font-bold text-gray-900">142</p><p class="text-xs text-gray-500">Received</p></div>
+    <div class="bg-white rounded-lg border border-gray-200 p-3 text-center"><p class="text-2xl font-bold text-blue-600">98</p><p class="text-xs text-gray-500">In Review</p></div>
+    <div class="bg-white rounded-lg border border-yellow-200 p-3 text-center bg-yellow-50"><p class="text-2xl font-bold text-yellow-700">12</p><p class="text-xs text-yellow-600">Queried</p></div>
+    <div class="bg-white rounded-lg border border-red-200 p-3 text-center bg-red-50"><p class="text-2xl font-bold text-red-700">5</p><p class="text-xs text-red-600">Disputed</p></div>
+    <div class="bg-white rounded-lg border border-green-200 p-3 text-center bg-green-50"><p class="text-2xl font-bold text-green-700">234</p><p class="text-xs text-green-600">Approved</p></div>
+    <div class="bg-white rounded-lg border border-gray-200 p-3 text-center"><p class="text-2xl font-bold text-gray-600">89</p><p class="text-xs text-gray-500">Paying</p></div>
+    <div class="bg-white rounded-lg border border-teal-200 p-3 text-center bg-teal-50"><p class="text-2xl font-bold text-teal-700">1,247</p><p class="text-xs text-teal-600">Paid</p></div>
+    <div class="bg-white rounded-lg border border-purple-200 p-3 text-center bg-purple-50"><p class="text-2xl font-bold text-purple-700">891</p><p class="text-xs text-purple-600">Claimed</p></div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead>
+        <tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+          <th class="px-6 py-3 text-left">Invoice</th>
+          <th class="px-4 py-3 text-left">Supplier</th>
+          <th class="px-4 py-3 text-left">Client</th>
+          <th class="px-4 py-3 text-right">Amount</th>
+          <th class="px-4 py-3 text-left">AI Status</th>
+          <th class="px-4 py-3 text-left">Status</th>
+          <th class="px-4 py-3 text-left">MYOB</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-sm font-medium text-gray-900">#TC-4521</td>
+          <td class="px-4 py-3 text-sm">Allied Health Group</td>
+          <td class="px-4 py-3 text-sm">Margaret Johnson</td>
+          <td class="px-4 py-3 text-sm text-right font-medium">$485.00</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">No issues</span></td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Auto-Approved</span></td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs">Synced</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50 bg-yellow-50">
+          <td class="px-6 py-3 text-sm font-medium text-gray-900">#TC-4518</td>
+          <td class="px-4 py-3 text-sm">Sunrise Cleaning</td>
+          <td class="px-4 py-3 text-sm">Robert Chen</td>
+          <td class="px-4 py-3 text-sm text-right font-medium">$1,250.00</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs">2 anomalies</span></td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">Queried</span></td>
+          <td class="px-4 py-3"><span class="text-xs text-gray-400">—</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50 bg-red-50">
+          <td class="px-6 py-3 text-sm font-medium text-gray-900">#TC-4510</td>
+          <td class="px-4 py-3 text-sm">Metro Nursing Services</td>
+          <td class="px-4 py-3 text-sm">Dorothy Walsh</td>
+          <td class="px-4 py-3 text-sm text-right font-medium">$3,800.00</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-xs">Rate discrepancy</span></td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-medium">Disputed</span></td>
+          <td class="px-4 py-3"><span class="text-xs text-gray-400">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- AI Anomaly Detection -->
+<div id="anomaly" class="screen p-6 max-w-4xl mx-auto">
+  <div class="text-sm text-gray-500 mb-1">Bills &gt; #TC-4518 &gt; Anomaly Report</div>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">AI Anomaly Detection</h1>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <div>
+        <h2 class="text-lg font-semibold text-gray-900">Bill #TC-4518 — Sunrise Cleaning</h2>
+        <p class="text-sm text-gray-500">Robert Chen &middot; $1,250.00</p>
+      </div>
+      <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">2 anomalies detected</span>
+    </div>
+
+    <div class="p-6 space-y-4">
+      <div class="border border-red-200 rounded-lg p-4 bg-red-50">
+        <div class="flex items-start gap-3">
+          <span class="px-2 py-0.5 bg-red-200 text-red-800 rounded text-xs font-medium mt-0.5">High</span>
+          <div>
+            <h3 class="text-sm font-semibold text-gray-900">Rate Discrepancy</h3>
+            <p class="text-sm text-gray-600 mt-1">Line 2 "General cleaning — 5hrs" billed at $65/hr. Supplier price list shows $50/hr (weekday rate). Difference: $75.00 (30% above price list).</p>
+            <p class="text-xs text-gray-500 mt-2">Suggested action: Query with supplier or adjust to price list rate</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-amber-200 rounded-lg p-4 bg-amber-50">
+        <div class="flex items-start gap-3">
+          <span class="px-2 py-0.5 bg-amber-200 text-amber-800 rounded text-xs font-medium mt-0.5">Medium</span>
+          <div>
+            <h3 class="text-sm font-semibold text-gray-900">Possible Duplicate</h3>
+            <p class="text-sm text-gray-600 mt-1">Bill #TC-4501 from the same supplier, same amount ($1,250.00), dated 3 days earlier. May be a duplicate submission.</p>
+            <p class="text-xs text-gray-500 mt-2">Suggested action: Compare with #TC-4501 before processing</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-green-200 rounded-lg p-4 bg-green-50 flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
+        <div>
+          <h3 class="text-sm font-medium text-green-800">Other checks passed</h3>
+          <p class="text-xs text-green-700">Required fields present, ABN valid, GST calculation correct, line items sum correctly</p>
+        </div>
+        <span class="ml-auto text-xs text-green-600">Confidence: 94%</span>
+      </div>
+    </div>
+
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg text-gray-700">Raise Query</button>
+      <button class="px-4 py-2 border border-red-300 text-sm rounded-lg text-red-700">Raise Dispute</button>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Approve Anyway</button>
+    </div>
+  </div>
+</div>
+
+<!-- Query Workflow -->
+<div id="query" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Raise Query</h1>
+  <p class="text-sm text-gray-500 mb-6">Bill #TC-4518 — Internal query for unclear charges</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="text-sm font-medium text-gray-700">Affected Line Items</label>
+        <div class="mt-2 space-y-2">
+          <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg">
+            <input type="checkbox" checked class="rounded text-teal-700">
+            <span class="text-sm">Line 2: General cleaning — 5hrs ($325.00)</span>
+          </label>
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">Query Type</label>
+        <select class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option>Rate discrepancy</option><option>Missing documentation</option><option>Service date question</option><option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">Description</label>
+        <textarea class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="3" placeholder="Describe the query...">Rate charged ($65/hr) exceeds the agreed price list rate ($50/hr). Please confirm if this is a public holiday rate or an error.</textarea>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">Priority</label>
+        <div class="mt-1 flex gap-3">
+          <label class="flex items-center gap-1"><input type="radio" name="priority" class="text-teal-700"><span class="text-sm">Low</span></label>
+          <label class="flex items-center gap-1"><input type="radio" name="priority" checked class="text-teal-700"><span class="text-sm">Medium</span></label>
+          <label class="flex items-center gap-1"><input type="radio" name="priority" class="text-teal-700"><span class="text-sm">High</span></label>
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">SLA</label>
+        <p class="text-sm text-gray-500">Resolution expected within <strong>3 business days</strong></p>
+      </div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg text-gray-700">Cancel</button>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Submit Query</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dispute Workflow -->
+<div id="dispute" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Raise Dispute</h1>
+  <p class="text-sm text-gray-500 mb-6">Bill #TC-4510 — Formal dispute for incorrect charges</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-3 bg-red-50 border-b border-red-100 flex items-center gap-2">
+      <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span class="text-sm text-red-800">Disputes notify the supplier directly. Use Query for internal resolution first.</span>
+    </div>
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="text-sm font-medium text-gray-700">Dispute Reason</label>
+        <select class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option>Incorrect rate charged</option><option>Service not delivered</option><option>Duplicate charge</option><option>Unauthorised service</option><option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">Evidence</label>
+        <textarea class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="3">Nursing visit on 12 Mar billed at $120/hr but agreed rate is $85/hr per signed agreement dated 1 Jan 2026. Attaching agreement copy.</textarea>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">Requested Resolution</label>
+        <select class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option>Adjust to correct amount</option><option>Full credit</option><option>Partial credit</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">Attach Evidence</label>
+        <div class="mt-1 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-teal-500 cursor-pointer">
+          <p class="text-sm text-gray-500">Upload supporting documents</p>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg text-gray-700">Cancel</button>
+      <button class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg">Submit Dispute</button>
+    </div>
+  </div>
+</div>
+
+<!-- Auto-Approval Settings -->
+<div id="autoapprove" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Auto-Approval Rules</h1>
+  <p class="text-sm text-gray-500 mb-6">Invoices meeting all criteria are automatically approved and moved to payment queue.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+    <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+      <div>
+        <span class="text-sm font-medium text-gray-900">No AI anomalies detected</span>
+        <p class="text-xs text-gray-500">Confidence score above threshold</p>
+      </div>
+      <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded">Required</span>
+    </div>
+    <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+      <div>
+        <span class="text-sm font-medium text-gray-900">Amount within threshold</span>
+        <p class="text-xs text-gray-500">Invoice total &le; $2,000.00</p>
+      </div>
+      <input type="text" value="$2,000.00" class="w-32 border border-gray-300 rounded-lg px-3 py-1.5 text-sm text-right">
+    </div>
+    <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+      <div>
+        <span class="text-sm font-medium text-gray-900">Known supplier (min paid invoices)</span>
+        <p class="text-xs text-gray-500">Supplier must have history</p>
+      </div>
+      <input type="number" value="5" class="w-20 border border-gray-300 rounded-lg px-3 py-1.5 text-sm text-right">
+    </div>
+    <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+      <div>
+        <span class="text-sm font-medium text-gray-900">Matching budget plan item</span>
+        <p class="text-xs text-gray-500">Line items match planned services</p>
+      </div>
+      <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded">Required</span>
+    </div>
+
+    <div class="pt-4 border-t border-gray-100">
+      <div class="bg-blue-50 rounded-lg p-4">
+        <p class="text-sm text-blue-800"><strong>Current auto-approval rate:</strong> 42% of invoices (target: &gt;40%)</p>
+        <p class="text-xs text-blue-600 mt-1">Last 30 days: 234 auto-approved out of 557 total</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 flex justify-end gap-3">
+    <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg text-gray-700">Cancel</button>
+    <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Save Rules</button>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

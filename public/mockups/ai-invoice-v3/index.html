@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Invoice V3 — Classification System Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<!-- Top Nav -->
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">AIV3 — AI Invoice Classification</span>
+  <button onclick="show('bill-edit')" id="nav-bill-edit" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Bill Edit View</button>
+  <button onclick="show('service-modal')" id="nav-service-modal" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Service Selection Modal</button>
+  <button onclick="show('split-flow')" id="nav-split-flow" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Split Recommended</button>
+  <button onclick="show('breadcrumb')" id="nav-breadcrumb" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Breadcrumb Hierarchy</button>
+  <button onclick="show('unplanned')" id="nav-unplanned" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Create Unplanned Service</button>
+</nav>
+
+<!-- Screen: Bill Edit View with AI Chips -->
+<div id="bill-edit" class="screen active p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <div class="text-sm text-gray-500">Bills &gt; Edit</div>
+      <h1 class="text-2xl font-bold text-gray-900">Bill #TC-4521 — Allied Health Group Pty Ltd</h1>
+      <p class="text-sm text-gray-500 mt-1">ABN: 12 345 678 901 &middot; Submitted 19 Mar 2026 &middot; Package: Margaret Johnson (HCP-2)</p>
+    </div>
+    <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">In Review</span>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+      <h2 class="text-sm font-semibold text-gray-700">Line Items</h2>
+      <span class="text-xs text-gray-500">3 items &middot; Total: $485.00</span>
+    </div>
+    <table class="w-full">
+      <thead>
+        <tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+          <th class="px-6 py-3 text-left">Description</th>
+          <th class="px-4 py-3 text-left">AI Classification</th>
+          <th class="px-4 py-3 text-left">Service</th>
+          <th class="px-4 py-3 text-right">Qty</th>
+          <th class="px-4 py-3 text-right">Rate</th>
+          <th class="px-4 py-3 text-right">Amount</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <!-- Row 1: AI Suggested (single SERT) -->
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm text-gray-900">Physio assessment home visit — 1hr</td>
+          <td class="px-4 py-4">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2l1.5 4.5H16l-3.5 2.5L14 14l-4-3-4 3 1.5-5L4 6.5h4.5z"/></svg>
+              AI Suggested: Allied Health
+            </span>
+          </td>
+          <td class="px-4 py-4">
+            <button class="text-sm text-teal-700 font-medium hover:underline">Select service &rarr;</button>
+          </td>
+          <td class="px-4 py-4 text-sm text-gray-900 text-right">1 hr</td>
+          <td class="px-4 py-4 text-sm text-gray-900 text-right">$185.00</td>
+          <td class="px-4 py-4 text-sm font-medium text-gray-900 text-right">$185.00</td>
+        </tr>
+
+        <!-- Row 2: Multi-SERT split recommended -->
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm text-gray-900">Personal care and cleaning — 3hrs</td>
+          <td class="px-4 py-4 flex flex-wrap gap-1.5">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2l1.5 4.5H16l-3.5 2.5L14 14l-4-3-4 3 1.5-5L4 6.5h4.5z"/></svg>
+              AI: 2 services
+            </span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 animate-pulse">
+              &#9874; Split recommended
+            </span>
+          </td>
+          <td class="px-4 py-4">
+            <button class="text-sm text-teal-700 font-medium hover:underline">Review split &rarr;</button>
+          </td>
+          <td class="px-4 py-4 text-sm text-gray-900 text-right">3 hrs</td>
+          <td class="px-4 py-4 text-sm text-gray-900 text-right">$50.00</td>
+          <td class="px-4 py-4 text-sm font-medium text-gray-900 text-right">$150.00</td>
+        </tr>
+
+        <!-- Row 3: Linked service (confirmed) -->
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm text-gray-900">Meal preparation — weekly visit</td>
+          <td class="px-4 py-4">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Domestic Assistance (SERV-0421)
+            </span>
+          </td>
+          <td class="px-4 py-4 text-sm text-gray-500">Linked</td>
+          <td class="px-4 py-4 text-sm text-gray-900 text-right">2 hrs</td>
+          <td class="px-4 py-4 text-sm text-gray-900 text-right">$75.00</td>
+          <td class="px-4 py-4 text-sm font-medium text-gray-900 text-right">$150.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Screen: Service Selection Modal -->
+<div id="service-modal" class="screen p-6 max-w-7xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Service Selection Modal</h1>
+  <p class="text-sm text-gray-500 mb-6">AI-pre-filtered view when a single SERT is detected. Modal shows rich service rows sorted by confidence.</p>
+
+  <div class="bg-white rounded-xl shadow-lg border border-gray-200 max-w-4xl mx-auto">
+    <!-- Modal Header -->
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <div>
+        <h2 class="text-lg font-semibold text-gray-900">Select Planned Service</h2>
+        <p class="text-sm text-gray-500 mt-0.5">Line: "Physio assessment home visit — 1hr" &middot; $185.00</p>
+      </div>
+      <button class="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+    </div>
+
+    <!-- AI pre-filter banner -->
+    <div class="px-6 py-3 bg-violet-50 border-b border-violet-100 flex items-center gap-2">
+      <svg class="w-4 h-4 text-violet-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2l1.5 4.5H16l-3.5 2.5L14 14l-4-3-4 3 1.5-5L4 6.5h4.5z"/></svg>
+      <span class="text-sm text-violet-800 font-medium">AI pre-filtered to Allied Health &middot; 92% match</span>
+      <span class="ml-auto text-xs text-violet-600 hover:underline cursor-pointer">Show all services (24)</span>
+    </div>
+
+    <!-- Service List -->
+    <div class="divide-y divide-gray-100">
+      <!-- Top AI match -->
+      <div class="px-6 py-3 bg-violet-50 border-l-4 border-violet-500 flex items-center gap-4 cursor-pointer hover:bg-violet-100">
+        <svg class="w-4 h-4 text-violet-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2l1.5 4.5H16l-3.5 2.5L14 14l-4-3-4 3 1.5-5L4 6.5h4.5z"/></svg>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-medium text-gray-900">Physiotherapy assessment</span>
+          </div>
+          <div class="text-xs text-gray-500 mt-0.5">27/1/2026 ongoing &middot; $185 per hour, weekly</div>
+        </div>
+        <span class="px-2 py-0.5 bg-teal-100 text-teal-700 text-xs font-medium rounded">AHG</span>
+        <span class="text-xs text-gray-500">$4,105.00</span>
+        <span class="px-1.5 py-0.5 bg-green-100 text-green-700 text-xs rounded">ON</span>
+        <span class="text-sm font-medium text-gray-900">$15,371.00</span>
+        <span class="px-2 py-0.5 bg-violet-100 text-violet-800 text-xs font-medium rounded-full">92%</span>
+      </div>
+
+      <!-- Second match -->
+      <div class="px-6 py-3 flex items-center gap-4 cursor-pointer hover:bg-gray-50">
+        <svg class="w-4 h-4 text-violet-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2l1.5 4.5H16l-3.5 2.5L14 14l-4-3-4 3 1.5-5L4 6.5h4.5z"/></svg>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-medium text-gray-900">Occupational therapy</span>
+            <span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-xs rounded">Unplanned</span>
+          </div>
+          <div class="text-xs text-gray-500 mt-0.5">Ad hoc &middot; $175 per hour</div>
+        </div>
+        <span class="px-2 py-0.5 bg-teal-100 text-teal-700 text-xs font-medium rounded">AHG</span>
+        <span class="text-xs text-gray-500">$2,800.00</span>
+        <span class="px-1.5 py-0.5 bg-green-100 text-green-700 text-xs rounded">ON</span>
+        <span class="text-sm font-medium text-gray-900">$5,250.00</span>
+        <span class="px-2 py-0.5 bg-violet-100 text-violet-800 text-xs font-medium rounded-full">78%</span>
+      </div>
+
+      <!-- Third match -->
+      <div class="px-6 py-3 flex items-center gap-4 cursor-pointer hover:bg-gray-50">
+        <svg class="w-4 h-4 text-gray-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/></svg>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-medium text-gray-900">Speech pathology</span>
+          </div>
+          <div class="text-xs text-gray-500 mt-0.5">15/2/2026 ongoing &middot; $195 per hour, fortnightly</div>
+        </div>
+        <span class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-medium rounded">SPC</span>
+        <span class="text-xs text-gray-500">$1,560.00</span>
+        <span class="px-1.5 py-0.5 bg-red-100 text-red-700 text-xs rounded">OFF</span>
+        <span class="text-sm font-medium text-gray-900">$3,900.00</span>
+        <span class="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs font-medium rounded-full">41%</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
+      <span class="text-xs text-gray-500">Showing 3 of 24 recommended services</span>
+      <div class="flex gap-3">
+        <button class="text-sm text-gray-500 hover:text-gray-700">Cancel</button>
+        <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg hover:bg-teal-800">Confirm Selection</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Split Recommended -->
+<div id="split-flow" class="screen p-6 max-w-7xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Multi-Service Split Flow</h1>
+  <p class="text-sm text-gray-500 mb-6">AI detects 2+ service types in a single line item and recommends splitting.</p>
+
+  <div class="bg-white rounded-xl shadow-lg border border-gray-200 max-w-4xl mx-auto">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900">Split Line Item</h2>
+      <p class="text-sm text-gray-500 mt-0.5">Original: "Personal care and cleaning — 3hrs" &middot; $150.00</p>
+    </div>
+
+    <!-- Split warning -->
+    <div class="px-6 py-3 bg-amber-50 border-b border-amber-100 flex items-center gap-2">
+      <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span class="text-sm text-amber-800">AI detected <strong>2 different contribution categories</strong> in this line item. Splitting is recommended for accurate funding classification.</span>
+    </div>
+
+    <div class="p-6 space-y-4">
+      <!-- Split 1 -->
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 bg-violet-100 text-violet-800 text-xs font-medium rounded-full">95% match</span>
+            <span class="text-sm font-semibold text-gray-900">Personal Care</span>
+          </div>
+          <span class="text-sm text-gray-500">Independence &rarr; Personal Care &rarr; Assistance with self-care</span>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs text-gray-500">Description</label>
+            <input type="text" value="Personal care — 2hrs" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">Hours</label>
+            <input type="number" value="2" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">Amount</label>
+            <input type="text" value="$100.00" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+        </div>
+      </div>
+
+      <!-- Split 2 -->
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 bg-violet-100 text-violet-800 text-xs font-medium rounded-full">88% match</span>
+            <span class="text-sm font-semibold text-gray-900">Domestic Assistance</span>
+          </div>
+          <span class="text-sm text-gray-500">Daily Living &rarr; Domestic Assistance &rarr; General house cleaning</span>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs text-gray-500">Description</label>
+            <input type="text" value="Cleaning — 1hr" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">Hours</label>
+            <input type="number" value="1" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">Amount</label>
+            <input type="text" value="$50.00" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          </div>
+        </div>
+      </div>
+
+      <!-- Total check -->
+      <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+        <span class="text-sm text-gray-500">Split total must equal original: $150.00</span>
+        <span class="text-sm font-medium text-green-700">$100.00 + $50.00 = $150.00 &#10003;</span>
+      </div>
+    </div>
+
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="text-sm text-gray-500 hover:text-gray-700">Keep as single item</button>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg hover:bg-teal-800">Confirm Split</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Breadcrumb Hierarchy -->
+<div id="breadcrumb" class="screen p-6 max-w-7xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Breadcrumb Hierarchy Display</h1>
+  <p class="text-sm text-gray-500 mb-6">Each classified line item shows a visual Tier 1 > Tier 2 > Tier 3 breadcrumb with colour-coded categories.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden max-w-5xl">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <h2 class="text-sm font-semibold text-gray-700">Classified Line Items</h2>
+    </div>
+    <div class="divide-y divide-gray-200">
+      <div class="px-6 py-4">
+        <div class="text-sm text-gray-900 font-medium mb-2">Physio assessment home visit — 1hr ($185.00)</div>
+        <div class="flex items-center gap-1 text-xs">
+          <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded font-medium">&#x1F3E5; Independence</span>
+          <span class="text-gray-400">&rarr;</span>
+          <span class="px-2 py-1 bg-purple-50 text-purple-700 rounded">Allied Health &amp; Therapy</span>
+          <span class="text-gray-400">&rarr;</span>
+          <span class="px-2 py-1 bg-purple-50 text-purple-600 rounded">Physiotherapy</span>
+          <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-700 rounded-full font-medium">92%</span>
+        </div>
+      </div>
+
+      <div class="px-6 py-4">
+        <div class="text-sm text-gray-900 font-medium mb-2">Meal preparation — weekly visit ($150.00)</div>
+        <div class="flex items-center gap-1 text-xs">
+          <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded font-medium">&#x1F3E0; Daily Living</span>
+          <span class="text-gray-400">&rarr;</span>
+          <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded">Domestic Assistance</span>
+          <span class="text-gray-400">&rarr;</span>
+          <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded">Meal preparation</span>
+          <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-700 rounded-full font-medium">97%</span>
+        </div>
+      </div>
+
+      <div class="px-6 py-4">
+        <div class="text-sm text-gray-900 font-medium mb-2">Transport to medical appointment ($45.00)</div>
+        <div class="flex items-center gap-1 text-xs">
+          <span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded font-medium">&#x1F697; Social &amp; Community</span>
+          <span class="text-gray-400">&rarr;</span>
+          <span class="px-2 py-1 bg-emerald-50 text-emerald-700 rounded">Transport</span>
+          <span class="text-gray-400">&rarr;</span>
+          <span class="px-2 py-1 bg-emerald-50 text-emerald-600 rounded">Medical transport</span>
+          <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-700 rounded-full font-medium">89%</span>
+        </div>
+      </div>
+
+      <div class="px-6 py-4">
+        <div class="text-sm text-gray-900 font-medium mb-2">Nursing wound care — follow-up ($210.00)</div>
+        <div class="flex items-center gap-1 text-xs">
+          <span class="px-2 py-1 bg-rose-100 text-rose-800 rounded font-medium">&#x2764; Clinical Care</span>
+          <span class="text-gray-400">&rarr;</span>
+          <span class="px-2 py-1 bg-rose-50 text-rose-700 rounded">Nursing</span>
+          <span class="text-gray-400">&rarr;</span>
+          <span class="px-2 py-1 bg-rose-50 text-rose-600 rounded">Wound management</span>
+          <span class="ml-2 px-2 py-0.5 bg-green-100 text-green-700 rounded-full font-medium">95%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Create Unplanned Service -->
+<div id="unplanned" class="screen p-6 max-w-7xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Create Unplanned Service</h1>
+  <p class="text-sm text-gray-500 mb-6">When a line item does not match any existing budget plan, the system prominently suggests creating an unplanned service with AI pre-fill.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 max-w-3xl mx-auto overflow-hidden">
+    <!-- Alert banner -->
+    <div class="px-6 py-4 bg-orange-50 border-b border-orange-100 flex items-start gap-3">
+      <svg class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div>
+        <p class="text-sm font-medium text-orange-800">No matching budget found</p>
+        <p class="text-xs text-orange-700 mt-1">Line item "Emergency plumbing repair — 2hrs" ($320.00) does not match any planned service for this client.</p>
+      </div>
+    </div>
+
+    <div class="p-6 space-y-5">
+      <div class="flex items-center justify-center">
+        <button class="px-6 py-3 bg-teal-700 text-white font-medium rounded-lg hover:bg-teal-800 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Create Unplanned Service
+        </button>
+      </div>
+
+      <div class="border-t border-gray-100 pt-5">
+        <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <svg class="w-4 h-4 text-violet-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2l1.5 4.5H16l-3.5 2.5L14 14l-4-3-4 3 1.5-5L4 6.5h4.5z"/></svg>
+          AI-Suggested Classification
+        </h3>
+
+        <div class="grid grid-cols-1 gap-4">
+          <div>
+            <label class="text-xs text-gray-500 font-medium">Tier 1 (SERG)</label>
+            <div class="mt-1 px-3 py-2 bg-violet-50 border border-violet-200 rounded-lg text-sm text-violet-800">
+              Daily Living <span class="text-xs text-violet-600 ml-1">(AI: 87%)</span>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-gray-500 font-medium">Tier 2 (SERT)</label>
+            <div class="mt-1 px-3 py-2 bg-violet-50 border border-violet-200 rounded-lg text-sm text-violet-800">
+              Home Maintenance <span class="text-xs text-violet-600 ml-1">(AI: 84%)</span>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-gray-500 font-medium">Tier 3 (SERV) — Suggested</label>
+            <div class="mt-1 space-y-2">
+              <label class="flex items-center gap-2 px-3 py-2 border border-violet-200 rounded-lg bg-violet-50 cursor-pointer">
+                <input type="checkbox" checked class="rounded text-teal-700">
+                <span class="text-sm text-gray-900">Plumbing and gas fitting</span>
+                <span class="ml-auto text-xs text-violet-600">91%</span>
+              </label>
+              <label class="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                <input type="checkbox" class="rounded text-teal-700">
+                <span class="text-sm text-gray-900">General home maintenance</span>
+                <span class="ml-auto text-xs text-gray-400">62%</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="text-sm text-gray-500 hover:text-gray-700">Cancel</button>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg hover:bg-teal-800">Create &amp; Link</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  const btn=document.getElementById('nav-'+id);
+  btn.classList.add('tab-active');btn.classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

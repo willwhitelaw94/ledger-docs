@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get started — MoneyQuest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    * { font-family: 'Inter', system-ui, sans-serif; }
+
+    .choice-card {
+      cursor: pointer;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+    }
+    .choice-card:hover {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+    .choice-card.selected {
+      border-color: #43C0BE;
+    }
+    .choice-card.selected .selected-dot {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center justify-center px-6 py-16">
+
+  <!-- MoneyQuest wordmark -->
+  <div class="mb-10 text-center">
+    <p class="text-base font-semibold text-gray-900 tracking-tight">MoneyQuest</p>
+  </div>
+
+  <!-- Headline -->
+  <div class="text-center mb-10 max-w-sm">
+    <h1 class="text-2xl font-light text-gray-900 tracking-tight mb-2">Let's get you set up.</h1>
+    <p class="text-sm text-gray-400">How are you planning to use MoneyQuest?</p>
+  </div>
+
+  <!-- Choice cards -->
+  <div class="w-full max-w-xl grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+
+    <!-- Personal -->
+    <div class="choice-card relative border border-gray-200 rounded-2xl p-7 bg-white" id="card-personal" onclick="selectCard('personal')">
+      <!-- Selected dot -->
+      <div class="selected-dot absolute top-4 right-4 w-2 h-2 rounded-full bg-teal-500 opacity-0 transition-opacity"></div>
+
+      <!-- Icon -->
+      <div class="mb-5">
+        <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+      </div>
+
+      <h2 class="text-base font-medium text-gray-900 mb-2">For myself</h2>
+      <p class="text-sm text-gray-400 font-light leading-relaxed mb-5">Track personal finances, home renovation costs, a P&amp;L for freelance work.</p>
+
+      <span class="inline-block text-xs font-medium text-teal-600 bg-teal-50 px-2.5 py-1 rounded-full">Always free</span>
+    </div>
+
+    <!-- Business -->
+    <div class="choice-card relative border border-gray-200 rounded-2xl p-7 bg-white" id="card-business" onclick="selectCard('business')">
+      <!-- Selected dot -->
+      <div class="selected-dot absolute top-4 right-4 w-2 h-2 rounded-full bg-teal-500 opacity-0 transition-opacity"></div>
+
+      <!-- Icon -->
+      <div class="mb-5">
+        <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      </div>
+
+      <h2 class="text-base font-medium text-gray-900 mb-2">For my business</h2>
+      <p class="text-sm text-gray-400 font-light leading-relaxed mb-5">Invoicing, job costing, bank reconciliation, multi-user workspaces.</p>
+
+      <span class="inline-block text-xs font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">14-day free trial</span>
+    </div>
+
+  </div>
+
+  <!-- Continue button (shown after selection) -->
+  <div id="continue-wrap" class="mb-8 opacity-0 transition-opacity duration-200 pointer-events-none">
+    <a href="03-onboarding-personal.html" id="continue-btn" class="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium px-6 py-2.5 rounded-full transition-colors">
+      Continue
+      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </a>
+  </div>
+
+  <!-- Sign in link -->
+  <p class="text-xs text-gray-400">
+    Already have an account?
+    <a href="#" class="text-gray-500 hover:text-gray-700 transition-colors ml-1">Sign in →</a>
+  </p>
+
+  <script>
+    let selected = null;
+
+    function selectCard(type) {
+      selected = type;
+
+      // Reset both
+      ['personal', 'business'].forEach(t => {
+        const card = document.getElementById('card-' + t);
+        card.classList.remove('selected');
+      });
+
+      // Select chosen
+      document.getElementById('card-' + type).classList.add('selected');
+
+      // Show continue button
+      const wrap = document.getElementById('continue-wrap');
+      wrap.classList.remove('opacity-0', 'pointer-events-none');
+      wrap.classList.add('opacity-100');
+
+      // Update continue link destination
+      const btn = document.getElementById('continue-btn');
+      btn.href = type === 'personal' ? '03-onboarding-personal.html' : '03-onboarding-personal.html';
+    }
+  </script>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

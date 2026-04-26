@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calls Inbox - Linear Lisa (Variation B: Split View)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA', 100:'#D5F1F0', 200:'#BAE8E7', 300:'#94DBDA', 400:'#66CCCA', 500:'#43C0BE', 600:'#2F9E9C', 700:'#007F7E', 800:'#005656', 900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA', 100:'#D6E1F0', 200:'#BCCEE7', 300:'#96B2D9', 400:'#7197CC', 500:'#4B7BBE', 600:'#39639D', 700:'#2C4C79', 800:'#1E3452', 900:'#101C2D' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .custom-scroll::-webkit-scrollbar { width: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #DBDBDB; border-radius: 3px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #999999; }
+    body { background: #FAFAFA; }
+  </style>
+</head>
+<body class="text-[#13171D] font-sans antialiased h-screen flex flex-col overflow-hidden">
+
+  <!-- ===== TOP BAR ===== -->
+  <header class="h-11 bg-white border-b border-[#F2F2F2] px-4 flex items-center justify-between flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
+        <div class="w-6 h-6 rounded bg-teal-700 flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+        </div>
+        <span class="text-sm font-semibold text-primary-blue-700">TC Portal</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="flex items-center gap-2 px-2.5 py-1 bg-[#FAFAFA] border border-[#F2F2F2] hover:border-[#DBDBDB] rounded-md text-xs text-[#999999] transition">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+        <span class="text-[11px] font-medium bg-white border border-[#DBDBDB] px-1 py-0.5 rounded">&#8984;K</span>
+      </button>
+      <button class="w-7 h-7 rounded-md hover:bg-[#F2F2F2] flex items-center justify-center text-[#999999] transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M12 18.75h.008v.008H12v-.008z"/></svg>
+      </button>
+      <div class="w-7 h-7 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 text-xs font-semibold">WW</div>
+    </div>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- ===== LEFT SIDEBAR ===== -->
+    <aside class="w-[200px] bg-white border-r border-[#F2F2F2] flex flex-col flex-shrink-0">
+      <nav class="flex-1 py-2 px-2">
+        <div class="px-2 pt-3 pb-1.5">
+          <span class="text-[10px] font-semibold text-[#999999] uppercase tracking-wider">Care Coordination</span>
+        </div>
+        <a href="#" class="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm text-[#666666] hover:bg-[#FAFAFA] transition group">
+          <svg class="w-4 h-4 text-[#999999] group-hover:text-[#666666]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25a2.25 2.25 0 01-2.25-2.25v-2.25z"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm font-medium text-teal-700 bg-teal-50 transition">
+          <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+          <span>Calls Inbox</span>
+          <span class="ml-auto text-[10px] font-semibold bg-[#E0763C] text-white px-1.5 py-0.5 rounded-full min-w-[20px] text-center">7</span>
+        </a>
+        <a href="#" class="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm text-[#666666] hover:bg-[#FAFAFA] transition group">
+          <svg class="w-4 h-4 text-[#999999] group-hover:text-[#666666]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+          <span>Packages</span>
+        </a>
+        <a href="#" class="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm text-[#666666] hover:bg-[#FAFAFA] transition group">
+          <svg class="w-4 h-4 text-[#999999] group-hover:text-[#666666]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+          <span>Calendar</span>
+        </a>
+
+        <div class="px-2 pt-5 pb-1.5">
+          <span class="text-[10px] font-semibold text-[#999999] uppercase tracking-wider">Reports</span>
+        </div>
+        <a href="#" class="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm text-[#666666] hover:bg-[#FAFAFA] transition group">
+          <svg class="w-4 h-4 text-[#999999] group-hover:text-[#666666]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+          <span>Analytics</span>
+        </a>
+        <a href="#" class="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-sm text-[#666666] hover:bg-[#FAFAFA] transition group">
+          <svg class="w-4 h-4 text-[#999999] group-hover:text-[#666666]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg>
+          <span>Billing</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ===== SPLIT VIEW CONTENT ===== -->
+    <div class="flex-1 flex overflow-hidden">
+
+      <!-- ===== CALL LIST PANEL (320px) ===== -->
+      <div class="w-80 flex flex-col border-r border-[#F2F2F2] bg-white flex-shrink-0">
+
+        <!-- List Header -->
+        <div class="px-4 pt-4 pb-0 flex-shrink-0">
+          <div class="flex items-center justify-between mb-3">
+            <h1 class="text-base font-semibold text-primary-blue-700">Calls Inbox</h1>
+            <span class="text-[10px] font-semibold bg-[#E0763C] text-white px-2 py-0.5 rounded-full">7 unlinked</span>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div class="flex gap-0.5 bg-[#F2F2F2] p-0.5 rounded-md mb-3">
+            <button class="flex-1 px-2 py-1 text-[11px] font-medium text-[#666666] rounded hover:bg-white/60 transition">All</button>
+            <button class="flex-1 px-2 py-1 text-[11px] font-medium text-teal-700 bg-white rounded shadow-sm transition">Unlinked</button>
+            <button class="flex-1 px-2 py-1 text-[11px] font-medium text-[#666666] rounded hover:bg-white/60 transition">Review</button>
+            <button class="flex-1 px-2 py-1 text-[11px] font-medium text-[#666666] rounded hover:bg-white/60 transition">Done</button>
+          </div>
+        </div>
+
+        <!-- Scrollable Call List -->
+        <div class="flex-1 overflow-y-auto custom-scroll">
+          <div class="divide-y divide-[#F2F2F2]">
+
+            <!-- Call 1 -->
+            <div class="px-4 py-3 hover:bg-[#FAFAFA] cursor-pointer transition">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-3.5 h-3.5 text-[#E0763C] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-[#13171D] truncate">+61 412 345 678</span>
+                    <span class="text-[11px] text-[#999999] flex-shrink-0 ml-2">5:32</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">Today 9:15 AM</div>
+                  <p class="text-xs text-[#666666] mt-1 truncate">"Calling about mum's care package..."</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call 2 -->
+            <div class="px-4 py-3 hover:bg-[#FAFAFA] cursor-pointer transition">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-3.5 h-3.5 text-[#E0763C] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-[#13171D] truncate">+61 438 901 234</span>
+                    <span class="text-[11px] text-[#999999] flex-shrink-0 ml-2">3:45</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">Today 8:42 AM</div>
+                  <p class="text-xs text-[#666666] mt-1 truncate">"Need to discuss respite care options..."</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call 3 - SELECTED -->
+            <div class="px-4 py-3 bg-teal-50 border-l-2 border-teal-700 cursor-pointer">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-3.5 h-3.5 text-[#E0763C] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold text-[#13171D] truncate">+61 402 567 890</span>
+                    <span class="text-[11px] text-[#666666] flex-shrink-0 ml-2">8:21</span>
+                  </div>
+                  <div class="text-[11px] text-[#666666] mt-0.5">Yesterday 4:30 PM</div>
+                  <p class="text-xs text-[#13171D] mt-1 truncate">"Checking on medication delivery..."</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call 4 -->
+            <div class="px-4 py-3 hover:bg-[#FAFAFA] cursor-pointer transition">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-3.5 h-3.5 text-[#E0763C] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-[#13171D] truncate">+61 419 876 543</span>
+                    <span class="text-[11px] text-[#999999] flex-shrink-0 ml-2">2:15</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">Yesterday 2:10 PM</div>
+                  <p class="text-xs text-[#666666] mt-1 truncate">"Setting up home care for wife Linda..."</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call 5 -->
+            <div class="px-4 py-3 hover:bg-[#FAFAFA] cursor-pointer transition">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-3.5 h-3.5 text-[#E0763C] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-[#13171D] truncate">+61 455 321 987</span>
+                    <span class="text-[11px] text-[#999999] flex-shrink-0 ml-2">6:48</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">Yesterday 11:20 AM</div>
+                  <p class="text-xs text-[#666666] mt-1 truncate">"Following up on plan review with OT..."</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call 6 - Linked / Review status -->
+            <div class="px-4 py-3 hover:bg-[#FAFAFA] cursor-pointer transition">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-3.5 h-3.5 text-[#DDA023] flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2"/>
+                  <path d="M8 1a7 7 0 010 14V1z" fill="currentColor"/>
+                </svg>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-[#13171D] truncate">Mary Johnson</span>
+                    <span class="text-[11px] text-[#999999] flex-shrink-0 ml-2">12:03</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">PKG-1234 &middot; Yesterday 2:15 PM</div>
+                  <p class="text-xs text-[#666666] mt-1 truncate">"Weekly check-in, mobility update..."</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call 7 - Linked / Review status -->
+            <div class="px-4 py-3 hover:bg-[#FAFAFA] cursor-pointer transition">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-3.5 h-3.5 text-[#DDA023] flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2"/>
+                  <path d="M8 1a7 7 0 010 14V1z" fill="currentColor"/>
+                </svg>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-[#13171D] truncate">Robert Chen</span>
+                    <span class="text-[11px] text-[#999999] flex-shrink-0 ml-2">4:55</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">PKG-3456 &middot; Yesterday 11:20 AM</div>
+                  <p class="text-xs text-[#666666] mt-1 truncate">"Transport booking for Monday..."</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Call 8 - Completed -->
+            <div class="px-4 py-3 hover:bg-[#FAFAFA] cursor-pointer transition opacity-60">
+              <div class="flex items-start gap-2.5">
+                <svg class="w-3.5 h-3.5 text-[#4DC375] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/></svg>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-[#666666] truncate">Betty O'Connor</span>
+                    <span class="text-[11px] text-[#999999] flex-shrink-0 ml-2">7:12</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">PKG-5678 &middot; Monday 3:45 PM</div>
+                  <p class="text-xs text-[#999999] mt-1 truncate">"Shower chair installation discussed..."</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- List Footer -->
+        <div class="px-4 py-2 border-t border-[#F2F2F2] flex-shrink-0">
+          <div class="flex items-center justify-between text-[11px] text-[#999999]">
+            <span>Showing 8 of 42 calls</span>
+            <div class="flex items-center gap-1">
+              <button class="px-1.5 py-0.5 hover:bg-[#F2F2F2] rounded transition">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+              </button>
+              <button class="px-1.5 py-0.5 hover:bg-[#F2F2F2] rounded transition">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== DETAIL PANEL ===== -->
+      <div class="flex-1 flex flex-col bg-[#FAFAFA] overflow-hidden">
+
+        <!-- Detail Header -->
+        <div class="px-6 py-4 bg-white border-b border-[#F2F2F2] flex-shrink-0">
+          <div class="flex items-start justify-between">
+            <div>
+              <h2 class="text-base font-semibold text-primary-blue-700">+61 402 567 890</h2>
+              <div class="flex items-center gap-3 mt-1 text-xs text-[#999999]">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  8:21 duration
+                </span>
+                <span class="w-px h-3 bg-[#DBDBDB]"></span>
+                <span>Yesterday 4:30 PM</span>
+                <span class="w-px h-3 bg-[#DBDBDB]"></span>
+                <span>Inbound</span>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#E0763C] bg-orange-50 border border-orange-200 px-2 py-1 rounded-md">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+              Unlinked
+            </span>
+          </div>
+        </div>
+
+        <!-- Audio Player -->
+        <div class="px-6 py-3 bg-white border-b border-[#F2F2F2] flex-shrink-0">
+          <div class="flex items-center gap-4">
+            <button class="w-9 h-9 bg-teal-700 hover:bg-teal-800 rounded-full flex items-center justify-center text-white transition flex-shrink-0">
+              <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+            </button>
+            <div class="flex-1">
+              <div class="h-1.5 bg-[#F2F2F2] rounded-full overflow-hidden">
+                <div class="h-full bg-teal-700 rounded-full transition-all" style="width: 42%"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-[#999999] mt-1">
+                <span>3:29</span>
+                <span>8:21</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-[#999999] flex-shrink-0">
+              <button class="p-1 hover:bg-[#F2F2F2] rounded transition" title="Back 10s">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
+              </button>
+              <button class="p-1 hover:bg-[#F2F2F2] rounded transition" title="Forward 10s">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l6-6m0 0l-6-6m6 6H9a6 6 0 000 12h3"/></svg>
+              </button>
+              <button class="px-1.5 py-0.5 text-[11px] font-medium hover:bg-[#F2F2F2] rounded transition">1x</button>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mt-1.5 text-[10px] text-[#DBDBDB]">
+            <span class="bg-[#F2F2F2] text-[#999999] px-1 py-0.5 rounded">Space</span> Play/Pause
+            <span class="bg-[#F2F2F2] text-[#999999] px-1 py-0.5 rounded ml-2">&#8592;</span>
+            <span class="bg-[#F2F2F2] text-[#999999] px-1 py-0.5 rounded">&#8594;</span> Seek 10s
+          </div>
+        </div>
+
+        <!-- Scrollable Content Area -->
+        <div class="flex-1 overflow-y-auto custom-scroll">
+
+          <!-- Link to Package Section -->
+          <div class="px-6 py-4 bg-white border-b border-[#F2F2F2]">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-[11px] font-semibold text-[#999999] uppercase tracking-wider">Link to Package</h3>
+              <span class="text-[10px] font-medium bg-[#F2F2F2] text-[#999999] px-1.5 py-0.5 rounded">&#8984;K</span>
+            </div>
+
+            <!-- Search Input -->
+            <div class="relative mb-3">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#DBDBDB]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+              <input type="text" placeholder="Search by name, package number, or phone..." class="w-full pl-9 pr-4 py-2 bg-[#FAFAFA] border border-[#F2F2F2] rounded-md text-sm text-[#13171D] placeholder-[#DBDBDB] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition">
+            </div>
+
+            <!-- Suggested Match -->
+            <div class="text-[10px] text-[#999999] uppercase tracking-wider mb-1.5 font-medium flex items-center gap-1.5">
+              <svg class="w-3 h-3 text-teal-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+              Suggested by phone number
+            </div>
+            <div class="space-y-1.5">
+              <!-- Suggested Package 1 (selected) -->
+              <div class="flex items-center gap-3 p-2.5 bg-teal-50 border border-teal-200 rounded-md cursor-pointer transition">
+                <div class="w-4 h-4 rounded-full border-2 border-teal-700 flex items-center justify-center flex-shrink-0">
+                  <div class="w-2 h-2 rounded-full bg-teal-700"></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-medium text-[#13171D]">Margaret Thompson</span>
+                    <span class="text-[10px] font-medium text-teal-700 bg-teal-100 px-1.5 py-0.5 rounded">98% match</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">PKG-1234 &middot; 0402 567 890 &middot; HCP Level 2 &middot; Active</div>
+                </div>
+              </div>
+
+              <!-- Suggested Package 2 -->
+              <div class="flex items-center gap-3 p-2.5 bg-white border border-[#F2F2F2] hover:border-[#DBDBDB] rounded-md cursor-pointer transition">
+                <div class="w-4 h-4 rounded-full border-2 border-[#DBDBDB] flex-shrink-0"></div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-medium text-[#666666]">John Thompson</span>
+                    <span class="text-[10px] text-[#999999] bg-[#F2F2F2] px-1.5 py-0.5 rounded">72% match</span>
+                  </div>
+                  <div class="text-[11px] text-[#999999] mt-0.5">PKG-2345 &middot; 0402 567 891 &middot; HCP Level 3 &middot; Active</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transcription Section -->
+          <div class="px-6 py-4 bg-white border-b border-[#F2F2F2]">
+            <h3 class="text-[11px] font-semibold text-[#999999] uppercase tracking-wider mb-3">Transcription</h3>
+            <div class="bg-[#FAFAFA] rounded-lg p-4 text-sm leading-relaxed space-y-3">
+              <p>
+                <span class="font-medium text-teal-700">[Caller]:</span>
+                <span class="text-[#666666]"> Hi, I'm calling about my mother's medication delivery. She's Margaret Thompson, PKG-1234. She usually gets her medication delivered on Thursdays but nothing arrived this morning.</span>
+              </p>
+              <p>
+                <span class="font-medium text-primary-blue-700">[Coordinator]:</span>
+                <span class="text-[#666666]"> Thank you for letting us know. I can see her package here. Let me check on the delivery status with the pharmacy. Can you confirm the delivery address is still 42 Eucalyptus Drive, Berwick?</span>
+              </p>
+              <p>
+                <span class="font-medium text-teal-700">[Caller]:</span>
+                <span class="text-[#666666]"> Yes, that's correct. She's been waiting since 9 AM and was getting a bit anxious about it.</span>
+              </p>
+              <p>
+                <span class="font-medium text-primary-blue-700">[Coordinator]:</span>
+                <span class="text-[#666666]"> I completely understand. I'll follow up with the pharmacy now and give you a call back within the hour with an update. Is this the best number to reach you on?</span>
+              </p>
+              <p>
+                <span class="font-medium text-teal-700">[Caller]:</span>
+                <span class="text-[#666666]"> Yes please, that would be great. Thank you so much.</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Notes Section -->
+          <div class="px-6 py-4 bg-white border-b border-[#F2F2F2]">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-[11px] font-semibold text-[#999999] uppercase tracking-wider">Notes</h3>
+              <span class="text-[10px] font-medium bg-[#F2F2F2] text-[#999999] px-1.5 py-0.5 rounded">N</span>
+            </div>
+            <!-- Quick Note Snippets -->
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <button class="text-[11px] px-2.5 py-1 bg-[#FAFAFA] border border-[#F2F2F2] hover:border-teal-300 hover:bg-teal-50 rounded-full text-[#666666] transition">;routine</button>
+              <button class="text-[11px] px-2.5 py-1 bg-[#FAFAFA] border border-[#F2F2F2] hover:border-teal-300 hover:bg-teal-50 rounded-full text-[#666666] transition">;followup</button>
+              <button class="text-[11px] px-2.5 py-1 bg-[#FAFAFA] border border-[#F2F2F2] hover:border-teal-300 hover:bg-teal-50 rounded-full text-[#666666] transition">;escalate</button>
+              <button class="text-[11px] px-2.5 py-1 bg-[#FAFAFA] border border-[#F2F2F2] hover:border-teal-300 hover:bg-teal-50 rounded-full text-[#666666] transition">;noaction</button>
+              <button class="text-[11px] px-2.5 py-1 bg-[#FAFAFA] border border-[#F2F2F2] hover:border-teal-300 hover:bg-teal-50 rounded-full text-[#666666] transition">;callback</button>
+            </div>
+            <textarea placeholder="Add review notes..." rows="2" class="w-full px-3 py-2 bg-[#FAFAFA] border border-[#F2F2F2] rounded-md text-sm text-[#13171D] placeholder-[#DBDBDB] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none transition"></textarea>
+          </div>
+
+        </div>
+
+        <!-- ===== DETAIL PANEL FOOTER (Actions) ===== -->
+        <div class="px-6 py-3 bg-white border-t border-[#F2F2F2] flex items-center justify-between flex-shrink-0">
+          <div class="flex items-center gap-3">
+            <button class="flex items-center gap-1.5 px-3 py-1.5 text-sm text-[#666666] hover:text-[#13171D] hover:bg-[#F2F2F2] rounded-md transition">
+              <span class="text-[10px] font-mono bg-[#F2F2F2] text-[#999999] px-1 py-0.5 rounded">3</span>
+              <span>Flag</span>
+            </button>
+            <button class="flex items-center gap-1.5 px-3 py-1.5 text-sm text-[#666666] hover:text-[#13171D] hover:bg-[#F2F2F2] rounded-md transition">
+              <span class="text-[10px] font-mono bg-[#F2F2F2] text-[#999999] px-1 py-0.5 rounded">H</span>
+              <span>Defer</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="flex items-center gap-1.5 px-3 py-1.5 text-sm text-[#666666] border border-[#F2F2F2] hover:border-[#DBDBDB] rounded-md transition">
+              <span class="text-[10px] font-mono bg-[#F2F2F2] text-[#999999] px-1 py-0.5 rounded">2</span>
+              <span>Complete</span>
+            </button>
+            <button class="flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium text-white bg-teal-700 hover:bg-teal-800 rounded-md transition">
+              <span class="text-[10px] font-mono bg-teal-600 px-1 py-0.5 rounded">1</span>
+              <span>Link & Complete</span>
+              <svg class="w-4 h-4 ml-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===== KEYBOARD SHORTCUT BAR ===== -->
+  <div class="flex-shrink-0 h-9 bg-primary-blue-800 flex items-center justify-center gap-6 text-xs px-4">
+    <span class="flex items-center gap-1.5">
+      <span class="bg-primary-blue-700 text-primary-blue-200 px-1.5 py-0.5 rounded text-[10px] font-mono">&#8593;&#8595;</span>
+      <span class="text-primary-blue-200">Navigate</span>
+    </span>
+    <span class="flex items-center gap-1.5">
+      <span class="bg-primary-blue-700 text-primary-blue-200 px-1.5 py-0.5 rounded text-[10px] font-mono">X</span>
+      <span class="text-primary-blue-200">Select</span>
+    </span>
+    <span class="w-px h-3.5 bg-primary-blue-600"></span>
+    <span class="flex items-center gap-1.5">
+      <span class="bg-teal-700 text-white px-1.5 py-0.5 rounded text-[10px] font-mono">1</span>
+      <span class="text-white font-medium">Link & Complete</span>
+    </span>
+    <span class="flex items-center gap-1.5">
+      <span class="bg-primary-blue-700 text-primary-blue-200 px-1.5 py-0.5 rounded text-[10px] font-mono">2</span>
+      <span class="text-primary-blue-200">Complete</span>
+    </span>
+    <span class="flex items-center gap-1.5">
+      <span class="bg-primary-blue-700 text-primary-blue-200 px-1.5 py-0.5 rounded text-[10px] font-mono">3</span>
+      <span class="text-primary-blue-200">Flag</span>
+    </span>
+    <span class="flex items-center gap-1.5">
+      <span class="bg-primary-blue-700 text-primary-blue-200 px-1.5 py-0.5 rounded text-[10px] font-mono">H</span>
+      <span class="text-primary-blue-200">Defer</span>
+    </span>
+    <span class="w-px h-3.5 bg-primary-blue-600"></span>
+    <span class="flex items-center gap-1.5">
+      <span class="bg-primary-blue-700 text-primary-blue-200 px-1.5 py-0.5 rounded text-[10px] font-mono">Space</span>
+      <span class="text-primary-blue-200">Play</span>
+    </span>
+    <span class="flex items-center gap-1.5">
+      <span class="bg-primary-blue-700 text-primary-blue-200 px-1.5 py-0.5 rounded text-[10px] font-mono">&#8984;K</span>
+      <span class="text-primary-blue-200">Command</span>
+    </span>
+    <span class="flex items-center gap-1.5">
+      <span class="bg-primary-blue-700 text-primary-blue-200 px-1.5 py-0.5 rounded text-[10px] font-mono">Esc</span>
+      <span class="text-primary-blue-200">Close</span>
+    </span>
+  </div>
+
+</body>
+</html>

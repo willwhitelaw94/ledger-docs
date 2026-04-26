@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban Board — Task Management MVP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: {
+        teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+        'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+      }}}
+    }
+  </script>
+  <style>
+    body { font-family: 'Roboto Flex', sans-serif; color: #13171D; }
+    .variation { display: none; }
+    .variation.active { display: block; }
+    .tab-btn.active { background: #007F7E; color: white; box-shadow: 0 0 0 2px rgba(67,192,190,0.5); }
+    .kanban-card { transition: box-shadow 0.15s ease, transform 0.15s ease; cursor: grab; }
+    .kanban-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-1px); }
+  </style>
+</head>
+<body class="bg-gray-100 flex">
+
+<!-- Skeleton Sidebar -->
+<aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+  <div class="px-4 py-4 border-b border-gray-100">
+    <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div><div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+    <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+  </div>
+  <div class="px-3 py-3"><div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div></div>
+  <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+    <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+    <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+    <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-teal-200 animate-pulse"></div></div>
+    <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+    <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div></div>
+  </nav>
+  <div class="border-t border-gray-100 px-3 py-3">
+    <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div><div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div></div>
+  </div>
+</aside>
+
+<main class="flex-1 flex flex-col min-h-screen">
+  <header class="bg-white border-b border-gray-200 px-6 py-4">
+    <nav class="text-xs text-gray-400 mb-1"><span>Work Management</span> <span class="mx-1">/</span> <span class="text-gray-700 font-medium">Tasks</span></nav>
+    <div class="flex items-center justify-between">
+      <h1 class="text-xl font-semibold text-gray-900">Tasks</h1>
+    </div>
+  </header>
+
+  <!-- Variation Tabs -->
+  <div class="bg-white border-b border-gray-200 px-6 py-2">
+    <div class="flex items-center gap-1.5">
+      <button onclick="showVariation('a')" class="tab-btn active px-3 py-1.5 text-xs rounded-md font-medium">A: Standard</button>
+      <button onclick="showVariation('b')" class="tab-btn px-3 py-1.5 text-xs rounded-md font-medium bg-gray-100 text-gray-600 hover:bg-gray-200">B: Swimlane</button>
+      <button onclick="showVariation('c')" class="tab-btn px-3 py-1.5 text-xs rounded-md font-medium bg-gray-100 text-gray-600 hover:bg-gray-200">C: Compact</button>
+      <button onclick="showVariation('d')" class="tab-btn px-3 py-1.5 text-xs rounded-md font-medium bg-gray-100 text-gray-600 hover:bg-gray-200">D: Rich Cards</button>
+      <button onclick="showVariation('e')" class="tab-btn px-3 py-1.5 text-xs rounded-md font-medium bg-gray-100 text-gray-600 hover:bg-gray-200">E: Collapsible</button>
+    </div>
+  </div>
+
+  <div class="flex-1 p-6 overflow-x-auto">
+
+    <!-- ===== OPTION A: Standard Kanban ===== -->
+    <div id="var-a" class="variation active">
+      <!-- Toolbar -->
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="relative"><svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input type="text" placeholder="Search tasks..." class="pl-9 pr-3 py-1.5 text-sm border border-gray-300 rounded-lg w-56 outline-none focus:ring-2 focus:ring-teal-500"></div>
+          <button class="text-xs text-gray-500 border border-gray-300 rounded-md px-2.5 py-1 hover:bg-gray-50">Filters</button>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="flex bg-gray-100 rounded-md p-0.5">
+            <button class="px-2.5 py-1 text-xs font-medium rounded text-gray-500">Table</button>
+            <button class="px-2.5 py-1 text-xs font-medium rounded bg-white shadow-sm text-teal-700">Kanban</button>
+          </div>
+          <button class="bg-teal-700 text-white text-xs font-medium px-3 py-1.5 rounded-md hover:bg-teal-800 flex items-center gap-1">
+            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>New Task
+          </button>
+        </div>
+      </div>
+      <!-- Board -->
+      <div class="flex gap-4 min-w-max">
+        <!-- Not Started -->
+        <div class="w-72 flex flex-col">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span><span class="text-sm font-semibold text-gray-700">Not Started</span><span class="text-xs text-gray-400 bg-gray-100 px-1.5 rounded-full">5</span></div>
+          </div>
+          <div class="space-y-2.5 flex-1">
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-100 text-orange-700">High</span><span class="text-[10px] text-gray-400">10 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Follow up with John's physiotherapy referral</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[8px] font-medium">SM</div><span class="px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-[9px]">referral</span></div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-700">Urgent</span><span class="text-[10px] text-red-500 font-medium">1 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Escalate fall incident for Robert James</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[8px] font-medium">DC</div><span class="px-1.5 py-0.5 bg-red-100 text-red-700 rounded text-[9px]">incident</span></div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3 border-l-4 border-l-red-500">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-100 text-orange-700">High</span><span class="text-[10px] text-gray-400">15 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Schedule family meeting for David Chen</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[8px] font-medium">DC</div><span class="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 rounded text-[9px]">family</span></div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-700">Medium</span><span class="text-[10px] text-gray-400">18 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Onboard new care partner: Sarah Mitchell</h4>
+              <div class="flex items-center justify-between">
+                <div class="h-5 w-5 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-[8px] font-medium">AP</div>
+                <div class="flex items-center gap-1"><span class="text-[9px] text-gray-400">0/7</span><div class="w-12 bg-gray-200 rounded-full h-1"><div class="bg-gray-300 h-1 rounded-full" style="width: 0%"></div></div></div>
+              </div>
+            </div>
+            <button class="w-full text-center py-2 text-xs text-gray-400 hover:text-teal-700 hover:bg-teal-50 rounded-lg border border-dashed border-gray-300 hover:border-teal-300 transition">+ Add task</button>
+          </div>
+        </div>
+
+        <!-- In Progress -->
+        <div class="w-72 flex flex-col">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span class="text-sm font-semibold text-gray-700">In Progress</span><span class="text-xs text-gray-400 bg-gray-100 px-1.5 rounded-full">4</span></div>
+          </div>
+          <div class="space-y-2.5 flex-1">
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3 border-l-4 border-l-red-500">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-700">Urgent</span><span class="text-[10px] text-red-500 font-medium">2 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Complete Margaret's HCA package review</h4>
+              <div class="flex items-center justify-between">
+                <div class="h-5 w-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[8px] font-medium">SM</div>
+                <div class="flex items-center gap-1"><span class="text-[9px] text-gray-400">2/5</span><div class="w-12 bg-gray-200 rounded-full h-1"><div class="bg-teal-600 h-1 rounded-full" style="width: 40%"></div></div></div>
+              </div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-100 text-orange-700">High</span><span class="text-[10px] text-gray-400">12 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Update care plan for Susan Williams</h4>
+              <div class="flex items-center justify-between">
+                <div class="h-5 w-5 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-[8px] font-medium">AP</div>
+                <div class="flex items-center gap-1"><span class="text-[9px] text-gray-400">3/6</span><div class="w-12 bg-gray-200 rounded-full h-1"><div class="bg-teal-600 h-1 rounded-full" style="width: 50%"></div></div></div>
+              </div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-700">Medium</span><span class="text-[10px] text-gray-400">20 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Review quarterly budget for Team Alpha</h4>
+              <div class="flex items-center justify-between">
+                <div class="h-5 w-5 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[8px] font-medium">JL</div>
+                <div class="flex items-center gap-1"><span class="text-[9px] text-gray-400">4/8</span><div class="w-12 bg-gray-200 rounded-full h-1"><div class="bg-teal-600 h-1 rounded-full" style="width: 50%"></div></div></div>
+              </div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-700">Urgent</span><span class="text-[10px] text-amber-600 font-medium">6 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Process ACAT reassessment for Helen Park</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[8px] font-medium">JL</div><span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded text-[9px]">ACAT</span></div>
+            </div>
+            <button class="w-full text-center py-2 text-xs text-gray-400 hover:text-teal-700 hover:bg-teal-50 rounded-lg border border-dashed border-gray-300 hover:border-teal-300 transition">+ Add task</button>
+          </div>
+        </div>
+
+        <!-- On Hold -->
+        <div class="w-72 flex flex-col">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span><span class="text-sm font-semibold text-gray-700">On Hold</span><span class="text-xs text-gray-400 bg-gray-100 px-1.5 rounded-full">2</span></div>
+          </div>
+          <div class="space-y-2.5 flex-1">
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3 border-l-4 border-l-red-500">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-100 text-orange-700">High</span><span class="text-[10px] text-red-500 font-medium">28 Feb</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Process supplier invoice #INV-4521</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center text-[8px] font-medium">KR</div><span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded text-[9px]">finance</span></div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-700">Medium</span><span class="text-[10px] text-gray-400">25 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Coordinate transport for Tom's appointments</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[8px] font-medium">DC</div><span class="px-1.5 py-0.5 bg-orange-100 text-orange-700 rounded text-[9px]">transport</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Approved -->
+        <div class="w-72 flex flex-col">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span><span class="text-sm font-semibold text-gray-700">Approved</span><span class="text-xs text-gray-400 bg-gray-100 px-1.5 rounded-full">2</span></div>
+          </div>
+          <div class="space-y-2.5 flex-1">
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-700">Medium</span><span class="text-[10px] text-gray-400">22 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Arrange podiatry appointment for Grace Lee</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[8px] font-medium">SM</div><span class="px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-[9px]">health</span></div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <div class="flex items-center justify-between mb-1.5"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700">Low</span><span class="text-[10px] text-gray-400">30 Mar</span></div>
+              <h4 class="text-sm font-medium text-gray-900 mb-2">Update equipment inventory for Team Beta</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[8px] font-medium">JL</div><span class="px-1.5 py-0.5 bg-gray-100 text-gray-700 rounded text-[9px]">admin</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Completed -->
+        <div class="w-72 flex flex-col">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span><span class="text-sm font-semibold text-gray-700">Completed</span><span class="text-xs text-gray-400 bg-gray-100 px-1.5 rounded-full">3</span></div>
+          </div>
+          <div class="space-y-2.5 flex-1 opacity-60">
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <h4 class="text-sm font-medium text-gray-500 line-through mb-1">Renew insurance documents for Mary Taylor</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-[8px] font-medium">KR</div><span class="text-[10px] text-gray-400">Completed 3 Mar</span></div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 p-3">
+              <h4 class="text-sm font-medium text-gray-500 line-through mb-1">Set up direct debit for package #PKG-789</h4>
+              <div class="flex items-center justify-between"><div class="h-5 w-5 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center text-[8px] font-medium">DC</div><span class="text-[10px] text-gray-400">Completed 2 Mar</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== OPTION B: Swimlane ===== -->
+    <div id="var-b" class="variation">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-gray-700">Swimlane View: Priority &times; Stage</h2>
+        <button class="bg-teal-700 text-white text-xs font-medium px-3 py-1.5 rounded-md">+ New Task</button>
+      </div>
+      <div class="bg-white rounded-lg border border-gray-400/40 overflow-auto">
+        <table class="w-full min-w-[900px]">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th class="w-28 px-3 py-2 text-left text-[10px] font-semibold text-gray-500 uppercase bg-gray-50">Priority</th>
+              <th class="px-3 py-2 text-center text-[10px] font-semibold text-gray-500 uppercase bg-gray-50"><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-gray-400"></span>Not Started</span></th>
+              <th class="px-3 py-2 text-center text-[10px] font-semibold text-gray-500 uppercase bg-gray-50"><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span>In Progress</span></th>
+              <th class="px-3 py-2 text-center text-[10px] font-semibold text-gray-500 uppercase bg-gray-50"><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-purple-500"></span>On Hold</span></th>
+              <th class="px-3 py-2 text-center text-[10px] font-semibold text-gray-500 uppercase bg-gray-50"><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span>Approved</span></th>
+              <th class="px-3 py-2 text-center text-[10px] font-semibold text-gray-500 uppercase bg-gray-50"><span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-teal-600"></span>Completed</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-100">
+              <td class="px-3 py-3 bg-red-50/30 border-r border-gray-100"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span><span class="text-xs font-semibold text-gray-700">Urgent</span></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800 mb-1">Escalate fall incident<div class="text-[10px] text-gray-400 mt-0.5">DC</div></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800 mb-1">Complete Margaret's HCA review<div class="text-[10px] text-gray-400 mt-0.5">SM &middot; 2/5</div></div><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800">Process ACAT for Helen<div class="text-[10px] text-gray-400 mt-0.5">JL &middot; 1/3</div></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100 bg-gray-50/50"><span class="text-[10px] text-gray-300 italic">empty</span></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100 bg-gray-50/50"><span class="text-[10px] text-gray-300 italic">empty</span></td>
+              <td class="px-2 py-2 align-top bg-gray-50/50"><span class="text-[10px] text-gray-300 italic">empty</span></td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="px-3 py-3 bg-orange-50/30 border-r border-gray-100"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span><span class="text-xs font-semibold text-gray-700">High</span></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800 mb-1">Follow up John's physio<div class="text-[10px] text-gray-400 mt-0.5">SM</div></div><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800">Family meeting David Chen<div class="text-[10px] text-gray-400 mt-0.5">DC</div></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800">Update care plan Susan<div class="text-[10px] text-gray-400 mt-0.5">AP &middot; 3/6</div></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800">Process invoice #INV-4521<div class="text-[10px] text-gray-400 mt-0.5">KR</div></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100 bg-gray-50/50"><span class="text-[10px] text-gray-300 italic">empty</span></td>
+              <td class="px-2 py-2 align-top bg-gray-50/50"><span class="text-[10px] text-gray-300 italic">empty</span></td>
+            </tr>
+            <tr class="border-b border-gray-100">
+              <td class="px-3 py-3 bg-yellow-50/30 border-r border-gray-100"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span><span class="text-xs font-semibold text-gray-700">Medium</span></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800">Onboard Sarah Mitchell<div class="text-[10px] text-gray-400 mt-0.5">AP &middot; 0/7</div></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800 mb-1">Q2 budget Team Alpha<div class="text-[10px] text-gray-400 mt-0.5">JL &middot; 4/8</div></div><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800">Medication chart Betty<div class="text-[10px] text-gray-400 mt-0.5">KR &middot; 1/2</div></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800">Transport for Tom<div class="text-[10px] text-gray-400 mt-0.5">DC</div></div></td>
+              <td class="px-2 py-2 align-top border-r border-gray-100"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-800">Podiatry for Grace Lee<div class="text-[10px] text-gray-400 mt-0.5">SM</div></div></td>
+              <td class="px-2 py-2 align-top"><div class="bg-white rounded border border-gray-200 p-2 text-xs text-gray-500 line-through">Direct debit PKG-789<div class="text-[10px] text-gray-400 mt-0.5">DC</div></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== OPTION C: Compact Cards ===== -->
+    <div id="var-c" class="variation">
+      <div class="mb-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <input type="text" placeholder="Search..." class="pl-3 pr-2 py-1 text-xs border border-gray-300 rounded-md w-48">
+        </div>
+        <button class="bg-teal-700 text-white text-[10px] font-medium px-2 py-1 rounded">+ New</button>
+      </div>
+      <div class="flex gap-3 min-w-max">
+        <div class="w-56">
+          <div class="flex items-center justify-between mb-2 px-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-gray-400"></span><span class="text-xs font-semibold text-gray-600">Not Started</span><span class="text-[10px] text-gray-400">5</span></div></div>
+          <div class="space-y-1.5">
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Escalate fall incident</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[7px] font-medium">DC</div><span class="text-[9px] text-red-500">1 Mar</span></div></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">John's physio referral</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[7px] font-medium">SM</div><span class="text-[9px] text-gray-400">10 Mar</span></div></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Family meeting David</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[7px] font-medium">DC</div><span class="text-[9px] text-gray-400">15 Mar</span></div></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-yellow-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Onboard Sarah Mitchell</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-[7px] font-medium">AP</div><span class="text-[9px] text-gray-400">18 Mar</span></div></div>
+            <input type="text" placeholder="+ Quick add..." class="w-full px-2.5 py-1.5 text-[10px] border border-dashed border-gray-300 rounded bg-transparent text-gray-400 outline-none focus:border-teal-500">
+          </div>
+        </div>
+        <div class="w-56">
+          <div class="flex items-center justify-between mb-2 px-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span class="text-xs font-semibold text-gray-600">In Progress</span><span class="text-[10px] text-amber-600 font-medium">4/6</span></div></div>
+          <div class="space-y-1.5">
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Margaret's HCA review</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[7px] font-medium">SM</div><span class="text-[9px] text-red-500">2 Mar</span></div></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Care plan Susan Williams</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-[7px] font-medium">AP</div><span class="text-[9px] text-gray-400">12 Mar</span></div></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-yellow-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Q2 budget Team Alpha</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[7px] font-medium">JL</div><span class="text-[9px] text-gray-400">20 Mar</span></div></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">ACAT Helen Park</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[7px] font-medium">JL</div><span class="text-[9px] text-amber-600">6 Mar</span></div></div>
+          </div>
+        </div>
+        <div class="w-56">
+          <div class="flex items-center justify-between mb-2 px-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-purple-500"></span><span class="text-xs font-semibold text-gray-600">On Hold</span><span class="text-[10px] text-gray-400">2</span></div></div>
+          <div class="space-y-1.5">
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Invoice #INV-4521</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center text-[7px] font-medium">KR</div><span class="text-[9px] text-red-500">28 Feb</span></div></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-yellow-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Transport for Tom</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[7px] font-medium">DC</div><span class="text-[9px] text-gray-400">25 Mar</span></div></div>
+          </div>
+        </div>
+        <div class="w-56">
+          <div class="flex items-center justify-between mb-2 px-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500"></span><span class="text-xs font-semibold text-gray-600">Approved</span><span class="text-[10px] text-gray-400">2</span></div></div>
+          <div class="space-y-1.5">
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-yellow-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Podiatry Grace Lee</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[7px] font-medium">SM</div><span class="text-[9px] text-gray-400">22 Mar</span></div></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 shrink-0"></span><span class="truncate text-gray-800 font-medium">Equipment inventory</span></div><div class="flex items-center justify-between mt-1"><div class="h-4 w-4 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[7px] font-medium">JL</div><span class="text-[9px] text-gray-400">30 Mar</span></div></div>
+          </div>
+        </div>
+        <div class="w-56">
+          <div class="flex items-center justify-between mb-2 px-1"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-teal-600"></span><span class="text-xs font-semibold text-gray-600">Completed</span><span class="text-[10px] text-gray-400">3</span></div></div>
+          <div class="space-y-1.5 opacity-50">
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><span class="truncate text-gray-500 line-through">Insurance Mary Taylor</span></div>
+            <div class="bg-white rounded border border-gray-200 px-2.5 py-2 text-xs"><span class="truncate text-gray-500 line-through">Direct debit PKG-789</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== OPTION D: Rich Cards ===== -->
+    <div id="var-d" class="variation">
+      <div class="mb-4 flex items-center justify-between">
+        <div class="flex items-center gap-3"><input type="text" placeholder="Search tasks..." class="pl-3 pr-3 py-1.5 text-sm border border-gray-300 rounded-lg w-56"><button class="text-xs text-gray-500 border border-gray-300 rounded-md px-2.5 py-1">Filters</button></div>
+        <button class="bg-teal-700 text-white text-xs font-medium px-3 py-1.5 rounded-md">+ New Task</button>
+      </div>
+      <div class="flex gap-4 min-w-max">
+        <div class="w-80">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span class="text-sm font-semibold text-gray-700">In Progress</span><span class="text-xs text-gray-400 bg-gray-100 px-1.5 rounded-full">4</span></div>
+          <div class="space-y-3">
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 overflow-hidden">
+              <div class="h-1 bg-red-500"></div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-700">Urgent</span><span class="text-[10px] text-red-500 font-medium">Due 2 Mar (overdue)</span></div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-1">Complete Margaret's HCA package review</h4>
+                <p class="text-xs text-gray-500 line-clamp-2 mb-2">Review and update Margaret Thompson's Home Care Agreement package. Check budget utilisation and service allocations.</p>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1.5"><div class="h-6 w-6 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[9px] font-medium">SM</div><span class="text-xs text-gray-600">Sarah M.</span></div>
+                  <div class="flex items-center gap-2">
+                    <div class="flex gap-0.5"><span class="px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded text-[9px]">care-plan</span><span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded text-[9px]">review</span></div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
+                  <div class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><span class="text-[10px] text-gray-500">2/5</span><div class="w-16 bg-gray-200 rounded-full h-1"><div class="bg-teal-600 h-1 rounded-full" style="width: 40%"></div></div></div>
+                  <div class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg><span class="text-[10px] text-gray-500">3</span></div>
+                  <div class="flex items-center gap-1"><svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg><span class="text-[10px] text-gray-500">2 linked</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 overflow-hidden">
+              <div class="h-1 bg-orange-500"></div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-100 text-orange-700">High</span><span class="text-[10px] text-gray-400">Due 12 Mar</span></div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-1">Update care plan for Susan Williams</h4>
+                <p class="text-xs text-gray-500 line-clamp-2 mb-2">Annual care plan review. Incorporate recent OT assessment recommendations and update goals.</p>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1.5"><div class="h-6 w-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-[9px] font-medium">AP</div><span class="text-xs text-gray-600">Amy P.</span></div>
+                  <span class="px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded text-[9px]">care-plan</span>
+                </div>
+                <div class="flex items-center mt-2 pt-2 border-t border-gray-100 gap-1"><svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><span class="text-[10px] text-gray-500">3/6</span><div class="w-16 bg-gray-200 rounded-full h-1"><div class="bg-teal-600 h-1 rounded-full" style="width: 50%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-80">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span><span class="text-sm font-semibold text-gray-700">Not Started</span><span class="text-xs text-gray-400 bg-gray-100 px-1.5 rounded-full">5</span></div>
+          <div class="space-y-3">
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 overflow-hidden">
+              <div class="h-1 bg-orange-500"></div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-orange-100 text-orange-700">High</span><span class="text-[10px] text-gray-400">Due 10 Mar</span></div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-1">Follow up John's physiotherapy referral</h4>
+                <p class="text-xs text-gray-500 line-clamp-2">Contact physiotherapy provider re: John Baker's referral. Confirm appointment availability.</p>
+                <div class="flex items-center justify-between mt-2"><div class="flex items-center gap-1.5"><div class="h-6 w-6 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[9px] font-medium">SM</div><span class="text-xs text-gray-600">Sarah M.</span></div><span class="px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-[9px]">referral</span></div>
+              </div>
+            </div>
+            <div class="kanban-card bg-white rounded-lg border border-gray-400/40 overflow-hidden">
+              <div class="h-1 bg-yellow-500"></div>
+              <div class="p-3">
+                <div class="flex items-center justify-between mb-1"><span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-700">Medium</span><span class="text-[10px] text-gray-400">Due 18 Mar</span></div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-1">Onboard new care partner: Sarah Mitchell</h4>
+                <p class="text-xs text-gray-500 line-clamp-2">Complete onboarding checklist including system access, training schedule, and client introductions.</p>
+                <div class="flex items-center justify-between mt-2"><div class="flex items-center gap-1.5"><div class="h-6 w-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-[9px] font-medium">AP</div><span class="text-xs text-gray-600">Amy P.</span></div></div>
+                <div class="flex items-center mt-2 pt-2 border-t border-gray-100 gap-1"><svg class="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><span class="text-[10px] text-gray-500">0/7</span><div class="w-16 bg-gray-200 rounded-full h-1"><div class="bg-gray-300 h-1 rounded-full" style="width: 0%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== OPTION E: Collapsible Columns ===== -->
+    <div id="var-e" class="variation">
+      <div class="mb-4"><p class="text-xs text-gray-500">Click collapsed columns to expand. Completed is collapsed by default.</p></div>
+      <div class="flex gap-3 min-w-max items-stretch" style="min-height: 500px;">
+        <div class="w-64 bg-white rounded-lg border border-gray-400/40 p-3 flex flex-col">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full bg-gray-400"></span><span class="text-xs font-semibold text-gray-700">Not Started</span><span class="text-[10px] text-gray-400">5</span></div>
+          <div class="space-y-2 flex-1">
+            <div class="bg-gray-50 rounded border border-gray-200 px-2.5 py-2 text-xs font-medium text-gray-800">Follow up John's physio</div>
+            <div class="bg-gray-50 rounded border border-gray-200 px-2.5 py-2 text-xs font-medium text-gray-800">Escalate fall incident Robert</div>
+            <div class="bg-gray-50 rounded border border-gray-200 px-2.5 py-2 text-xs font-medium text-gray-800">Family meeting David Chen</div>
+            <div class="bg-gray-50 rounded border border-gray-200 px-2.5 py-2 text-xs font-medium text-gray-800">Onboard Sarah Mitchell</div>
+          </div>
+        </div>
+        <div class="w-64 bg-white rounded-lg border border-blue-200 p-3 flex flex-col ring-1 ring-blue-100">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span class="text-xs font-semibold text-blue-700">In Progress</span><span class="text-[10px] text-blue-500 font-medium">4</span></div>
+          <div class="space-y-2 flex-1">
+            <div class="bg-blue-50/50 rounded border border-blue-200 px-2.5 py-2 text-xs font-medium text-gray-800">Margaret's HCA review</div>
+            <div class="bg-blue-50/50 rounded border border-blue-200 px-2.5 py-2 text-xs font-medium text-gray-800">Care plan Susan Williams</div>
+            <div class="bg-blue-50/50 rounded border border-blue-200 px-2.5 py-2 text-xs font-medium text-gray-800">Q2 budget Team Alpha</div>
+            <div class="bg-blue-50/50 rounded border border-blue-200 px-2.5 py-2 text-xs font-medium text-gray-800">ACAT Helen Park</div>
+          </div>
+        </div>
+        <div class="w-64 bg-white rounded-lg border border-gray-400/40 p-3 flex flex-col">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span><span class="text-xs font-semibold text-gray-700">On Hold</span><span class="text-[10px] text-gray-400">2</span></div>
+          <div class="space-y-2 flex-1">
+            <div class="bg-gray-50 rounded border border-gray-200 px-2.5 py-2 text-xs font-medium text-gray-800">Invoice #INV-4521</div>
+            <div class="bg-gray-50 rounded border border-gray-200 px-2.5 py-2 text-xs font-medium text-gray-800">Transport for Tom</div>
+          </div>
+        </div>
+        <div class="w-64 bg-white rounded-lg border border-gray-400/40 p-3 flex flex-col">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span><span class="text-xs font-semibold text-gray-700">Approved</span><span class="text-[10px] text-gray-400">2</span></div>
+          <div class="space-y-2 flex-1">
+            <div class="bg-gray-50 rounded border border-gray-200 px-2.5 py-2 text-xs font-medium text-gray-800">Podiatry Grace Lee</div>
+            <div class="bg-gray-50 rounded border border-gray-200 px-2.5 py-2 text-xs font-medium text-gray-800">Equipment inventory</div>
+          </div>
+        </div>
+        <!-- Collapsed Column -->
+        <div class="w-10 bg-gray-100 rounded-lg border border-gray-300 flex items-center justify-center cursor-pointer hover:bg-gray-200 transition" title="Click to expand Completed (3)">
+          <div class="flex flex-col items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span>
+            <span class="text-[10px] font-semibold text-gray-500 writing-mode-vertical" style="writing-mode: vertical-rl; text-orientation: mixed;">Completed (3)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+function showVariation(id) {
+  document.querySelectorAll('.variation').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.classList.add('bg-gray-100', 'text-gray-600'); });
+  document.getElementById('var-' + id).classList.add('active');
+  event.target.classList.add('active');
+  event.target.classList.remove('bg-gray-100', 'text-gray-600');
+}
+</script>
+<script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

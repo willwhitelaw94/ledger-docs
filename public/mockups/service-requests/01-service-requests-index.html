@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Requests — Recipient Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'teal': { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+                        'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+                    },
+                    fontFamily: { sans: ['Roboto Flex','Inter','system-ui','sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        #app-sidebar { transition: width 0.2s ease; }
+        #app-sidebar.collapsed { width: 77px; }
+        #app-sidebar.collapsed .nav-label,
+        #app-sidebar.collapsed .nav-section-title,
+        #app-sidebar.collapsed .sidebar-brand-name,
+        #app-sidebar.collapsed .sidebar-footer { display: none; }
+        #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+        #app-sidebar.collapsed ~ .main-content { margin-left: 77px; }
+        .sub-tab-active { color: #007F7E; border-color: #007F7E; font-weight: 600; }
+        .sub-tab-inactive { color: #6B7280; border-color: transparent; }
+        .sub-tab-inactive:hover { color: #374151; border-color: #D1D5DB; }
+    </style>
+    <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-100 flex min-h-screen font-sans text-gray-900">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]"
+           style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+        <div class="flex items-center gap-3 px-5 py-4 border-b border-white/10">
+            <div class="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center text-sm font-bold">TC</div>
+            <span class="sidebar-brand-name text-sm font-semibold tracking-wide">Trilogy Care</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-3 px-3 space-y-1">
+            <div class="nav-section-title text-[10px] uppercase tracking-wider text-white/40 px-2 pb-1 pt-2">Staff</div>
+            <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/5">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm" style="background: rgba(67,192,190,0.15); color: #43C0BE; font-weight: 600;">
+                <svg class="w-5 h-5 shrink-0" style="color: #43C0BE" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                <span class="nav-label">Recipients</span>
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/5">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"/></svg>
+                <span class="nav-label">Leads</span>
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/5">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/></svg>
+                <span class="nav-label">Tasks</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer border-t border-white/10 px-4 py-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-xs font-semibold">JD</div>
+                <div class="text-xs"><div class="text-white font-medium">Jane Doe</div><div class="text-white/50">Coordinator</div></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content flex-1 flex flex-col ml-[240px] min-h-screen">
+
+        <!-- Recipient Profile Header -->
+        <div class="bg-white border-b border-gray-200 px-6 py-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+                    </button>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-primary-blue-100 flex items-center justify-center text-primary-blue-700 font-semibold text-lg">MT</div>
+                        <div>
+                            <h1 class="text-xl font-semibold text-gray-900">Margaret Thompson</h1>
+                            <div class="flex items-center gap-3 text-sm text-gray-500 mt-0.5">
+                                <span>DOB: 15/03/1942</span>
+                                <span class="text-gray-300">|</span>
+                                <span>CRN: 400-123-456A</span>
+                                <span class="text-gray-300">|</span>
+                                <span class="inline-flex items-center gap-1 text-green-600">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Active Care Plan
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
+                        Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tabs (top-level) -->
+        <div class="bg-white border-b border-gray-200 px-6">
+            <nav class="flex gap-6 -mb-px overflow-x-auto">
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Overview</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Care Plan</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Needs</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Risks</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Budget</a>
+                <a href="#" class="py-3 px-1 text-sm font-semibold text-teal-700 border-b-2 border-teal-700 whitespace-nowrap">Service Requests</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Documents</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Timeline</a>
+            </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="p-6 space-y-4">
+
+            <!-- Tab Header + Actions -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Service Requests</h2>
+                    <p class="text-sm text-gray-500 mt-0.5">Manage service requests for this recipient</p>
+                </div>
+                <!-- New Request Dropdown -->
+                <div class="relative" id="create-dropdown">
+                    <button onclick="document.getElementById('create-menu').classList.toggle('hidden')" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md text-white bg-teal-700 hover:bg-teal-800 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                        New Request
+                        <svg class="w-4 h-4 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                    </button>
+                    <div id="create-menu" class="hidden absolute right-0 mt-1 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                        <a href="02-cab-charge-create.html" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium">Cab Charge</div>
+                                <div class="text-xs text-gray-500">Transport card request</div>
+                            </div>
+                        </a>
+                        <a href="05-meals-create.html" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                                <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.379a48.474 48.474 0 00-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium">Meal Service</div>
+                                <div class="text-xs text-gray-500">Meal provider request</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center">
+                                <svg class="w-4 h-4 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 5.577c.126.503-.245.99-.765.99h-7.187m0 0a2.25 2.25 0 00-2.25 2.25M12.25 21.9h-7.187c-.52 0-.891-.487-.765-.99L5.7 15.333M12.25 21.9v.35c0 .455-.37.825-.825.825h-.9a.825.825 0 01-.825-.825v-.35m2.55 0h-2.55"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium">Pharmacy</div>
+                                <div class="text-xs text-gray-500">Medication delivery request</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-tabs: All / Cab Charge / Meals / Pharmacy -->
+            <div class="bg-white rounded-t border border-b-0 border-gray-200 px-4">
+                <nav class="flex gap-6 -mb-px">
+                    <button onclick="switchTab('all')" id="tab-all" class="sub-tab-active py-3 px-1 text-sm border-b-2 whitespace-nowrap transition-colors">
+                        All <span class="ml-1 text-xs text-gray-400 font-normal">9</span>
+                    </button>
+                    <button onclick="switchTab('cab-charge')" id="tab-cab-charge" class="sub-tab-inactive py-3 px-1 text-sm border-b-2 whitespace-nowrap transition-colors">
+                        <span class="inline-flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            Cab Charge <span class="ml-0.5 text-xs text-gray-400 font-normal">4</span>
+                        </span>
+                    </button>
+                    <button onclick="switchTab('meals')" id="tab-meals" class="sub-tab-inactive py-3 px-1 text-sm border-b-2 whitespace-nowrap transition-colors">
+                        <span class="inline-flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                            Meals <span class="ml-0.5 text-xs text-gray-400 font-normal">3</span>
+                        </span>
+                    </button>
+                    <button onclick="switchTab('pharmacy')" id="tab-pharmacy" class="sub-tab-inactive py-3 px-1 text-sm border-b-2 whitespace-nowrap transition-colors">
+                        <span class="inline-flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-violet-500"></span>
+                            Pharmacy <span class="ml-0.5 text-xs text-gray-400 font-normal">2</span>
+                        </span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Warning: Duplicate active (only shows on Cab Charge or All tab) -->
+            <div id="warning-duplicate" class="flex items-start gap-3 p-3 bg-orange-50 border border-orange-200 rounded-lg -mt-2">
+                <svg class="w-5 h-5 text-orange-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+                <div>
+                    <p class="text-sm font-medium text-orange-800">Multiple active Cab Charge requests</p>
+                    <p class="text-sm text-orange-700">This recipient has 2 active Cab Charge requests. This is allowed but unusual.</p>
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="bg-white rounded-b border border-t-0 border-gray-200 shadow-sm overflow-hidden -mt-4">
+                <table class="w-full text-sm" id="requests-table">
+                    <thead>
+                        <tr class="border-b border-gray-200 bg-gray-50">
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">ID</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider" id="col-type">Type</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Stage</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Details</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Budget</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Date</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <!-- CC Row 1: Ordered -->
+                        <tr class="hover:bg-gray-50 cursor-pointer" data-type="cab-charge" onclick="window.location='03-cab-charge-show.html'">
+                            <td class="py-3 px-4 font-medium text-teal-700">CC15190</td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/></svg>
+                                    Cab Charge
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Ordered
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-700">Postage &amp; Handling</td>
+                            <td class="py-3 px-4 text-gray-700">$150.00</td>
+                            <td class="py-3 px-4 text-gray-700">12/02/2026</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Meals Row 1: Requested -->
+                        <tr class="hover:bg-gray-50 cursor-pointer" data-type="meals">
+                            <td class="py-3 px-4 font-medium text-teal-700">ML00892</td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-700">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.379a48.474 48.474 0 00-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z"/></svg>
+                                    Meals
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                    Requested
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-700">Gourmet Meals</td>
+                            <td class="py-3 px-4 text-gray-700">$80.00<span class="text-gray-400">/wk</span></td>
+                            <td class="py-3 px-4 text-gray-700">20/02/2026</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Pharmacy Row 1: Pending Approval -->
+                        <tr class="hover:bg-gray-50 cursor-pointer" data-type="pharmacy">
+                            <td class="py-3 px-4 font-medium text-teal-700">PH00045</td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-violet-100 text-violet-700">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 5.577c.126.503-.245.99-.765.99h-7.187m0 0a2.25 2.25 0 00-2.25 2.25M12.25 21.9h-7.187c-.52 0-.891-.487-.765-.99L5.7 15.333M12.25 21.9v.35c0 .455-.37.825-.825.825h-.9a.825.825 0 01-.825-.825v-.35m2.55 0h-2.55"/></svg>
+                                    Pharmacy
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
+                                    Pending Approval
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-700">Priceline Pharmacy — Webster Pack</td>
+                            <td class="py-3 px-4 text-gray-700">$45.00<span class="text-gray-400">/wk</span></td>
+                            <td class="py-3 px-4 text-gray-700">25/02/2026</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- CC Row 2: Delivered -->
+                        <tr class="hover:bg-gray-50 cursor-pointer" data-type="cab-charge">
+                            <td class="py-3 px-4 font-medium text-teal-700">CC15102</td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/></svg>
+                                    Cab Charge
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                                    Delivered
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-700">Digital Fast Card — SMS</td>
+                            <td class="py-3 px-4 text-gray-700">$100.00</td>
+                            <td class="py-3 px-4 text-gray-700">03/11/2025</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Meals Row 2: Finalised -->
+                        <tr class="hover:bg-gray-50 cursor-pointer" data-type="meals">
+                            <td class="py-3 px-4 font-medium text-teal-700">ML00745</td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-700">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.379a48.474 48.474 0 00-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z"/></svg>
+                                    Meals
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Finalised
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-700">LiteNeasy</td>
+                            <td class="py-3 px-4 text-gray-700">$120.00<span class="text-gray-400">/fn</span></td>
+                            <td class="py-3 px-4 text-gray-700">15/01/2026</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Pharmacy Row 2: Active -->
+                        <tr class="hover:bg-gray-50 cursor-pointer" data-type="pharmacy">
+                            <td class="py-3 px-4 font-medium text-teal-700">PH00031</td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-violet-100 text-violet-700">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 5.577c.126.503-.245.99-.765.99h-7.187m0 0a2.25 2.25 0 00-2.25 2.25M12.25 21.9h-7.187c-.52 0-.891-.487-.765-.99L5.7 15.333M12.25 21.9v.35c0 .455-.37.825-.825.825h-.9a.825.825 0 01-.825-.825v-.35m2.55 0h-2.55"/></svg>
+                                    Pharmacy
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Active
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-700">TerryWhite Chemmart — Blister Pack</td>
+                            <td class="py-3 px-4 text-gray-700">$32.00<span class="text-gray-400">/wk</span></td>
+                            <td class="py-3 px-4 text-gray-700">10/01/2026</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- CC Row 3: Zoho - Closed -->
+                        <tr class="hover:bg-gray-50 cursor-pointer bg-gray-50/50" data-type="cab-charge">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-gray-500">CC14500</span>
+                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-200 text-gray-600">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/></svg>
+                                        Zoho
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">Cab Charge</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                                    Closed
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-500">Postage &amp; Handling</td>
+                            <td class="py-3 px-4 text-gray-500">$100.00</td>
+                            <td class="py-3 px-4 text-gray-500">15/06/2024</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- CC Row 4: Zoho - Legacy -->
+                        <tr class="hover:bg-gray-50 cursor-pointer bg-gray-50/50" data-type="cab-charge">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-gray-500">CC13200</span>
+                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-200 text-gray-600">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/></svg>
+                                        Zoho
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">Cab Charge</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                    Legacy: Finalised
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-500">Express Post</td>
+                            <td class="py-3 px-4 text-gray-500">$80.00</td>
+                            <td class="py-3 px-4 text-gray-500">22/01/2024</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Meals Row 3: Zoho - Cancelled -->
+                        <tr class="hover:bg-gray-50 cursor-pointer bg-gray-50/50" data-type="meals">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-gray-500">ML00310</span>
+                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-200 text-gray-600">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/></svg>
+                                        Zoho
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 type-cell">
+                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-700">Meals</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                    Cancelled
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-500">Meals On Wheels</td>
+                            <td class="py-3 px-4 text-gray-500">$60.00<span class="text-gray-400">/wk</span></td>
+                            <td class="py-3 px-4 text-gray-500">10/03/2024</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Legend -->
+            <div class="flex items-center gap-4 text-xs text-gray-500">
+                <span class="flex items-center gap-1.5">
+                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-gray-200 text-gray-600">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/></svg>
+                        Zoho
+                    </span>
+                    = Imported from Zoho (read-only)
+                </span>
+                <span class="flex items-center gap-1.5">
+                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 text-[10px]">Legacy</span>
+                    = Pre-migration stage name
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('create-dropdown').contains(e.target)) {
+                document.getElementById('create-menu').classList.add('hidden');
+            }
+        });
+
+        const allTabs = ['all', 'cab-charge', 'meals', 'pharmacy'];
+
+        function switchTab(type) {
+            const rows = document.querySelectorAll('#requests-table tbody tr');
+            const typeCells = document.querySelectorAll('.type-cell');
+            const typeHeader = document.getElementById('col-type');
+            const warning = document.getElementById('warning-duplicate');
+
+            // Filter rows
+            rows.forEach(row => {
+                if (type === 'all') {
+                    row.style.display = '';
+                } else {
+                    row.style.display = row.dataset.type === type ? '' : 'none';
+                }
+            });
+
+            // Show/hide Type column when filtering to a specific type
+            if (type === 'all') {
+                typeHeader.style.display = '';
+                typeCells.forEach(c => c.style.display = '');
+            } else {
+                typeHeader.style.display = 'none';
+                typeCells.forEach(c => c.style.display = 'none');
+            }
+
+            // Show duplicate warning only on All or Cab Charge tabs
+            warning.style.display = (type === 'all' || type === 'cab-charge') ? '' : 'none';
+
+            // Update tab styles
+            allTabs.forEach(t => {
+                const tab = document.getElementById('tab-' + t);
+                if (t === type) {
+                    tab.className = tab.className.replace('sub-tab-inactive', 'sub-tab-active');
+                } else {
+                    tab.className = tab.className.replace('sub-tab-active', 'sub-tab-inactive');
+                }
+            });
+        }
+
+        // Sidebar toggle
+        document.querySelector('#app-sidebar .border-b')?.addEventListener('click', () => {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelector('.main-content').style.marginLeft = document.getElementById('app-sidebar').classList.contains('collapsed') ? '77px' : '240px';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REF-00036 — Notes Timeline</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tc-teal': { 500: '#43C0BE', 700: '#007F7E' },
+                        'tc-blue': { 700: '#2C4C79' },
+                    },
+                    fontFamily: { sans: ['Roboto Flex', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 flex font-sans">
+    <!-- Sidebar -->
+    <aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+        <div class="px-4 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div><div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+            <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+        </div>
+        <div class="px-3 py-3"><div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div></div>
+        <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div></div>
+        </nav>
+        <div class="border-t border-gray-100 px-3 py-3">
+            <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div><div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div></div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-h-screen">
+        <!-- Tier Banner -->
+        <div class="bg-gradient-to-r from-amber-500 to-amber-400 px-8 py-2.5 flex items-center gap-3">
+            <span class="w-2 h-2 rounded-full bg-white"></span>
+            <span class="text-white font-medium text-xs uppercase tracking-wide">Medium Priority &middot; REF-00036</span>
+        </div>
+
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 px-8 py-5">
+            <div class="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                <a href="01-index.html" class="hover:text-tc-teal-700 transition">Feedback Records</a>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="03-detail-view.html" class="hover:text-tc-teal-700 transition">REF-00036</a>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-600">Notes</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-xl font-semibold text-gray-900">Notes &mdash; Medication timing consistently late</h1>
+                    <p class="text-sm text-gray-500 mt-0.5">Dorothy Evans &middot; 5 notes</p>
+                </div>
+                <a href="03-detail-view.html" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Back to Record</a>
+            </div>
+        </header>
+
+        <div class="flex-1 px-8 py-6">
+            <div class="max-w-3xl mx-auto space-y-6">
+                <!-- Add Note Form -->
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-3">Add Note</h3>
+                    <textarea rows="3" class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition resize-none" placeholder="Write a note about this record..."></textarea>
+                    <div class="flex items-center justify-between mt-3">
+                        <button class="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1.5 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                            Attach file
+                        </button>
+                        <button class="px-4 py-2 text-sm font-medium text-white bg-tc-teal-700 rounded-lg hover:bg-tc-teal-700/90 transition">Add Note</button>
+                    </div>
+                </div>
+
+                <!-- Notes Timeline -->
+                <div class="space-y-0">
+                    <!-- Note 5 — Escalation (Urgent-tier colored sidebar) -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-9 h-9 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+                                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                            </div>
+                            <div class="w-0.5 flex-1 bg-gray-200 my-2"></div>
+                        </div>
+                        <div class="flex-1 pb-6">
+                            <div class="bg-white rounded-xl border-2 border-red-200 p-5">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-[10px] font-medium">LP</div>
+                                        <span class="text-sm font-medium text-gray-900">Lisa Park</span>
+                                        <span class="px-2 py-0.5 text-[10px] font-medium bg-red-100 text-red-700 rounded-full">Escalation</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">7 Mar 2026, 2:10 PM</span>
+                                </div>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Escalation note: Spoke with Karen Evans again today. She reports her mother's INR test on 4 March showed results outside the therapeutic range, and the GP has attributed this to the inconsistent medication timing. Mrs Evans has been referred to the hospital for monitoring. I am escalating this internally to the Clinical Lead for review. The roster scheduling team has been notified but the underlying system issue has not yet been addressed.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Note 4 — Standard investigation note -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                                <span class="text-xs font-bold text-amber-700">4</span>
+                            </div>
+                            <div class="w-0.5 flex-1 bg-gray-200 my-2"></div>
+                        </div>
+                        <div class="flex-1 pb-6">
+                            <div class="bg-white rounded-xl border border-gray-200 p-5">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-tc-teal-700 flex items-center justify-center text-white text-[10px] font-medium">SM</div>
+                                        <span class="text-sm font-medium text-gray-900">Sarah Mitchell</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">28 Feb 2026, 4:30 PM</span>
+                                </div>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Investigated the roster change records. Confirmed that the evening visit for Mrs Evans was moved from 5:30pm to 6:30pm on 1 February as part of a broader roster optimisation. The medication schedule was not updated to reflect the new visit time. The care plan still specifies Warfarin at 6:00pm, creating a 30-minute window mismatch. Recommend updating both the roster and medication schedule to align.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Note 3 — With attachment -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                                <span class="text-xs font-bold text-gray-500">3</span>
+                            </div>
+                            <div class="w-0.5 flex-1 bg-gray-200 my-2"></div>
+                        </div>
+                        <div class="flex-1 pb-6">
+                            <div class="bg-white rounded-xl border border-gray-200 p-5">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-[10px] font-medium">LP</div>
+                                        <span class="text-sm font-medium text-gray-900">Lisa Park</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">22 Feb 2026, 10:15 AM</span>
+                                </div>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Contacted the two care partners assigned to Mrs Evans' evening visits. Both confirmed they arrive at the scheduled roster time (6:30pm) and administer medication immediately upon arrival. They were not aware of the 6:00pm target for Warfarin. Attaching the current roster schedule for reference.
+                                </p>
+                                <div class="mt-3 flex items-center gap-2 p-2.5 bg-gray-50 rounded-lg border border-gray-200">
+                                    <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    <div class="flex-1">
+                                        <p class="text-xs font-medium text-gray-700">roster-schedule-feb-2026.pdf</p>
+                                        <p class="text-[10px] text-gray-400">248 KB</p>
+                                    </div>
+                                    <button class="text-xs text-tc-teal-700 font-medium hover:underline">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Note 2 — Initial assessment -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                                <span class="text-xs font-bold text-gray-500">2</span>
+                            </div>
+                            <div class="w-0.5 flex-1 bg-gray-200 my-2"></div>
+                        </div>
+                        <div class="flex-1 pb-6">
+                            <div class="bg-white rounded-xl border border-gray-200 p-5">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-[10px] font-medium">LP</div>
+                                        <span class="text-sm font-medium text-gray-900">Lisa Park</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">17 Feb 2026, 9:00 AM</span>
+                                </div>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Triaged as Medium priority. Medication timing issues can have clinical implications for Warfarin management, but Mrs Evans is currently stable per her last GP visit. Setting investigation target for 28 Feb. Assigned to Clinical Services team for roster review.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Note 1 — Initial intake -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-9 h-9 rounded-full bg-tc-teal-700/10 flex items-center justify-center shrink-0">
+                                <span class="text-xs font-bold text-tc-teal-700">1</span>
+                            </div>
+                        </div>
+                        <div class="flex-1 pb-6">
+                            <div class="bg-white rounded-xl border border-gray-200 p-5">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-tc-teal-700 flex items-center justify-center text-white text-[10px] font-medium">JC</div>
+                                        <span class="text-sm font-medium text-gray-900">James Chen</span>
+                                        <span class="px-2 py-0.5 text-[10px] font-medium bg-gray-100 text-gray-600 rounded-full">Intake</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">15 Feb 2026, 3:45 PM</span>
+                                </div>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Received phone call from Karen Evans (daughter) regarding late medication administration for her mother Dorothy Evans (HCP L3, PKG-2847). Karen reports the evening Warfarin dose has been consistently 45-60 minutes late for approximately two weeks. Karen stated she has observed this during her regular evening phone calls with her mother. She is requesting a formal investigation and correction.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LES Mockup - Lead Profile: Overview Tab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="viewer-toolbar.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' },
+            info: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',500:'#43C0BE',700:'#007F7E',900:'#003D3D' },
+            success: { 50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',500:'#35A8E4',700:'#156F9D' },
+            warning: { 50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',500:'#E0763C',700:'#9C481A' },
+            danger: { 50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',500:'#E04B51',700:'#9C262A' },
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+          borderRadius: { 'input': '8px' },
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-primary { color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+    .section-card { transition: all 0.2s ease; }
+    .section-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .stage-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .stage-active { background: #007F7E; }
+    .stage-completed { background: #43C0BE; }
+    .stage-future { background: #DBDBDB; }
+    .stage-line { height: 2px; flex: 1; }
+    .editing .section-read { display: none; }
+    .editing .section-edit { display: block; }
+    .section-edit { display: none; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-primary min-h-screen">
+
+  <!-- Top Nav Bar -->
+  <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex items-center gap-4">
+      <div class="text-teal-700 font-bold text-lg">TC Portal</div>
+      <span class="text-gray-300">/</span>
+      <a href="#" class="text-secondary hover:text-teal-700 text-sm">Leads</a>
+      <span class="text-gray-300">/</span>
+      <span class="text-sm font-semibold">Margaret Wilson</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="px-3 py-2 text-sm font-bold rounded-full bg-teal-100 hover:bg-teal-200 text-teal-700">Actions</button>
+    </div>
+  </nav>
+
+  <!-- Journey Stage Progress Bar -->
+  <div class="bg-white border-b border-gray-200 px-6 py-4">
+    <div class="flex items-center gap-1 max-w-3xl">
+      <!-- Pre-Care (completed) -->
+      <div class="flex flex-col items-center gap-1 min-w-[80px]">
+        <div class="stage-dot stage-completed"></div>
+        <span class="text-xs text-teal-600 font-medium">Pre-Care</span>
+      </div>
+      <div class="stage-line bg-teal-400"></div>
+      <!-- ACAT Booked (completed) -->
+      <div class="flex flex-col items-center gap-1 min-w-[80px]">
+        <div class="stage-dot stage-completed"></div>
+        <span class="text-xs text-teal-600 font-medium">ACAT Booked</span>
+      </div>
+      <div class="stage-line bg-teal-400"></div>
+      <!-- Approved (current) -->
+      <div class="flex flex-col items-center gap-1 min-w-[80px]">
+        <div class="stage-dot stage-active ring-4 ring-teal-200"></div>
+        <span class="text-xs text-teal-700 font-bold">Approved</span>
+        <span class="text-[10px] text-secondary">ACAT Conducted</span>
+      </div>
+      <div class="stage-line bg-gray-200"></div>
+      <!-- Allocated -->
+      <div class="flex flex-col items-center gap-1 min-w-[80px]">
+        <div class="stage-dot stage-future"></div>
+        <span class="text-xs text-secondary">Allocated</span>
+      </div>
+      <div class="stage-line bg-gray-200"></div>
+      <!-- Active -->
+      <div class="flex flex-col items-center gap-1 min-w-[80px]">
+        <div class="stage-dot stage-future"></div>
+        <span class="text-xs text-secondary">Active</span>
+      </div>
+      <div class="stage-line bg-gray-200"></div>
+      <!-- Converted -->
+      <div class="flex flex-col items-center gap-1 min-w-[80px]">
+        <div class="stage-dot stage-future"></div>
+        <span class="text-xs text-secondary">Converted</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-white border-r border-gray-200 min-h-[calc(100vh-120px)] p-5 flex flex-col gap-5 sticky top-[120px] self-start">
+      <!-- Avatar + Name -->
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 text-xl font-bold">MW</div>
+        <div class="text-center">
+          <h2 class="text-lg font-semibold">Margaret Wilson</h2>
+          <p class="text-xs text-secondary">TC-0012847</p>
+        </div>
+      </div>
+
+      <!-- Status Badges -->
+      <div class="flex gap-2 justify-center">
+        <span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-200 text-teal-900 ring-1 ring-inset ring-teal-700">Approved</span>
+        <span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-success-200 text-success-700 ring-1 ring-inset ring-success-700">Made Contact</span>
+      </div>
+
+      <!-- Profile Completion -->
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span class="text-secondary">Profile Completion</span>
+          <span class="font-semibold text-teal-700">72%</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div class="bg-teal-500 h-2 rounded-full" style="width: 72%"></div>
+        </div>
+      </div>
+
+      <!-- Key Fields -->
+      <div class="flex flex-col gap-3">
+        <div>
+          <dt class="text-xs font-semibold text-secondary">Email</dt>
+          <dd class="text-sm flex items-center gap-1">
+            margaret.w@email.com
+            <button class="text-gray-400 hover:text-teal-700" title="Copy">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            </button>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-xs font-semibold text-secondary">Phone</dt>
+          <dd class="text-sm flex items-center gap-1">
+            0412 345 678
+            <button class="text-gray-400 hover:text-teal-700" title="Copy">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            </button>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-xs font-semibold text-secondary">Date of Birth</dt>
+          <dd class="text-sm">15 Mar 1945 (80 yrs)</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-semibold text-secondary">Purchase Intent</dt>
+          <dd class="text-sm"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-warning-100 text-warning-700 ring-1 ring-inset ring-warning-700">Warm</span></dd>
+        </div>
+      </div>
+
+      <!-- Assigned Agent -->
+      <div class="border-t border-gray-200 pt-4">
+        <dt class="text-xs font-semibold text-secondary mb-1">Assigned Agent</dt>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-full bg-primary-blue-100 flex items-center justify-center text-primary-blue-700 text-xs font-bold">JP</div>
+          <div>
+            <dd class="text-sm font-medium">Jacqueline Palmer</dd>
+            <dd class="text-xs text-secondary">Sales Team Leader</dd>
+          </div>
+          <button class="ml-auto text-gray-400 hover:text-teal-700" title="Change agent">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="border-t border-gray-200 pt-4 flex flex-col gap-2">
+        <button class="w-full px-3 py-2 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600">Update Status</button>
+        <button class="w-full px-3 py-2 text-sm font-bold rounded-full bg-transparent hover:bg-teal-100 ring-1 ring-teal-700 text-teal-700">Update Stage</button>
+      </div>
+
+      <!-- Last Activity -->
+      <div class="border-t border-gray-200 pt-4 text-xs text-secondary">
+        <div class="flex justify-between">
+          <span>Last Contact</span>
+          <span class="font-medium text-primary">19 Feb 2026</span>
+        </div>
+        <div class="flex justify-between mt-1">
+          <span>Next Follow-up</span>
+          <span class="font-medium text-warning-700">25 Feb 2026</span>
+        </div>
+        <div class="flex justify-between mt-1">
+          <span>Created</span>
+          <span class="font-medium text-primary">3 Jan 2026</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <!-- Tab Navigation -->
+      <div class="flex gap-1 border-b border-gray-200 mb-6">
+        <button class="px-4 py-2.5 text-sm font-semibold text-teal-700 border-b-2 border-teal-700">Overview</button>
+        <button class="px-4 py-2.5 text-sm font-medium text-secondary hover:text-primary">Timeline</button>
+        <button class="px-4 py-2.5 text-sm font-medium text-secondary hover:text-primary">Other</button>
+      </div>
+
+      <!-- Section Cards Grid -->
+      <div class="grid grid-cols-1 gap-4">
+
+        <!-- Lead Information Card -->
+        <div class="section-card relative rounded-lg bg-white border border-gray-400/40 shadow-sm" id="lead-info">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+            <h3 class="text-sm font-semibold text-primary">Lead Information</h3>
+            <button onclick="toggleEdit('lead-info')" class="text-xs font-bold text-teal-700 hover:text-teal-600 px-2 py-1 rounded hover:bg-teal-50">Edit</button>
+          </div>
+          <!-- Read Mode -->
+          <div class="section-read p-4">
+            <div class="grid grid-cols-3 gap-4">
+              <div><dt class="text-xs font-semibold text-secondary">Journey Stage</dt><dd class="text-sm mt-1"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-200 text-teal-900 ring-1 ring-inset ring-teal-700">Approved</span></dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Lead Status</dt><dd class="text-sm mt-1"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-success-200 text-success-700 ring-1 ring-inset ring-success-700">Made Contact</span></dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Purchase Intent</dt><dd class="text-sm mt-1"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-warning-100 text-warning-700 ring-1 ring-inset ring-warning-700">Warm</span></dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Lead Attribution</dt><dd class="text-sm mt-1">Website — Google Search</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Created</dt><dd class="text-sm mt-1">3 Jan 2026</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Last Contact</dt><dd class="text-sm mt-1">19 Feb 2026</dd></div>
+            </div>
+          </div>
+          <!-- Edit Mode (hidden by default) -->
+          <div class="section-edit p-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1">Journey Stage</label>
+                <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                  <option>Pre-Care</option><option>ACAT Booked</option><option selected>Approved</option><option>Allocated</option><option>Active</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1">Lead Status</label>
+                <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                  <option>Not Contacted</option><option>Attempted Contact</option><option selected>Made Contact</option><option>Lost</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1">Purchase Intent</label>
+                <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                  <option>Hot</option><option selected>Warm</option><option>Cold</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1">Lead Attribution</label>
+                <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                  <option selected>Website — Google Search</option><option>Referral</option><option>Phone Enquiry</option><option>Zoho Import</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-4">
+              <button onclick="toggleEdit('lead-info')" class="px-3 py-2 text-sm font-bold rounded-full bg-transparent hover:bg-gray-100 text-gray-700">Cancel</button>
+              <button onclick="toggleEdit('lead-info')" class="px-3 py-2 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600">Save</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Information Card -->
+        <div class="section-card relative rounded-lg bg-white border border-gray-400/40 shadow-sm">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+            <h3 class="text-sm font-semibold text-primary">Contact Information</h3>
+            <button class="text-xs font-bold text-teal-700 hover:text-teal-600 px-2 py-1 rounded hover:bg-teal-50">Add Contact</button>
+          </div>
+          <div class="p-4">
+            <div class="flex gap-6">
+              <!-- Primary Contact -->
+              <div class="flex-1 rounded-lg border border-teal-200 bg-teal-50/30 p-3">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-semibold rounded bg-teal-700 text-white">PRIMARY</span>
+                  <span class="text-sm font-medium">Sarah Wilson (Daughter)</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <div><span class="text-secondary">Email:</span> sarah.w@email.com</div>
+                  <div><span class="text-secondary">Phone:</span> 0413 567 890</div>
+                </div>
+              </div>
+              <!-- Secondary Contact -->
+              <div class="flex-1 rounded-lg border border-gray-200 p-3">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-semibold rounded bg-gray-200 text-gray-700">SECONDARY</span>
+                  <span class="text-sm font-medium">James Wilson (Son)</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <div><span class="text-secondary">Email:</span> james.w@email.com</div>
+                  <div><span class="text-secondary">Phone:</span> 0414 678 901</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two-column: Personal Details + Living Situation -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Personal Details -->
+          <div class="section-card relative rounded-lg bg-white border border-gray-400/40 shadow-sm">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+              <h3 class="text-sm font-semibold text-primary">Personal Details</h3>
+              <button class="text-xs font-bold text-teal-700 hover:text-teal-600 px-2 py-1 rounded hover:bg-teal-50">Edit</button>
+            </div>
+            <div class="p-4 grid grid-cols-2 gap-3">
+              <div><dt class="text-xs font-semibold text-secondary">Full Name</dt><dd class="text-sm mt-0.5">Margaret Wilson</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Gender</dt><dd class="text-sm mt-0.5">Female</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Date of Birth</dt><dd class="text-sm mt-0.5">15 Mar 1945</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Address</dt><dd class="text-sm mt-0.5">42 Maple St, Toowong QLD 4066</dd></div>
+            </div>
+          </div>
+
+          <!-- Living Situation -->
+          <div class="section-card relative rounded-lg bg-white border border-gray-400/40 shadow-sm">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+              <h3 class="text-sm font-semibold text-primary">Living Situation</h3>
+              <button class="text-xs font-bold text-teal-700 hover:text-teal-600 px-2 py-1 rounded hover:bg-teal-50">Edit</button>
+            </div>
+            <div class="p-4 grid grid-cols-2 gap-3">
+              <div><dt class="text-xs font-semibold text-secondary">Accommodation</dt><dd class="text-sm mt-0.5">House — Owner</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Living With</dt><dd class="text-sm mt-0.5">Alone</dd></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two-column: Support Needs + Cultural Background -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Support Needs -->
+          <div class="section-card relative rounded-lg bg-white border border-gray-400/40 shadow-sm">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+              <h3 class="text-sm font-semibold text-primary">Support Needs</h3>
+              <button class="text-xs font-bold text-teal-700 hover:text-teal-600 px-2 py-1 rounded hover:bg-teal-50">Edit</button>
+            </div>
+            <div class="p-4">
+              <div class="mb-3"><dt class="text-xs font-semibold text-secondary">What's Important</dt><dd class="text-sm mt-0.5">Staying at home as long as possible. Maintaining independence with gardening and social activities.</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Care Needs</dt><dd class="text-sm mt-0.5">Domestic assistance, transport to appointments, meal preparation</dd></div>
+            </div>
+          </div>
+
+          <!-- Cultural Background -->
+          <div class="section-card relative rounded-lg bg-white border border-gray-400/40 shadow-sm">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+              <h3 class="text-sm font-semibold text-primary">Cultural Background</h3>
+              <button class="text-xs font-bold text-teal-700 hover:text-teal-600 px-2 py-1 rounded hover:bg-teal-50">Edit</button>
+            </div>
+            <div class="p-4 grid grid-cols-2 gap-3">
+              <div><dt class="text-xs font-semibold text-secondary">English Proficiency</dt><dd class="text-sm mt-0.5">Fluent</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Other Languages</dt><dd class="text-sm mt-0.5 text-tertiary">None</dd></div>
+              <div><dt class="text-xs font-semibold text-secondary">Ethnicity</dt><dd class="text-sm mt-0.5">Australian</dd></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleEdit(cardId) {
+      const card = document.getElementById(cardId);
+      card.classList.toggle('editing');
+    }
+  </script>
+</body>
+</html>

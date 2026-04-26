@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Audit Process — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">SAP — Supplier Audit</span>
+  <button onclick="show('dashboard')" id="nav-dashboard" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Compliance Dashboard</button>
+  <button onclick="show('checklist')" id="nav-checklist" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Audit Checklist</button>
+  <button onclick="show('risk')" id="nav-risk" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Risk Prioritisation</button>
+  <button onclick="show('report')" id="nav-report" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Audit Report</button>
+</nav>
+
+<!-- Compliance Dashboard -->
+<div id="dashboard" class="screen active p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Compliance Dashboard</h1>
+    <div class="flex gap-2"><select class="border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>All Service Types</option></select><select class="border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>All Risk Levels</option></select></div>
+  </div>
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500 uppercase">Total Suppliers</p><p class="text-3xl font-bold text-gray-900 mt-1">15,234</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-green-200 p-4 bg-green-50"><p class="text-xs text-green-600 uppercase">Audited (current cycle)</p><p class="text-3xl font-bold text-green-700 mt-1">12,891</p><p class="text-xs text-green-600">84.6%</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4 bg-amber-50"><p class="text-xs text-amber-600 uppercase">Due This Month</p><p class="text-3xl font-bold text-amber-700 mt-1">342</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-red-200 p-4 bg-red-50"><p class="text-xs text-red-600 uppercase">Overdue</p><p class="text-3xl font-bold text-red-700 mt-1">18</p></div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead><tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200"><th class="px-6 py-3 text-left">Supplier</th><th class="px-4 py-3 text-left">Risk</th><th class="px-4 py-3 text-left">Last Audit</th><th class="px-4 py-3 text-left">Next Due</th><th class="px-4 py-3 text-left">Status</th><th class="px-4 py-3 text-left">Trigger</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="bg-red-50"><td class="px-6 py-3 text-sm font-medium">Metro Nursing Services</td><td class="px-4 py-3"><span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full font-medium">High</span></td><td class="px-4 py-3 text-sm text-gray-500">15 Sep 2025</td><td class="px-4 py-3 text-sm text-red-600 font-medium">15 Mar 2026 (overdue)</td><td class="px-4 py-3"><span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full">Overdue</span></td><td class="px-4 py-3 text-xs text-gray-500">Scheduled</td></tr>
+        <tr><td class="px-6 py-3 text-sm font-medium">Allied Health Group</td><td class="px-4 py-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full font-medium">Medium</span></td><td class="px-4 py-3 text-sm text-gray-500">1 Dec 2025</td><td class="px-4 py-3 text-sm text-amber-600">1 Jun 2026</td><td class="px-4 py-3"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">In Progress</span></td><td class="px-4 py-3 text-xs text-amber-600">Event: Insurance expired</td></tr>
+        <tr><td class="px-6 py-3 text-sm font-medium">Sunrise Cleaning</td><td class="px-4 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full font-medium">Low</span></td><td class="px-4 py-3 text-sm text-gray-500">10 Jan 2026</td><td class="px-4 py-3 text-sm text-gray-500">10 Jan 2027</td><td class="px-4 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Complete</span></td><td class="px-4 py-3 text-xs text-gray-500">Scheduled</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Audit Checklist -->
+<div id="checklist" class="screen p-6 max-w-3xl mx-auto">
+  <div class="text-sm text-gray-500 mb-1">Audit &gt; Allied Health Group &gt; Event-Triggered</div>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Audit Checklist</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <div><h2 class="text-sm font-semibold text-gray-900">Allied Health Group</h2><p class="text-xs text-gray-500">Trigger: Insurance document expired &middot; Template: Allied Health v3.1</p></div>
+      <span class="px-2.5 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">In Progress</span>
+    </div>
+    <div class="divide-y divide-gray-100">
+      <div class="px-6 py-3 flex items-center gap-3">
+        <span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"><svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></span>
+        <div class="flex-1"><span class="text-sm text-gray-900">ABN Verification</span><p class="text-xs text-gray-500">ABN active, matches legal name</p></div>
+        <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Passed</span>
+      </div>
+      <div class="px-6 py-3 flex items-center gap-3">
+        <span class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center"><svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></span>
+        <div class="flex-1"><span class="text-sm text-gray-900">Professional Indemnity Insurance</span><p class="text-xs text-red-600">Expired 1 Mar 2026 — renewal not uploaded</p></div>
+        <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded">Failed</span>
+      </div>
+      <div class="px-6 py-3 flex items-center gap-3">
+        <span class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"><svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></span>
+        <div class="flex-1"><span class="text-sm text-gray-900">Workers Compensation</span><p class="text-xs text-gray-500">Valid until 30 Sep 2026</p></div>
+        <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded">Passed</span>
+      </div>
+      <div class="px-6 py-3 flex items-center gap-3">
+        <span class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-xs">?</span>
+        <div class="flex-1"><span class="text-sm text-gray-900">AHPRA Registration (per practitioner)</span><p class="text-xs text-gray-500">Evidence required</p></div>
+        <span class="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded">Pending</span>
+      </div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-between">
+      <span class="text-xs text-gray-500">2 of 4 items complete</span>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Complete Audit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Risk Prioritisation -->
+<div id="risk" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Risk-Based Prioritisation</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 uppercase mb-4">Risk Scoring Formula</h2>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div class="border border-gray-200 rounded-lg p-3"><span class="text-xs text-gray-500">Complaints</span><p class="text-sm font-medium">count x <strong>3</strong> weight</p></div>
+      <div class="border border-gray-200 rounded-lg p-3"><span class="text-xs text-gray-500">Failed Audits</span><p class="text-sm font-medium">count x <strong>5</strong> weight</p></div>
+      <div class="border border-gray-200 rounded-lg p-3"><span class="text-xs text-gray-500">Expired Documents</span><p class="text-sm font-medium">count x <strong>2</strong> weight</p></div>
+      <div class="border border-gray-200 rounded-lg p-3"><span class="text-xs text-gray-500">Service Risk Tier</span><p class="text-sm font-medium">tier x <strong>4</strong> weight</p></div>
+    </div>
+    <h2 class="text-sm font-semibold text-gray-700 uppercase mb-3">Audit Frequency by Risk Level</h2>
+    <div class="flex gap-4">
+      <div class="flex-1 bg-red-50 border border-red-200 rounded-lg p-3 text-center"><span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full font-medium">High (20+)</span><p class="text-sm font-medium mt-1">Quarterly</p></div>
+      <div class="flex-1 bg-amber-50 border border-amber-200 rounded-lg p-3 text-center"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full font-medium">Medium (10-19)</span><p class="text-sm font-medium mt-1">Semi-Annual</p></div>
+      <div class="flex-1 bg-green-50 border border-green-200 rounded-lg p-3 text-center"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full font-medium">Low (0-9)</span><p class="text-sm font-medium mt-1">Annual</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Audit Report -->
+<div id="report" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Audit Report — Metro Nursing Services</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+    <div class="flex items-center justify-between"><h2 class="text-sm font-semibold text-gray-700">Audit Summary</h2><button class="px-3 py-1.5 border border-gray-300 text-xs rounded-lg">Export PDF</button></div>
+    <dl class="grid grid-cols-2 gap-3 text-sm">
+      <div><dt class="text-gray-500">Audit Date</dt><dd class="font-medium">15 Mar 2026</dd></div>
+      <div><dt class="text-gray-500">Trigger</dt><dd class="font-medium">Scheduled (quarterly)</dd></div>
+      <div><dt class="text-gray-500">Assessor</dt><dd class="font-medium">J. Smith</dd></div>
+      <div><dt class="text-gray-500">Outcome</dt><dd><span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full font-medium">Failed — 2 findings</span></dd></div>
+    </dl>
+    <div class="border-t border-gray-100 pt-4">
+      <h3 class="text-sm font-semibold text-gray-700 mb-2">Findings</h3>
+      <div class="space-y-2">
+        <div class="border border-red-200 rounded-lg p-3 bg-red-50"><p class="text-sm font-medium text-red-800">Professional Indemnity Insurance expired</p><p class="text-xs text-red-600">Expired 1 Mar 2026. Supplier notified. Remediation required within 14 days.</p></div>
+        <div class="border border-amber-200 rounded-lg p-3 bg-amber-50"><p class="text-sm font-medium text-amber-800">AHPRA registration not provided for 1 practitioner</p><p class="text-xs text-amber-600">Practitioner: Dr. A. Chen. Registration evidence requested.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

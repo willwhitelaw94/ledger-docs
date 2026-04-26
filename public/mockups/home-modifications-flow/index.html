@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Modifications Flow — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">HMF — Home Modifications</span>
+  <button onclick="show('product-onboard')" id="nav-product-onboard" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Product Supplier Onboard</button>
+  <button onclick="show('contractor-onboard')" id="nav-contractor-onboard" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Contractor Onboard</button>
+  <button onclick="show('quote-submit')" id="nav-quote-submit" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Quote Submission</button>
+  <button onclick="show('works-dashboard')" id="nav-works-dashboard" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Works Dashboard</button>
+  <button onclick="show('doc-review')" id="nav-doc-review" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Document Review</button>
+</nav>
+
+<!-- Product Supplier Onboarding -->
+<div id="product-onboard" class="screen active p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Product Supplier Registration</h1>
+  <p class="text-sm text-gray-500 mb-6">Register as a product supplier and select categories you can supply.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <!-- Step indicator -->
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2"><span class="w-6 h-6 bg-teal-700 text-white rounded-full text-xs flex items-center justify-center font-medium">1</span><span class="text-xs font-medium text-teal-700">Business Details</span></div>
+        <div class="w-8 h-px bg-gray-300"></div>
+        <div class="flex items-center gap-2"><span class="w-6 h-6 bg-teal-700 text-white rounded-full text-xs flex items-center justify-center font-medium">2</span><span class="text-xs font-medium text-teal-700">Categories</span></div>
+        <div class="w-8 h-px bg-gray-300"></div>
+        <div class="flex items-center gap-2"><span class="w-6 h-6 bg-gray-200 text-gray-500 rounded-full text-xs flex items-center justify-center font-medium">3</span><span class="text-xs text-gray-500">Pricing</span></div>
+        <div class="w-8 h-px bg-gray-300"></div>
+        <div class="flex items-center gap-2"><span class="w-6 h-6 bg-gray-200 text-gray-500 rounded-full text-xs flex items-center justify-center font-medium">4</span><span class="text-xs text-gray-500">Confirm</span></div>
+      </div>
+    </div>
+
+    <div class="p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-1">Select Product Categories</h2>
+      <p class="text-sm text-gray-500 mb-4">Choose the Tier-3 categories from the Support at Home canonical list that you can supply.</p>
+
+      <div class="space-y-2">
+        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <input type="checkbox" checked class="rounded text-teal-700">
+          <div><span class="text-sm font-medium text-gray-900">Mobility Products</span><p class="text-xs text-gray-500">Wheelchairs, walkers, scooters, mobility aids</p></div>
+        </label>
+        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <input type="checkbox" checked class="rounded text-teal-700">
+          <div><span class="text-sm font-medium text-gray-900">Self-care Products</span><p class="text-xs text-gray-500">Shower chairs, bath aids, personal care equipment</p></div>
+        </label>
+        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <input type="checkbox" class="rounded text-teal-700">
+          <div><span class="text-sm font-medium text-gray-900">Home Modification Products</span><p class="text-xs text-gray-500">Grab rails, ramps, stairlifts, door modifications</p></div>
+        </label>
+        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <input type="checkbox" class="rounded text-teal-700">
+          <div><span class="text-sm font-medium text-gray-900">Communication and Information Management Products</span><p class="text-xs text-gray-500">Amplified phones, personal alarms, assistive tech</p></div>
+        </label>
+        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <input type="checkbox" class="rounded text-teal-700">
+          <div><span class="text-sm font-medium text-gray-900">Domestic Life Products</span><p class="text-xs text-gray-500">Kitchen aids, cleaning equipment, ergonomic tools</p></div>
+        </label>
+        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <input type="checkbox" class="rounded text-teal-700">
+          <div><span class="text-sm font-medium text-gray-900">Managing Body Functions</span><p class="text-xs text-gray-500">Continence aids, pressure care, medical equipment</p></div>
+        </label>
+        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <input type="checkbox" class="rounded text-teal-700">
+          <div><span class="text-sm font-medium text-gray-900">Home Modifications Prescription and Clinical Support</span><p class="text-xs text-gray-500">OT prescriptions, clinical assessment tools</p></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-between">
+      <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg text-gray-700">Back</button>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Continue to Pricing</button>
+    </div>
+  </div>
+</div>
+
+<!-- Contractor Onboarding -->
+<div id="contractor-onboard" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Contractor Registration</h1>
+  <p class="text-sm text-gray-500 mb-6">Home Modifications Contractor — Document upload step.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-gray-700">Required Documents (23 + state-specific)</h2>
+        <span class="text-xs text-gray-500">Service Areas: VIC, NSW</span>
+      </div>
+    </div>
+    <div class="p-6 space-y-3">
+      <div class="flex items-center justify-between p-3 border border-green-200 rounded-lg bg-green-50">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><span class="text-sm font-medium text-gray-900">Builders License</span><p class="text-xs text-gray-500">Uploaded 18 Mar 2026</p></div>
+        </div>
+        <span class="text-xs text-green-700 font-medium">Uploaded</span>
+      </div>
+      <div class="flex items-center justify-between p-3 border border-green-200 rounded-lg bg-green-50">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><span class="text-sm font-medium text-gray-900">Workers Compensation</span><p class="text-xs text-gray-500">Expires: 15 Sep 2026</p></div>
+        </div>
+        <span class="text-xs text-green-700 font-medium">Uploaded</span>
+      </div>
+      <div class="flex items-center justify-between p-3 border border-yellow-200 rounded-lg bg-yellow-50">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><span class="text-sm font-medium text-gray-900">Builders Warranty Insurance</span><p class="text-xs text-gray-500">Required — has expiry date</p></div>
+        </div>
+        <button class="px-3 py-1 bg-teal-700 text-white text-xs rounded-lg">Upload</button>
+      </div>
+      <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/></svg>
+          <div><span class="text-sm font-medium text-gray-900">Certificate of Currency</span><p class="text-xs text-gray-500">Required</p></div>
+        </div>
+        <button class="px-3 py-1 bg-teal-700 text-white text-xs rounded-lg">Upload</button>
+      </div>
+
+      <div class="border-t border-gray-200 pt-3 mt-3">
+        <h3 class="text-sm font-semibold text-gray-700 mb-2">State-Specific — VIC</h3>
+        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/></svg>
+            <div><span class="text-sm font-medium text-gray-900">VIC Major Domestic Building Contract</span><p class="text-xs text-amber-600">Threshold: Work &gt; $10,000 requires VBA registration</p></div>
+          </div>
+          <button class="px-3 py-1 bg-teal-700 text-white text-xs rounded-lg">Upload</button>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
+      <span class="text-xs text-gray-500 mr-4">4 of 25 documents uploaded</span>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Save &amp; Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- Quote Submission -->
+<div id="quote-submit" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Submit Quote</h1>
+  <p class="text-sm text-gray-500 mb-6">Assessment Request: Bathroom modification for Robert Chen — VIC</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-sm font-semibold text-gray-900">Assessment Request Details</h2>
+    </div>
+    <div class="p-6 space-y-4 text-sm">
+      <div class="grid grid-cols-2 gap-4">
+        <div><span class="text-gray-500">Client</span><p class="font-medium">Robert Chen</p></div>
+        <div><span class="text-gray-500">Location</span><p class="font-medium">Melbourne VIC 3000</p></div>
+        <div><span class="text-gray-500">Modification</span><p class="font-medium">Bathroom — grab rails, walk-in shower</p></div>
+        <div><span class="text-gray-500">Deadline</span><p class="font-medium text-red-600">28 Mar 2026</p></div>
+      </div>
+
+      <div class="border-t border-gray-100 pt-4 space-y-3">
+        <div>
+          <label class="text-sm font-medium text-gray-700">Quote Document (PDF)</label>
+          <div class="mt-1 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-teal-500 cursor-pointer">
+            <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            <p class="text-sm text-gray-500">Drag and drop or click to upload</p>
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">Building Permit — VIC (required for this state)</label>
+          <div class="mt-1 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-teal-500 cursor-pointer">
+            <p class="text-sm text-gray-500">Upload building permit</p>
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">Site Photos (optional)</label>
+          <div class="mt-1 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-teal-500 cursor-pointer">
+            <p class="text-sm text-gray-500">Upload initial photos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg text-gray-700">Save Draft</button>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Submit Quote</button>
+    </div>
+  </div>
+</div>
+
+<!-- Works Dashboard -->
+<div id="works-dashboard" class="screen p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Works Dashboard</h1>
+      <p class="text-sm text-gray-500">Compliance Team — Home Modification Works</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>All States</option><option>VIC</option><option>NSW</option><option>QLD</option></select>
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>All Statuses</option><option>Under Review</option><option>Approved</option></select>
+    </div>
+  </div>
+
+  <!-- Grouped by supplier -->
+  <div class="space-y-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center text-teal-700 font-bold text-xs">AB</div>
+          <div><span class="text-sm font-semibold text-gray-900">ABC Building Services Pty Ltd</span><p class="text-xs text-gray-500">ABN: 12 345 678 901 &middot; 3 active works</p></div>
+        </div>
+      </div>
+      <div class="divide-y divide-gray-100">
+        <div class="px-6 py-4 flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-900">Bathroom modification — grab rails, walk-in shower</p>
+            <p class="text-xs text-gray-500 mt-0.5">Robert Chen &middot; VIC &middot; Budget: $15,000</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-sm text-gray-500">Quote: $12,500</span>
+            <span class="px-2.5 py-0.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">Under Review</span>
+            <span class="text-xs text-gray-500">Docs: 3/4 approved</span>
+          </div>
+        </div>
+        <div class="px-6 py-4 flex items-center justify-between">
+          <div>
+            <p class="text-sm font-medium text-gray-900">Ramp installation — front entry</p>
+            <p class="text-xs text-gray-500 mt-0.5">Dorothy Walsh &middot; NSW &middot; Budget: $8,000</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-sm text-gray-500">Quote: $6,200</span>
+            <span class="px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Approved</span>
+            <span class="text-xs text-gray-500">Docs: 4/4 approved</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Document Review -->
+<div id="doc-review" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Document Review</h1>
+  <p class="text-sm text-gray-500 mb-6">Work: Bathroom modification — Robert Chen &middot; Contractor: ABC Building Services</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="divide-y divide-gray-200">
+      <div class="px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><span class="text-sm font-medium text-gray-900">Quote Document.pdf</span><p class="text-xs text-gray-500">Uploaded 18 Mar &middot; Approved 19 Mar by J. Smith</p></div>
+        </div>
+        <span class="px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Approved</span>
+      </div>
+      <div class="px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><span class="text-sm font-medium text-gray-900">VIC Building Permit.pdf</span><p class="text-xs text-gray-500">Uploaded 18 Mar &middot; Approved 19 Mar by J. Smith</p></div>
+        </div>
+        <span class="px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Approved</span>
+      </div>
+      <div class="px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><span class="text-sm font-medium text-gray-900">Site Photos.zip</span><p class="text-xs text-gray-500">Uploaded 18 Mar &middot; Approved 20 Mar by J. Smith</p></div>
+        </div>
+        <span class="px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Approved</span>
+      </div>
+      <div class="px-6 py-4 flex items-center justify-between bg-yellow-50">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><span class="text-sm font-medium text-gray-900">Scope of Works.pdf</span><p class="text-xs text-gray-500">Uploaded 20 Mar &middot; Pending review</p></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg">Approve</button>
+          <button class="px-3 py-1.5 bg-red-600 text-white text-xs font-medium rounded-lg">Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

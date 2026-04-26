@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LES Mockup - Quick Create Lead Modal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="viewer-toolbar.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' },
+            info: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',500:'#43C0BE',700:'#007F7E',900:'#003D3D' },
+            success: { 50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',500:'#35A8E4',700:'#156F9D' },
+            warning: { 50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',500:'#E0763C',700:'#9C481A' },
+            danger: { 50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',500:'#E04B51',700:'#9C262A' },
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+          borderRadius: { 'input': '8px' },
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-primary { color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+    .duplicate-warning { display: none; }
+    .duplicate-warning.show { display: flex; }
+  </style>
+</head>
+<body class="font-sans text-primary min-h-screen">
+
+  <!-- Background: Dimmed list view -->
+  <div class="bg-gray-50 min-h-screen">
+
+    <!-- Top Nav Bar (dimmed behind modal) -->
+    <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="text-teal-700 font-bold text-lg">TC Portal</div>
+        <span class="text-gray-300">/</span>
+        <span class="text-sm font-semibold">Leads</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="px-4 py-2 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600">+ New Lead</button>
+      </div>
+    </nav>
+
+    <!-- Simplified lead list view (background content) -->
+    <div class="px-6 py-4">
+      <!-- Filters bar -->
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <input type="text" placeholder="Search leads..." class="rounded-[8px] border border-gray-300 pl-9 pr-3 py-2 text-sm w-72 focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <select class="rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            <option>All Stages</option>
+          </select>
+          <select class="rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            <option>All Intents</option>
+          </select>
+        </div>
+        <span class="text-sm text-secondary">24 leads</span>
+      </div>
+
+      <!-- Lead list table -->
+      <div class="rounded-lg bg-white border border-gray-400/40 shadow-sm overflow-hidden">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200 bg-gray-50">
+              <th class="text-left px-4 py-3 font-semibold text-secondary text-xs">Name</th>
+              <th class="text-left px-4 py-3 font-semibold text-secondary text-xs">Email</th>
+              <th class="text-left px-4 py-3 font-semibold text-secondary text-xs">Stage</th>
+              <th class="text-left px-4 py-3 font-semibold text-secondary text-xs">Intent</th>
+              <th class="text-left px-4 py-3 font-semibold text-secondary text-xs">Assigned</th>
+              <th class="text-left px-4 py-3 font-semibold text-secondary text-xs">Last Contact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-100 hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium">Margaret Wilson</td>
+              <td class="px-4 py-3 text-secondary">margaret.w@email.com</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-200 text-teal-900 ring-1 ring-inset ring-teal-700">Approved</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-warning-100 text-warning-700 ring-1 ring-inset ring-warning-700">Warm</span></td>
+              <td class="px-4 py-3 text-secondary">Jacqueline P.</td>
+              <td class="px-4 py-3 text-secondary">19 Feb 2026</td>
+            </tr>
+            <tr class="border-b border-gray-100 hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium">Robert Chen</td>
+              <td class="px-4 py-3 text-secondary">r.chen@email.com</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-300">Pre-Care</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-danger-100 text-danger-700 ring-1 ring-inset ring-danger-700">Hot</span></td>
+              <td class="px-4 py-3 text-secondary">David M.</td>
+              <td class="px-4 py-3 text-secondary">20 Feb 2026</td>
+            </tr>
+            <tr class="border-b border-gray-100 hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium">Dorothy Singh</td>
+              <td class="px-4 py-3 text-secondary">d.singh@email.com</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-100 text-teal-700 ring-1 ring-inset ring-teal-400">ACAT Booked</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-primary-blue-100 text-primary-blue-700 ring-1 ring-inset ring-primary-blue-300">Cold</span></td>
+              <td class="px-4 py-3 text-secondary">Jacqueline P.</td>
+              <td class="px-4 py-3 text-secondary">18 Feb 2026</td>
+            </tr>
+            <tr class="border-b border-gray-100 hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium">Arthur Brown</td>
+              <td class="px-4 py-3 text-secondary">a.brown@email.com</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-gray-100 text-gray-700 ring-1 ring-inset ring-gray-300">Pre-Care</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-warning-100 text-warning-700 ring-1 ring-inset ring-warning-700">Warm</span></td>
+              <td class="px-4 py-3 text-secondary">David M.</td>
+              <td class="px-4 py-3 text-secondary">17 Feb 2026</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3 font-medium">Jean O'Brien</td>
+              <td class="px-4 py-3 text-secondary">j.obrien@email.com</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-200 text-teal-900 ring-1 ring-inset ring-teal-700">Approved</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-danger-100 text-danger-700 ring-1 ring-inset ring-danger-700">Hot</span></td>
+              <td class="px-4 py-3 text-secondary">Jacqueline P.</td>
+              <td class="px-4 py-3 text-secondary">15 Feb 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Overlay -->
+  <div id="modal-overlay" class="fixed inset-0 z-40 bg-black/50 flex items-center justify-center">
+
+    <!-- Modal -->
+    <div class="bg-white rounded-lg shadow-xl w-[480px] max-h-[90vh] overflow-y-auto z-50">
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-primary">Quick Create Lead</h2>
+        <button onclick="document.getElementById('modal-overlay').style.display='none'" class="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="px-6 py-5">
+        <div class="flex flex-col gap-4">
+
+          <!-- Lead Name (First + Last) -->
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">
+                First Name <span class="text-danger-500">*</span>
+              </label>
+              <input type="text" placeholder="e.g. Margaret" value="Margaret" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">
+                Last Name <span class="text-danger-500">*</span>
+              </label>
+              <input type="text" placeholder="e.g. Wilson" value="Wilson" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="text-xs font-semibold text-secondary block mb-1.5">
+              Email <span class="text-danger-500">*</span>
+            </label>
+            <input type="email" id="email-input" placeholder="e.g. margaret.w@email.com" value="margaret.w@email.com" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500" oninput="checkDuplicate(this.value)">
+          </div>
+
+          <!-- Duplicate Warning Banner -->
+          <div id="duplicate-warning" class="duplicate-warning show items-start gap-2.5 rounded-[8px] bg-amber-50 border border-amber-300 px-4 py-3">
+            <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-amber-800">A lead with this email already exists.</p>
+              <p class="text-xs text-amber-700 mt-1">
+                <a href="#" class="underline font-semibold hover:text-amber-900">View existing lead</a>
+                <span class="mx-1">or</span>
+                <span>continue creating.</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Divider + Optional Fields Label -->
+          <div class="flex items-center gap-3 pt-1">
+            <div class="h-px bg-gray-200 flex-1"></div>
+            <span class="text-xs text-tertiary font-medium">Optional</span>
+            <div class="h-px bg-gray-200 flex-1"></div>
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <label class="text-xs font-semibold text-secondary block mb-1.5">Phone</label>
+            <input type="tel" placeholder="e.g. 0412 345 678" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+          </div>
+
+          <!-- Relationship to Recipient -->
+          <div>
+            <label class="text-xs font-semibold text-secondary block mb-1.5">Relationship to Recipient</label>
+            <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-secondary">
+              <option value="" selected>Select relationship...</option>
+              <option value="self">Self</option>
+              <option value="daughter">Daughter</option>
+              <option value="son">Son</option>
+              <option value="spouse">Spouse</option>
+              <option value="carer">Carer</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Notes -->
+          <div>
+            <label class="text-xs font-semibold text-secondary block mb-1.5">Notes</label>
+            <textarea placeholder="Any initial notes about this lead..." rows="3" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+        <button onclick="document.getElementById('modal-overlay').style.display='none'" class="px-4 py-2 text-sm font-bold rounded-full bg-transparent hover:bg-gray-200 text-gray-700">
+          Cancel
+        </button>
+        <button class="px-5 py-2 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600 shadow-sm">
+          Create Lead
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function checkDuplicate(value) {
+      const warning = document.getElementById('duplicate-warning');
+      // Show warning if the email matches a known duplicate (demo)
+      if (value === 'margaret.w@email.com') {
+        warning.classList.add('show');
+      } else {
+        warning.classList.remove('show');
+      }
+    }
+  </script>
+
+</body>
+</html>

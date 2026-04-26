@@ -1,0 +1,7 @@
+epic: 063-INV
+name: Inventory Management
+initiative: FL-financial-ledger
+status: planned
+created: 2026-03-21
+effort: L
+depends_on: 062-ITM

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verification - Gamified Gina</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{50:"#F0FAFA",100:"#D5F1F0",200:"#BAE8E7",300:"#94DBDA",400:"#66CCCA",500:"#43C0BE",600:"#2F9E9C",700:"#007F7E",800:"#005656",900:"#003D3D"},"primary-blue":{50:"#F0F4FA",100:"#D6E1F0",200:"#BCCEE7",300:"#96B2D9",400:"#7197CC",500:"#4B7BBE",600:"#39639D",700:"#2C4C79",800:"#1E3452",900:"#101C2D"}}}}}</script>
+<style>@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(0,127,126,0.4)}70%{box-shadow:0 0 0 6px rgba(0,127,126,0)}100%{box-shadow:0 0 0 0 rgba(0,127,126,0)}}.step-pulse{animation:pulse-ring 2s infinite}</style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+<script src="viewer-toolbar.js"></script>
+
+  <header class="bg-white border-b border-gray-200 px-6 py-3"><div class="flex items-center justify-between"><div class="flex items-center gap-6"><div class="flex items-center gap-2"><div class="w-7 h-7 bg-teal-700 rounded flex items-center justify-center text-white font-bold text-xs">TC</div><span class="font-semibold text-primary-blue-700">Trilogy Care</span></div><nav class="hidden md:flex items-center gap-1"><a href="#" class="px-3 py-2 text-sm font-medium text-teal-700 bg-teal-50 rounded-md">Dashboard</a><a href="#" class="px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 rounded-md">Profile</a><a href="#" class="px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 rounded-md">Documents</a></nav></div><span class="text-sm text-gray-600">Acme Allied Health</span></div></header>
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <div class="bg-gradient-to-r from-primary-blue-700 to-primary-blue-600 rounded-xl p-6 mb-6 text-white">
+      <div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><span class="text-xs font-medium bg-white/20 px-2 py-0.5 rounded-full">PENDING VERIFICATION</span></div>
+      <h1 class="text-2xl font-bold mb-1">Verification In Progress</h1><p class="text-white/80 text-sm">Your application is being reviewed. Usually takes less than 48 hours.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5"><div class="flex items-center gap-3 mb-3"><div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><div><p class="font-medium text-gray-900 text-sm">Documents</p><p class="text-xs text-green-600">Complete</p></div></div></div>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5"><div class="flex items-center gap-3 mb-3"><div class="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-amber-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><p class="font-medium text-gray-900 text-sm">Bank Details</p><p class="text-xs text-amber-600">Verifying</p></div></div><div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-green-500"></div><div class="flex-1 h-0.5 bg-green-400"></div><div class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></div><div class="flex-1 h-0.5 bg-gray-200"></div><div class="w-3 h-3 rounded-full bg-gray-200"></div></div><p class="text-xs text-gray-500 mt-2">EFTSure Stage 2 of 3</p></div>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5"><div class="flex items-center gap-3 mb-3"><div class="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><div><p class="font-medium text-gray-900 text-sm">Compliance</p><p class="text-xs text-amber-600">Under review</p></div></div></div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6"><div class="flex items-center justify-between mb-4"><h2 class="text-lg font-semibold text-gray-900">Dashboard Preview</h2><span class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded font-medium">READ ONLY</span></div><p class="text-sm text-gray-500 mb-6">Explore your profile. Billing and matching unlock after verification.</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-center"><svg class="w-6 h-6 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg><span class="text-sm font-medium text-gray-700">Profile</span></a>
+        <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-center"><svg class="w-6 h-6 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg><span class="text-sm font-medium text-gray-700">Locations</span></a>
+        <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-center"><svg class="w-6 h-6 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 1v8m0 0v1"/></svg><span class="text-sm font-medium text-gray-700">Pricing</span></a>
+        <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-center"><svg class="w-6 h-6 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span class="text-sm font-medium text-gray-700">Documents</span></a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

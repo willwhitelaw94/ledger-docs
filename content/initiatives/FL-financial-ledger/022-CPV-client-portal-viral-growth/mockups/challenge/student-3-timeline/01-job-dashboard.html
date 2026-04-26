@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Henderson Residence — Harrington Builders</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+    .pulse-dot {
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes line-grow {
+      from { height: 0; }
+      to { height: 100%; }
+    }
+    .timeline-line-complete {
+      background: linear-gradient(to bottom, #007F7E, #43C0BE);
+    }
+    .timeline-line-upcoming {
+      background: repeating-linear-gradient(
+        to bottom,
+        #D1D5DB 0px,
+        #D1D5DB 8px,
+        transparent 8px,
+        transparent 16px
+      );
+    }
+  </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased">
+
+  <!-- Site Header -->
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-30">
+    <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- Builder logo mark -->
+        <div class="w-9 h-9 bg-stone-800 rounded-lg flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 21L3 8L12 3L21 8V21"/>
+            <path d="M9 21V15H15V21"/>
+            <path d="M9 9H15"/>
+          </svg>
+        </div>
+        <div>
+          <div class="font-semibold text-stone-900 text-sm leading-tight">Harrington Builders</div>
+          <div class="text-xs text-stone-400 leading-tight">Licensed Builder · Lic. No. 238741</div>
+        </div>
+      </div>
+      <div class="text-right">
+        <div class="text-xs text-stone-400">Shared with</div>
+        <div class="text-sm font-medium text-stone-700">Sarah & Tom Henderson</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Job Hero / Title Block -->
+  <div class="bg-stone-800 text-white">
+    <div class="max-w-3xl mx-auto px-6 pt-10 pb-8">
+      <div class="text-teal-400 text-xs font-semibold uppercase tracking-widest mb-2">Build Story</div>
+      <h1 class="text-3xl font-bold mb-1">The Henderson Residence</h1>
+      <p class="text-stone-300 text-sm">14 Banksia Court, Eltham VIC 3095 · New residential build</p>
+    </div>
+
+    <!-- Project Summary Strip -->
+    <div class="border-t border-stone-700">
+      <div class="max-w-3xl mx-auto px-6 py-5 grid grid-cols-3 gap-6">
+        <div>
+          <div class="text-xs text-stone-400 uppercase tracking-wider mb-1">Started</div>
+          <div class="text-white font-semibold text-sm">Oct 2024</div>
+        </div>
+        <div>
+          <div class="text-xs text-stone-400 uppercase tracking-wider mb-1">Est. Completion</div>
+          <div class="text-white font-semibold text-sm">May 2025</div>
+          <div class="text-teal-400 text-xs mt-0.5">On track</div>
+        </div>
+        <div>
+          <div class="text-xs text-stone-400 uppercase tracking-wider mb-1">Total Contract</div>
+          <div class="text-white font-semibold text-sm">$340,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overall Progress Bar -->
+  <div class="bg-stone-700">
+    <div class="max-w-3xl mx-auto px-6 py-3">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs text-stone-300">Overall progress</span>
+        <span class="text-xs text-teal-400 font-semibold">52% complete</span>
+      </div>
+      <div class="h-1.5 bg-stone-600 rounded-full overflow-hidden">
+        <div class="h-full bg-teal-500 rounded-full" style="width: 52%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Timeline Content -->
+  <main class="max-w-3xl mx-auto px-6 py-12">
+
+    <!-- Timeline intro -->
+    <div class="mb-10">
+      <p class="text-stone-500 text-sm">Your build's financial story, chapter by chapter. Every dollar. Every milestone.</p>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="relative">
+
+      <!-- Vertical line container — desktop: centered, mobile: left -->
+      <div class="absolute left-5 md:left-1/2 top-0 bottom-0 w-px md:-translate-x-px" aria-hidden="true">
+        <!-- Completed portion (chapters 1 + 2) -->
+        <div class="timeline-line-complete absolute top-0 left-0 right-0" style="height: 44%"></div>
+        <!-- In progress portion (chapter 3) -->
+        <div class="bg-teal-400 absolute left-0 right-0" style="top: 44%; height: 14%"></div>
+        <!-- Upcoming portion (chapters 4 + 5) -->
+        <div class="timeline-line-upcoming absolute left-0 right-0" style="top: 58%; bottom: 0"></div>
+      </div>
+
+
+      <!-- ======================== -->
+      <!-- CHAPTER 1: Site Prep     -->
+      <!-- ======================== -->
+      <div class="relative flex flex-col md:flex-row md:items-start mb-0 group">
+        <!-- Timeline node -->
+        <div class="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 mt-6">
+          <div class="w-5 h-5 rounded-full bg-teal-700 border-4 border-teal-200 shadow-sm flex items-center justify-center">
+            <svg class="w-2.5 h-2.5 text-white" viewBox="0 0 12 12" fill="currentColor">
+              <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Content — alternating: odd chapters left, even chapters right on desktop -->
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pr-10 pb-12">
+          <div class="bg-white rounded-2xl border border-stone-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <!-- Chapter label -->
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Chapter 1</span>
+              <span class="text-xs text-stone-400">Oct 2024</span>
+              <span class="ml-auto text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Complete</span>
+            </div>
+
+            <h2 class="text-base font-bold text-stone-900 mb-1">Site Preparation</h2>
+            <p class="text-stone-500 text-sm mb-4 leading-relaxed">Site cleared and prepared for construction. Slab formed and poured.</p>
+
+            <!-- Budget bar -->
+            <div class="mb-3">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="text-stone-400">Budget</span>
+                <span class="font-semibold text-stone-700">$45,000 / $45,000</span>
+              </div>
+              <div class="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                <div class="h-full rounded-full bg-teal-500" style="width: 100%"></div>
+              </div>
+              <div class="text-xs text-stone-400 mt-1">On budget</div>
+            </div>
+
+            <!-- Attachment update -->
+            <div class="border-t border-stone-100 pt-3 mt-3">
+              <div class="flex items-start gap-2 text-xs text-stone-500">
+                <span class="text-stone-400 mt-0.5">📎</span>
+                <div>
+                  <span class="font-medium text-stone-600">Site progress photos added</span>
+                  <span class="text-stone-400 ml-1">— Oct 28</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop: right spacer (odd chapters sit left) -->
+        <div class="hidden md:block md:w-1/2 md:pl-10"></div>
+      </div>
+
+
+      <!-- ======================== -->
+      <!-- CHAPTER 2: Framing       -->
+      <!-- ======================== -->
+      <div class="relative flex flex-col md:flex-row md:items-start mb-0 group">
+        <!-- Timeline node -->
+        <div class="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 mt-6">
+          <div class="w-5 h-5 rounded-full bg-teal-700 border-4 border-teal-200 shadow-sm flex items-center justify-center">
+            <svg class="w-2.5 h-2.5 text-white" viewBox="0 0 12 12" fill="currentColor">
+              <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Desktop: left spacer (even chapters sit right) -->
+        <div class="hidden md:block md:w-1/2 md:pr-10"></div>
+
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pl-10 pb-12">
+          <div class="bg-white rounded-2xl border border-stone-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Chapter 2</span>
+              <span class="text-xs text-stone-400">Nov–Dec 2024</span>
+              <span class="ml-auto text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Complete</span>
+            </div>
+
+            <h2 class="text-base font-bold text-stone-900 mb-1">Framing</h2>
+            <p class="text-stone-500 text-sm mb-4 leading-relaxed">Frame erected and roof structure complete. Lock-up achieved ahead of schedule.</p>
+
+            <!-- Budget bar -->
+            <div class="mb-3">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="text-stone-400">Budget</span>
+                <span class="font-semibold text-stone-700">$79,000 / $82,000</span>
+              </div>
+              <div class="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                <div class="h-full rounded-full bg-teal-500" style="width: 96%"></div>
+              </div>
+              <div class="text-xs text-emerald-600 mt-1 font-medium">Under budget by $3,000 🎉</div>
+            </div>
+
+            <!-- Attachment update -->
+            <div class="border-t border-stone-100 pt-3 mt-3">
+              <div class="flex items-start gap-2 text-xs text-stone-500">
+                <span class="text-stone-400 mt-0.5">📎</span>
+                <div>
+                  <span class="font-medium text-stone-600">Frame completion report</span>
+                  <span class="text-stone-400 ml-1">— Dec 19</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Spend checkpoint strip -->
+      <div class="relative ml-14 md:ml-0 md:mx-0 mb-0 pb-8">
+        <div class="bg-stone-100 border border-stone-200 rounded-xl px-5 py-3 flex items-center justify-between">
+          <div class="text-xs text-stone-500">Running total after framing</div>
+          <div class="text-sm font-bold text-stone-900">$124,000 of $340,000 <span class="text-stone-400 font-normal text-xs ml-1">(36%)</span></div>
+        </div>
+      </div>
+
+
+      <!-- ======================== -->
+      <!-- CHAPTER 3: Rough-In      -->
+      <!-- ======================== -->
+      <div class="relative flex flex-col md:flex-row md:items-start mb-0 group">
+        <!-- Timeline node — pulsing "you are here" -->
+        <div class="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 mt-6">
+          <!-- Outer pulse ring -->
+          <div class="absolute -inset-2 rounded-full bg-teal-400 opacity-20 pulse-dot"></div>
+          <div class="w-5 h-5 rounded-full bg-teal-500 border-4 border-white shadow-md relative z-10 flex items-center justify-center">
+            <div class="w-2 h-2 rounded-full bg-white"></div>
+          </div>
+        </div>
+
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pr-10 pb-12">
+          <div class="bg-white rounded-2xl border-2 border-teal-400 shadow-md p-6">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Chapter 3</span>
+              <span class="text-xs text-stone-400">Jan–Feb 2025</span>
+              <span class="ml-auto text-xs font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-teal-500 pulse-dot inline-block"></span>
+                In Progress
+              </span>
+            </div>
+
+            <h2 class="text-base font-bold text-stone-900 mb-1">Rough-In</h2>
+            <p class="text-stone-500 text-sm mb-5 leading-relaxed">Electrical and plumbing rough-in underway. Inspection due 22 March.</p>
+
+            <!-- Sub-items -->
+            <div class="space-y-3 mb-4">
+              <!-- Electrical -->
+              <div>
+                <div class="flex items-center justify-between text-xs mb-1">
+                  <span class="text-stone-600 font-medium">Electrical</span>
+                  <span class="text-stone-700">$31,000 / $38,000</span>
+                </div>
+                <div class="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                  <div class="h-full rounded-full bg-amber-400" style="width: 82%"></div>
+                </div>
+              </div>
+              <!-- Plumbing -->
+              <div>
+                <div class="flex items-center justify-between text-xs mb-1">
+                  <span class="text-stone-600 font-medium">Plumbing</span>
+                  <span class="text-stone-700">$28,000 / $41,000</span>
+                </div>
+                <div class="h-1.5 bg-stone-100 rounded-full overflow-hidden">
+                  <div class="h-full rounded-full bg-amber-400" style="width: 68%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Attachments -->
+            <div class="border-t border-stone-100 pt-3 space-y-2">
+              <div class="flex items-start gap-2 text-xs text-stone-500">
+                <span class="text-stone-400 mt-0.5">📎</span>
+                <div>
+                  <span class="font-medium text-stone-600">Site progress photos added</span>
+                  <span class="text-stone-400 ml-1">— Mar 8</span>
+                </div>
+              </div>
+              <div class="flex items-start gap-2 text-xs text-stone-500">
+                <span class="text-stone-400 mt-0.5">📎</span>
+                <div>
+                  <span class="font-medium text-stone-600">Variations summary v3</span>
+                  <span class="text-stone-400 ml-1">— Feb 28</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden md:block md:w-1/2 md:pl-10"></div>
+      </div>
+
+
+      <!-- ======================== -->
+      <!-- CHAPTER 4: Interior      -->
+      <!-- ======================== -->
+      <div class="relative flex flex-col md:flex-row md:items-start mb-0 group opacity-60">
+        <!-- Timeline node -->
+        <div class="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 mt-6">
+          <div class="w-5 h-5 rounded-full bg-white border-2 border-stone-300 shadow-sm flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
+          </div>
+        </div>
+
+        <!-- Desktop: left spacer -->
+        <div class="hidden md:block md:w-1/2 md:pr-10"></div>
+
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pl-10 pb-12">
+          <div class="bg-white rounded-2xl border border-stone-200 border-dashed p-6">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs font-bold text-stone-400 bg-stone-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Chapter 4</span>
+              <span class="text-xs text-stone-400">Mar–Apr 2025</span>
+              <span class="ml-auto text-xs font-medium text-stone-400 bg-stone-50 px-2 py-0.5 rounded-full">Upcoming</span>
+            </div>
+
+            <h2 class="text-base font-bold text-stone-400 mb-1">Interior</h2>
+            <p class="text-stone-400 text-sm mb-4 leading-relaxed">Insulation, plasterboard, painting, and flooring.</p>
+
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-stone-400">Budgeted</span>
+              <span class="text-stone-500 font-medium">$89,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ======================== -->
+      <!-- CHAPTER 5: Completion    -->
+      <!-- ======================== -->
+      <div class="relative flex flex-col md:flex-row md:items-start group opacity-50">
+        <!-- Timeline node -->
+        <div class="absolute left-5 md:left-1/2 -translate-x-1/2 z-10 mt-6">
+          <div class="w-5 h-5 rounded-full bg-white border-2 border-stone-200 shadow-sm flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-200"></div>
+          </div>
+        </div>
+
+        <div class="ml-14 md:ml-0 md:w-1/2 md:pr-10 pb-4">
+          <div class="bg-white rounded-2xl border border-stone-200 border-dashed p-6">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-xs font-bold text-stone-300 bg-stone-50 px-2 py-0.5 rounded-full uppercase tracking-wider">Chapter 5</span>
+              <span class="text-xs text-stone-300">May 2025</span>
+              <span class="ml-auto text-xs font-medium text-stone-300 bg-stone-50 px-2 py-0.5 rounded-full">Upcoming</span>
+            </div>
+
+            <h2 class="text-base font-bold text-stone-300 mb-1">Completion</h2>
+            <p class="text-stone-300 text-sm mb-4 leading-relaxed">Final fitout, landscaping, and practical completion inspection.</p>
+
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-stone-300">Budgeted</span>
+              <span class="text-stone-400 font-medium">$45,000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden md:block md:w-1/2 md:pl-10"></div>
+      </div>
+
+    </div>
+    <!-- END TIMELINE -->
+
+
+    <!-- Final spend summary -->
+    <div class="mt-8 bg-stone-800 text-white rounded-2xl p-6">
+      <div class="text-xs text-stone-400 uppercase tracking-wider mb-4">Project Financial Summary</div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div>
+          <div class="text-2xl font-bold text-white">$124k</div>
+          <div class="text-xs text-stone-400 mt-0.5">Spent to date</div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-teal-400">$216k</div>
+          <div class="text-xs text-stone-400 mt-0.5">Remaining</div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-white">$340k</div>
+          <div class="text-xs text-stone-400 mt-0.5">Total contract</div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-emerald-400">+$3k</div>
+          <div class="text-xs text-stone-400 mt-0.5">Under budget</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ======================== -->
+    <!-- VIRAL CTA SECTION        -->
+    <!-- ======================== -->
+    <div class="mt-16 pt-12 border-t border-stone-200">
+
+      <div class="text-center mb-8">
+        <div class="inline-block text-xs font-semibold text-teal-600 bg-teal-50 px-3 py-1 rounded-full uppercase tracking-wider mb-4">What's next for you?</div>
+        <h2 class="text-2xl font-bold text-stone-900 mb-3">You've been following<br/>your build's financial story.</h2>
+        <p class="text-stone-500 text-base max-w-sm mx-auto leading-relaxed">Now what about yours?</p>
+      </div>
+
+      <!-- Story card -->
+      <div class="bg-white rounded-2xl border border-stone-200 shadow-sm p-8 mb-4">
+        <!-- Narrative intro -->
+        <div class="flex items-start gap-4 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-teal-500 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="font-semibold text-stone-900 mb-1 text-sm">Thousands of Australians use MoneyQuest to track their home finances, investments, and personal P&amp;L.</div>
+            <div class="text-stone-400 text-sm">It takes 2 minutes to start writing yours.</div>
+          </div>
+        </div>
+
+        <!-- Story beats preview -->
+        <div class="space-y-2 mb-6">
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center flex-shrink-0 text-xs font-bold">1</div>
+            <span class="text-stone-600">Track what this renovation cost you — really</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
+            <span class="text-stone-600">See your net worth grow as the build completes</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center flex-shrink-0 text-xs font-bold">3</div>
+            <span class="text-stone-600">Build your first personal P&amp;L — no accountant needed</span>
+          </div>
+        </div>
+
+        <a href="02-registration-cta.html" class="block w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3.5 px-6 rounded-xl text-center text-sm transition-colors">
+          Start my financial story →
+        </a>
+        <div class="text-center mt-3">
+          <a href="#" class="text-sm text-stone-400 hover:text-stone-600 transition-colors">Sign in to existing account</a>
+        </div>
+      </div>
+
+      <!-- Powered by -->
+      <div class="text-center">
+        <div class="text-xs text-stone-300">
+          This project view is powered by
+          <span class="font-semibold text-stone-400">MoneyQuest Ledger</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

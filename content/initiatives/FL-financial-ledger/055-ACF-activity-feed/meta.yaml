@@ -1,0 +1,10 @@
+epic_code: ACF
+epic_name: Activity Feed — The Harbour Front Door
+initiative: FL-financial-ledger
+status: dev-complete
+created: 2026-03-19
+owner: William Whitelaw
+consolidates:
+  - 024-NTF (Notifications & Activity Feed)
+  - 018-ITR (Intray / Attention Queue)
+  - Activity portion of 050-UAF (User Activity Feed)

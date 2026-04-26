@@ -1,0 +1,29 @@
+title: 'Client Portal'
+prefix: CPV
+number: '022'
+status: idea
+initiative: FL-financial-ledger
+created: 2026-03-14
+updated: 2026-03-22
+author: William Whitelaw
+effort: L
+summary: "Dedicated client-facing portal: simplified dashboard, report access, task interaction, document upload/signing, messaging, notifications, practice branding"
+depends_on:
+  - 027-PMV-practice-management-v2
+  - 059-DGS-document-governance-signing
+  - 012-ATT-attachments
+  - 024-NTF-notifications-activity-feed
+  - 003-AUT-auth-multi-tenancy
+  - 007-FRC-financial-reporting-compliance
+related:
+  - 058-CPT-practice-client-portal
+  - 065-VGR-viral-growth-referral-engine
+  - 018-ITR-intray-attention-queue
+gates:
+  idea: pending
+  spec: pending
+  design: pending
+  architecture: pending
+  code_quality: pending
+  qa: pending
+  release: pending

@@ -1,0 +1,14 @@
+epic_code: FAR
+epic_number: "033"
+name: Fixed Asset Register & Depreciation
+initiative: FL-financial-ledger
+status: idea
+stage: idea
+gates:
+  idea:
+    passed: false
+created: "2026-03-15"
+author: William Whitelaw
+depends_on:
+  - 002-CLE-core-ledger-engine
+  - 032-LAT-loan-applications-tracking

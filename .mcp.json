@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "fireflies": {
+      "type": "sse",
+      "url": "https://api.fireflies.ai/mcp"
+    },
+    "tldraw": {
+      "command": "node",
+      "args": ["/Users/williamwhitelaw/.mcp-servers/tldraw-mcp/server/dist/index.js"]
+    }
+  }
+}

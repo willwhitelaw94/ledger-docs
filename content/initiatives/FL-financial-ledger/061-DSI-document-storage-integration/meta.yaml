@@ -1,0 +1,14 @@
+title: Document Storage Integration
+code: DSI
+number: "061"
+status: spec
+effort: M
+created: "2026-03-22"
+gates:
+  idea: pending
+  spec: pending
+  design: pending
+  architecture: pending
+  code_quality: pending
+  qa: pending
+  release: pending

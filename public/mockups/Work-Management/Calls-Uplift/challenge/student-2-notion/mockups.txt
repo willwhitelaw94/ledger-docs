@@ -1,0 +1,318 @@
+================================================================================
+                    TC PORTAL - CALLS INBOX & CALL REVIEW
+                 Design Student 2: Notion-Inspired Mockups
+================================================================================
+
+
+================================================================================
+VARIATION A: TABLE VIEW WITH SIDE PEEK PANEL
+================================================================================
+
+Notion Patterns Used:
+- Table View (spreadsheet-like database)
+- Side Peek (split-screen detail panel)
+- Inline Editing (click-to-edit cells)
+- Saved Views (tabs for filtered states)
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                                    Sarah C. ▼  ⚙  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ◀ Care Coordination  /  Calls Inbox                                         │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │ [My Queue (12)] [Unlinked (5)] [All Pending (34)] [Completed Today]    │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  ┌──────────────────────────────────────┬────────────────────────────────┐  │
+│  │                                      │                                │  │
+│  │  ⊞ Table  ☰ List  ▦ Board           │  CALL REVIEW                   │  │
+│  │  ┌────────────────────────────────┐  │                                │  │
+│  │  │ ⊕ Filter  ↕ Sort  ⋯           │  │  Margaret Wilson               │  │
+│  │  └────────────────────────────────┘  │  ────────────────────────────  │  │
+│  │                                      │  📞 0412 345 678  •  4m 32s    │  │
+│  │  ┌────────────────────────────────┐  │  Today, 9:14 AM                │  │
+│  │  │ □ CALLER        TIME    STATUS │  │                                │  │
+│  │  ├────────────────────────────────┤  │  ┌────────────────────────────┐│  │
+│  │  │ □ M. Wilson     4:32  ● Review │◀─┼──│ PACKAGE                    ││  │
+│  │  │ □ J. Thompson   2:15  ○ Pending│  │  │ ┌────────────────────────┐ ││  │
+│  │  │ □ R. Chen       6:48  ⚠ Unlink │  │  │ │ 🔍 Search packages...  │ ││  │
+│  │  │ □ D. Martinez   3:21  ○ Pending│  │  │ ├────────────────────────┤ ││  │
+│  │  │ □ S. O'Brien    5:02  ⚠ Unlink │  │  │ │ Margaret Wilson - HCP  │ ││  │
+│  │  │ □ K. Patel      1:58  ○ Pending│  │  │ │ Margaret Wilson - CHSP │ ││  │
+│  │  │ □ L. Nguyen     4:15  ○ Pending│  │  │ │ Wilson Family - Respite│ ││  │
+│  │  │ □ P. Anderson   2:44  ○ Pending│  │  │ └────────────────────────┘ ││  │
+│  │  │ □ T. Robinson   7:12  ⚠ Unlink │  │  └────────────────────────────┘│  │
+│  │  │ □ M. Lee        3:33  ○ Pending│  │                                │  │
+│  │  │ □ C. Brown      4:01  ○ Pending│  │  ┌────────────────────────────┐│  │
+│  │  │ □ J. Davis      2:28  ○ Pending│  │  │ ▶ PLAY AUDIO      ──●───── ││  │
+│  │  └────────────────────────────────┘  │  │                    0:00/4:32││  │
+│  │                                      │  └────────────────────────────┘│  │
+│  │  ☐ Select all  │  With 2 selected:   │                                │  │
+│  │  [Mark Complete] [Link Package]      │  TRANSCRIPTION                 │  │
+│  │                                      │  ────────────────────────────  │  │
+│  │                                      │  "Hi, this is Margaret. I'm    │  │
+│  │                                      │  calling about my husband's    │  │
+│  │                                      │  care package. We need to      │  │
+│  │                                      │  reschedule Thursday's visit   │  │
+│  │                                      │  because we have a doctor's    │  │
+│  │                                      │  appointment in the morning.   │  │
+│  │                                      │  Can you please call me back   │  │
+│  │                                      │  when you get this? Thanks."   │  │
+│  │                                      │                                │  │
+│  │                                      │  NOTES                         │  │
+│  │                                      │  ────────────────────────────  │  │
+│  │                                      │  ┌────────────────────────────┐│  │
+│  │                                      │  │ Rescheduled Thu visit to   ││  │
+│  │                                      │  │ Friday 10am per client.    ││  │
+│  │                                      │  └────────────────────────────┘│  │
+│  │                                      │                                │  │
+│  │                                      │  [✓ Complete Review]      [×]  │  │
+│  └──────────────────────────────────────┴────────────────────────────────┘  │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+KEY INTERACTIONS:
+• Click row to open Side Peek (right panel)
+• Click status cell for inline dropdown change
+• Search packages in panel, select to link
+• Checkbox rows for batch actions
+• View tabs persist filter settings
+
+
+================================================================================
+VARIATION B: KANBAN BOARD VIEW WITH CENTER PEEK MODAL
+================================================================================
+
+Notion Patterns Used:
+- Board/Kanban View (status columns)
+- Center Peek (modal overlay for details)
+- Drag-and-Drop (move cards between columns)
+- Progressive Disclosure (card summary, modal for details)
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                                    Sarah C. ▼  ⚙  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ◀ Care Coordination  /  Calls Inbox                                         │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │ [My Queue] [All Calls] [Unlinked Only]         ⊞ Table  ☰ List [▦ Board]│ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐             │
+│  │ ○ PENDING    (8) │ │ ● IN REVIEW  (1) │ │ ✓ COMPLETED  (23)│             │
+│  ├──────────────────┤ ├──────────────────┤ ├──────────────────┤             │
+│  │ ┌──────────────┐ │ │ ┌──────────────┐ │ │ ┌──────────────┐ │             │
+│  │ │ J. Thompson  │ │ │ │ ████████████ │ │ │ │ A. Murphy    │ │             │
+│  │ │ 2:15  ⚠ Unlink│ │ │ │ M. Wilson   │ │ │ │ 3:45         │ │             │
+│  │ │ 📞 Today 9:32 │ │ │ │ 4:32        │ │ │ │ ✓ HCP-2847   │ │             │
+│  │ └──────────────┘ │ │ │ → HCP-2847  │ │ │ └──────────────┘ │             │
+│  │ ┌──────────────┐ │ │ │ 📞 Today 9:14│ │ │ ┌──────────────┐ │             │
+│  │ │ R. Chen      │ │ │ └──────────────┘ │ │ │ P. Singh     │ │             │
+│  │ │ 6:48  ⚠ Unlink│ │ │                  │ │ │ 2:18         │ │             │
+│  │ │ 📞 Today 8:55 │ │ │                  │ │ │ ✓ CHSP-1923  │ │             │
+│  │ └──────────────┘ │ │                  │ │ └──────────────┘ │             │
+│  │ ┌──────────────┐ │ │                  │ │ ┌──────────────┐ │             │
+│  │ │ K. Patel     │ │ │                  │ │ │ B. Taylor    │ │             │
+│  │ │ 1:58         │ │ │                  │ │ │ 4:02         │ │             │
+│  │ │ → HCP-3421   │ │ │                  │ │ │ ✓ HCP-2156   │ │             │
+│  │ │ 📞 Today 8:41 │ │ │                  │ │ └──────────────┘ │             │
+│  │ └──────────────┘ │ │                  │ │        ⋮         │             │
+│  │ ┌──────────────┐ │ │                  │ │                  │             │
+│  │ │ L. Nguyen    │ │ │                  │ │                  │             │
+│  │ │ 4:15         │ │ │                  │ │                  │             │
+│  │ │ → CHSP-1156  │ │ │                  │ │                  │             │
+│  │ │ 📞 Today 8:22 │ │ │                  │ │                  │             │
+│  │ └──────────────┘ │ │                  │ │                  │             │
+│  │       ⋮         │ │                  │ │                  │             │
+│  └──────────────────┘ └──────────────────┘ └──────────────────┘             │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+CENTER PEEK MODAL (opens when clicking a card):
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                                    Sarah C. ▼  ⚙  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│
+│░░░░░░░░░░┌────────────────────────────────────────────────────┐░░░░░░░░░░░░░░│
+│░░░░░░░░░░│                                              [×]   │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  Margaret Wilson                                   │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  ═══════════════════════════════════════════════   │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│                                                    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  STATUS        PACKAGE           DURATION          │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  ┌─────────┐   ┌─────────────┐   ┌─────────┐       │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  │● Review▼│   │ HCP-2847  ▼ │   │ 4:32    │       │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  └─────────┘   └─────────────┘   └─────────┘       │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│                                                    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  📞 0412 345 678                Today, 9:14 AM     │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│                                                    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  ┌──────────────────────────────────────────────┐  │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  │  ▶ PLAY                         ───●─────    │  │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  │                                  1:24 / 4:32 │  │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  └──────────────────────────────────────────────┘  │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│                                                    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  TRANSCRIPTION                                     │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  ──────────────────────────────────────────────    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  "Hi, this is Margaret. I'm calling about my       │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  husband's care package. We need to reschedule     │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  Thursday's visit because we have a doctor's       │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  appointment in the morning..."                    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│                                                    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  NOTES                                             │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  ──────────────────────────────────────────────    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  ┌──────────────────────────────────────────────┐  │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  │ Rescheduled Thu visit to Fri 10am.           │  │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  │                                              │  │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│  └──────────────────────────────────────────────┘  │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│                                                    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░│        [✓ Complete Review]    [← Previous] [Next →]│░░░░░░░░░░░░░░│
+│░░░░░░░░░░│                                                    │░░░░░░░░░░░░░░│
+│░░░░░░░░░░└────────────────────────────────────────────────────┘░░░░░░░░░░░░░░│
+│░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│
+└──────────────────────────────────────────────────────────────────────────────┘
+
+KEY INTERACTIONS:
+• Drag cards between columns to change status
+• Click card to open Center Peek modal
+• Inline dropdowns for status/package in modal
+• ⚠ badge shows unlinked calls needing attention
+• Prev/Next navigation inside modal for rapid review
+
+
+================================================================================
+VARIATION C: LIST VIEW WITH INLINE EXPANSION (Progressive Disclosure)
+================================================================================
+
+Notion Patterns Used:
+- List View (compact stacked entries)
+- Progressive Disclosure (expand row for details)
+- Inline Editing (edit without leaving list)
+- Relations (package linking via inline selector)
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                                    Sarah C. ▼  ⚙  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ◀ Care Coordination  /  Calls Inbox                                         │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │ [My Queue (12)] [Unlinked (5)] [All Pending] [Completed]                │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  ⊞ Table  [☰ List]  ▦ Board             ⊕ Filter  ↕ Sort by: Time ▼  ⋯     │
+│                                                                              │
+│  ╔══════════════════════════════════════════════════════════════════════════╗│
+│  ║ ┌────────────────────────────────────────────────────────────────────┐  ║│
+│  ║ │ ▶ Margaret Wilson          4:32    ● In Review    → HCP-2847      │  ║│
+│  ║ │   📞 0412 345 678          Today, 9:14 AM                          │  ║│
+│  ║ └────────────────────────────────────────────────────────────────────┘  ║│
+│  ║                                                                          ║│
+│  ║ ┌────────────────────────────────────────────────────────────────────┐  ║│
+│  ║ │ ▼ Jennifer Thompson        2:15    ○ Pending      ⚠ Unlinked       │  ║│
+│  ║ │   📞 0423 456 789          Today, 9:32 AM                          │  ║│
+│  ║ ├────────────────────────────────────────────────────────────────────┤  ║│
+│  ║ │                                                                    │  ║│
+│  ║ │  ┌─────────────────────────────────────────────────────────────┐   │  ║│
+│  ║ │  │  ▶ PLAY AUDIO                             ────○────── 0:00  │   │  ║│
+│  ║ │  └─────────────────────────────────────────────────────────────┘   │  ║│
+│  ║ │                                                                    │  ║│
+│  ║ │  TRANSCRIPTION                                                     │  ║│
+│  ║ │  "Hello, this is Jennifer. I'm the daughter of Robert Thompson.   │  ║│
+│  ║ │  I wanted to check on the status of dad's funding application.    │  ║│
+│  ║ │  We submitted it two weeks ago but haven't heard anything..."     │  ║│
+│  ║ │                                                                    │  ║│
+│  ║ │  LINK PACKAGE                              NOTES                   │  ║│
+│  ║ │  ┌────────────────────────────┐           ┌────────────────────┐  │  ║│
+│  ║ │  │ 🔍 Search packages...      │           │ Click to add notes │  │  ║│
+│  ║ │  ├────────────────────────────┤           │                    │  │  ║│
+│  ║ │  │ Robert Thompson - HCP      │           │                    │  │  ║│
+│  ║ │  │ Robert Thompson - CHSP     │           └────────────────────┘  │  ║│
+│  ║ │  └────────────────────────────┘                                   │  ║│
+│  ║ │                                                                    │  ║│
+│  ║ │                                           [✓ Complete Review]      │  ║│
+│  ║ │                                                                    │  ║│
+│  ║ └────────────────────────────────────────────────────────────────────┘  ║│
+│  ║                                                                          ║│
+│  ║ ┌────────────────────────────────────────────────────────────────────┐  ║│
+│  ║ │ ▶ Raymond Chen              6:48    ○ Pending      ⚠ Unlinked       │  ║│
+│  ║ │   📞 0434 567 890          Today, 8:55 AM                          │  ║│
+│  ║ └────────────────────────────────────────────────────────────────────┘  ║│
+│  ║                                                                          ║│
+│  ║ ┌────────────────────────────────────────────────────────────────────┐  ║│
+│  ║ │ ▶ Diana Martinez            3:21    ○ Pending      → CHSP-2341      │  ║│
+│  ║ │   📞 0445 678 901          Today, 8:41 AM                          │  ║│
+│  ║ └────────────────────────────────────────────────────────────────────┘  ║│
+│  ║                                                                          ║│
+│  ║ ┌────────────────────────────────────────────────────────────────────┐  ║│
+│  ║ │ ▶ Steven O'Brien            5:02    ○ Pending      ⚠ Unlinked       │  ║│
+│  ║ │   📞 0456 789 012          Today, 8:22 AM                          │  ║│
+│  ║ └────────────────────────────────────────────────────────────────────┘  ║│
+│  ╚══════════════════════════════════════════════════════════════════════════╝│
+│                                                                              │
+│  Showing 12 of 12 calls                                        [Load More]  │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+KEY INTERACTIONS:
+• Click ▶ to expand row, ▼ to collapse
+• All review actions inline (no separate panel)
+• Package search appears inside expanded row
+• Notes editable in place
+• Complete closes row and moves to next
+• ⚠ Unlinked badge draws attention to triage items
+
+
+================================================================================
+INTERACTION FLOW SUMMARY
+================================================================================
+
+Variation A (Table + Side Peek):
+1. Coordinator sees table of calls
+2. Clicks row → Side panel opens with call details
+3. Links package via inline search
+4. Adds notes
+5. Clicks "Complete Review"
+6. Panel closes, row updates, click next row
+
+Variation B (Kanban + Center Modal):
+1. Coordinator sees board with status columns
+2. Clicks card → Modal opens with full details
+3. Reviews transcription, links package
+4. Clicks "Complete Review"
+5. Modal closes, card moves to Completed column
+6. Clicks next card or drags to "In Review"
+
+Variation C (List + Inline Expand):
+1. Coordinator sees compact list of calls
+2. Clicks row → Row expands with full details
+3. Reviews, links, adds notes all inline
+4. Clicks "Complete Review"
+5. Row collapses and marks complete
+6. Click next row to expand
+
+================================================================================
+LEGEND
+================================================================================
+
+Status Indicators:
+○ Pending     - Not yet reviewed
+● In Review   - Currently being reviewed
+✓ Completed   - Review finished
+
+Package Indicators:
+→ HCP-2847    - Linked to package
+⚠ Unlinked    - Needs package assignment
+
+View Toggles:
+⊞ Table       - Spreadsheet view
+☰ List        - Compact stacked view
+▦ Board       - Kanban columns
+
+Actions:
+[✓ Complete]  - Primary action button
+[×]           - Close panel/modal
+▶ / ▼         - Expand/collapse toggle
+
+================================================================================

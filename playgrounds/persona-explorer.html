@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persona Day-in-the-Life Explorer — TC Portal</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-hover: #1f2f52;
+    --bg-active: #0f3460;
+    --teal-700: #007F7E;
+    --teal-500: #43C0BE;
+    --blue-700: #2C4C79;
+    --text: #e0e0e0;
+    --text-muted: #8892a4;
+    --text-bright: #ffffff;
+    --border: #2a3a5c;
+    --timeline-line: #2a3a5c;
+    --shadow: rgba(0,0,0,0.3);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  code, .mono { font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--blue-700), var(--teal-700));
+    padding: 24px 32px;
+    border-bottom: 2px solid var(--teal-500);
+  }
+  .header h1 { font-size: 24px; color: var(--text-bright); font-weight: 700; }
+  .header p { color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 4px; }
+
+  /* Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 90px);
+  }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 1px solid var(--border); max-height: 300px; overflow-y: auto; }
+  }
+
+  /* Sidebar */
+  .sidebar {
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    padding: 16px;
+    overflow-y: auto;
+  }
+  .sidebar-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin: 16px 0 8px;
+    padding-left: 4px;
+  }
+  .sidebar-label:first-child { margin-top: 0; }
+
+  .persona-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+    margin-bottom: 4px;
+  }
+  .persona-card:hover { background: var(--bg-hover); }
+  .persona-card.active {
+    background: var(--bg-active);
+    border-color: var(--teal-500);
+  }
+  .persona-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .persona-info h3 { font-size: 13px; font-weight: 600; color: var(--text-bright); }
+  .persona-info p { font-size: 11px; color: var(--text-muted); line-height: 1.3; }
+
+  /* Org chart toggle */
+  .org-toggle {
+    margin-top: 16px;
+    padding: 8px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--teal-500);
+    font-size: 12px;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s;
+  }
+  .org-toggle:hover { background: var(--bg-hover); }
+  .org-chart {
+    display: none;
+    margin-top: 8px;
+    padding: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    white-space: pre;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+    overflow-x: auto;
+  }
+  .org-chart.open { display: block; }
+
+  /* Main content */
+  .main { padding: 24px 32px; overflow-y: auto; }
+  @media (max-width: 900px) { .main { padding: 16px; } }
+
+  /* Persona header */
+  .persona-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .persona-header-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .persona-header-info h2 { font-size: 22px; color: var(--text-bright); }
+  .persona-header-info .subtitle { font-size: 14px; color: var(--text-muted); }
+  .persona-header-info .reports-to { font-size: 12px; color: var(--teal-500); margin-top: 4px; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--teal-500); border-bottom-color: var(--teal-500); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Day narrative */
+  .narrative {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .narrative strong { color: var(--teal-500); }
+
+  /* Scale badge */
+  .scale-badge {
+    display: inline-block;
+    background: rgba(67,192,190,0.12);
+    border: 1px solid rgba(67,192,190,0.3);
+    color: var(--teal-500);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  /* Metric card */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .metric-card .value { font-size: 24px; font-weight: 700; color: var(--teal-500); }
+  .metric-card .label { font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 60px;
+    margin-bottom: 24px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--timeline-line);
+  }
+  .timeline-item {
+    position: relative;
+    padding: 12px 0;
+  }
+  .timeline-time {
+    position: absolute;
+    left: -60px;
+    top: 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+    width: 48px;
+    text-align: right;
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -36px;
+    top: 16px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--teal-700);
+    border: 2px solid var(--teal-500);
+  }
+  .timeline-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .timeline-content h4 { font-size: 13px; color: var(--text-bright); margin-bottom: 2px; }
+  .timeline-content p { font-size: 12px; color: var(--text-muted); }
+
+  /* Domain bubbles */
+  .domains-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+  .domain-bubble {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+    padding: 8px;
+    word-break: break-word;
+    transition: transform 0.2s;
+    cursor: default;
+    position: relative;
+  }
+  .domain-bubble:hover { transform: scale(1.1); }
+  .domain-bubble .tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--text);
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .domain-bubble:hover .tooltip { display: block; }
+
+  /* Screens list */
+  .screens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .screen-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .screen-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Pain points */
+  .pain-points { margin-bottom: 24px; }
+  .pain-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid #e74c3c;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  /* Relationship arrows */
+  .relationships {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 600px) { .relationships { grid-template-columns: 1fr; } }
+  .rel-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .rel-card h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .rel-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+  .rel-arrow {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .rel-arrow.up { color: #e74c3c; }
+  .rel-arrow.down { color: var(--teal-500); }
+
+  /* Summary */
+  .summary {
+    background: linear-gradient(135deg, rgba(0,127,126,0.1), rgba(44,76,121,0.1));
+    border: 1px solid rgba(67,192,190,0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .summary-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--teal-500);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  /* Section headings */
+  .section-heading {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Persona Day-in-the-Life Explorer</h1>
+  <p>Interactive guide to how different roles interact with TC Portal</p>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-label">Primary Personas</div>
+    <div id="primary-personas"></div>
+
+    <div class="sidebar-label">Secondary Personas</div>
+    <div id="secondary-personas"></div>
+
+    <button class="org-toggle" onclick="toggleOrg()">Show Organisational Hierarchy</button>
+    <div class="org-chart" id="org-chart">Operations
+├── POD Leaders
+│   ├── Team Leaders
+│   │   ├── Senior Care Partners
+│   │   │   └── Care Partners
+│   │   ├── Care Coordinators
+│   │   └── Bill Processing Officers
+│   └── Clinical Team
+├── Assessment Team
+├── Finance Team → Collections Team
+├── Quality Team
+├── Compliance Team
+└── ICT Team</div>
+  </div>
+
+  <div class="main" id="main-content">
+    <div style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--text-muted);font-size:15px;">
+      Select a persona from the sidebar to explore their day-in-the-life.
+    </div>
+  </div>
+</div>
+
+<script>
+const PERSONAS = [
+  {
+    id: 'care-partner',
+    name: 'Care Partner',
+    abbr: 'CP',
+    color: '#007F7E',
+    primary: true,
+    subtitle: 'Case management, approvals, budget oversight, complex decisions',
+    reportsTo: 'Team Leader → POD Leader',
+    scale: null,
+    narrative: 'The <strong>Care Partner</strong> manages a portfolio of participant packages. Their typical day begins with reviewing the caseload dashboard to identify packages requiring attention — budget modifications pending approval, service plan changes, and escalations from care coordinators. They spend the morning working through approval queues, ensuring budget modifications align with participant goals and funding guidelines. Afternoons involve deeper case reviews: analysing utilisation rates, discussing complex cases with team leaders, and handling incidents that require senior oversight. They are the decision-maker for their caseload.',
+    metrics: [
+      { value: '~25', label: 'Active Packages' },
+      { value: '85%+', label: 'Target Utilisation' },
+      { value: '4h', label: 'Approval Response SLA' },
+    ],
+    timeline: [
+      { time: '8:00', title: 'Caseload Review', desc: 'Check dashboard for overnight changes, new referrals, and flagged packages' },
+      { time: '8:30', title: 'Budget Approvals', desc: 'Review and approve/decline budget modification requests from coordinators' },
+      { time: '9:30', title: 'Team Huddle', desc: 'Brief sync with care coordinators on urgent participant matters' },
+      { time: '10:00', title: 'Service Plan Reviews', desc: 'Deep-dive into service plans due for reassessment' },
+      { time: '11:30', title: 'Escalation Handling', desc: 'Address complex issues escalated by coordinators or bill processors' },
+      { time: '12:00', title: 'Lunch', desc: '' },
+      { time: '13:00', title: 'Case Conferences', desc: 'Participate in multi-disciplinary case reviews for high-risk participants' },
+      { time: '14:00', title: 'Incident Review', desc: 'Review incident reports, ensure action items are tracked' },
+      { time: '15:00', title: 'Portfolio Analysis', desc: 'Check utilisation rates, identify under/over-utilised packages' },
+      { time: '16:00', title: 'Documentation', desc: 'Complete case notes, close out approval tasks, prepare handover notes' },
+      { time: '16:45', title: 'EOD Wrap-up', desc: 'Flag priority items for tomorrow, update team on outstanding actions' },
+    ],
+    domains: [
+      { name: 'Budget\nMgmt', freq: 5 },
+      { name: 'Care\nPlan', freq: 4 },
+      { name: 'Bill\nProcessing', freq: 3 },
+      { name: 'Risk\nMgmt', freq: 3 },
+      { name: 'Incident\nMgmt', freq: 3 },
+      { name: 'Service\nPlans', freq: 4 },
+    ],
+    screens: [
+      { name: 'Package Dashboard', icon: '📊' },
+      { name: 'Budget View', icon: '💰' },
+      { name: 'Service Plans', icon: '📋' },
+      { name: 'Incident Reports', icon: '⚠️' },
+      { name: 'Approval Queue', icon: '✅' },
+      { name: 'Participant Profile', icon: '👤' },
+    ],
+    painPoints: [
+      'Approval queues can back up when multiple coordinators escalate simultaneously',
+      'Budget modification forms require manual cross-referencing with funding guidelines',
+      'Incident reporting lacks real-time notification — relies on periodic dashboard checks',
+      'Utilisation analytics are spread across multiple screens',
+    ],
+    escalatesTo: ['Team Leader', 'POD Leader', 'Clinical Team'],
+    receivesFrom: ['Care Coordinator', 'Bill Processor', 'Supplier (via system)'],
+    summary: 'The Care Partner manages a portfolio of participant packages. Their typical day involves reviewing budget modifications, approving service changes, and overseeing care coordinator activities. They interact with Budget Management, Care Plan, Bill Processing, Risk Management, and Incident Management domains. They are the primary decision-maker for their caseload and the escalation point for coordinators and bill processors.',
+  },
+  {
+    id: 'care-coordinator',
+    name: 'Care Coordinator',
+    abbr: 'CC',
+    color: '#2C4C79',
+    primary: true,
+    subtitle: 'Day-to-day coordination, calls, notes, tasks',
+    reportsTo: 'Care Partner → Team Leader',
+    scale: null,
+    narrative: 'The <strong>Care Coordinator</strong> is the frontline of participant engagement. Their day revolves around a structured task queue and call schedule. Each participant requires a minimum 15-minute monthly call, and coordinators manage this across their caseload. They log detailed notes after every interaction, coordinate with suppliers to arrange services, and flag anything unusual to their Care Partner. Speed and accuracy in task completion is critical.',
+    metrics: [
+      { value: '15 min', label: 'Min Monthly Call' },
+      { value: '95%+', label: 'Task SLA Target' },
+      { value: '~60', label: 'Participants' },
+    ],
+    timeline: [
+      { time: '8:00', title: 'Task Queue Review', desc: 'Check today\'s tasks — calls due, follow-ups, pending actions' },
+      { time: '8:30', title: 'Participant Calls', desc: 'Scheduled monthly check-in calls via call bridge' },
+      { time: '10:00', title: 'Notes & Documentation', desc: 'Log call notes, update participant records, flag concerns' },
+      { time: '10:30', title: 'Supplier Coordination', desc: 'Arrange services, confirm bookings, follow up on missed visits' },
+      { time: '11:30', title: 'Team Huddle', desc: 'Sync with Care Partner on escalations and complex cases' },
+      { time: '12:00', title: 'Lunch', desc: '' },
+      { time: '13:00', title: 'Afternoon Calls', desc: 'Continue participant calls and follow-ups' },
+      { time: '14:30', title: 'Care Plan Updates', desc: 'Update care plans based on call outcomes and changing needs' },
+      { time: '15:30', title: 'Task Completion', desc: 'Work through remaining task queue items' },
+      { time: '16:30', title: 'EOD Administration', desc: 'Complete notes, prepare tomorrow\'s call schedule' },
+    ],
+    domains: [
+      { name: 'Task\nMgmt', freq: 5 },
+      { name: 'Telephony', freq: 5 },
+      { name: 'Notes', freq: 5 },
+      { name: 'Care\nPlan', freq: 3 },
+      { name: 'Package\nContacts', freq: 3 },
+      { name: 'Supplier\nCoord', freq: 2 },
+    ],
+    screens: [
+      { name: 'Coordinator Dashboard', icon: '📋' },
+      { name: 'Task Queue', icon: '📝' },
+      { name: 'Call Bridge', icon: '📞' },
+      { name: 'Notes Interface', icon: '🗒️' },
+      { name: 'Participant Profile', icon: '👤' },
+      { name: 'Care Plan View', icon: '📄' },
+    ],
+    painPoints: [
+      'Call scheduling requires manual coordination — no auto-scheduling based on due dates',
+      'Switching between call bridge and notes interface disrupts workflow',
+      'Task SLA tracking is reactive rather than proactive (no early warnings)',
+      'Supplier coordination often requires phone/email outside the portal',
+    ],
+    escalatesTo: ['Care Partner', 'Team Leader'],
+    receivesFrom: ['System tasks', 'Care Partner (delegated work)', 'Participant (incoming calls)'],
+    summary: 'The Care Coordinator handles day-to-day participant engagement through scheduled calls, note-taking, and task management. They coordinate with suppliers and escalate complex matters to their Care Partner. Key domains include Task Management, Telephony, Notes, and Care Plan. Their performance is measured by call completion rates and task SLA adherence.',
+  },
+  {
+    id: 'bill-processor',
+    name: 'Bill Processor',
+    abbr: 'BP',
+    color: '#6c5ce7',
+    primary: true,
+    subtitle: 'Invoice processing, service plan matching',
+    reportsTo: 'Team Leader → POD Leader',
+    scale: '90 bills/day at ~5 min each',
+    narrative: 'The <strong>Bill Processor</strong> is a high-throughput role. Each processor handles approximately 90 bills per day, spending about 5 minutes on each. The core task is matching invoice line items to the correct service plan, verifying rates, and checking whether services were planned in the budget. Planned services within budget are approved directly. Unplanned services over $300 must be escalated to the Care Partner for review. Accuracy and speed are equally critical.',
+    metrics: [
+      { value: '90', label: 'Bills / Day' },
+      { value: '~5 min', label: 'Per Bill' },
+      { value: '$300', label: 'Escalation Threshold' },
+    ],
+    timeline: [
+      { time: '8:00', title: 'Queue Setup', desc: 'Load today\'s bill queue, prioritise by due date and supplier' },
+      { time: '8:15', title: 'Bill Processing Block 1', desc: 'Process bills — match line items, verify rates, approve planned services' },
+      { time: '10:00', title: 'Escalation Batch', desc: 'Review flagged bills, send unplanned >$300 to Care Partner queue' },
+      { time: '10:30', title: 'Bill Processing Block 2', desc: 'Continue processing through queue' },
+      { time: '12:00', title: 'Lunch', desc: '' },
+      { time: '13:00', title: 'Bill Processing Block 3', desc: 'Afternoon processing session — aim for 45+ bills by now' },
+      { time: '14:30', title: 'Supplier Queries', desc: 'Handle supplier invoice queries, request corrections' },
+      { time: '15:00', title: 'Bill Processing Block 4', desc: 'Final processing push to hit daily target' },
+      { time: '16:30', title: 'Reconciliation', desc: 'Check day\'s totals, flag discrepancies, log stats' },
+      { time: '16:45', title: 'EOD Report', desc: 'Update processing metrics, note blockers for tomorrow' },
+    ],
+    domains: [
+      { name: 'Bill\nProcessing', freq: 5 },
+      { name: 'Budget\nMgmt', freq: 4 },
+      { name: 'Supplier\nMgmt', freq: 3 },
+      { name: 'Service\nPlans', freq: 3 },
+    ],
+    screens: [
+      { name: 'Bill Processing Interface', icon: '🧾' },
+      { name: 'Line Item Matching UI', icon: '🔗' },
+      { name: 'Service Plan Selector', icon: '📋' },
+      { name: 'Supplier Details', icon: '🏢' },
+      { name: 'Budget Overview', icon: '💰' },
+    ],
+    painPoints: [
+      'Service plan matching is often ambiguous — multiple possible matches for a line item',
+      'Supplier invoice formats vary widely, requiring manual interpretation',
+      'Escalation to Care Partner creates a bottleneck when they are unavailable',
+      'Rate verification requires cross-referencing price schedules manually',
+    ],
+    escalatesTo: ['Care Partner (unplanned >$300)', 'Team Leader (supplier disputes)'],
+    receivesFrom: ['Supplier (invoices)', 'System (auto-matched suggestions)'],
+    summary: 'The Bill Processor handles high-volume invoice processing, matching ~90 bills per day at approximately 5 minutes each. They match line items to service plans, verify rates, and apply approval rules: planned-in-budget items are approved directly, while unplanned services over $300 are escalated to the Care Partner. They primarily interact with Bill Processing, Budget Management, and Supplier Management domains.',
+  },
+  {
+    id: 'participant',
+    name: 'Participant',
+    abbr: 'PA',
+    color: '#e17055',
+    primary: true,
+    subtitle: 'Older Australian receiving funded care',
+    reportsTo: 'N/A (supported by Care Partner)',
+    scale: null,
+    narrative: 'The <strong>Participant</strong> is an older Australian receiving government-funded home care. They interact with the portal primarily to understand their budget, view statements, and review their service history. Many participants have family members or registered supporters who help them navigate the digital experience. The portal needs to be simple, clear, and reassuring — helping participants feel in control of their care.',
+    metrics: [
+      { value: 'Monthly', label: 'Statement Review' },
+      { value: '1-2x/wk', label: 'Portal Visits' },
+      { value: '15 min', label: 'Monthly Care Call' },
+    ],
+    timeline: [
+      { time: '9:00', title: 'Check Budget', desc: 'Log in to view remaining budget and recent charges' },
+      { time: '9:15', title: 'Review Statement', desc: 'Download or review monthly statement for services received' },
+      { time: '9:30', title: 'Service History', desc: 'Check which services were delivered this week' },
+      { time: '10:00', title: 'Care Call', desc: 'Receive monthly check-in call from Care Coordinator' },
+      { time: '10:15', title: 'Update Preferences', desc: 'Request changes to service times or types via portal' },
+      { time: '14:00', title: 'Receive Services', desc: 'Home care services delivered by supplier' },
+    ],
+    domains: [
+      { name: 'Budget\nMgmt', freq: 4 },
+      { name: 'Statements', freq: 4 },
+      { name: 'Care\nPlan', freq: 2 },
+      { name: 'Home Care\nAgreement', freq: 1 },
+    ],
+    screens: [
+      { name: 'Consumer Portal', icon: '🏠' },
+      { name: 'Budget Overview', icon: '💰' },
+      { name: 'Statements', icon: '📄' },
+      { name: 'Service History', icon: '📋' },
+    ],
+    painPoints: [
+      'Digital literacy varies greatly — some participants struggle with portal navigation',
+      'Budget information can be confusing without context about what services cost',
+      'Statements are generated monthly but participants want real-time visibility',
+      'No easy way to communicate preferences changes outside of phone calls',
+    ],
+    escalatesTo: ['Care Coordinator (questions)', 'Registered Supporter (help)'],
+    receivesFrom: ['Care Coordinator (calls)', 'Supplier (services)', 'System (statements)'],
+    summary: 'The Participant is an older Australian receiving funded home care. They use the Consumer Portal to review their budget, download statements, and check service history. Their interaction is typically 1-2 times per week, focused on understanding how their funding is being used. They rely on their Care Coordinator for support and may have a Registered Supporter who assists with portal navigation.',
+  },
+  {
+    id: 'supplier',
+    name: 'Supplier',
+    abbr: 'SU',
+    color: '#00b894',
+    primary: true,
+    subtitle: 'Third-party service provider',
+    reportsTo: 'N/A (external partner)',
+    scale: null,
+    narrative: 'The <strong>Supplier</strong> is a third-party service provider delivering care services to participants. They interact with TC Portal to submit invoices, manage their onboarding documentation, track payment status, and maintain their agreements. The supplier portal is their primary touchpoint with Trilogy Care, and efficiency here directly impacts cash flow and service continuity.',
+    metrics: [
+      { value: 'Weekly', label: 'Invoice Submission' },
+      { value: '14 days', label: 'Payment Terms' },
+      { value: 'Annual', label: 'Agreement Renewal' },
+    ],
+    timeline: [
+      { time: '8:00', title: 'Check Payments', desc: 'Review payment status for previously submitted invoices' },
+      { time: '8:30', title: 'Prepare Invoices', desc: 'Compile service delivery records into invoice format' },
+      { time: '9:00', title: 'Submit Invoices', desc: 'Upload invoices through supplier portal' },
+      { time: '10:00', title: 'Document Management', desc: 'Upload or update compliance documents (insurance, certifications)' },
+      { time: '11:00', title: 'Service Delivery', desc: 'Deliver services to participants' },
+      { time: '15:00', title: 'Query Resolution', desc: 'Address any invoice queries or rejections from Trilogy Care' },
+    ],
+    domains: [
+      { name: 'Supplier\nMgmt', freq: 5 },
+      { name: 'Bill\nProcessing', freq: 4 },
+      { name: 'Documents', freq: 3 },
+      { name: 'Agreements', freq: 2 },
+    ],
+    screens: [
+      { name: 'Supplier Portal', icon: '🏢' },
+      { name: 'Invoice Submission', icon: '🧾' },
+      { name: 'Document Upload', icon: '📎' },
+      { name: 'Agreement Management', icon: '📝' },
+      { name: 'Payment Status', icon: '💳' },
+    ],
+    painPoints: [
+      'Invoice rejection reasons are sometimes unclear, requiring follow-up calls',
+      'Document expiry notifications come too late, risking compliance gaps',
+      'Onboarding process requires multiple steps across different screens',
+      'Payment visibility is limited — hard to reconcile which invoices have been paid',
+    ],
+    escalatesTo: ['Trilogy Care contacts (queries)', 'Account manager (disputes)'],
+    receivesFrom: ['System (payment notifications)', 'Bill Processor (invoice queries)'],
+    summary: 'The Supplier is a third-party service provider who uses the Supplier Portal to submit invoices, manage compliance documents, and track payment status. They interact primarily with Supplier Management, Bill Processing, and Documents domains. Their key concern is efficient invoice processing and timely payment, with annual agreement renewals as a periodic activity.',
+  },
+  {
+    id: 'registered-supporter',
+    name: 'Registered Supporter',
+    abbr: 'RS',
+    color: '#fdcb6e',
+    primary: false,
+    subtitle: 'Family/advocate with delegated access',
+    reportsTo: 'N/A (participant\'s representative)',
+    scale: null,
+    narrative: 'The <strong>Registered Supporter</strong> is typically a family member or advocate who has been granted delegated access to a participant\'s portal. They help the participant understand their budget, review statements, and communicate with the care team. Their access level is defined by the participant\'s preferences.',
+    metrics: [
+      { value: '2-3x/wk', label: 'Portal Visits' },
+      { value: 'Varies', label: 'Access Level' },
+    ],
+    timeline: [
+      { time: '9:00', title: 'Budget Check', desc: 'Review participant\'s budget on their behalf' },
+      { time: '9:30', title: 'Statement Review', desc: 'Download and interpret statements for the participant' },
+      { time: '10:00', title: 'Communicate', desc: 'Contact Care Coordinator about service changes' },
+    ],
+    domains: [
+      { name: 'Budget\nMgmt', freq: 4 },
+      { name: 'Statements', freq: 3 },
+      { name: 'Care\nPlan', freq: 2 },
+    ],
+    screens: [
+      { name: 'Consumer Portal (delegated)', icon: '🏠' },
+      { name: 'Budget Overview', icon: '💰' },
+      { name: 'Statements', icon: '📄' },
+    ],
+    painPoints: [
+      'Delegated access permissions are not granular enough',
+      'No notification when budget changes occur',
+      'Cannot initiate service requests on behalf of participant',
+    ],
+    escalatesTo: ['Care Coordinator', 'Care Partner'],
+    receivesFrom: ['Participant (delegation)', 'System (statements)'],
+    summary: 'The Registered Supporter acts as a participant\'s advocate, typically a family member with delegated portal access. They review budgets and statements, and communicate with the care team. Their access is scoped by the participant\'s delegation settings.',
+  },
+  {
+    id: 'administrator',
+    name: 'Administrator',
+    abbr: 'AD',
+    color: '#a29bfe',
+    primary: false,
+    subtitle: 'Operations and finance staff',
+    reportsTo: 'Operations Manager',
+    scale: null,
+    narrative: 'The <strong>Administrator</strong> handles operational and financial tasks across the organisation. They manage user accounts, configure system settings, run reports, and handle bulk operations. They are the backbone of TC Portal operations.',
+    metrics: [
+      { value: 'Daily', label: 'Report Generation' },
+      { value: '50+', label: 'Users Managed' },
+    ],
+    timeline: [
+      { time: '8:00', title: 'System Checks', desc: 'Review system health, overnight job completions' },
+      { time: '9:00', title: 'User Management', desc: 'Process account requests, permission changes' },
+      { time: '10:00', title: 'Reports', desc: 'Generate and distribute operational reports' },
+      { time: '14:00', title: 'Configuration', desc: 'Update system settings, manage reference data' },
+    ],
+    domains: [
+      { name: 'User\nMgmt', freq: 5 },
+      { name: 'Reports', freq: 4 },
+      { name: 'Config', freq: 3 },
+      { name: 'Finance', freq: 3 },
+    ],
+    screens: [
+      { name: 'Admin Dashboard', icon: '⚙️' },
+      { name: 'User Management', icon: '👥' },
+      { name: 'Reports Console', icon: '📊' },
+      { name: 'System Config', icon: '🔧' },
+    ],
+    painPoints: [
+      'Bulk operations require manual repetition — limited batch processing',
+      'Report generation is slow for large datasets',
+      'Permission management is complex with many role combinations',
+    ],
+    escalatesTo: ['ICT Team (technical)', 'Operations Manager (policy)'],
+    receivesFrom: ['All roles (support requests)', 'System (alerts)'],
+    summary: 'The Administrator manages operational infrastructure including user accounts, system configuration, and reporting. They serve all other personas by maintaining the platform and generating the reports that drive business decisions.',
+  },
+  {
+    id: 'assessor',
+    name: 'Assessor',
+    abbr: 'AS',
+    color: '#74b9ff',
+    primary: false,
+    subtitle: 'Needs assessment and care planning',
+    reportsTo: 'Assessment Team Lead',
+    scale: null,
+    narrative: 'The <strong>Assessor</strong> conducts needs assessments for new and existing participants. They evaluate care requirements, create initial care plans, and recommend service allocations. Their work directly determines how funding is used.',
+    metrics: [
+      { value: '3-5/day', label: 'Assessments' },
+      { value: '45 min', label: 'Avg Assessment' },
+    ],
+    timeline: [
+      { time: '8:00', title: 'Preparation', desc: 'Review today\'s assessment schedule and participant backgrounds' },
+      { time: '9:00', title: 'Assessments', desc: 'Conduct participant assessments (phone or in-home)' },
+      { time: '12:00', title: 'Lunch', desc: '' },
+      { time: '13:00', title: 'Documentation', desc: 'Complete assessment reports and care plan recommendations' },
+      { time: '15:00', title: 'Care Plan Drafting', desc: 'Draft initial care plans based on assessment outcomes' },
+    ],
+    domains: [
+      { name: 'Care\nPlan', freq: 5 },
+      { name: 'Assessment', freq: 5 },
+      { name: 'Budget\nMgmt', freq: 3 },
+    ],
+    screens: [
+      { name: 'Assessment Forms', icon: '📋' },
+      { name: 'Care Plan Editor', icon: '📝' },
+      { name: 'Participant Profile', icon: '👤' },
+    ],
+    painPoints: [
+      'Assessment forms are lengthy and partially redundant',
+      'No integration with external assessment tools (e.g., ACAT)',
+      'Care plan templates need more flexibility for complex cases',
+    ],
+    escalatesTo: ['Assessment Team Lead', 'Clinical Team'],
+    receivesFrom: ['Referrals', 'Care Partner (reassessment requests)'],
+    summary: 'The Assessor evaluates participant needs and creates initial care plans. They conduct 3-5 assessments daily and are critical in determining how funding is allocated across services.',
+  },
+  {
+    id: 'collections-team',
+    name: 'Collections Team',
+    abbr: 'CT',
+    color: '#e74c3c',
+    primary: false,
+    subtitle: 'Direct debit, fee collection, AR integration',
+    reportsTo: 'Finance Team Lead',
+    scale: '1,350 customers now → 15,000 projected',
+    narrative: 'The <strong>Collections Team</strong> manages direct debit processing and fee collection. With 152 validation checks on each transaction and a 70% refusal rate, this is a highly complex and error-prone process. Currently serving 1,350 customers with a projection to scale to 15,000, the team needs robust automation and clear exception handling.',
+    metrics: [
+      { value: '1,350', label: 'Current Customers' },
+      { value: '15,000', label: 'Projected Scale' },
+      { value: '152', label: 'DD Validation Checks' },
+      { value: '70%', label: 'Refusal Rate' },
+    ],
+    timeline: [
+      { time: '8:00', title: 'DD File Processing', desc: 'Process overnight direct debit files, review refusals' },
+      { time: '9:00', title: 'Exception Handling', desc: 'Work through failed transactions and validation errors' },
+      { time: '10:30', title: 'AR Reconciliation', desc: 'Match payments to accounts receivable records' },
+      { time: '12:00', title: 'Lunch', desc: '' },
+      { time: '13:00', title: 'Customer Contact', desc: 'Follow up on failed payments, arrange alternative collection' },
+      { time: '15:00', title: 'Batch Preparation', desc: 'Prepare next batch of direct debit requests' },
+    ],
+    domains: [
+      { name: 'Direct\nDebit', freq: 5 },
+      { name: 'AR\nIntegration', freq: 5 },
+      { name: 'Finance', freq: 4 },
+      { name: 'Customer\nComms', freq: 3 },
+    ],
+    screens: [
+      { name: 'DD Processing Console', icon: '🏦' },
+      { name: 'Exception Queue', icon: '⚠️' },
+      { name: 'AR Dashboard', icon: '📊' },
+      { name: 'Customer Contact', icon: '📞' },
+    ],
+    painPoints: [
+      '152 validation checks make processing extremely slow and error-prone',
+      '70% refusal rate creates massive exception queue',
+      'Scaling from 1,350 to 15,000 customers will require significant automation',
+      'AR reconciliation is partially manual and time-consuming',
+    ],
+    escalatesTo: ['Finance Team Lead', 'Operations Manager'],
+    receivesFrom: ['Bank (DD responses)', 'System (fee calculations)', 'Care Partner (fee queries)'],
+    summary: 'The Collections Team processes direct debits and manages fee collection with 152 validation checks per transaction and a 70% refusal rate. Currently serving 1,350 customers with a pathway to 15,000, this role faces significant scaling challenges. They interact with Direct Debit, AR Integration, and Finance domains.',
+  },
+];
+
+function renderSidebar() {
+  const primary = document.getElementById('primary-personas');
+  const secondary = document.getElementById('secondary-personas');
+
+  PERSONAS.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'persona-card';
+    card.dataset.id = p.id;
+    card.onclick = () => selectPersona(p.id);
+    card.innerHTML = `
+      <div class="persona-avatar" style="background:${p.color}">${p.abbr}</div>
+      <div class="persona-info">
+        <h3>${p.name}</h3>
+        <p>${p.subtitle.length > 40 ? p.subtitle.slice(0,40) + '...' : p.subtitle}</p>
+      </div>
+    `;
+    (p.primary ? primary : secondary).appendChild(card);
+  });
+}
+
+function selectPersona(id) {
+  const p = PERSONAS.find(x => x.id === id);
+  if (!p) return;
+
+  document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.persona-card[data-id="${id}"]`).classList.add('active');
+
+  const main = document.getElementById('main-content');
+  main.innerHTML = buildPersonaView(p);
+  activateTab('tab-timeline');
+}
+
+function buildPersonaView(p) {
+  let html = '';
+
+  // Header
+  html += `
+    <div class="persona-header">
+      <div class="persona-header-avatar" style="background:${p.color}">${p.abbr}</div>
+      <div class="persona-header-info">
+        <h2>${p.name}</h2>
+        <div class="subtitle">${p.subtitle}</div>
+        <div class="reports-to">Reports to: ${p.reportsTo}</div>
+      </div>
+    </div>
+  `;
+
+  // Scale badge
+  if (p.scale) {
+    html += `<div class="scale-badge">${p.scale}</div>`;
+  }
+
+  // Metrics
+  if (p.metrics && p.metrics.length) {
+    html += '<div class="metrics-row">';
+    p.metrics.forEach(m => {
+      html += `<div class="metric-card"><div class="value">${m.value}</div><div class="label">${m.label}</div></div>`;
+    });
+    html += '</div>';
+  }
+
+  // Narrative
+  html += `<div class="narrative">${p.narrative}</div>`;
+
+  // Tabs
+  html += `
+    <div class="tabs">
+      <div class="tab active" onclick="activateTab('tab-timeline')">Day Timeline</div>
+      <div class="tab" onclick="activateTab('tab-domains')">Domain Touchpoints</div>
+      <div class="tab" onclick="activateTab('tab-screens')">Key Screens</div>
+      <div class="tab" onclick="activateTab('tab-relationships')">Relationships</div>
+      <div class="tab" onclick="activateTab('tab-pain')">Pain Points</div>
+    </div>
+  `;
+
+  // Tab: Timeline
+  html += '<div class="tab-content active" id="tab-timeline">';
+  html += '<div class="timeline">';
+  p.timeline.forEach(t => {
+    if (t.desc === '') {
+      html += `
+        <div class="timeline-item">
+          <div class="timeline-time">${t.time}</div>
+          <div class="timeline-dot" style="background:#555;border-color:#777;"></div>
+          <div class="timeline-content" style="opacity:0.5;"><h4>${t.title}</h4></div>
+        </div>
+      `;
+    } else {
+      html += `
+        <div class="timeline-item">
+          <div class="timeline-time">${t.time}</div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-content"><h4>${t.title}</h4><p>${t.desc}</p></div>
+        </div>
+      `;
+    }
+  });
+  html += '</div></div>';
+
+  // Tab: Domains
+  html += '<div class="tab-content" id="tab-domains">';
+  html += '<div class="section-heading">Domain Interaction Frequency</div>';
+  html += '<p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Bubble size indicates interaction frequency (larger = more frequent)</p>';
+  html += '<div class="domains-container">';
+  p.domains.forEach(d => {
+    const size = 50 + d.freq * 18;
+    const opacity = 0.5 + d.freq * 0.1;
+    html += `
+      <div class="domain-bubble" style="width:${size}px;height:${size}px;background:${p.color};opacity:${opacity};">
+        ${d.name}
+        <span class="tooltip">${d.name.replace(/\n/g, ' ')} — Frequency: ${d.freq}/5</span>
+      </div>
+    `;
+  });
+  html += '</div></div>';
+
+  // Tab: Screens
+  html += '<div class="tab-content" id="tab-screens">';
+  html += '<div class="section-heading">Key Portal Screens</div>';
+  html += '<div class="screens-grid">';
+  p.screens.forEach(s => {
+    html += `
+      <div class="screen-item">
+        <div class="screen-icon" style="background:${p.color}20;color:${p.color};">${s.icon}</div>
+        ${s.name}
+      </div>
+    `;
+  });
+  html += '</div></div>';
+
+  // Tab: Relationships
+  html += '<div class="tab-content" id="tab-relationships">';
+  html += '<div class="relationships">';
+  html += '<div class="rel-card"><h4>Escalates To</h4>';
+  p.escalatesTo.forEach(r => {
+    html += `<div class="rel-item"><span class="rel-arrow up">&#x2191;</span> ${r}</div>`;
+  });
+  html += '</div>';
+  html += '<div class="rel-card"><h4>Receives Work From</h4>';
+  p.receivesFrom.forEach(r => {
+    html += `<div class="rel-item"><span class="rel-arrow down">&#x2193;</span> ${r}</div>`;
+  });
+  html += '</div></div></div>';
+
+  // Tab: Pain Points
+  html += '<div class="tab-content" id="tab-pain">';
+  html += '<div class="section-heading">Current Pain Points</div>';
+  html += '<div class="pain-points">';
+  p.painPoints.forEach(pp => {
+    html += `<div class="pain-item">${pp}</div>`;
+  });
+  html += '</div></div>';
+
+  // Summary
+  html += `
+    <div class="summary">
+      <div class="summary-label">Persona Summary</div>
+      ${p.summary}
+    </div>
+  `;
+
+  return html;
+}
+
+function activateTab(tabId) {
+  const main = document.getElementById('main-content');
+  main.querySelectorAll('.tab').forEach((t, i) => {
+    const contents = main.querySelectorAll('.tab-content');
+    if (t.getAttribute('onclick')?.includes(tabId)) {
+      t.classList.add('active');
+      if (contents[i]) contents[i].classList.add('active');
+    } else {
+      t.classList.remove('active');
+      if (contents[i]) contents[i].classList.remove('active');
+    }
+  });
+}
+
+function toggleOrg() {
+  const chart = document.getElementById('org-chart');
+  const btn = document.querySelector('.org-toggle');
+  chart.classList.toggle('open');
+  btn.textContent = chart.classList.contains('open') ? 'Hide Organisational Hierarchy' : 'Show Organisational Hierarchy';
+}
+
+// Init
+renderSidebar();
+// Auto-select first persona
+selectPersona('care-partner');
+</script>
+</body>
+</html>

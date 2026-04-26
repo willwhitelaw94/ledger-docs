@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03 Challenges — Ambient Alex</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    @keyframes slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    .slide-panel { animation: slide-in-right 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col fixed inset-y-0 left-0 z-50" style="top: 88px;">
+      <div class="px-4 py-4 border-b border-gray-800">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-cyan-400 flex items-center justify-center text-sm font-bold text-white">M</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold text-white truncate">Mason & Co</div>
+            <div class="text-xs text-gray-500">Business</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+        <a href="01-dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M3 6h18M3 14h18M3 18h18"/></svg>
+          Banking
+          <span class="ml-auto text-orange-400 text-xs">&#x1F525; 7</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Invoices
+          <span class="ml-auto w-2 h-2 rounded-full bg-amber-400"></span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          Bills
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Journal Entries
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Contacts
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          Jobs
+        </a>
+
+        <div class="pt-3 pb-1 px-3">
+          <div class="text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Reports</div>
+        </div>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Profit & Loss
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          Balance Sheet
+        </a>
+
+        <div class="pt-3 pb-1 px-3">
+          <div class="text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Ambient</div>
+        </div>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-800/60 text-white text-sm font-medium">
+          <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Challenges
+          <span class="ml-auto text-xs text-sky-400 font-medium">2</span>
+        </a>
+      </nav>
+
+      <div class="px-3 py-3 border-t border-gray-800">
+        <div class="flex items-center gap-3 px-2">
+          <div class="relative">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white">EM</div>
+            <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-sky-500 text-[9px] font-bold text-white flex items-center justify-center">12</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium text-white truncate">Emma Mason</div>
+            <div class="text-xs text-gray-500">Bookkeeper</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content (dimmed dashboard behind panel) -->
+    <main class="flex-1 ml-64 relative">
+
+      <!-- Dimmed dashboard content -->
+      <div class="opacity-40 pointer-events-none">
+        <div class="px-8 py-6">
+          <h1 class="text-2xl font-semibold text-white">Dashboard</h1>
+          <p class="text-sm text-gray-500 mt-1">Mason & Co &middot; March 2026</p>
+        </div>
+        <div class="px-8 grid grid-cols-3 gap-5">
+          <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 h-36"></div>
+          <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 h-36"></div>
+          <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 h-36"></div>
+          <div class="col-span-2 bg-gray-900 rounded-xl border border-gray-800 p-5 h-48"></div>
+          <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 h-48"></div>
+        </div>
+      </div>
+
+      <!-- Slide-out Panel: Challenges -->
+      <div class="fixed top-0 right-0 bottom-0 w-[420px] bg-gray-900 border-l border-gray-800 z-[60] slide-panel flex flex-col" style="top: 88px;">
+
+        <!-- Panel Header -->
+        <div class="px-5 py-4 border-b border-gray-800 flex items-center justify-between flex-shrink-0">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <h2 class="text-lg font-semibold text-white">Challenges</h2>
+          </div>
+          <a href="01-dashboard.html" class="text-gray-500 hover:text-gray-300 p-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+          </a>
+        </div>
+
+        <!-- Panel Content -->
+        <div class="flex-1 overflow-y-auto">
+
+          <!-- Active Challenges -->
+          <div class="px-5 pt-4 pb-2">
+            <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Active Challenges</div>
+          </div>
+
+          <!-- Challenge 1: Weekly Reconciliation -->
+          <div class="mx-5 mb-3 bg-gray-800/60 rounded-xl p-4 border border-gray-700/50">
+            <div class="flex items-start justify-between mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-white">Weekly Reconciliation</div>
+                  <div class="text-xs text-gray-500">Reconcile all accounts every week</div>
+                </div>
+              </div>
+              <span class="text-xs text-teal-400 font-medium bg-teal-500/10 px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <div class="mt-3 flex items-center gap-3">
+              <div class="flex-1 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                <div class="h-full bg-teal-500 rounded-full" style="width: 100%;"></div>
+              </div>
+              <span class="text-xs text-teal-400 font-medium">&#x1F525; 7 weeks</span>
+            </div>
+            <div class="mt-2 flex items-center gap-4 text-[11px] text-gray-500">
+              <span>Frequency: Weekly</span>
+              <span>Next due: Fri 21 Mar</span>
+            </div>
+          </div>
+
+          <!-- Challenge 2: Invoice Speed -->
+          <div class="mx-5 mb-3 bg-gray-800/60 rounded-xl p-4 border border-gray-700/50">
+            <div class="flex items-start justify-between mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-white">48hr Invoice Turnaround</div>
+                  <div class="text-xs text-gray-500">Send invoices within 48h of job completion</div>
+                </div>
+              </div>
+              <span class="text-xs text-sky-400 font-medium bg-sky-500/10 px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <div class="mt-3 flex items-center gap-3">
+              <div class="flex-1 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                <div class="h-full bg-sky-500 rounded-full" style="width: 60%;"></div>
+              </div>
+              <span class="text-xs text-sky-400 font-medium">3/5 this week</span>
+            </div>
+            <div class="mt-2 flex items-center gap-4 text-[11px] text-gray-500">
+              <span>Frequency: Per invoice</span>
+              <span>Streak: 3 weeks</span>
+            </div>
+          </div>
+
+          <!-- Challenge 3: Paused -->
+          <div class="mx-5 mb-3 bg-gray-800/30 rounded-xl p-4 border border-gray-800/50">
+            <div class="flex items-start justify-between mb-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-gray-700/50 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-gray-400">Zero Overdue Bills</div>
+                  <div class="text-xs text-gray-600">Pay all bills before due date</div>
+                </div>
+              </div>
+              <span class="text-xs text-gray-500 font-medium bg-gray-700/50 px-2 py-0.5 rounded-full">Paused</span>
+            </div>
+            <div class="mt-2 text-[11px] text-gray-600">Paused on 12 Mar &middot; Resume anytime</div>
+          </div>
+
+          <!-- Suggested by Practice -->
+          <div class="px-5 pt-4 pb-2">
+            <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Suggested by Smith & Co</div>
+          </div>
+
+          <div class="mx-5 mb-3 bg-gray-800/30 rounded-xl p-4 border border-dashed border-gray-700/50">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-white">Monthly BAS Ready</div>
+                  <div class="text-xs text-gray-500">Complete BAS prep by 21st each month</div>
+                </div>
+              </div>
+              <button class="text-xs text-sky-400 font-medium bg-sky-500/10 px-3 py-1 rounded-lg hover:bg-sky-500/20">Accept</button>
+            </div>
+            <div class="mt-2 text-[11px] text-gray-500">Suggested 3 days ago &middot; Smith & Co recommends this for all clients</div>
+          </div>
+
+          <div class="mx-5 mb-3 bg-gray-800/30 rounded-xl p-4 border border-dashed border-gray-700/50">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-white">Receipt Capture Habit</div>
+                  <div class="text-xs text-gray-500">Upload receipts within 24h of purchase</div>
+                </div>
+              </div>
+              <button class="text-xs text-sky-400 font-medium bg-sky-500/10 px-3 py-1 rounded-lg hover:bg-sky-500/20">Accept</button>
+            </div>
+            <div class="mt-2 text-[11px] text-gray-500">Suggested 1 week ago</div>
+          </div>
+
+        </div>
+
+        <!-- Panel Footer -->
+        <div class="px-5 py-4 border-t border-gray-800 flex-shrink-0">
+          <button class="w-full px-4 py-2.5 text-sm bg-sky-600 text-white rounded-lg hover:bg-sky-500 font-medium flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+            Create Custom Challenge
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom status bar -->
+      <div class="fixed bottom-0 left-64 right-0 bg-gray-900/80 backdrop-blur border-t border-gray-800/50 px-6 py-1.5 z-40">
+        <div class="flex items-center gap-6 text-[11px] text-gray-500">
+          <span class="flex items-center gap-1">
+            <span class="text-sky-400">&#x26A1;</span>
+            2 active challenges
+          </span>
+          <span class="w-px h-3 bg-gray-800"></span>
+          <span>1 suggestion pending</span>
+          <span class="ml-auto text-gray-600">Challenges update in real-time</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

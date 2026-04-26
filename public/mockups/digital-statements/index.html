@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DST - Digital Statements Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">Package KF-273342</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">Statements</span>
+  </div>
+  <div class="w-8 h-8 rounded-full bg-tc-teal-700 flex items-center justify-center text-white text-xs font-medium">MT</div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('list')" id="tab-list" class="py-3 text-sm tab-active">Statement List</button>
+    <button onclick="showScreen('detail')" id="tab-detail" class="py-3 text-sm tab-inactive">Statement View</button>
+    <button onclick="showScreen('interactive')" id="tab-interactive" class="py-3 text-sm tab-inactive">Interactive View</button>
+    <button onclick="showScreen('admin')" id="tab-admin" class="py-3 text-sm tab-inactive">Admin Generation</button>
+  </nav>
+</div>
+
+<!-- Statement List -->
+<div id="screen-list" class="max-w-4xl mx-auto p-6">
+  <h1 class="text-xl font-semibold text-gray-900 mb-1">Monthly Statements</h1>
+  <p class="text-sm text-gray-500 mb-6">Margaret Thompson &mdash; KF-273342</p>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div class="divide-y divide-gray-200">
+      <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-lg bg-tc-teal-700/10 flex items-center justify-center"><svg class="w-5 h-5 text-tc-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">February 2026 Statement</div>
+            <div class="text-xs text-gray-500">Generated 28 Mar 2026</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Delivered</span>
+          <button class="px-3 py-1.5 text-xs border border-gray-300 rounded-lg text-gray-700">View</button>
+          <button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Download PDF</button>
+        </div>
+      </div>
+      <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-lg bg-tc-teal-700/10 flex items-center justify-center"><svg class="w-5 h-5 text-tc-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">January 2026 Statement</div>
+            <div class="text-xs text-gray-500">Generated 28 Feb 2026</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Delivered</span>
+          <button class="px-3 py-1.5 text-xs border border-gray-300 rounded-lg text-gray-700">View</button>
+          <button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Download PDF</button>
+        </div>
+      </div>
+      <div class="px-6 py-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-lg bg-tc-teal-700/10 flex items-center justify-center"><svg class="w-5 h-5 text-tc-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">December 2025 Statement</div>
+            <div class="text-xs text-gray-500">Generated 30 Jan 2026</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Delivered</span>
+          <button class="px-3 py-1.5 text-xs border border-gray-300 rounded-lg text-gray-700">View</button>
+          <button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Download PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Statement Detail -->
+<div id="screen-detail" class="max-w-4xl mx-auto p-6 hidden">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-lg font-semibold text-gray-900">February 2026 Statement</h1>
+      <p class="text-sm text-gray-500">Margaret Thompson &mdash; KF-273342 &bull; Payment Period: 022026</p>
+    </div>
+    <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+      Download PDF
+    </button>
+  </div>
+
+  <!-- ON - Ongoing Support -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-4">
+    <div class="px-6 py-3 bg-green-50 border-b border-green-200 flex items-center justify-between">
+      <h2 class="text-sm font-semibold text-green-800">Ongoing Support (ON)</h2>
+      <div class="text-sm font-semibold text-green-700">Remaining: $12,418.00</div>
+    </div>
+    <table class="w-full">
+      <thead>
+        <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-2">Date</th>
+          <th class="px-6 py-2">Description</th>
+          <th class="px-6 py-2 text-right">Amount</th>
+          <th class="px-6 py-2 text-right">Running Balance</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 text-sm">
+        <tr><td class="px-6 py-2 text-gray-500">1 Feb</td><td class="px-6 py-2">Opening Balance</td><td class="px-6 py-2 text-right">--</td><td class="px-6 py-2 text-right font-medium">$14,240.00</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">3 Feb</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right text-red-600">-$263.25</td><td class="px-6 py-2 text-right">$13,976.75</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">10 Feb</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right text-red-600">-$263.25</td><td class="px-6 py-2 text-right">$13,713.50</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">14 Feb</td><td class="px-6 py-2">Home Maintenance - Lawn Care</td><td class="px-6 py-2 text-right text-red-600">-$110.00</td><td class="px-6 py-2 text-right">$13,603.50</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">17 Feb</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right text-red-600">-$263.25</td><td class="px-6 py-2 text-right">$13,340.25</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">24 Feb</td><td class="px-6 py-2">Personal Care - Showering (3x)</td><td class="px-6 py-2 text-right text-red-600">-$263.25</td><td class="px-6 py-2 text-right">$13,077.00</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">24 Feb</td><td class="px-6 py-2">Social Support Group (4 hrs)</td><td class="px-6 py-2 text-right text-red-600">-$140.00</td><td class="px-6 py-2 text-right">$12,937.00</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">28 Feb</td><td class="px-6 py-2">Coord Overheads (12%)</td><td class="px-6 py-2 text-right text-red-600">-$159.00</td><td class="px-6 py-2 text-right">$12,778.00</td></tr>
+        <tr><td class="px-6 py-2 text-gray-500">28 Feb</td><td class="px-6 py-2">Participant Contribution</td><td class="px-6 py-2 text-right text-red-600">-$360.00</td><td class="px-6 py-2 text-right font-semibold">$12,418.00</td></tr>
+      </tbody>
+    </table>
+    <div class="px-6 py-3 bg-green-50 border-t border-green-200 flex items-center justify-between text-sm">
+      <span class="text-green-700">Period Total Spent</span>
+      <span class="font-semibold text-green-800">$1,822.00</span>
+    </div>
+  </div>
+
+  <!-- AT-HM -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div class="px-6 py-3 bg-purple-50 border-b border-purple-200 flex items-center justify-between">
+      <h2 class="text-sm font-semibold text-purple-800">Assistive Technology (AT)</h2>
+      <div class="text-sm font-semibold text-purple-700">Remaining: $7,550.00</div>
+    </div>
+    <div class="px-6 py-4 text-sm text-gray-500">No AT transactions in February 2026.</div>
+  </div>
+</div>
+
+<!-- Interactive View -->
+<div id="screen-interactive" class="max-w-5xl mx-auto p-6 hidden">
+  <h1 class="text-lg font-semibold text-gray-900 mb-1">Interactive Statement View</h1>
+  <p class="text-sm text-gray-500 mb-4">Filter and explore your transactions</p>
+  <div class="flex items-center gap-3 mb-6">
+    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      <option>All Funding Streams</option>
+      <option>ON - Ongoing Support</option>
+      <option>AT - Assistive Technology</option>
+      <option>HM - Home Modifications</option>
+    </select>
+    <input type="date" value="2026-02-01" class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+    <span class="text-sm text-gray-400">to</span>
+    <input type="date" value="2026-02-28" class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+      <option>All Service Types</option>
+      <option>Personal Care</option>
+      <option>Home Maintenance</option>
+      <option>Social Support</option>
+    </select>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Date</th>
+          <th class="px-6 py-3">Description</th>
+          <th class="px-6 py-3">Stream</th>
+          <th class="px-6 py-3 text-right">Amount</th>
+          <th class="px-6 py-3">Source</th>
+          <th class="px-6 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 text-sm">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-gray-500">3 Feb</td>
+          <td class="px-6 py-3 font-medium text-gray-900">Personal Care - Showering</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">ON</span></td>
+          <td class="px-6 py-3 text-right">$263.25</td>
+          <td class="px-6 py-3"><a href="#" class="text-tc-teal-700 hover:underline text-xs">Bill #B-4521</a></td>
+          <td class="px-6 py-3"><button class="text-xs text-gray-500 hover:text-tc-teal-700">Dispute</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-gray-500">10 Feb</td>
+          <td class="px-6 py-3 font-medium text-gray-900">Personal Care - Showering</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">ON</span></td>
+          <td class="px-6 py-3 text-right">$263.25</td>
+          <td class="px-6 py-3"><a href="#" class="text-tc-teal-700 hover:underline text-xs">Bill #B-4589</a></td>
+          <td class="px-6 py-3"><button class="text-xs text-gray-500 hover:text-tc-teal-700">Dispute</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3 text-gray-500">14 Feb</td>
+          <td class="px-6 py-3 font-medium text-gray-900">Home Maintenance - Lawn Care</td>
+          <td class="px-6 py-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">ON</span></td>
+          <td class="px-6 py-3 text-right">$110.00</td>
+          <td class="px-6 py-3"><a href="#" class="text-tc-teal-700 hover:underline text-xs">Bill #B-4601</a></td>
+          <td class="px-6 py-3"><button class="text-xs text-gray-500 hover:text-tc-teal-700">Dispute</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Admin Generation -->
+<div id="screen-admin" class="max-w-4xl mx-auto p-6 hidden">
+  <h1 class="text-lg font-semibold text-gray-900 mb-1">Statement Generation</h1>
+  <p class="text-sm text-gray-500 mb-6">Admin &mdash; Generate and manage monthly statements</p>
+  <div class="grid grid-cols-2 gap-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-4">Generate On-Demand</h2>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Package</label>
+          <input type="text" placeholder="Search by name or package ID..." class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Period</label>
+          <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option>February 2026</option>
+            <option>January 2026</option>
+            <option>December 2025</option>
+          </select>
+        </div>
+        <button class="w-full px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Generate Statement</button>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-4">Scheduled Generation</h2>
+      <div class="space-y-3 text-sm">
+        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+          <span class="text-gray-600">Last Scheduled Run</span>
+          <span class="font-medium">28 Feb 2026, 2:00 AM</span>
+        </div>
+        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+          <span class="text-gray-600">Statements Generated</span>
+          <span class="font-medium">1,847 of 1,847</span>
+        </div>
+        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+          <span class="text-gray-600">Emails Sent</span>
+          <span class="font-medium text-green-600">1,821 delivered</span>
+        </div>
+        <div class="flex items-center justify-between py-2">
+          <span class="text-gray-600">Postal Batch</span>
+          <span class="font-medium">26 PDFs queued for print</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

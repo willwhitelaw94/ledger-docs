@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC Portal v2.0.151 — Release Notes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #181b23;
+    --surface-hover: #1e2130;
+    --surface-active: #252838;
+    --border: #2a2d3a;
+    --border-light: #353849;
+    --text: #e4e6f0;
+    --text-muted: #8b8fa4;
+    --text-dim: #5f6378;
+    --accent: #3b82f6;
+    --accent-dim: #1e3a5f;
+    --green: #22c55e;
+    --green-dim: #14532d;
+    --green-bg: rgba(34,197,94,0.08);
+    --red: #ef4444;
+    --red-dim: #7f1d1d;
+    --red-bg: rgba(239,68,68,0.08);
+    --amber: #f59e0b;
+    --amber-dim: #78350f;
+    --amber-bg: rgba(245,158,11,0.08);
+    --blue: #3b82f6;
+    --blue-dim: #1e3a5f;
+    --blue-bg: rgba(59,130,246,0.08);
+    --purple: #a78bfa;
+    --purple-dim: #4c1d95;
+    --purple-bg: rgba(167,139,250,0.08);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0c1220 0%, #162033 50%, #0f1a2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px 24px;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-logo {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent), #6366f1);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px; color: white;
+    letter-spacing: -0.5px;
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .header-title span { color: var(--text-muted); font-weight: 400; }
+  .header-version {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    text-decoration: none;
+    transition: border-color 0.15s;
+  }
+  .header-version:hover { border-color: var(--accent); color: var(--text); }
+  .header-subtitle {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .header-date {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .flag-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(59,130,246,0.06);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  /* Stats */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    font-family: var(--mono);
+    letter-spacing: -0.5px;
+  }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Main content */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  /* Controls bar */
+  .controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-size: 14px;
+    font-family: var(--font);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-box input:focus { border-color: var(--accent); }
+  .search-box input::placeholder { color: var(--text-dim); }
+  .search-box svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px; height: 16px;
+    color: var(--text-dim);
+  }
+
+  /* Filter pills */
+  .filter-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .filter-pill {
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .filter-pill:hover { border-color: var(--border-light); color: var(--text); }
+  .filter-pill.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+  .filter-pill.active[data-impact="high"] { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+  .filter-pill.active[data-impact="medium"] { background: var(--amber-bg); border-color: var(--amber); color: var(--amber); }
+  .filter-pill.active[data-impact="low"] { background: var(--blue-bg); border-color: var(--blue); color: var(--blue); }
+
+  /* Audience tabs */
+  .audience-tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3px;
+    margin-bottom: 24px;
+  }
+  .audience-tab {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    border: none;
+    background: transparent;
+    font-family: var(--font);
+  }
+  .audience-tab:hover { color: var(--text); background: var(--surface-hover); }
+  .audience-tab.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+  }
+
+  /* Feature cards */
+  .features-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .feature-card:hover { border-color: var(--border-light); }
+  .feature-card.expanded { border-color: var(--accent); }
+  .feature-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .feature-header:hover { background: var(--surface-hover); }
+  .feature-chevron {
+    width: 18px; height: 18px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .feature-card.expanded .feature-chevron { transform: rotate(90deg); }
+  .feature-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .feature-info { flex: 1; min-width: 0; }
+  .feature-name {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .feature-summary {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .impact-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .impact-badge.high { background: var(--red-bg); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+  .impact-badge.medium { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+  .impact-badge.low { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+
+  /* Feature details */
+  .feature-details {
+    display: none;
+    padding: 0 20px 20px 66px;
+    border-top: 1px solid var(--border);
+  }
+  .feature-card.expanded .feature-details { display: block; padding-top: 16px; }
+  .detail-section {
+    margin-bottom: 16px;
+  }
+  .detail-section:last-child { margin-bottom: 0; }
+  .detail-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .detail-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .detail-text strong { color: var(--text); font-weight: 600; }
+  .detail-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--surface-active);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Bug fixes section */
+  .bugfix-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .bugfix-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .bugfix-header:hover { background: var(--surface-hover); }
+  .bugfix-count {
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--surface-active);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  .bugfix-chevron {
+    width: 18px; height: 18px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+    margin-left: auto;
+  }
+  .bugfix-section.expanded .bugfix-chevron { transform: rotate(90deg); }
+  .bugfix-list {
+    display: none;
+    padding: 0 20px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .bugfix-section.expanded .bugfix-list { display: block; padding-top: 12px; }
+  .bugfix-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .bugfix-item + .bugfix-item { border-top: 1px solid rgba(42,45,58,0.5); }
+  .bugfix-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .bugfix-item strong { color: var(--text); font-weight: 600; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-dim);
+  }
+  .empty-state svg { width: 48px; height: 48px; margin-bottom: 12px; opacity: 0.4; }
+  .empty-state p { font-size: 14px; }
+
+  /* Results count */
+  .results-count {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 12px;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border);
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header { padding: 20px 16px 16px; }
+    .header-top { flex-direction: column; }
+    .header-subtitle { font-size: 20px; }
+    .stats-row { gap: 6px; }
+    .stat { min-width: 70px; padding: 10px 8px; }
+    .stat-value { font-size: 16px; }
+    .main { padding: 16px; }
+    .audience-tabs { overflow-x: auto; }
+    .audience-tab { white-space: nowrap; padding: 8px 12px; font-size: 12px; }
+    .feature-header { padding: 12px 14px; gap: 10px; }
+    .feature-card.expanded .feature-details { padding-left: 14px; }
+    .feature-icon { width: 32px; height: 32px; font-size: 16px; }
+    .controls { flex-direction: column; }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-brand">
+        <div class="header-logo">TC</div>
+        <div class="header-title">TC Portal <span>Release Notes</span></div>
+      </div>
+      <a class="header-version" href="https://github.com/Trilogy-Care/tc-portal/releases/tag/v2.0.151" target="_blank" rel="noopener">
+        v2.0.151 ↗
+      </a>
+    </div>
+    <div class="header-subtitle">Budget Service Search, NDIS Banning List &amp; Saved Table Views</div>
+    <div class="header-date">Released 31 March 2026</div>
+    <div class="flag-note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Showing publicly released features only. Features behind feature flags are excluded.
+    </div>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-value">93</div>
+        <div class="stat-label">Pull Requests</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">300</div>
+        <div class="stat-label">Files Changed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value green">+14,160</div>
+        <div class="stat-label">Lines Added</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value red">-6,662</div>
+        <div class="stat-label">Lines Removed</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="audience-tabs" id="audienceTabs">
+    <button class="audience-tab active" data-audience="business">Business</button>
+    <button class="audience-tab" data-audience="enduser">End User</button>
+    <button class="audience-tab" data-audience="support">Support</button>
+    <button class="audience-tab" data-audience="technical">Technical</button>
+  </div>
+
+  <div class="controls">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Search features...">
+    </div>
+    <div class="filter-group" id="impactFilters">
+      <button class="filter-pill active" data-impact="all">All</button>
+      <button class="filter-pill" data-impact="high">High</button>
+      <button class="filter-pill" data-impact="medium">Medium</button>
+      <button class="filter-pill" data-impact="low">Low</button>
+    </div>
+  </div>
+
+  <div class="results-count" id="resultsCount"></div>
+  <div class="features-grid" id="featuresGrid"></div>
+
+  <div class="bugfix-section" id="bugfixSection">
+    <div class="bugfix-header" onclick="toggleBugfixes()">
+      <span>🐛</span>
+      Bug Fixes
+      <span class="bugfix-count">13</span>
+      <svg class="bugfix-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+    <div class="bugfix-list" id="bugfixList"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  TC Portal v2.0.151 &middot; 31 March 2026 &middot; <a href="https://github.com/Trilogy-Care/tc-portal/releases/tag/v2.0.151" target="_blank" rel="noopener">View on GitHub</a>
+</div>
+
+<script>
+const FEATURES = [
+  {
+    id: 'budget-search',
+    name: 'Budget Service Search with Keywords',
+    icon: '🔍',
+    iconBg: 'var(--blue-bg)',
+    impact: 'high',
+    audiences: {
+      business: {
+        summary: 'Redesigned service selection on Budget V2 with keyword search, category filters, and admin tag management.',
+        why: 'Staff previously had to know the exact service name. Searching by related terms ("mobility", "transport") was impossible, leading to missed services and slower budget creation.',
+        changed: 'The Add Service modal now has a search bar, category pill filters (Core, Capacity Building, Clinical), and an "Approved services" toggle. A new admin page under Manage Tags lets staff associate keywords with service types.',
+        who: 'Care coordinators, budget planners, and admin staff who manage budget plans. Admin users with manage-tags permission can manage keywords.',
+        location: 'Budget V2 → Add Service'
+      },
+      enduser: {
+        summary: 'Search for services by keyword when adding to a budget — type "mobility" to find Physiotherapy.',
+        why: 'Finding the right service used to mean scrolling through a long list or knowing the exact name. Now you can type related terms and find services faster.',
+        changed: 'The "Add Service" button opens a new modal with a search bar, category filters, and an "Approved services" toggle. Type 2+ characters to search.',
+        who: 'Anyone who adds services to budget plans.',
+        location: 'Budget V2 → Add Service button'
+      },
+      support: {
+        summary: 'Old service dropdown replaced with a keyword-searchable modal. If keywords don\'t work, admins can add tags via Manage Tags.',
+        why: 'Users struggled to find services without knowing the exact name. New modal searches by name, category, and keyword tags.',
+        changed: 'Search bar (min 2 chars), category pill filters, approved services toggle. Admin can manage keyword tags at Staff → Manage Tags → Service Keywords.',
+        who: 'Budget plan users. Escalate keyword issues to admins with manage-tags permission.',
+        location: 'Budget V2 → Add Service'
+      },
+      technical: {
+        summary: 'New ServiceSearchModal component with debounced server-side search across service name, category, and keyword tags.',
+        why: 'Previous dropdown didn\'t scale. New modal supports keyword taxonomy with admin CRUD.',
+        changed: 'Vue 3 modal with category filter pills, approved-only toggle, keyword tag admin page. Server-side search endpoint with keyword matching. New manage-tags permission.',
+        who: 'Frontend: ServiceSearchModal, ServiceKeywordAdmin. Backend: ServiceSearchController, ManageTagsController.',
+        location: 'Budget V2 → Add Service'
+      }
+    }
+  },
+  {
+    id: 'banning-list',
+    name: 'NDIS Compliance Banning List',
+    icon: '🛡️',
+    iconBg: 'var(--red-bg)',
+    impact: 'high',
+    audiences: {
+      business: {
+        summary: 'New Compliance section for managing NDIS Commission banning orders with CSV upload, ABN matching, and monthly email reminders.',
+        why: 'Compliance with NDIS banning orders is a regulatory requirement. Previously stored as raw JSON with no structured matching or alerts.',
+        changed: 'Upload banning list CSVs from NDIS Commission. System matches banned entities to organisations by ABN. Searchable/filterable table with type and status badges. Monthly email reminders to Compliance Managers.',
+        who: 'Compliance Managers and Admin users responsible for NDIS regulatory compliance.',
+        location: 'Sidebar → Compliance'
+      },
+      enduser: {
+        summary: 'A new Compliance section is available for authorised staff to manage NDIS banning list data.',
+        why: 'This creates a clear, auditable process for tracking banned entities and their status against the organisation\'s supplier network.',
+        changed: 'Upload CSV exports from the NDIS Commission website. The system automatically matches banned entities. Results appear in a searchable table.',
+        who: 'Users with view-banning-list or upload-banning-list permissions.',
+        location: 'Sidebar → Compliance'
+      },
+      support: {
+        summary: 'New sidebar section "Compliance" for banning list management. Requires view-banning-list permission to see.',
+        why: 'Replaces unstructured JSON storage with structured, auditable compliance workflow.',
+        changed: 'CSV upload from NDIS Commission site. ABN matching against portal organisations. Monthly email reminders for Compliance Managers.',
+        who: 'Check view-banning-list permission if section not visible. upload-banning-list needed for CSV uploads.',
+        location: 'Sidebar → Compliance'
+      },
+      technical: {
+        summary: 'New Compliance domain with CSV import pipeline, ABN-based entity matching, and scheduled email reminders.',
+        why: 'Regulatory requirement — previously unstructured JSON with no matching or alerting capability.',
+        changed: 'BanningListImporter service parses NDIS CSV format. ABN matching via Organisation model. Scheduled Mailable for monthly reminders. New permissions: view-banning-list, upload-banning-list.',
+        who: 'Backend: BanningListController, BanningListImporter, BanningReminderMail. Frontend: CompliancePage, BanningListTable.',
+        location: 'Sidebar → Compliance'
+      }
+    }
+  },
+  {
+    id: 'saved-views',
+    name: 'Saved Table Views',
+    icon: '📋',
+    iconBg: 'var(--green-bg)',
+    impact: 'high',
+    audiences: {
+      business: {
+        summary: 'Users can save, name, and share personalised table configurations as reusable views with team sharing.',
+        why: 'Staff frequently switch between different data views. Previously, table configuration had to be redone each time. Saved views eliminate repetitive setup.',
+        changed: 'Tables support named views saving column order, filters, and sorting. Views can be private or shared with the user\'s team. Set a default that loads automatically.',
+        who: 'All portal users who work with data tables. Team leads can create shared views.',
+        location: 'View selector on supported tables'
+      },
+      enduser: {
+        summary: 'Save your table column settings, filters, and sorting as named views that persist between sessions.',
+        why: 'Setting up table filters and columns every time you opened a page was tedious. Now save your layout and switch views instantly.',
+        changed: 'Tables now have a "Save View" option. Create multiple named views, share with team, set a default.',
+        who: 'All users who work with data tables.',
+        location: 'View selector on supported tables'
+      },
+      support: {
+        summary: 'Named table view saving with private/team visibility. Default view loads automatically.',
+        why: 'Users requested ability to save table configuration instead of reconfiguring every visit.',
+        changed: 'Configure table → Save View → name it → choose private/team → optionally set default.',
+        who: 'All table users. Team views require team membership.',
+        location: 'View selector on supported tables'
+      },
+      technical: {
+        summary: 'Persistent table view configurations stored per-user with team sharing capabilities.',
+        why: 'Eliminates repetitive table setup. Enables standardised team views.',
+        changed: 'New TableView model with JSON column config, filter state, and sort order. Polymorphic owner (User or Team). Default flag per user per table.',
+        who: 'Frontend: ViewSelector component. Backend: TableViewController, TableView model.',
+        location: 'View selector on supported tables'
+      }
+    }
+  },
+  {
+    id: 'doc-tags',
+    name: 'Hierarchical Document Tags',
+    icon: '🏷️',
+    iconBg: 'var(--purple-bg)',
+    impact: 'medium',
+    audiences: {
+      business: {
+        summary: 'Document type selection restructured from flat list to grouped, context-specific categories.',
+        why: 'The flat list of 50+ types made it difficult to find the correct tag. Different entities saw irrelevant tags.',
+        changed: 'Dropdowns now group by parent type and sub-type, filtered to entity context (Supplier, Package, Care Coordinator).',
+        who: 'All staff who upload or classify documents.',
+        location: 'Document upload forms'
+      },
+      enduser: {
+        summary: 'Document type dropdowns now show organised categories relevant to what you\'re working on.',
+        why: 'Scrolling through 50+ types was frustrating. The grouped view makes it much faster.',
+        changed: 'Types grouped by category. Only relevant tags shown based on context (Supplier, Package, or Care Coordinator page).',
+        who: 'Anyone who uploads or tags documents.',
+        location: 'Any document upload form'
+      },
+      support: {
+        summary: 'Flat document type list replaced with grouped, entity-scoped categories.',
+        why: 'Flat list was overwhelming with irrelevant tags. Now scoped and grouped.',
+        changed: 'Types grouped by parent category, filtered to entity context. Types themselves haven\'t changed — only organisation.',
+        who: 'Document upload users. If type seems missing, check under different group.',
+        location: 'Supplier / Package / Care Coordinator document forms'
+      },
+      technical: {
+        summary: 'Document type dropdown refactored to hierarchical grouped select with entity-based filtering.',
+        why: 'Flat list didn\'t scale at 50+ types. Entity-scoping reduces cognitive load.',
+        changed: 'DocumentTypeSelector component now fetches types grouped by parent. Server filters by entity_type parameter.',
+        who: 'Frontend: DocumentTypeSelector. Backend: DocumentTypeController with entity scope.',
+        location: 'Document upload forms'
+      }
+    }
+  },
+  {
+    id: 'inline-edit',
+    name: 'Budget V2 Inline Editing',
+    icon: '✏️',
+    iconBg: 'var(--green-bg)',
+    impact: 'high',
+    audiences: {
+      business: {
+        summary: 'Budget items editable inline with real-time spending from actual funding consumptions.',
+        why: 'Previously editing required multiple clicks and page loads. Real-time spending replaces cached values for accuracy.',
+        changed: 'Click budget item cells to edit notes, dates, and suppliers inline. Date picker supports Ongoing, Fixed, and One-off modes. Spending calculated from actual funding consumptions.',
+        who: 'Care coordinators and budget planners.',
+        location: 'Budget V2 → Budget Items table'
+      },
+      enduser: {
+        summary: 'Edit budget item details directly in the table without navigating away.',
+        why: 'Previously editing required multiple clicks and page loads. Now make quick updates right where you see the data.',
+        changed: 'Click on a budget item\'s note, dates, or supplier cell to open an inline editor. Dates support Ongoing, Fixed, and One-off modes.',
+        who: 'Anyone who edits budget items.',
+        location: 'Budget V2 → Budget Items table'
+      },
+      support: {
+        summary: 'Budget items now editable inline. Click cells to edit notes, dates, suppliers directly.',
+        why: 'Reduces clicks and page loads for budget editing.',
+        changed: 'Inline edit on note, date, supplier cells. Date popover with 3 modes: Ongoing, Fixed dates, One-off.',
+        who: 'Budget plan editors.',
+        location: 'Budget V2 → Budget Items table → click editable cell'
+      },
+      technical: {
+        summary: 'Inline editing on budget item table cells with real-time funding consumption calculations.',
+        why: 'Previously cached spending values caused discrepancies. Inline editing reduces page transitions.',
+        changed: 'InlineBudgetEditor components for notes, dates, suppliers. DateModePopover with Ongoing/Fixed/One-off. Spending recalculated from FundingConsumption records in real-time.',
+        who: 'Frontend: InlineBudgetEditor, DateModePopover. Backend: BudgetItemController, FundingConsumptionService.',
+        location: 'Budget V2 → Budget Items table'
+      }
+    }
+  },
+  {
+    id: 'package-nav',
+    name: 'Package Navigation Redesign',
+    icon: '🧭',
+    iconBg: 'var(--amber-bg)',
+    impact: 'medium',
+    audiences: {
+      business: {
+        summary: 'Redesigned package sidebar, top bar, and header with icon-based navigation and sub-menus.',
+        why: 'Previous layout used text-heavy buttons limiting scalability. Redesign supports future feature additions.',
+        changed: 'Icon-based sidebar with parent/sub-menu grouping. Improved tab styling. Cleaner header layout.',
+        who: 'All staff who access package profiles.',
+        location: 'Package pages'
+      },
+      enduser: {
+        summary: 'The package page has a fresh new look with an improved sidebar and navigation.',
+        why: 'The old layout was getting crowded. The new design gives everything more room.',
+        changed: 'Sidebar and top nav now use icons with sub-menus. Header area tidied up with better tab styling.',
+        who: 'All package users.',
+        location: 'Any package page'
+      },
+      support: {
+        summary: 'Package pages have a redesigned sidebar, top bar, and header. All pages still accessible.',
+        why: 'Navigation redesigned for better usability and future scalability.',
+        changed: 'Icon-based sidebar with sub-menus. Restructured top bar. Cleaner header.',
+        who: 'If users can\'t find something, help navigate new layout. All previous pages still accessible.',
+        location: 'All package profile pages'
+      },
+      technical: {
+        summary: 'Package layout components refactored with icon-based navigation and hierarchical sub-menus.',
+        why: 'Previous text-heavy layout didn\'t scale. New architecture supports extensibility.',
+        changed: 'PackageSidebar refactored with icon registry and sub-menu tree. PackageTopBar with tabbed layout. PackageHeader with condensed info bar.',
+        who: 'Frontend: PackageSidebar, PackageTopBar, PackageHeader components.',
+        location: 'Package pages'
+      }
+    }
+  },
+  {
+    id: 'email-drawer',
+    name: 'Budget V2 Email Drawer Redesign',
+    icon: '📧',
+    iconBg: 'var(--amber-bg)',
+    impact: 'medium',
+    audiences: {
+      business: {
+        summary: 'Send both budget plan and care plan PDFs in a single email with redesigned recipient fields.',
+        why: 'Previously required separate emails for budget and care plans. Reduces email volume and improves communication.',
+        changed: 'Email drawer with single-select "To", multi-select "CC" from package contacts, subject/body editing, badge-based attachment picker for both PDFs.',
+        who: 'Care coordinators and budget planners.',
+        location: 'Budget Plan → Email button'
+      },
+      enduser: {
+        summary: 'Send both your budget plan and care plan PDFs in a single email.',
+        why: 'Sending these as separate emails was time-consuming. Now attach both in one go.',
+        changed: 'Redesigned email drawer with To/CC fields pre-populated from contacts. Toggle on attachments you want.',
+        who: 'Anyone who emails budget plans.',
+        location: 'Budget Plan → Email button'
+      },
+      support: {
+        summary: 'Email drawer redesigned with To (single), CC (multi), and badge-based attachment picker for budget + care plan PDFs.',
+        why: 'Users needed to send both documents in one email instead of separately.',
+        changed: 'New drawer with populated contact fields and dual PDF attachment options.',
+        who: 'Budget plan emailers. Care plan must exist for that attachment option.',
+        location: 'Budget Plan → Email button'
+      },
+      technical: {
+        summary: 'BudgetEmailDrawer refactored with contact-based recipient selection and multi-PDF attachment support.',
+        why: 'Consolidates two separate email flows into one.',
+        changed: 'New BudgetEmailDrawer with PackageContactSelector (single To, multi CC), AttachmentPicker with badge UI. Backend handles multi-PDF attachment generation.',
+        who: 'Frontend: BudgetEmailDrawer. Backend: BudgetEmailController.',
+        location: 'Budget Plan → Email button'
+      }
+    }
+  },
+  {
+    id: 'zoho-notifications',
+    name: 'Zoho Sync Failure Notifications',
+    icon: '🔔',
+    iconBg: 'var(--blue-bg)',
+    impact: 'low',
+    audiences: {
+      business: {
+        summary: 'Automatic email notifications when Zoho sync fails, with error details and auto token refresh.',
+        why: 'Failures were only visible in logs — data discrepancies could go unnoticed for days.',
+        changed: 'Email notification sent with error details and affected records on sync failure. OAuth tokens auto-refresh.',
+        who: 'Operations and technical staff responsible for portal-Zoho data integrity.',
+        location: 'Automated — email notifications'
+      },
+      enduser: {
+        summary: 'Zoho data sync issues are now automatically flagged by email so your team can act quickly.',
+        why: 'Previously, sync problems could go unnoticed. Now the right people are alerted immediately.',
+        changed: 'Automatic email when sync fails. Includes what went wrong and which records were affected.',
+        who: 'Operations team.',
+        location: 'Automated'
+      },
+      support: {
+        summary: 'Zoho sync failures now trigger automatic email notifications. Includes auto token refresh.',
+        why: 'Failures were only in system logs. Notifications ensure immediate awareness.',
+        changed: 'Email on failure with error details. Auto OAuth token refresh.',
+        who: 'If user reports data discrepancies, check for sync failure notification.',
+        location: 'Automated email'
+      },
+      technical: {
+        summary: 'ZohoSyncFailure notification with error details. Auto OAuth token refresh on expiry.',
+        why: 'Operational visibility for sync failures. Auto-recovery for token expiry.',
+        changed: 'New ZohoSyncFailedNotification mailable. ZohoTokenRefreshMiddleware for automatic OAuth renewal. Error detail extraction from sync jobs.',
+        who: 'Backend: ZohoSyncFailedNotification, ZohoTokenRefreshMiddleware.',
+        location: 'Automated'
+      }
+    }
+  },
+  {
+    id: 'billing',
+    name: 'Billing Accuracy Improvements',
+    icon: '💰',
+    iconBg: 'var(--amber-bg)',
+    impact: 'medium',
+    audiences: {
+      business: {
+        summary: 'Multiple billing fixes: MYOB precision matching, GST handling for reimbursement suppliers, loading fee history, and new columns.',
+        why: 'Accurate billing is critical for financial compliance. Fixes rounding discrepancies and adds audit visibility.',
+        changed: 'Higher decimal precision for MYOB matching. Reimbursement suppliers excluded from GST restrictions. Loading fee history on Bill page. ABN/GST dates visible on Bill Processing. Total GST column added.',
+        who: 'Finance team, care coordinators, and bill processing staff.',
+        location: 'Bills page, Bill Processing page'
+      },
+      enduser: {
+        summary: 'Bill amounts are now more accurate and additional billing information is visible.',
+        why: 'Small rounding differences between the portal and MYOB caused confusion. Now they match precisely.',
+        changed: 'More precise calculations. New columns showing GST totals, ABN active dates, and GST registration dates.',
+        who: 'Anyone who works with bills.',
+        location: 'Bills page'
+      },
+      support: {
+        summary: 'Billing precision improved to match MYOB. New columns and GST fixes for reimbursement suppliers.',
+        why: 'Rounding discrepancies, missing info, incorrect GST handling for reimbursement suppliers.',
+        changed: 'Higher decimal precision, reimbursement GST exclusion, loading fee history, ABN/GST dates, total GST column, fee exemption formatting.',
+        who: 'Finance users. Post-release discrepancies should be reduced.',
+        location: 'Bills, Bill Processing pages'
+      },
+      technical: {
+        summary: 'Unit cost precision upgrade, reimbursement supplier GST exclusion, new billing audit columns.',
+        why: 'MYOB rounding mismatches, missing audit data, incorrect GST scoping.',
+        changed: 'UnitCostCalculator precision increase. ReimbursementSupplier GST scope fix. New columns: total_gst, abn_active_date, gst_registered_date. CoordinatorLoadingFee history endpoint.',
+        who: 'Backend: UnitCostCalculator, BillProcessingController, BillTableResource.',
+        location: 'Bills, Bill Processing'
+      }
+    }
+  },
+  {
+    id: 'global-search',
+    name: 'Global Search: Users & Workers',
+    icon: '👤',
+    iconBg: 'var(--purple-bg)',
+    impact: 'medium',
+    audiences: {
+      business: {
+        summary: 'Global search now finds Users and Organisation Workers, with bill status badges in results.',
+        why: 'Quick way to find people in the portal. Bill status visibility helps with processing.',
+        changed: 'Search bar returns Users and Organisation Workers. Bill results now show status badges.',
+        who: 'All portal users.',
+        location: 'Global search bar'
+      },
+      enduser: {
+        summary: 'Type a name in the search bar to find people instantly. Bill results now show status.',
+        why: 'You asked for a quicker way to find people. Now you can jump directly to their profile.',
+        changed: 'Search results include Users and Organisation Workers. Bills show status badges.',
+        who: 'All users.',
+        location: 'Search bar at top of any page'
+      },
+      support: {
+        summary: 'Global search now includes Users and Organisation Workers. Bill results show status badges.',
+        why: 'Users needed faster people-finding. Bill status context helps triage.',
+        changed: 'New search result types: Users, Organisation Workers. Bill results with status badge display.',
+        who: 'All portal users.',
+        location: 'Global search bar'
+      },
+      technical: {
+        summary: 'GlobalSearch extended with User and OrganisationWorker result types. Bill results include status badge.',
+        why: 'Expanding search coverage. Adding contextual status display.',
+        changed: 'GlobalSearchController now queries users and org_workers tables. BillSearchResult includes status enum for badge rendering.',
+        who: 'Backend: GlobalSearchController. Frontend: SearchResults component.',
+        location: 'Global search'
+      }
+    }
+  },
+  {
+    id: 'click-to-call',
+    name: 'Click-to-Call & Email in Care Circle',
+    icon: '📞',
+    iconBg: 'var(--green-bg)',
+    impact: 'low',
+    audiences: {
+      business: {
+        summary: 'Phone numbers and email addresses in Care Circle are now clickable links.',
+        why: 'Removes friction of copy-pasting contact information.',
+        changed: 'Phone numbers open phone app. Email addresses open email client.',
+        who: 'All staff using Care Circle.',
+        location: 'Package → Care Circle tab'
+      },
+      enduser: {
+        summary: 'Call or email contacts directly from the Care Circle table with one click.',
+        why: 'No more copying and pasting. Just click.',
+        changed: 'Phone numbers and emails are now clickable links.',
+        who: 'Anyone viewing Care Circle.',
+        location: 'Package → Care Circle'
+      },
+      support: {
+        summary: 'Care Circle phone/email fields now have tel: and mailto: links.',
+        why: 'Reduces friction for contacting care circle members.',
+        changed: 'Clickable phone and email links in Care Circle table.',
+        who: 'Care Circle users.',
+        location: 'Package → Care Circle tab'
+      },
+      technical: {
+        summary: 'CareCircleTable cells wrapped with tel: and mailto: anchor tags.',
+        why: 'QoL improvement for contact interaction.',
+        changed: 'CareCircleTable component updated with href links on phone and email columns.',
+        who: 'Frontend: CareCircleTable.',
+        location: 'Package → Care Circle'
+      }
+    }
+  },
+  {
+    id: 'dropdown-search',
+    name: 'Dropdowns Auto-Enable Search',
+    icon: '⬇️',
+    iconBg: 'var(--blue-bg)',
+    impact: 'low',
+    audiences: {
+      business: {
+        summary: 'Select menus with 10+ items automatically show a search bar.',
+        why: 'Long dropdowns without search slowed users down.',
+        changed: 'Automatic search bar on any CommonSelectMenu with 10 or more items.',
+        who: 'All portal users.',
+        location: 'Any dropdown with 10+ options'
+      },
+      enduser: {
+        summary: 'Long dropdown menus now automatically include a search bar.',
+        why: 'Some dropdowns had many items but no way to search. Now they\'re all searchable.',
+        changed: 'Search appears automatically on dropdowns with 10+ items.',
+        who: 'Everyone.',
+        location: 'Any dropdown across the portal'
+      },
+      support: {
+        summary: 'CommonSelectMenu now auto-enables search when item count ≥ 10.',
+        why: 'Consistency improvement for long dropdown lists.',
+        changed: 'Threshold-based search enablement on select menus.',
+        who: 'All users. No action needed.',
+        location: 'Portal-wide'
+      },
+      technical: {
+        summary: 'CommonSelectMenu auto-enables searchable prop when options.length >= 10.',
+        why: 'Consistency — removes need for per-instance searchable prop on long lists.',
+        changed: 'CommonSelectMenu component: auto searchable threshold at 10 items.',
+        who: 'Frontend: CommonSelectMenu.',
+        location: 'Portal-wide'
+      }
+    }
+  },
+  {
+    id: 'dob-copy',
+    name: 'Date of Birth Copyable',
+    icon: '📋',
+    iconBg: 'var(--blue-bg)',
+    impact: 'low',
+    audiences: {
+      business: {
+        summary: 'DOB field now has a copy icon consistent with other profile fields.',
+        why: 'Consistency — other fields were already copyable.',
+        changed: 'Click-to-copy icon on date of birth field.',
+        who: 'Staff viewing recipient profiles.',
+        location: 'Recipient profile pages'
+      },
+      enduser: {
+        summary: 'Copy date of birth with one click, just like other profile fields.',
+        why: 'Other fields were already copyable. DOB now matches.',
+        changed: 'Copy icon next to date of birth.',
+        who: 'Anyone viewing recipient profiles.',
+        location: 'Recipient profiles'
+      },
+      support: {
+        summary: 'DOB field now copyable like name and other identifier fields.',
+        why: 'Consistency with existing copyable fields.',
+        changed: 'Copy icon added to DOB on recipient profile.',
+        who: 'Profile viewers.',
+        location: 'Recipient profile pages'
+      },
+      technical: {
+        summary: 'CopyableField component added to date_of_birth on RecipientProfile.',
+        why: 'Consistency with other copyable profile fields.',
+        changed: 'RecipientProfile component wraps DOB with CopyableField.',
+        who: 'Frontend: RecipientProfile.',
+        location: 'Recipient profiles'
+      }
+    }
+  }
+];
+
+const BUGFIXES = [
+  { title: 'Compliance users 403 after supplier impersonation', desc: 'Fixed an issue where Compliance users received a 403 error after stopping supplier impersonation.' },
+  { title: 'Nova Permissions page error', desc: 'Fixed the Permissions page in Nova failing to load due to a type mapping error.' },
+  { title: 'Emergency Contact phone on Care Plan PDF', desc: 'Care Plan PDFs now include the emergency contact\'s phone number.' },
+  { title: 'Address validation with incomplete Google Maps data', desc: 'Address saving no longer fails silently when Google Maps returns incomplete data (null shortName or types).' },
+  { title: 'Communication settings for packages without recipient', desc: 'No longer returns a 500 error; shows a warning and disables the form instead.' },
+  { title: 'Document expiry dates beyond 2038', desc: 'Fixed by changing the column from TIMESTAMP to DATETIME.' },
+  { title: 'Supplier document cards responsive', desc: 'Supplier document cards now display correctly on smaller screens.' },
+  { title: 'API PackageData null TCID', desc: 'The API no longer fails when a package has no Trilogy Care ID.' },
+  { title: 'Service plan PDF without TCID', desc: 'PDFs can now be generated for packages without a TC customer number.' },
+  { title: 'Org structure modal validation', desc: 'Modal no longer closes on validation error; errors are now visible.' },
+  { title: 'Document stage null check', desc: 'Fixed a 500 error when a document\'s stage was null.' },
+  { title: 'Zoho Unicode characters', desc: 'Invisible Unicode direction characters from Zoho names are now stripped, fixing JSON encoding errors.' },
+  { title: 'Permission message on notes', desc: '403 errors on notes now show a specific permission message instead of "contact support".' }
+];
+
+// State
+const state = {
+  audience: 'business',
+  search: '',
+  impact: 'all',
+  expandedCards: new Set()
+};
+
+// Render
+function render() {
+  const grid = document.getElementById('featuresGrid');
+  const filtered = FEATURES.filter(f => {
+    if (state.impact !== 'all' && f.impact !== state.impact) return false;
+    if (state.search) {
+      const q = state.search.toLowerCase();
+      const data = f.audiences[state.audience];
+      const searchable = [f.name, data.summary, data.changed, data.who].join(' ').toLowerCase();
+      if (!searchable.includes(q)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('resultsCount').textContent =
+    `${filtered.length} feature${filtered.length !== 1 ? 's' : ''}` +
+    (state.search || state.impact !== 'all' ? ' matching filters' : '');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <p>No features match your search.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(f => {
+    const expanded = state.expandedCards.has(f.id);
+    const data = f.audiences[state.audience];
+    return `
+      <div class="feature-card ${expanded ? 'expanded' : ''}" data-id="${f.id}">
+        <div class="feature-header" onclick="toggleCard('${f.id}')">
+          <svg class="feature-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <div class="feature-icon" style="background:${f.iconBg}">${f.icon}</div>
+          <div class="feature-info">
+            <div class="feature-name">${f.name}</div>
+            <div class="feature-summary">${data.summary}</div>
+          </div>
+          <div class="impact-badge ${f.impact}">${f.impact}</div>
+        </div>
+        <div class="feature-details">
+          <div class="detail-section">
+            <div class="detail-label">Why</div>
+            <div class="detail-text">${data.why}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">What's Changed</div>
+            <div class="detail-text">${data.changed}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Who's Affected</div>
+            <div class="detail-text">${data.who}</div>
+          </div>
+          ${data.location ? `<div class="detail-section"><div class="detail-location">📍 ${data.location}</div></div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderBugfixes() {
+  document.getElementById('bugfixList').innerHTML = BUGFIXES.map(b => `
+    <div class="bugfix-item">
+      <div class="bugfix-dot"></div>
+      <div><strong>${b.title}</strong> — ${b.desc}</div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(id) {
+  if (state.expandedCards.has(id)) state.expandedCards.delete(id);
+  else state.expandedCards.add(id);
+  render();
+}
+
+function toggleBugfixes() {
+  document.getElementById('bugfixSection').classList.toggle('expanded');
+}
+
+// Event listeners
+document.getElementById('audienceTabs').addEventListener('click', e => {
+  const tab = e.target.closest('.audience-tab');
+  if (!tab) return;
+  state.audience = tab.dataset.audience;
+  document.querySelectorAll('.audience-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  render();
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  state.search = e.target.value;
+  render();
+});
+
+document.getElementById('impactFilters').addEventListener('click', e => {
+  const pill = e.target.closest('.filter-pill');
+  if (!pill) return;
+  state.impact = pill.dataset.impact;
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  render();
+});
+
+// Init
+render();
+renderBugfixes();
+</script>
+</body>
+</html>

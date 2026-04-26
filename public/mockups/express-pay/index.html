@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Express Pay — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">EXP — Express Pay</span>
+  <button onclick="show('request')" id="nav-request" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Request Express Pay</button>
+  <button onclick="show('queue')" id="nav-queue" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Express Pay Queue</button>
+  <button onclick="show('settings')" id="nav-settings" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Eligibility Settings</button>
+  <button onclick="show('rejected')" id="nav-rejected" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Request Rejected</button>
+</nav>
+
+<!-- Screen: Supplier requests express pay on an invoice -->
+<div id="request" class="screen active p-6 max-w-4xl mx-auto">
+  <div class="text-sm text-gray-500 mb-1">Supplier Portal &gt; Bills &gt; #TC-4521</div>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Invoice #TC-4521</h1>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <div>
+        <span class="text-lg font-semibold text-gray-900">$2,450.00</span>
+        <span class="ml-2 px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Approved</span>
+      </div>
+      <span class="text-sm text-gray-500">Standard payment: ~14 business days</span>
+    </div>
+
+    <div class="p-6">
+      <dl class="grid grid-cols-2 gap-4 text-sm mb-6">
+        <div><dt class="text-gray-500">Client</dt><dd class="font-medium text-gray-900">Margaret Johnson</dd></div>
+        <div><dt class="text-gray-500">Service</dt><dd class="font-medium text-gray-900">Domestic Assistance</dd></div>
+        <div><dt class="text-gray-500">Period</dt><dd class="font-medium text-gray-900">1 Mar — 15 Mar 2026</dd></div>
+        <div><dt class="text-gray-500">Submitted</dt><dd class="font-medium text-gray-900">16 Mar 2026</dd></div>
+      </dl>
+
+      <!-- Express Pay CTA -->
+      <div class="bg-gradient-to-r from-teal-50 to-teal-100 rounded-xl p-6 border border-teal-200">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 bg-teal-700 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-gray-900">Express Pay Available</h3>
+            <p class="text-sm text-gray-600 mt-1">Receive payment within 48 hours instead of the standard 14 business days.</p>
+            <div class="mt-3 flex items-center gap-4">
+              <div class="text-sm">
+                <span class="text-gray-500">Fee:</span>
+                <span class="font-semibold text-gray-900">$24.50 (1.0%)</span>
+              </div>
+              <div class="text-sm">
+                <span class="text-gray-500">You receive:</span>
+                <span class="font-semibold text-teal-700">$2,425.50</span>
+              </div>
+            </div>
+            <div class="mt-4 flex items-center gap-3">
+              <button class="px-5 py-2.5 bg-teal-700 text-white text-sm font-medium rounded-lg hover:bg-teal-800 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Request Express Pay
+              </button>
+              <span class="text-xs text-gray-500">Estimated settlement: 21 Mar 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Finance Coordinator Queue -->
+<div id="queue" class="screen p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Express Pay Queue</h1>
+      <p class="text-sm text-gray-500 mt-1">Priority payment processing &middot; SLA: &lt;48 hours</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="text-sm text-gray-500">Today's cap:</span>
+      <div class="w-48 bg-gray-200 rounded-full h-2.5">
+        <div class="bg-teal-700 h-2.5 rounded-full" style="width:35%"></div>
+      </div>
+      <span class="text-sm font-medium text-gray-700">$17,200 / $50,000</span>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead>
+        <tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+          <th class="px-6 py-3 text-left">Invoice</th>
+          <th class="px-4 py-3 text-left">Supplier</th>
+          <th class="px-4 py-3 text-right">Amount</th>
+          <th class="px-4 py-3 text-right">Fee</th>
+          <th class="px-4 py-3 text-left">Requested</th>
+          <th class="px-4 py-3 text-left">SLA Countdown</th>
+          <th class="px-4 py-3 text-left">Status</th>
+          <th class="px-4 py-3 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">#TC-4521</td>
+          <td class="px-4 py-4 text-sm text-gray-700">Allied Health Group</td>
+          <td class="px-4 py-4 text-sm text-right font-medium">$2,450.00</td>
+          <td class="px-4 py-4 text-sm text-right text-gray-500">$24.50</td>
+          <td class="px-4 py-4 text-sm text-gray-500">19 Mar, 10:34am</td>
+          <td class="px-4 py-4">
+            <span class="px-2.5 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-medium">4h 26m remaining</span>
+          </td>
+          <td class="px-4 py-4"><span class="px-2.5 py-0.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">Processing</span></td>
+          <td class="px-4 py-4"><button class="text-sm text-teal-700 hover:underline">Process</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">#TC-4498</td>
+          <td class="px-4 py-4 text-sm text-gray-700">Sunrise Cleaning</td>
+          <td class="px-4 py-4 text-sm text-right font-medium">$1,850.00</td>
+          <td class="px-4 py-4 text-sm text-right text-gray-500">$18.50</td>
+          <td class="px-4 py-4 text-sm text-gray-500">19 Mar, 09:15am</td>
+          <td class="px-4 py-4">
+            <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">18h 41m remaining</span>
+          </td>
+          <td class="px-4 py-4"><span class="px-2.5 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Approved</span></td>
+          <td class="px-4 py-4"><button class="text-sm text-teal-700 hover:underline">Process</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">#TC-4465</td>
+          <td class="px-4 py-4 text-sm text-gray-700">Metro Nursing Services</td>
+          <td class="px-4 py-4 text-sm text-right font-medium">$4,200.00</td>
+          <td class="px-4 py-4 text-sm text-right text-gray-500">$42.00</td>
+          <td class="px-4 py-4 text-sm text-gray-500">18 Mar, 14:22pm</td>
+          <td class="px-4 py-4">
+            <span class="px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Settled</span>
+          </td>
+          <td class="px-4 py-4"><span class="px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Settled</span></td>
+          <td class="px-4 py-4"><button class="text-sm text-gray-400">View</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Screen: Eligibility Settings (admin) -->
+<div id="settings" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Express Pay Settings</h1>
+  <p class="text-sm text-gray-500 mb-6">Configure eligibility criteria and financial controls for express payments.</p>
+
+  <div class="space-y-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-sm font-semibold text-gray-700 uppercase mb-4">Eligibility Criteria</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="text-sm text-gray-700 font-medium">Maximum invoice amount</label>
+          <input type="text" value="$10,000.00" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-sm text-gray-700 font-medium">Minimum supplier history (paid invoices)</label>
+          <input type="number" value="3" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-sm text-gray-700 font-medium">Maximum requests per supplier per week</label>
+          <input type="number" value="5" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-sm text-gray-700 font-medium">Required supplier stage</label>
+          <select class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <option selected>Active only</option>
+            <option>Active + Verified</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <h2 class="text-sm font-semibold text-gray-700 uppercase mb-4">Financial Controls</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="text-sm text-gray-700 font-medium">Daily cap (total express pay value)</label>
+          <input type="text" value="$50,000.00" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-sm text-gray-700 font-medium">Weekly cap</label>
+          <input type="text" value="$200,000.00" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-sm text-gray-700 font-medium">Fee percentage</label>
+          <input type="text" value="1.0%" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-sm text-gray-700 font-medium">SLA target (hours)</label>
+          <input type="number" value="48" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg text-gray-700">Cancel</button>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen: Request Rejected -->
+<div id="rejected" class="screen p-6 max-w-4xl mx-auto">
+  <div class="text-sm text-gray-500 mb-1">Supplier Portal &gt; Bills &gt; #TC-4502</div>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Invoice #TC-4502</h1>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <div>
+        <span class="text-lg font-semibold text-gray-900">$12,500.00</span>
+        <span class="ml-2 px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Approved</span>
+      </div>
+    </div>
+    <div class="p-6">
+      <div class="bg-red-50 rounded-xl p-6 border border-red-200">
+        <div class="flex items-start gap-3">
+          <svg class="w-6 h-6 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div>
+            <h3 class="text-sm font-semibold text-red-800">Express Pay Request Rejected</h3>
+            <p class="text-sm text-red-700 mt-1">Invoice amount exceeds the express pay limit of $10,000.00.</p>
+            <p class="text-xs text-red-600 mt-2">This invoice will be processed through the standard payment cycle (~14 business days).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

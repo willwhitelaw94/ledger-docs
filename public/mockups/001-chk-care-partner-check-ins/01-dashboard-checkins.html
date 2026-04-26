@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Check-In Cards — Care Partner Check-Ins</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: { 50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf', 500: '#43C0BE', 600: '#0d9488', 700: '#007F7E', 800: '#115e59', 900: '#134e4a' },
+                        primary: { 700: '#2C4C79' }
+                    },
+                    fontFamily: { sans: ['Roboto Flex', 'Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-50 flex font-sans">
+
+    <!-- ===== SIDEBAR (skeleton — framing only) ===== -->
+    <aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+        <!-- Logo skeleton -->
+        <div class="px-4 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2.5">
+                <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div>
+                <div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div>
+            </div>
+            <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+        </div>
+        <!-- Search skeleton -->
+        <div class="px-3 py-3">
+            <div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div>
+        </div>
+        <!-- Nav skeletons -->
+        <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+            <div class="flex items-center gap-2.5 px-3 py-2">
+                <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+                <div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div>
+            </div>
+            <div class="flex items-center gap-2.5 px-3 py-2">
+                <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+                <div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div>
+            </div>
+            <!-- Active item (teal highlight — "you are here") -->
+            <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50">
+                <div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div>
+                <div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div>
+            </div>
+            <div class="flex items-center gap-2.5 px-3 py-2">
+                <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+                <div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div>
+            </div>
+            <div class="flex items-center gap-2.5 px-3 py-2">
+                <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+                <div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div>
+            </div>
+            <div class="flex items-center gap-2.5 px-3 py-2">
+                <div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div>
+                <div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div>
+            </div>
+        </nav>
+        <!-- User profile skeleton -->
+        <div class="border-t border-gray-100 px-3 py-3">
+            <div class="flex items-center gap-2.5">
+                <div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div>
+                <div class="flex-1 space-y-1.5">
+                    <div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div>
+                    <div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="flex-1 flex flex-col min-h-screen">
+
+        <!-- Page header with breadcrumb -->
+        <header class="bg-white border-b border-gray-200 px-6 py-4">
+            <nav class="text-xs text-gray-400 mb-1">
+                <span>Dashboard</span> <span class="mx-1">/</span>
+                <span class="text-gray-700 font-medium">My Activities</span>
+            </nav>
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-semibold text-gray-900">My Activities</h1>
+                <div class="flex items-center gap-2">
+                    <!-- Toggle group for filtering -->
+                    <div class="flex bg-gray-100 rounded-lg p-0.5">
+                        <button class="px-3 py-1.5 text-xs font-medium rounded-md bg-white text-gray-900 shadow-sm">Check-Ins</button>
+                        <button class="px-3 py-1.5 text-xs font-medium rounded-md text-gray-500 hover:text-gray-700">Tasks</button>
+                        <button class="px-3 py-1.5 text-xs font-medium rounded-md text-gray-500 hover:text-gray-700">All</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard content -->
+        <div class="flex-1 p-6 space-y-6">
+
+            <!-- ===== OVERDUE SECTION ===== -->
+            <section>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                    <h2 class="text-sm font-semibold text-gray-900">Overdue</h2>
+                    <span class="text-xs text-gray-400 font-medium">3</span>
+                </div>
+                <div class="space-y-2">
+
+                    <!-- Overdue card — flagged (3+ attempts) -->
+                    <div class="bg-white rounded-lg border border-red-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <!-- Client info -->
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">Margaret Thompson</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-50 text-teal-700 border border-teal-200">INT</span>
+                                    <!-- Flagged indicator -->
+                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M3 3a1 1 0 011-1h1.22a1 1 0 01.98.8l.33 1.7h11.47a1 1 0 01.97 1.24l-.17.71a9.001 9.001 0 01-7.42 6.81L11 16h2a1 1 0 110 2H7a1 1 0 110-2h2l-.36-2.74A9.001 9.001 0 011.26 6.51l-.17-.71A1 1 0 012.06 4.56z"/></svg>
+                                        3 attempts
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due 15 Jan 2026</span>
+                                    <span class="text-gray-300">·</span>
+                                    <span class="text-red-600 font-medium">47 days overdue</span>
+                                </div>
+                            </div>
+                            <!-- Questions badge -->
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>4 questions</span>
+                            </div>
+                            <!-- Arrow -->
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Overdue card — normal -->
+                    <div class="bg-white rounded-lg border border-red-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">David Chen</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-50 text-teal-700 border border-teal-200">INT</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due 28 Jan 2026</span>
+                                    <span class="text-gray-300">·</span>
+                                    <span class="text-red-600 font-medium">34 days overdue</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>2 questions</span>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Overdue card — external type -->
+                    <div class="bg-white rounded-lg border border-red-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">Betty Williams</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200">EXT</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due 1 Feb 2026</span>
+                                    <span class="text-gray-300">·</span>
+                                    <span class="text-red-600 font-medium">30 days overdue</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>0 questions</span>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ===== TODAY SECTION ===== -->
+            <section>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-teal-500"></div>
+                    <h2 class="text-sm font-semibold text-gray-900">Today</h2>
+                    <span class="text-xs text-gray-400 font-medium">2</span>
+                </div>
+                <div class="space-y-2">
+
+                    <!-- Today card -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">Patricia Martinez</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-50 text-teal-700 border border-teal-200">INT</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due today</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>1 question</span>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Today card — first check-in -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">Robert Johnson</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-50 text-teal-700 border border-teal-200">INT</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200">First</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due today</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>3 questions</span>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ===== UPCOMING SECTION ===== -->
+            <section>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-gray-400"></div>
+                    <h2 class="text-sm font-semibold text-gray-900">Upcoming</h2>
+                    <span class="text-xs text-gray-400 font-medium">4</span>
+                </div>
+                <div class="space-y-2">
+
+                    <!-- Upcoming card -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group opacity-80">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">Susan Anderson</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-50 text-teal-700 border border-teal-200">INT</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due 10 Mar 2026</span>
+                                    <span class="text-gray-300">·</span>
+                                    <span>in 7 days</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>2 questions</span>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group opacity-80">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">James Wilson</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200">EXT</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due 15 Mar 2026</span>
+                                    <span class="text-gray-300">·</span>
+                                    <span>in 12 days</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>0 questions</span>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group opacity-80">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">Helen Brown</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-50 text-teal-700 border border-teal-200">INT</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due 22 Mar 2026</span>
+                                    <span class="text-gray-300">·</span>
+                                    <span>in 19 days</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>1 question</span>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group opacity-80">
+                        <div class="px-4 py-3 flex items-center gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-sm font-semibold text-gray-900 truncate">Frank Miller</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-50 text-teal-700 border border-teal-200">INT</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <span>Due 1 Apr 2026</span>
+                                    <span class="text-gray-300">·</span>
+                                    <span>in 29 days</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-xs text-gray-500 shrink-0">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>0 questions</span>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-teal-600 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+</body>
+</html>

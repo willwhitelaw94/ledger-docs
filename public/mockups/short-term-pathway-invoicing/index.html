@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STP - Short Term Pathway Invoicing Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">Finance</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">STP Auto-Generated Bills</span>
+  </div>
+  <div class="w-8 h-8 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-xs font-medium">FP</div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('dashboard')" id="tab-dashboard" class="py-3 text-sm tab-active">STP Dashboard</button>
+    <button onclick="showScreen('bill-review')" id="tab-bill-review" class="py-3 text-sm tab-inactive">Bill Review</button>
+    <button onclick="showScreen('care-partner')" id="tab-care-partner" class="py-3 text-sm tab-inactive">Care Partner View</button>
+  </nav>
+</div>
+
+<!-- STP Dashboard -->
+<div id="screen-dashboard" class="max-w-5xl mx-auto p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">Short Term Pathway Bills</h1>
+      <p class="text-sm text-gray-500 mt-1">Auto-generated care management bills for RC and EoL pathways</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <option>All Pathways</option>
+        <option>RC - Restorative Care</option>
+        <option>EoL - End of Life</option>
+      </select>
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <option>All Statuses</option>
+        <option>Draft</option>
+        <option>Submitted</option>
+        <option>Paid</option>
+        <option>Flagged</option>
+      </select>
+    </div>
+  </div>
+  <!-- Summary -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Auto-Generated This Week</div>
+      <div class="text-2xl font-semibold text-gray-900">14</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4">
+      <div class="text-sm text-gray-500">Pending Review</div>
+      <div class="text-2xl font-semibold text-amber-600">3</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-green-200 p-4">
+      <div class="text-sm text-gray-500">Processed</div>
+      <div class="text-2xl font-semibold text-green-600">11</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-red-200 p-4">
+      <div class="text-sm text-gray-500">Flagged</div>
+      <div class="text-2xl font-semibold text-red-600">2</div>
+    </div>
+  </div>
+  <!-- Bills table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Bill #</th>
+          <th class="px-6 py-3">Client</th>
+          <th class="px-6 py-3">Pathway</th>
+          <th class="px-6 py-3">Service Date</th>
+          <th class="px-6 py-3 text-right">Amount</th>
+          <th class="px-6 py-3">Source</th>
+          <th class="px-6 py-3">Status</th>
+          <th class="px-6 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 text-sm">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 font-medium text-tc-teal-700">B-STP-4890</td>
+          <td class="px-6 py-4"><div class="text-gray-900">Margaret Thompson</div><div class="text-xs text-gray-400">KF-273342</div></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">RC</span></td>
+          <td class="px-6 py-4 text-gray-500">14 Mar 2026</td>
+          <td class="px-6 py-4 text-right font-medium">$185.00</td>
+          <td class="px-6 py-4"><span class="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">Auto</span></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Processed</span></td>
+          <td class="px-6 py-4"><button class="text-xs text-tc-teal-700 hover:underline">View</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 font-medium text-tc-teal-700">B-STP-4891</td>
+          <td class="px-6 py-4"><div class="text-gray-900">Robert Jenkins</div><div class="text-xs text-gray-400">KF-284561</div></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">EoL</span></td>
+          <td class="px-6 py-4 text-gray-500">14 Mar 2026</td>
+          <td class="px-6 py-4 text-right font-medium">$245.00</td>
+          <td class="px-6 py-4"><span class="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">Auto</span></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Processed</span></td>
+          <td class="px-6 py-4"><button class="text-xs text-tc-teal-700 hover:underline">View</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50 bg-amber-50/30">
+          <td class="px-6 py-4 font-medium text-tc-teal-700">B-STP-4895</td>
+          <td class="px-6 py-4"><div class="text-gray-900">Dorothy Walsh</div><div class="text-xs text-gray-400">KF-291845</div></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">RC</span></td>
+          <td class="px-6 py-4 text-gray-500">14 Mar 2026</td>
+          <td class="px-6 py-4 text-right font-medium">$185.00</td>
+          <td class="px-6 py-4"><span class="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">Auto</span></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Review</span></td>
+          <td class="px-6 py-4"><button class="text-xs bg-tc-teal-700 text-white px-3 py-1 rounded">Review</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50 bg-red-50/30">
+          <td class="px-6 py-4 font-medium text-tc-teal-700">B-STP-4897</td>
+          <td class="px-6 py-4"><div class="text-gray-900">Henry Nguyen</div><div class="text-xs text-gray-400">KF-301982</div></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">RC</span></td>
+          <td class="px-6 py-4 text-red-600 font-medium">18 Mar 2026</td>
+          <td class="px-6 py-4 text-right font-medium">$185.00</td>
+          <td class="px-6 py-4"><span class="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">Auto</span></td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Flagged</span></td>
+          <td class="px-6 py-4"><button class="text-xs bg-red-600 text-white px-3 py-1 rounded">Review</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-800">
+    <strong>B-STP-4897:</strong> Service date 18 Mar falls after RC pathway end date (15 Mar 2026) for Henry Nguyen. Service event requires manual review.
+  </div>
+</div>
+
+<!-- Bill Review -->
+<div id="screen-bill-review" class="max-w-3xl mx-auto p-6 hidden">
+  <h1 class="text-lg font-semibold text-gray-900 mb-6">Review Auto-Generated Bill</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <div class="text-sm font-medium text-gray-900">Bill #B-STP-4895</div>
+        <div class="text-xs text-gray-500">Auto-generated 14 Mar 2026 from RC care management event</div>
+      </div>
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Pending Review</span>
+    </div>
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div><label class="text-xs text-gray-500">Client</label><div class="text-sm font-medium">Dorothy Walsh (KF-291845)</div></div>
+      <div><label class="text-xs text-gray-500">Pathway</label><div class="text-sm font-medium"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">RC - Restorative Care</span></div></div>
+      <div>
+        <label class="text-xs text-gray-500">Service Type</label>
+        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mt-1">
+          <option selected>Care Management - RC</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs text-gray-500">Service Date</label>
+        <input type="date" value="2026-03-14" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mt-1">
+      </div>
+      <div>
+        <label class="text-xs text-gray-500">Rate (from RC Schedule)</label>
+        <input type="text" value="$185.00" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mt-1">
+        <p class="text-xs text-gray-400 mt-1">Effective rate for RC care management as of 1 Jan 2026</p>
+      </div>
+      <div>
+        <label class="text-xs text-gray-500">Funding Stream</label>
+        <div class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm mt-1 font-medium">RC - Restorative Care ($1,920 remaining)</div>
+      </div>
+    </div>
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6 text-xs text-blue-700">
+      <strong>Auto-populated</strong> from service event #SE-8921. All fields are editable. Changes will be logged in the audit trail.
+    </div>
+    <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+      <button class="px-4 py-2 text-sm border border-red-300 text-red-700 rounded-lg">Void Bill</button>
+      <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700">Save Changes</button>
+      <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Approve &amp; Process</button>
+    </div>
+  </div>
+</div>
+
+<!-- Care Partner View -->
+<div id="screen-care-partner" class="max-w-4xl mx-auto p-6 hidden">
+  <h1 class="text-xl font-semibold text-gray-900 mb-1">Pathway Billing Status</h1>
+  <p class="text-sm text-gray-500 mb-6">Care Partner view &mdash; Margaret Thompson (KF-273342)</p>
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">RC - Restorative Care</span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+      </div>
+      <div class="text-xs text-gray-500">1 Feb - 15 Mar 2026 (6 weeks)</div>
+      <div class="text-sm font-medium mt-2">5 bills generated &bull; $925.00 billed</div>
+      <div class="mt-2 bg-amber-100 rounded-full h-1.5"><div class="bg-amber-500 h-1.5 rounded-full" style="width: 48%"></div></div>
+      <div class="text-xs text-amber-600 mt-1">$1,920.00 funding &bull; $995 remaining</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 opacity-60">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">EoL - End of Life</span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Not Active</span>
+      </div>
+      <div class="text-xs text-gray-400">No active EoL pathway</div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div class="px-6 py-3 bg-gray-50 border-b border-gray-200">
+      <h2 class="text-sm font-semibold text-gray-700">RC Care Management Bills</h2>
+    </div>
+    <table class="w-full text-sm">
+      <thead><tr class="text-left text-xs font-medium text-gray-500 uppercase"><th class="px-6 py-2">Bill #</th><th class="px-6 py-2">Date</th><th class="px-6 py-2 text-right">Amount</th><th class="px-6 py-2">Status</th></tr></thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr><td class="px-6 py-2 text-tc-teal-700">B-STP-4890</td><td class="px-6 py-2 text-gray-500">14 Mar</td><td class="px-6 py-2 text-right">$185.00</td><td class="px-6 py-2"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span></td></tr>
+        <tr><td class="px-6 py-2 text-tc-teal-700">B-STP-4856</td><td class="px-6 py-2 text-gray-500">7 Mar</td><td class="px-6 py-2 text-right">$185.00</td><td class="px-6 py-2"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span></td></tr>
+        <tr><td class="px-6 py-2 text-tc-teal-700">B-STP-4821</td><td class="px-6 py-2 text-gray-500">28 Feb</td><td class="px-6 py-2 text-right">$185.00</td><td class="px-6 py-2"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span></td></tr>
+        <tr><td class="px-6 py-2 text-tc-teal-700">B-STP-4789</td><td class="px-6 py-2 text-gray-500">21 Feb</td><td class="px-6 py-2 text-right">$185.00</td><td class="px-6 py-2"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span></td></tr>
+        <tr><td class="px-6 py-2 text-tc-teal-700">B-STP-4754</td><td class="px-6 py-2 text-gray-500">14 Feb</td><td class="px-6 py-2 text-right">$185.00</td><td class="px-6 py-2"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

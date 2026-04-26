@@ -1,0 +1,17 @@
+epic_code: OWN
+epic_number: 100
+title: Ownership Register & Cap Table
+status: idea
+priority: P2
+effort: M
+gates:
+  idea: pending
+  spec: pending
+  design: pending
+  architecture: pending
+  code_quality: pending
+  qa: pending
+  release: pending
+dependencies:
+  - 028-CFT
+  - 006-CCM

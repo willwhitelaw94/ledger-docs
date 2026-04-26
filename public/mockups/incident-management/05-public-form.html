@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report an Incident — Trilogy Care</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwindcss.config={theme:{extend:{colors:{teal:{50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D'},'primary-blue':{50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>body { font-family: 'Roboto Flex', sans-serif; }</style>
+  <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<!-- Public Header -->
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-2xl mx-auto px-6 py-4 flex items-center gap-3">
+    <div class="w-10 h-10 bg-primary-blue-700 rounded-lg flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <div>
+      <h1 class="text-lg font-semibold text-gray-900">Trilogy Care</h1>
+      <p class="text-xs text-gray-500">Incident Reporting</p>
+    </div>
+  </div>
+</header>
+
+<!-- Form Content -->
+<main class="max-w-2xl mx-auto px-6 py-8">
+  <!-- Intro -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-semibold text-gray-900 mb-2">Report an Incident</h2>
+    <p class="text-sm text-gray-600 leading-relaxed">Use this form to report an incident involving a Trilogy Care client. You do not need an account to submit this form. Your report will be reviewed by a Care Partner or Coordinator before being accepted.</p>
+    <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start gap-3">
+      <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <p class="text-sm text-blue-700">If this is an emergency, call <strong>000</strong> immediately. Then report the incident here.</p>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+
+    <!-- Section 1: Your Details -->
+    <div class="p-6 border-b border-gray-100">
+      <h3 class="text-base font-semibold text-gray-900 mb-4">Your Details</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Your full name <span class="text-red-500">*</span></label>
+          <input type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500" placeholder="e.g. Sarah Thompson">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Phone number <span class="text-red-500">*</span></label>
+            <input type="tel" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500" placeholder="0412 345 678">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Email <span class="text-xs text-gray-400 font-normal">Optional</span></label>
+            <input type="email" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500" placeholder="sarah@example.com">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Your relationship to the client <span class="text-red-500">*</span></label>
+          <div class="relative">
+            <select class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 appearance-none bg-white">
+              <option value="">Select relationship...</option>
+              <option>Family member</option>
+              <option>Support worker</option>
+              <option>Representative</option>
+              <option>Carer (informal)</option>
+              <option selected>Care recipient (myself)</option>
+              <option>Other</option>
+            </select>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Client Details -->
+    <div class="p-6 border-b border-gray-100">
+      <h3 class="text-base font-semibold text-gray-900 mb-4">Client Details</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Client's full name <span class="text-red-500">*</span></label>
+          <input type="text" value="Margaret Thompson" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Date of birth <span class="text-red-500">*</span></label>
+            <input type="text" value="15/03/1942" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Support at Home ID <span class="text-xs text-gray-400 font-normal">If known</span></label>
+            <input type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500" placeholder="e.g. SAH-20241">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Incident Details -->
+    <div class="p-6 border-b border-gray-100">
+      <h3 class="text-base font-semibold text-gray-900 mb-4">What Happened</h3>
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Date of incident <span class="text-red-500">*</span></label>
+            <input type="text" value="24/02/2026" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Time <span class="text-xs text-gray-400 font-normal">Approximate</span></label>
+            <input type="text" value="7:15 AM" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Location <span class="text-red-500">*</span></label>
+          <input type="text" value="Client's home — bathroom" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Describe what happened <span class="text-red-500">*</span></label>
+          <textarea rows="5" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500 resize-y" placeholder="Please describe the incident in as much detail as you can...">Mum fell in the bathroom this morning. She tried to get up from the toilet without her walking frame and slipped. She hit her head on the vanity and has a cut above her right eye. She was on the floor when the care worker arrived at 7:15.</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Harm Classification -->
+    <div class="p-6 border-b border-gray-100">
+      <h3 class="text-base font-semibold text-gray-900 mb-2">How serious was this?</h3>
+      <p class="text-sm text-gray-500 mb-4">Select the option that best describes the level of harm.</p>
+      <div class="space-y-2">
+        <label class="flex items-start gap-3 p-3 rounded-lg border-2 border-red-300 bg-red-50/50 cursor-pointer">
+          <input type="radio" name="harm" checked class="mt-1 text-teal-700 focus:ring-teal-500">
+          <div>
+            <span class="text-sm font-semibold text-red-700">Severe Harm</span>
+            <span class="text-xs text-red-600 ml-1">— Call 000 immediately</span>
+            <p class="text-xs text-gray-500 mt-0.5">Death, serious injury, or permanent impairment</p>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer">
+          <input type="radio" name="harm" class="mt-1 text-teal-700 focus:ring-teal-500">
+          <div>
+            <span class="text-sm font-medium text-gray-900">Moderate Harm</span>
+            <p class="text-xs text-gray-500 mt-0.5">Injury requiring treatment or temporary impairment</p>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer">
+          <input type="radio" name="harm" class="mt-1 text-teal-700 focus:ring-teal-500">
+          <div>
+            <span class="text-sm font-medium text-gray-900">Low Harm</span>
+            <p class="text-xs text-gray-500 mt-0.5">Minor injury or near miss — no ongoing effects</p>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-3 rounded-lg border border-gray-200 hover:border-gray-300 cursor-pointer">
+          <input type="radio" name="harm" class="mt-1 text-teal-700 focus:ring-teal-500">
+          <div>
+            <span class="text-sm font-medium text-gray-900">No Harm (Clinical Notification)</span>
+            <p class="text-xs text-gray-500 mt-0.5">Something happened that the care team should know about</p>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- CAPTCHA + Submit -->
+    <div class="p-6">
+      <div class="mb-6">
+        <div class="w-[300px] h-[74px] bg-gray-100 border border-gray-300 rounded-md flex items-center px-4 gap-3">
+          <div class="w-7 h-7 border-2 border-gray-400 rounded flex items-center justify-center">
+            <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <span class="text-sm text-gray-700">I'm not a robot</span>
+          <div class="ml-auto text-right">
+            <div class="text-[10px] text-gray-400">reCAPTCHA</div>
+            <div class="text-[8px] text-gray-400">Privacy - Terms</div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <p class="text-xs text-gray-400">Your report will be reviewed by a Trilogy Care team member.</p>
+        <button class="px-6 py-2.5 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-800 shadow-sm flex items-center gap-2">
+          Submit Report
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="mt-8 text-center text-xs text-gray-400 pb-8">
+    <p>Trilogy Care Pty Ltd · ABN 12 345 678 901</p>
+    <p class="mt-1">If you need help filling out this form, call <a href="tel:1300000000" class="text-teal-700 hover:underline">1300 000 000</a></p>
+  </div>
+</main>
+
+</body>
+</html>

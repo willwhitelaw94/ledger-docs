@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Onboarding 2 — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">SOP2 — Supplier Onboarding</span>
+  <button onclick="show('register')" id="nav-register" class="tab-active text-sm px-3 py-1 whitespace-nowrap">ABN Registration</button>
+  <button onclick="show('pricing')" id="nav-pricing" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Pricing Matrix</button>
+  <button onclick="show('bank')" id="nav-bank" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Bank Verification</button>
+  <button onclick="show('recontract')" id="nav-recontract" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Recontracting</button>
+  <button onclick="show('docs')" id="nav-docs" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Compliance Docs</button>
+</nav>
+
+<!-- ABN Registration -->
+<div id="register" class="screen active p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Supplier Registration</h1>
+  <p class="text-sm text-gray-500 mb-6">Step 1 of 5 — Business Details</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-3 bg-gray-50 border-b border-gray-200">
+      <div class="flex items-center gap-2">
+        <span class="w-7 h-7 bg-teal-700 text-white rounded-full text-xs flex items-center justify-center font-bold">1</span>
+        <div class="w-12 h-1 bg-teal-700 rounded"></div>
+        <span class="w-7 h-7 bg-gray-200 text-gray-500 rounded-full text-xs flex items-center justify-center font-bold">2</span>
+        <div class="w-12 h-1 bg-gray-200 rounded"></div>
+        <span class="w-7 h-7 bg-gray-200 text-gray-500 rounded-full text-xs flex items-center justify-center font-bold">3</span>
+        <div class="w-12 h-1 bg-gray-200 rounded"></div>
+        <span class="w-7 h-7 bg-gray-200 text-gray-500 rounded-full text-xs flex items-center justify-center font-bold">4</span>
+        <div class="w-12 h-1 bg-gray-200 rounded"></div>
+        <span class="w-7 h-7 bg-gray-200 text-gray-500 rounded-full text-xs flex items-center justify-center font-bold">5</span>
+        <div class="ml-4 flex gap-4 text-xs text-gray-400">
+          <span class="text-teal-700 font-medium">Business</span><span>Locations</span><span>Pricing</span><span>Documents</span><span>Agreements</span>
+        </div>
+      </div>
+    </div>
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="text-sm font-medium text-gray-700">ABN</label>
+        <div class="mt-1 flex gap-2">
+          <input type="text" value="12 345 678 901" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <button class="px-4 py-2 bg-teal-700 text-white text-sm rounded-lg">Lookup</button>
+        </div>
+      </div>
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <p class="text-sm font-medium text-green-800 flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>ABN Verified via ABR</p>
+        <div class="mt-2 grid grid-cols-2 gap-2 text-sm">
+          <div><span class="text-gray-500">Legal Name:</span> <span class="font-medium">Sunrise Cleaning Pty Ltd</span></div>
+          <div><span class="text-gray-500">GST Registered:</span> <span class="font-medium text-green-700">Yes</span></div>
+          <div><span class="text-gray-500">Entity Type:</span> <span class="font-medium">Australian Private Company</span></div>
+          <div><span class="text-gray-500">Status:</span> <span class="font-medium text-green-700">Active</span></div>
+        </div>
+      </div>
+      <div><label class="text-sm font-medium text-gray-700">Trading Name</label><input type="text" value="Sunrise Cleaning" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+      <div><label class="text-sm font-medium text-gray-700">Service Delivery Model</label>
+        <div class="mt-2 flex gap-3">
+          <label class="flex items-center gap-2 p-3 border border-teal-500 bg-teal-50 rounded-lg cursor-pointer flex-1"><input type="radio" name="model" checked class="text-teal-700"><div><span class="text-sm font-medium">Direct Provider</span><p class="text-xs text-gray-500">We employ the workers</p></div></label>
+          <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg cursor-pointer flex-1"><input type="radio" name="model" class="text-teal-700"><div><span class="text-sm font-medium">Subcontractor</span><p class="text-xs text-gray-500">We use subcontractors</p></div></label>
+          <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg cursor-pointer flex-1"><input type="radio" name="model" class="text-teal-700"><div><span class="text-sm font-medium">Both</span><p class="text-xs text-gray-500">Mixed model</p></div></label>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-between">
+      <span class="text-xs text-gray-400">Progress saved automatically</span>
+      <button class="px-5 py-2.5 bg-teal-700 text-white text-sm font-medium rounded-lg">Continue to Locations</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pricing Matrix -->
+<div id="pricing" class="screen p-6 max-w-7xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Pricing Matrix</h1>
+  <p class="text-sm text-gray-500 mb-6">Manage rates per service, per location, per day type. Location: <select class="border border-gray-300 rounded px-2 py-1 text-sm"><option>Richmond VIC</option><option>Hawthorn VIC</option><option>All Locations</option></select></p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+          <th class="px-6 py-3 text-left">Service</th>
+          <th class="px-3 py-3 text-center">Weekday</th>
+          <th class="px-3 py-3 text-center">Saturday</th>
+          <th class="px-3 py-3 text-center">Sunday</th>
+          <th class="px-3 py-3 text-center">Public Holiday</th>
+          <th class="px-3 py-3 text-center">After Hours</th>
+          <th class="px-3 py-3 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-3 text-sm font-medium">Domestic Assistance</td>
+          <td class="px-3 py-3"><input type="text" value="$50.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$62.50" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$75.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$100.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$55.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3 text-center"><button class="text-xs text-teal-700 hover:underline">Apply to All</button></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 text-sm font-medium">Personal Care</td>
+          <td class="px-3 py-3"><input type="text" value="$55.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$68.75" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$82.50" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$110.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$60.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3 text-center"><button class="text-xs text-teal-700 hover:underline">Apply to All</button></td>
+        </tr>
+        <tr class="bg-red-50">
+          <td class="px-6 py-3 text-sm font-medium">Meal Preparation</td>
+          <td class="px-3 py-3"><input type="text" value="$85.00" class="w-20 border border-red-400 rounded px-2 py-1 text-sm text-center bg-red-50"></td>
+          <td class="px-3 py-3"><input type="text" value="$106.25" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$127.50" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$170.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3"><input type="text" value="$90.00" class="w-20 border border-gray-300 rounded px-2 py-1 text-sm text-center"></td>
+          <td class="px-3 py-3 text-center"><button class="text-xs text-teal-700 hover:underline">Apply to All</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="px-6 py-2 bg-red-50 border-t border-red-200"><p class="text-xs text-red-700">Meal Preparation weekday rate ($85.00) exceeds price cap of $75.00. Please correct before submitting.</p></div>
+  </div>
+  <div class="mt-4 flex justify-end gap-3">
+    <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg">Cancel</button>
+    <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Submit for Approval</button>
+  </div>
+</div>
+
+<!-- Bank Verification -->
+<div id="bank" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Bank Details Verification</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+    <div class="grid grid-cols-2 gap-4">
+      <div><label class="text-sm font-medium text-gray-700">BSB</label><input type="text" value="063-000" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+      <div><label class="text-sm font-medium text-gray-700">Account Number</label><input type="text" value="1234 5678" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+    </div>
+    <div><label class="text-sm font-medium text-gray-700">Account Name</label><input type="text" value="Sunrise Cleaning Pty Ltd" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+    <div class="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
+      <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      <div><p class="text-sm font-medium text-green-800">Verified via EFTSure</p><p class="text-xs text-green-700">BSB 063-000 matches Commonwealth Bank of Australia. Account name confirmed.</p></div>
+    </div>
+    <button class="w-full py-2.5 bg-teal-700 text-white text-sm font-medium rounded-lg">Save Bank Details</button>
+  </div>
+</div>
+
+<!-- Recontracting -->
+<div id="recontract" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">SAH Recontracting</h1>
+  <p class="text-sm text-gray-500 mb-6">Update your agreement for Support at Home compliance.</p>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 bg-blue-50 border-b border-blue-200">
+      <p class="text-sm text-blue-800">Your current agreement is pre-SAH. Please review your details and accept the new SAH terms.</p>
+    </div>
+    <div class="p-6 space-y-4">
+      <div class="border border-green-200 rounded-lg p-4 bg-green-50 flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
+        <div><p class="text-sm font-medium text-green-800">Business details unchanged</p><p class="text-xs text-green-700">ABN, legal name, and contact details match your current records.</p></div>
+      </div>
+      <div class="border border-green-200 rounded-lg p-4 bg-green-50 flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
+        <div><p class="text-sm font-medium text-green-800">Services and pricing unchanged</p><p class="text-xs text-green-700">Your current services and rates match your existing agreement.</p></div>
+      </div>
+      <div class="border border-green-200 rounded-lg p-4 bg-green-50 flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg>
+        <div><p class="text-sm font-medium text-green-800">Compliance documents current</p><p class="text-xs text-green-700">All required documents are valid and not expired.</p></div>
+      </div>
+      <label class="flex items-start gap-3 p-4 border border-gray-200 rounded-lg">
+        <input type="checkbox" class="rounded text-teal-700 mt-0.5">
+        <span class="text-sm text-gray-700">I accept the <a href="#" class="text-teal-700 underline">Support at Home Terms &amp; Conditions (v1.0)</a> on behalf of Sunrise Cleaning Pty Ltd</span>
+      </label>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end">
+      <button class="px-5 py-2.5 bg-teal-700 text-white text-sm font-medium rounded-lg">Confirm &amp; Accept SAH Agreement</button>
+    </div>
+  </div>
+</div>
+
+<!-- Compliance Documents -->
+<div id="docs" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Compliance Documents</h1>
+  <p class="text-sm text-gray-500 mb-6">Organisation type: <strong>Company</strong> &middot; Documents tailored to your entity type.</p>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between"><span class="text-xs text-gray-500 uppercase font-medium">Organisation Documents (Company)</span><span class="text-xs text-gray-500">3 of 5 uploaded</span></div>
+    <div class="divide-y divide-gray-100">
+      <div class="px-6 py-3 flex items-center gap-3"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg><div class="flex-1"><span class="text-sm">Public Liability Insurance</span></div><span class="text-xs text-green-700">Uploaded</span></div>
+      <div class="px-6 py-3 flex items-center gap-3"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg><div class="flex-1"><span class="text-sm">Workers Compensation</span></div><span class="text-xs text-green-700">Uploaded</span></div>
+      <div class="px-6 py-3 flex items-center gap-3"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg><div class="flex-1"><span class="text-sm">ABN Verification</span></div><span class="text-xs text-green-700">Uploaded</span></div>
+      <div class="px-6 py-3 flex items-center gap-3 bg-yellow-50"><svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><div class="flex-1"><span class="text-sm">Professional Indemnity</span><p class="text-xs text-yellow-700">Required for your entity type</p></div><button class="px-3 py-1 bg-teal-700 text-white text-xs rounded-lg">Upload</button></div>
+      <div class="px-6 py-3 flex items-center gap-3"><svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-width="2"/></svg><div class="flex-1"><span class="text-sm">ASIC Registration</span><p class="text-xs text-gray-500">Required for companies</p></div><button class="px-3 py-1 bg-teal-700 text-white text-xs rounded-lg">Upload</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

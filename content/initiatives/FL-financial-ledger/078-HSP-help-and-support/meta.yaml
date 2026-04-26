@@ -1,0 +1,29 @@
+epic_code: HSP
+epic_number: "078"
+name: Help & Support
+initiative: FL-financial-ledger
+status: design
+stage: design
+created: "2026-04-19"
+author: William Whitelaw
+branch: feature/078-HSP-help-and-support
+summary: "In-product help center, contextual tours, keyboard shortcuts reference, What's New feed, and structured feedback capture — so every user can get unstuck without leaving Ledgerly."
+depends_on:
+  - 012-ATT-attachments
+  - 024-NTF-notifications-activity-feed
+  - 009-BIL-billing-monetisation
+absorbs:
+  - 075-FTS-feature-tour-stepper
+gates:
+  idea:
+    passed: true
+    date: "2026-04-19"
+    notes: "L effort (4 sprints). Unified help surface: articles + tours + release notes + feedback. Builds on existing tour_definitions/tour_completions migration. RACI unassigned — blocker before design handover."
+  spec:
+    passed: conditional
+    date: "2026-04-19"
+    notes: "10 user stories (5 P1, 3 P2, 2 P3), 52 FRs, 10 SCs, 32 clarifications across 10 categories. All stories are INVEST-compliant and use Ledgerly terminology (workspace, workspace role names, etc). Gate 1 conditionally passed — RACI unassigned (Gate 0 carry-over) and 8 tour/content clarifications (Q2/Q3/Q4/Q8/Q10/Q12/Q17/Q29) are blockers for Gate 2 design handover."
+  design:
+    passed: true
+    date: "2026-04-19"
+    notes: "design.md covers 10 surfaces (6 user + 4 admin), with explicit Alignment-with-Principles mapping, accessibility plan, responsive strategy, and loading/empty/error matrix. All 9 blocker clarifications from Gate 1 (Q2, Q3, Q4, Q8, Q10, Q12, Q17, Q29, Q33) are resolved and reflected in the design. Ten interactive Next.js mockup pages under frontend/src/app/mockups/078-hsp/ — zero TypeScript errors, zero eslint errors, real shadcn primitives and design-system tokens, dark-mode native. Open design decisions (Q1, Q7, Q16, Q19, Q26, Q27, Q30) are non-blocking and captured for resolution during Sprint 2. Plan.md (Gate 3) already passes — ready for dev."

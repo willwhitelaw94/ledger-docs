@@ -1,0 +1,11 @@
+prefix: "061-PSM"
+title: "Practice Specialisation & Module Gating"
+status: backlog
+initiative: FL-financial-ledger
+priority: P1
+lead: William Whitelaw
+gates:
+  idea:
+    passed: true
+    date: 2026-03-21
+    notes: "Idea brief validated — practice types, module gating, family tree view, wealth advisor dashboard"

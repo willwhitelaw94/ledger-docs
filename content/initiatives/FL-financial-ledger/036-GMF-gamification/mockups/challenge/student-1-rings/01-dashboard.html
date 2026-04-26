@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ring Rachel — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    @keyframes ring-draw { from { stroke-dashoffset: var(--circumference); } }
+    @keyframes pulse-glow { 0%, 100% { filter: drop-shadow(0 0 6px var(--glow-color)); } 50% { filter: drop-shadow(0 0 14px var(--glow-color)); } }
+    .ring-animate { animation: ring-draw 1.8s ease-out forwards; }
+    .ring-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fade-up 0.5s ease-out forwards; }
+    .fade-up-d1 { animation-delay: 0.1s; opacity: 0; }
+    .fade-up-d2 { animation-delay: 0.2s; opacity: 0; }
+    .fade-up-d3 { animation-delay: 0.3s; opacity: 0; }
+    .fade-up-d4 { animation-delay: 0.5s; opacity: 0; }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }
+  </script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-60 bg-gray-900 border-r border-gray-800 min-h-screen flex-shrink-0 p-4 space-y-2">
+    <div class="flex items-center gap-2 mb-6 px-2">
+      <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-sm font-bold">M</div>
+      <span class="font-semibold text-sm">MoneyQuest</span>
+    </div>
+    <div class="h-9 bg-purple-600/20 border border-purple-500/30 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="mt-6 h-px bg-gray-800"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto p-8">
+    <!-- Header -->
+    <div class="mb-8 fade-up">
+      <h1 class="text-2xl font-bold">Good morning, Sarah</h1>
+      <p class="text-gray-400 text-sm mt-1">Week 14 streak active &middot; 3 habits due today</p>
+    </div>
+
+    <!-- Hero: 3 Concentric Rings -->
+    <div class="flex justify-center mb-10 fade-up fade-up-d1">
+      <div class="relative" style="width: 340px; height: 340px;">
+        <svg viewBox="0 0 340 340" class="w-full h-full">
+          <defs>
+            <linearGradient id="grad-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#14b8a6"/>
+              <stop offset="100%" stop-color="#007F7E"/>
+            </linearGradient>
+            <linearGradient id="grad-amber" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#d97706"/>
+            </linearGradient>
+            <linearGradient id="grad-violet" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a78bfa"/>
+              <stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Outer ring: Reconcile (teal) — 85% -->
+          <circle cx="170" cy="170" r="155" fill="none" stroke="#1e293b" stroke-width="14" />
+          <circle cx="170" cy="170" r="155" fill="none" stroke="url(#grad-teal)" stroke-width="14"
+            stroke-linecap="round" transform="rotate(-90 170 170)"
+            stroke-dasharray="974" stroke-dashoffset="146"
+            style="--circumference: 974; --glow-color: #14b8a6;"
+            class="ring-animate ring-glow" />
+
+          <!-- Middle ring: Invoice (amber) — 72% -->
+          <circle cx="170" cy="170" r="125" fill="none" stroke="#1e293b" stroke-width="14" />
+          <circle cx="170" cy="170" r="125" fill="none" stroke="url(#grad-amber)" stroke-width="14"
+            stroke-linecap="round" transform="rotate(-90 170 170)"
+            stroke-dasharray="785" stroke-dashoffset="220"
+            style="--circumference: 785; --glow-color: #f59e0b;"
+            class="ring-animate ring-glow" />
+
+          <!-- Inner ring: Review (violet) — 60% -->
+          <circle cx="170" cy="170" r="95" fill="none" stroke="#1e293b" stroke-width="14" />
+          <circle cx="170" cy="170" r="95" fill="none" stroke="url(#grad-violet)" stroke-width="14"
+            stroke-linecap="round" transform="rotate(-90 170 170)"
+            stroke-dasharray="597" stroke-dashoffset="239"
+            style="--circumference: 597; --glow-color: #7c3aed;"
+            class="ring-animate ring-glow" />
+        </svg>
+
+        <!-- Center content -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <span class="text-5xl font-bold text-white">14</span>
+          <span class="text-xs text-gray-400 uppercase tracking-widest mt-1">Week Streak</span>
+        </div>
+
+        <!-- Ring Labels -->
+        <div class="absolute top-1 right-2 text-xs font-medium text-teal-400">Reconcile 85%</div>
+        <div class="absolute bottom-16 right-0 text-xs font-medium text-amber-400">Invoice 72%</div>
+        <div class="absolute bottom-4 left-8 text-xs font-medium text-violet-400">Review 60%</div>
+      </div>
+    </div>
+
+    <!-- Stat Rings Row -->
+    <div class="grid grid-cols-3 gap-6 max-w-2xl mx-auto mb-10 fade-up fade-up-d2">
+      <!-- Time Saved -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 flex flex-col items-center" style="box-shadow: 0 0 20px rgba(147,51,234,0.08);">
+        <div class="relative w-20 h-20 mb-3">
+          <svg viewBox="0 0 80 80" class="w-full h-full">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#1e293b" stroke-width="6"/>
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#9333ea" stroke-width="6"
+              stroke-linecap="round" transform="rotate(-90 40 40)"
+              stroke-dasharray="214" stroke-dashoffset="43"
+              style="--circumference:214" class="ring-animate"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-lg font-bold">12h</span>
+          </div>
+        </div>
+        <span class="text-xs text-gray-400">Time Saved</span>
+        <span class="text-[10px] text-gray-500">this month</span>
+      </div>
+
+      <!-- Money Saved -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 flex flex-col items-center" style="box-shadow: 0 0 20px rgba(0,127,126,0.08);">
+        <div class="relative w-20 h-20 mb-3">
+          <svg viewBox="0 0 80 80" class="w-full h-full">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#1e293b" stroke-width="6"/>
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#14b8a6" stroke-width="6"
+              stroke-linecap="round" transform="rotate(-90 40 40)"
+              stroke-dasharray="214" stroke-dashoffset="21"
+              style="--circumference:214" class="ring-animate"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-lg font-bold">$840</span>
+          </div>
+        </div>
+        <span class="text-xs text-gray-400">Money Saved</span>
+        <span class="text-[10px] text-gray-500">estimated value</span>
+      </div>
+
+      <!-- Streak -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 flex flex-col items-center" style="box-shadow: 0 0 20px rgba(245,158,11,0.08);">
+        <div class="relative w-20 h-20 mb-3">
+          <svg viewBox="0 0 80 80" class="w-full h-full">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#1e293b" stroke-width="6"/>
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#f59e0b" stroke-width="6"
+              stroke-linecap="round" transform="rotate(-90 40 40)"
+              stroke-dasharray="214" stroke-dashoffset="53"
+              style="--circumference:214" class="ring-animate"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-lg font-bold">14w</span>
+          </div>
+        </div>
+        <span class="text-xs text-gray-400">Current Streak</span>
+        <span class="text-[10px] text-gray-500">best: 22 weeks</span>
+      </div>
+    </div>
+
+    <!-- Habit Cards Grid -->
+    <h2 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4 fade-up fade-up-d3">Daily Habits</h2>
+    <div class="grid grid-cols-3 gap-4 mb-8 fade-up fade-up-d3">
+      <!-- Habit 1: Reconcile Bank -->
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-4 flex items-center gap-4 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.06);">
+        <div class="relative w-12 h-12 flex-shrink-0">
+          <svg viewBox="0 0 48 48" class="w-full h-full">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" stroke-width="4"/>
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#14b8a6" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"
+              stroke-dasharray="126" stroke-dashoffset="0" class="ring-animate" style="--circumference:126"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <svg class="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-medium">Reconcile Bank</p>
+          <p class="text-xs text-gray-500">Completed today</p>
+        </div>
+      </div>
+
+      <!-- Habit 2: Review Invoices -->
+      <div class="bg-gray-900 border border-amber-500/20 rounded-xl p-4 flex items-center gap-4 hover:border-amber-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(245,158,11,0.06);">
+        <div class="relative w-12 h-12 flex-shrink-0">
+          <svg viewBox="0 0 48 48" class="w-full h-full">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" stroke-width="4"/>
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#f59e0b" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"
+              stroke-dasharray="126" stroke-dashoffset="50" class="ring-animate" style="--circumference:126"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-amber-400">60%</div>
+        </div>
+        <div>
+          <p class="text-sm font-medium">Review Invoices</p>
+          <p class="text-xs text-gray-500">3 of 5 reviewed</p>
+        </div>
+      </div>
+
+      <!-- Habit 3: Inbox Zero -->
+      <div class="bg-gray-900 border border-violet-500/20 rounded-xl p-4 flex items-center gap-4 hover:border-violet-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(147,51,234,0.06);">
+        <div class="relative w-12 h-12 flex-shrink-0">
+          <svg viewBox="0 0 48 48" class="w-full h-full">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" stroke-width="4"/>
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#9333ea" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"
+              stroke-dasharray="126" stroke-dashoffset="95" class="ring-animate" style="--circumference:126"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-violet-400">25%</div>
+        </div>
+        <div>
+          <p class="text-sm font-medium">Inbox Zero</p>
+          <p class="text-xs text-gray-500">8 items remaining</p>
+        </div>
+      </div>
+
+      <!-- Habit 4: Post Journal -->
+      <div class="bg-gray-900 border border-gray-700/40 rounded-xl p-4 flex items-center gap-4 hover:border-gray-600 transition-colors cursor-pointer">
+        <div class="relative w-12 h-12 flex-shrink-0">
+          <svg viewBox="0 0 48 48" class="w-full h-full">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" stroke-width="4"/>
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#6b7280" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"
+              stroke-dasharray="126" stroke-dashoffset="126" class="ring-animate" style="--circumference:126"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-500">0%</div>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-400">Post Journal Entries</p>
+          <p class="text-xs text-gray-600">Not started</p>
+        </div>
+      </div>
+
+      <!-- Habit 5: Check Aged Receivables -->
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-4 flex items-center gap-4 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.06);">
+        <div class="relative w-12 h-12 flex-shrink-0">
+          <svg viewBox="0 0 48 48" class="w-full h-full">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" stroke-width="4"/>
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#14b8a6" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"
+              stroke-dasharray="126" stroke-dashoffset="0" class="ring-animate" style="--circumference:126"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <svg class="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-medium">Check Aged Receivables</p>
+          <p class="text-xs text-gray-500">Completed today</p>
+        </div>
+      </div>
+
+      <!-- Habit 6: Match Rules -->
+      <div class="bg-gray-900 border border-amber-500/20 rounded-xl p-4 flex items-center gap-4 hover:border-amber-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(245,158,11,0.06);">
+        <div class="relative w-12 h-12 flex-shrink-0">
+          <svg viewBox="0 0 48 48" class="w-full h-full">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#1e293b" stroke-width="4"/>
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#f59e0b" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"
+              stroke-dasharray="126" stroke-dashoffset="63" class="ring-animate" style="--circumference:126"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-amber-400">50%</div>
+        </div>
+        <div>
+          <p class="text-sm font-medium">Review Match Rules</p>
+          <p class="text-xs text-gray-500">2 of 4 checked</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert Banner -->
+    <div class="fade-up fade-up-d4 bg-amber-500/10 border border-amber-500/30 rounded-xl px-5 py-3 flex items-center gap-3">
+      <span class="text-lg">&#9889;</span>
+      <div>
+        <p class="text-sm font-medium text-amber-300">Reconciliation at risk — 2 days left</p>
+        <p class="text-xs text-amber-400/60">Complete bank reconciliation by Friday to maintain your 14-week streak.</p>
+      </div>
+      <button class="ml-auto px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 rounded-lg text-xs font-medium text-amber-300 transition-colors">Reconcile Now</button>
+    </div>
+  </main>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

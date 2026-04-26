@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Feedback Record</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tc-teal': { 500: '#43C0BE', 700: '#007F7E' },
+                        'tc-blue': { 700: '#2C4C79' },
+                    },
+                    fontFamily: { sans: ['Roboto Flex', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .pyramid-picker-tier { transition: all 0.2s ease; cursor: pointer; }
+        .pyramid-picker-tier:hover { filter: brightness(1.1); }
+        .pyramid-picker-tier.selected { box-shadow: 0 0 0 3px white, 0 0 0 6px currentColor; }
+    </style>
+</head>
+<body class="bg-gray-50 flex font-sans">
+    <!-- Sidebar -->
+    <aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+        <div class="px-4 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div><div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+            <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+        </div>
+        <div class="px-3 py-3"><div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div></div>
+        <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div></div>
+        </nav>
+        <div class="border-t border-gray-100 px-3 py-3">
+            <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div><div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div></div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-h-screen">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 px-8 py-5">
+            <div class="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                <a href="01-index.html" class="hover:text-tc-teal-700 transition">Feedback Records</a>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-600">New Record</span>
+            </div>
+            <h1 class="text-xl font-semibold text-gray-900">New Feedback Record</h1>
+        </header>
+
+        <div class="flex-1 px-8 py-6">
+            <div class="max-w-3xl mx-auto space-y-6">
+
+                <!-- Pyramid Triage Picker — The hero interaction -->
+                <div class="bg-white rounded-xl border border-gray-200 p-8">
+                    <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-2">Triage Level</h3>
+                    <p class="text-xs text-gray-500 mb-6">Click on the pyramid tier that matches the urgency of this feedback. This determines response timelines and escalation rules.</p>
+
+                    <div class="flex items-center gap-10">
+                        <!-- Pyramid Picker -->
+                        <div class="flex flex-col items-center gap-1 min-w-[260px]" id="pyramid-picker">
+                            <!-- Urgent -->
+                            <button onclick="selectTriage('urgent')" id="tier-urgent" class="pyramid-picker-tier w-[100px] h-[60px] bg-gradient-to-b from-red-600 to-red-500 rounded-t-md flex flex-col items-center justify-center text-white/80 hover:text-white" style="clip-path: polygon(25% 0%, 75% 0%, 88% 100%, 12% 100%);">
+                                <svg class="w-5 h-5 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                                <span class="text-[9px] font-bold uppercase tracking-wider">Urgent</span>
+                            </button>
+                            <!-- Medium -->
+                            <button onclick="selectTriage('medium')" id="tier-medium" class="pyramid-picker-tier w-[180px] h-[60px] bg-gradient-to-b from-amber-500 to-amber-400 flex flex-col items-center justify-center text-white/80 hover:text-white selected" style="clip-path: polygon(10% 0%, 90% 0%, 96% 100%, 4% 100%); color: #b45309;">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-white">Medium</span>
+                            </button>
+                            <!-- Standard -->
+                            <button onclick="selectTriage('standard')" id="tier-standard" class="pyramid-picker-tier w-[260px] h-[60px] bg-gradient-to-b from-tc-teal-700 to-tc-teal-500 rounded-b-md flex flex-col items-center justify-center text-white/80 hover:text-white" style="clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%);">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span class="text-[9px] font-bold uppercase tracking-wider text-white">Standard</span>
+                            </button>
+                        </div>
+
+                        <!-- Tier Description (changes based on selection) -->
+                        <div class="flex-1" id="tier-description">
+                            <div class="bg-amber-50 rounded-lg border border-amber-200 p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                    <h4 class="text-sm font-semibold text-amber-800">Medium Priority</h4>
+                                </div>
+                                <ul class="text-xs text-amber-700 space-y-1.5">
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="w-3 h-3 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                        Response within 5 business days
+                                    </li>
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="w-3 h-3 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                        Resolution target: 14 days
+                                    </li>
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="w-3 h-3 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                        Coordinator-level oversight
+                                    </li>
+                                    <li class="flex items-start gap-1.5">
+                                        <svg class="w-3 h-3 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                        Potential for escalation if unresolved
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Record Type Toggle -->
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Record Type</h3>
+                    <div class="flex gap-3">
+                        <button onclick="selectType(this, 'complaint')" class="flex-1 py-3 px-4 rounded-lg border-2 border-tc-teal-700 bg-tc-teal-700/5 text-center transition">
+                            <p class="text-sm font-semibold text-tc-teal-700">Complaint</p>
+                            <p class="text-[10px] text-gray-500 mt-0.5">Full lifecycle with investigation</p>
+                        </button>
+                        <button onclick="selectType(this, 'remediation')" class="flex-1 py-3 px-4 rounded-lg border-2 border-gray-200 bg-white text-center transition hover:border-gray-300">
+                            <p class="text-sm font-semibold text-gray-600">Remediation</p>
+                            <p class="text-[10px] text-gray-500 mt-0.5">Lighter process, convertible</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Form Fields -->
+                <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+                    <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Details</h3>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Subject <span class="text-red-500">*</span></label>
+                        <input type="text" class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition" placeholder="Brief summary of the feedback">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Description <span class="text-red-500">*</span></label>
+                        <textarea rows="4" class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition resize-none" placeholder="Detailed description of the feedback or complaint..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Background</label>
+                        <textarea rows="3" class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition resize-none" placeholder="Relevant history or context..."></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Complainant <span class="text-red-500">*</span></label>
+                            <input type="text" class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition" placeholder="Name of person making the complaint">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Relationship</label>
+                            <select class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition bg-white">
+                                <option value="">Select...</option>
+                                <option>Self (Client)</option>
+                                <option>Spouse/Partner</option>
+                                <option>Son/Daughter</option>
+                                <option>Carer/Guardian</option>
+                                <option>Other Family</option>
+                                <option>External Agency</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Categories</label>
+                            <select class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition bg-white">
+                                <option value="">Select category...</option>
+                                <option>Medication Management</option>
+                                <option>Personal Care</option>
+                                <option>Communication</option>
+                                <option>Timeliness</option>
+                                <option>Clinical Safety</option>
+                                <option>Billing/Financial</option>
+                                <option>Staff Conduct</option>
+                                <option>Service Quality</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Department</label>
+                            <select class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition bg-white">
+                                <option value="">Select department...</option>
+                                <option>Clinical Services</option>
+                                <option>Care Coordination</option>
+                                <option>Finance</option>
+                                <option>Human Resources</option>
+                                <option>Operations</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Source</label>
+                        <select class="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-tc-teal-500 focus:border-tc-teal-700 outline-none transition bg-white">
+                            <option value="">Select source...</option>
+                            <option>Phone call</option>
+                            <option>Email</option>
+                            <option>In person</option>
+                            <option>Portal submission</option>
+                            <option>Letter</option>
+                            <option>Third party referral</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center justify-between pb-8">
+                    <a href="01-index.html" class="text-sm text-gray-500 hover:text-gray-700 transition">Cancel</a>
+                    <div class="flex items-center gap-3">
+                        <button class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Save Draft</button>
+                        <button class="px-5 py-2.5 text-sm font-medium text-white bg-tc-teal-700 rounded-lg hover:bg-tc-teal-700/90 transition">Submit Record</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function selectTriage(tier) {
+            // Update pyramid visual
+            document.querySelectorAll('.pyramid-picker-tier').forEach(t => t.classList.remove('selected'));
+            document.getElementById('tier-' + tier).classList.add('selected');
+
+            // Update description
+            const desc = document.getElementById('tier-description');
+            const configs = {
+                urgent: {
+                    bg: 'bg-red-50', border: 'border-red-200', dot: 'bg-red-500', title: 'Urgent Priority', titleColor: 'text-red-800', textColor: 'text-red-700',
+                    items: ['Immediate response required (within 24 hours)', 'Resolution target: 3 business days', 'Manager-level escalation', 'Potential safety risk or regulatory concern']
+                },
+                medium: {
+                    bg: 'bg-amber-50', border: 'border-amber-200', dot: 'bg-amber-500', title: 'Medium Priority', titleColor: 'text-amber-800', textColor: 'text-amber-700',
+                    items: ['Response within 5 business days', 'Resolution target: 14 days', 'Coordinator-level oversight', 'Potential for escalation if unresolved']
+                },
+                standard: {
+                    bg: 'bg-teal-50', border: 'border-teal-200', dot: 'bg-tc-teal-700', title: 'Standard Priority', titleColor: 'text-teal-800', textColor: 'text-teal-700',
+                    items: ['Response within 10 business days', 'Resolution target: 30 days', 'Routine handling', 'Low risk, process improvement opportunity']
+                }
+            };
+            const c = configs[tier];
+            desc.innerHTML = `
+                <div class="${c.bg} rounded-lg border ${c.border} p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full ${c.dot}"></span>
+                        <h4 class="text-sm font-semibold ${c.titleColor}">${c.title}</h4>
+                    </div>
+                    <ul class="text-xs ${c.textColor} space-y-1.5">
+                        ${c.items.map(item => `<li class="flex items-start gap-1.5"><svg class="w-3 h-3 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>${item}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function selectType(el, type) {
+            document.querySelectorAll('[onclick^="selectType"]').forEach(btn => {
+                btn.classList.remove('border-tc-teal-700', 'bg-tc-teal-700/5');
+                btn.classList.add('border-gray-200', 'bg-white');
+                btn.querySelector('p:first-child').classList.remove('text-tc-teal-700');
+                btn.querySelector('p:first-child').classList.add('text-gray-600');
+            });
+            el.classList.remove('border-gray-200', 'bg-white');
+            el.classList.add('border-tc-teal-700', 'bg-tc-teal-700/5');
+            el.querySelector('p:first-child').classList.remove('text-gray-600');
+            el.querySelector('p:first-child').classList.add('text-tc-teal-700');
+        }
+    </script>
+    <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

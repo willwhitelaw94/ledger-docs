@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Incidents — ICM</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwindcss.config={theme:{extend:{colors:{teal:{50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D'},'primary-blue':{50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto Flex', sans-serif; }
+    #app-sidebar { transition: width 0.2s ease; }
+    #app-sidebar.collapsed { width: 77px; }
+    #app-sidebar.collapsed .nav-label, #app-sidebar.collapsed .nav-section-title, #app-sidebar.collapsed .sidebar-brand-name, #app-sidebar.collapsed .sidebar-footer-text { display: none; }
+    #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+    .nav-item-active { background: rgba(0,127,126,0.12); color: #007F7E; font-weight: 600; }
+    .filter-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid #E5E7EB; background: white; color: #6B7280; transition: all 0.15s; }
+    .filter-chip:hover { border-color: #D1D5DB; }
+    .filter-chip.active { background: #F0FAFA; border-color: #007F7E; color: #007F7E; }
+  </style>
+  <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-100 flex">
+
+<!-- Sidebar -->
+<aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]" style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+  <div class="p-4 flex items-center gap-3">
+    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-sm font-bold">TC</div>
+    <span class="sidebar-brand-name text-sm font-semibold">Trilogy Care</span>
+  </div>
+  <nav class="flex-1 px-2 py-2 space-y-1 text-sm overflow-y-auto">
+    <div class="nav-section-title text-xs text-white/40 uppercase tracking-wider px-3 py-2">Staff</div>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-white/70 hover:bg-white/10">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-white/70 hover:bg-white/10">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      <span class="nav-label">Packages</span>
+    </a>
+    <a href="#" class="nav-item nav-item-active flex items-center gap-3 px-3 py-2 rounded-md">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span class="nav-label">Incidents</span>
+    </a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-white/70 hover:bg-white/10">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <span class="nav-label">Tasks</span>
+    </a>
+  </nav>
+  <div class="p-3 border-t border-white/10">
+    <div class="flex items-center gap-3 px-2">
+      <div class="w-8 h-8 bg-teal-700 rounded-full flex items-center justify-center text-xs font-semibold">JD</div>
+      <div class="sidebar-footer-text"><div class="text-sm font-medium">Jane Doe</div><div class="text-xs text-white/50">Care Partner</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<div class="flex-1 flex flex-col ml-[240px] min-h-screen">
+  <!-- Page Header -->
+  <div class="bg-white border-b border-gray-200 px-6 py-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold text-gray-900">All Incidents</h1>
+        <p class="text-sm text-gray-500 mt-0.5">347 incidents · 12 open · 3 SIRS overdue</p>
+      </div>
+      <button class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-800 flex items-center gap-2 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Report Incident
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters & Search -->
+  <div class="bg-white border-b border-gray-200 px-6 py-3">
+    <div class="flex items-center gap-4">
+      <!-- Search -->
+      <div class="relative flex-1 max-w-sm">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" placeholder="Search by client, description, ID..." class="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:border-teal-500">
+      </div>
+      <!-- Filter Chips -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="filter-chip active">
+          <span class="w-2 h-2 rounded-full bg-red-500"></span> Severe <span class="text-gray-400">3</span>
+        </span>
+        <span class="filter-chip">
+          <span class="w-2 h-2 rounded-full bg-orange-500"></span> Moderate <span class="text-gray-400">9</span>
+        </span>
+        <span class="filter-chip">
+          <span class="w-2 h-2 rounded-full bg-yellow-500"></span> Low <span class="text-gray-400">21</span>
+        </span>
+        <span class="filter-chip">
+          <span class="w-2 h-2 rounded-full bg-gray-400"></span> Clinical Only <span class="text-gray-400">314</span>
+        </span>
+        <span class="text-gray-300">|</span>
+        <span class="filter-chip active">Open</span>
+        <span class="filter-chip">Resolved</span>
+        <span class="filter-chip active">
+          <span class="w-2 h-2 rounded-full bg-purple-500"></span> SIRS
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="flex-1 p-6">
+    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-gray-50 border-b border-gray-200">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harm</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stage</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SIRS</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+            <th class="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <!-- Row 1 — Severe + SIRS P1 Overdue -->
+          <tr class="hover:bg-gray-50 cursor-pointer bg-red-50/30">
+            <td class="px-4 py-3 text-sm font-mono text-gray-500">INC-0347</td>
+            <td class="px-4 py-3">
+              <div class="text-sm font-medium text-gray-900">Margaret Thompson</div>
+              <div class="text-xs text-gray-500">SAH-20241</div>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">Fall in bathroom — head laceration</td>
+            <td class="px-4 py-3"><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-700"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Severe</span></td>
+            <td class="px-4 py-3"><span class="text-xs font-medium text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full">Escalated</span></td>
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-700">
+                  <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>P1
+                </span>
+                <span class="text-xs text-red-600 font-medium">6h left</span>
+              </div>
+            </td>
+            <td class="px-4 py-3 text-xs text-gray-500">24 Feb</td>
+            <td class="px-4 py-3"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></td>
+          </tr>
+          <!-- Row 2 — Severe + SIRS P1 Approaching -->
+          <tr class="hover:bg-gray-50 cursor-pointer">
+            <td class="px-4 py-3 text-sm font-mono text-gray-500">INC-0346</td>
+            <td class="px-4 py-3">
+              <div class="text-sm font-medium text-gray-900">Robert Hansen</div>
+              <div class="text-xs text-gray-500">SAH-18934</div>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">Unexplained absence from care</td>
+            <td class="px-4 py-3"><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-700"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Severe</span></td>
+            <td class="px-4 py-3"><span class="text-xs font-medium text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full">Triaged</span></td>
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-700">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>P1
+                </span>
+                <span class="text-xs text-amber-600 font-medium">12h left</span>
+              </div>
+            </td>
+            <td class="px-4 py-3 text-xs text-gray-500">23 Feb</td>
+            <td class="px-4 py-3"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></td>
+          </tr>
+          <!-- Row 3 — Moderate, Open -->
+          <tr class="hover:bg-gray-50 cursor-pointer">
+            <td class="px-4 py-3 text-sm font-mono text-gray-500">INC-0345</td>
+            <td class="px-4 py-3">
+              <div class="text-sm font-medium text-gray-900">Dorothy Chen</div>
+              <div class="text-xs text-gray-500">SAH-22107</div>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">Pressure injury discovered during visit</td>
+            <td class="px-4 py-3"><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-orange-100 text-orange-700"><span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>Moderate</span></td>
+            <td class="px-4 py-3"><span class="text-xs font-medium text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full">Actioned</span></td>
+            <td class="px-4 py-3"><span class="text-xs text-gray-400">—</span></td>
+            <td class="px-4 py-3 text-xs text-gray-500">22 Feb</td>
+            <td class="px-4 py-3"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></td>
+          </tr>
+          <!-- Row 4 — Severe + SIRS Reported (green check) -->
+          <tr class="hover:bg-gray-50 cursor-pointer">
+            <td class="px-4 py-3 text-sm font-mono text-gray-500">INC-0340</td>
+            <td class="px-4 py-3">
+              <div class="text-sm font-medium text-gray-900">William Park</div>
+              <div class="text-xs text-gray-500">SAH-19876</div>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">Fall from wheelchair — fracture suspected</td>
+            <td class="px-4 py-3"><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-700"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>Severe</span></td>
+            <td class="px-4 py-3"><span class="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full">Resolved</span></td>
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  Reported
+                </span>
+              </div>
+            </td>
+            <td class="px-4 py-3 text-xs text-gray-500">18 Feb</td>
+            <td class="px-4 py-3"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></td>
+          </tr>
+          <!-- Row 5 — Low, Open -->
+          <tr class="hover:bg-gray-50 cursor-pointer">
+            <td class="px-4 py-3 text-sm font-mono text-gray-500">INC-0339</td>
+            <td class="px-4 py-3">
+              <div class="text-sm font-medium text-gray-900">Evelyn Hughes</div>
+              <div class="text-xs text-gray-500">SAH-21543</div>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">Verbal aggression during service</td>
+            <td class="px-4 py-3"><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700"><span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>Low</span></td>
+            <td class="px-4 py-3"><span class="text-xs font-medium text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full">Reported</span></td>
+            <td class="px-4 py-3"><span class="text-xs text-gray-400">—</span></td>
+            <td class="px-4 py-3 text-xs text-gray-500">17 Feb</td>
+            <td class="px-4 py-3"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Pagination -->
+      <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+        <span class="text-xs text-gray-500">Showing 1-5 of 12 open incidents</span>
+        <div class="flex items-center gap-1">
+          <button class="px-3 py-1 text-xs text-gray-400 bg-gray-100 rounded" disabled>Previous</button>
+          <button class="px-3 py-1 text-xs text-white bg-teal-700 rounded">1</button>
+          <button class="px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 rounded">2</button>
+          <button class="px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 rounded">3</button>
+          <button class="px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 rounded">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

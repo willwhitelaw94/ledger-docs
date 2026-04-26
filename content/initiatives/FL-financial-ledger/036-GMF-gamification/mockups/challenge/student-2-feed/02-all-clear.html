@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feed Frankie - All Clear</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .feed-item { transition: background 0.15s ease; }
+    .feed-item:hover { background: rgba(255,255,255,0.02); }
+    .confetti-bg {
+      background-image:
+        radial-gradient(circle at 15% 25%, rgba(16,185,129,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 85% 15%, rgba(245,158,11,0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(20,184,166,0.05) 0%, transparent 50%);
+    }
+    @keyframes checkPop {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .check-pop { animation: checkPop 0.5s ease-out forwards; }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .shimmer-border {
+      background: linear-gradient(90deg, transparent, rgba(16,185,129,0.3), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
+    }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar Skeleton -->
+    <aside class="w-60 bg-gray-900 border-r border-gray-800 flex-shrink-0 p-4 space-y-2">
+      <div class="flex items-center gap-2 px-2 mb-6">
+        <div class="w-8 h-8 rounded-lg bg-emerald-600/20 animate-pulse"></div>
+        <div class="h-4 w-24 bg-gray-800 rounded animate-pulse"></div>
+      </div>
+      <div class="h-8 w-full bg-gray-800 rounded-md animate-pulse"></div>
+      <div class="h-8 w-full bg-emerald-900/40 rounded-md border border-emerald-800/30"></div>
+      <div class="h-8 w-full bg-gray-800 rounded-md animate-pulse"></div>
+      <div class="h-8 w-full bg-gray-800 rounded-md animate-pulse"></div>
+      <div class="h-8 w-full bg-gray-800 rounded-md animate-pulse"></div>
+      <div class="mt-6 h-px w-full bg-gray-800"></div>
+      <div class="h-8 w-full bg-gray-800 rounded-md animate-pulse"></div>
+      <div class="h-8 w-full bg-gray-800 rounded-md animate-pulse"></div>
+      <div class="h-8 w-3/4 bg-gray-800 rounded-md animate-pulse"></div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- Page Header -->
+      <div class="border-b border-gray-800 px-8 py-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-xl font-semibold text-white">Activity Feed</h1>
+            <p class="text-sm text-gray-500 mt-0.5">Your financial story, as it unfolds</p>
+          </div>
+          <span class="text-xs text-gray-500">Last updated: just now</span>
+        </div>
+      </div>
+
+      <div class="max-w-3xl mx-auto px-8 py-6 space-y-0">
+        <!-- TODAY label -->
+        <div class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Today</div>
+
+        <!-- HERO: All Clear Feed Event -->
+        <div class="relative rounded-lg overflow-hidden mb-4">
+          <!-- Shimmer border top -->
+          <div class="shimmer-border h-0.5"></div>
+
+          <div class="confetti-bg border border-emerald-900/40 border-t-0 rounded-b-lg p-6">
+            <!-- Hero content -->
+            <div class="flex items-start gap-5">
+              <!-- Large checkmark -->
+              <div class="check-pop w-16 h-16 rounded-2xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
+                <svg class="w-9 h-9 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+              </div>
+
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <h2 class="text-lg font-semibold text-white">All Clear!</h2>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">CELEBRATION</span>
+                </div>
+                <p class="text-sm text-gray-300">47 transactions reconciled. Zero exceptions. Every account balanced.</p>
+
+                <!-- Session details (expanded) -->
+                <div class="mt-4 grid grid-cols-4 gap-3">
+                  <div class="bg-gray-950/50 rounded-md p-2.5">
+                    <div class="text-xs text-gray-500">Transactions</div>
+                    <div class="text-lg font-semibold text-white">47</div>
+                  </div>
+                  <div class="bg-gray-950/50 rounded-md p-2.5">
+                    <div class="text-xs text-gray-500">Auto-matched</div>
+                    <div class="text-lg font-semibold text-emerald-400">38</div>
+                  </div>
+                  <div class="bg-gray-950/50 rounded-md p-2.5">
+                    <div class="text-xs text-gray-500">Manual</div>
+                    <div class="text-lg font-semibold text-white">9</div>
+                  </div>
+                  <div class="bg-gray-950/50 rounded-md p-2.5">
+                    <div class="text-xs text-gray-500">Time</div>
+                    <div class="text-lg font-semibold text-white">12m</div>
+                  </div>
+                </div>
+
+                <!-- Badges triggered -->
+                <div class="mt-3 flex items-center gap-2">
+                  <span class="text-xs text-gray-500">Triggered:</span>
+                  <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-900/50 text-amber-400">Perfect Day</span>
+                  <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-900/50 text-teal-400">Streak +1</span>
+                  <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-900/50 text-emerald-400">+25 XP</span>
+                </div>
+              </div>
+
+              <span class="text-xs text-gray-600 flex-shrink-0">12 min ago</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Normal feed continues below -->
+        <div class="feed-item flex gap-3 py-3 px-3 rounded-md border-l-2 border-amber-500">
+          <div class="w-8 h-8 rounded-full bg-amber-900/50 flex items-center justify-center flex-shrink-0 text-sm">&#11088;</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-white">Badge earned: Perfect Day</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-900/50 text-amber-400">badge</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">Reconciled all transactions with zero exceptions in a single session.</p>
+          </div>
+          <span class="text-xs text-gray-600 flex-shrink-0 whitespace-nowrap">12 min ago</span>
+        </div>
+
+        <div class="feed-item flex gap-3 py-3 px-3 rounded-md border-l-2 border-teal-500">
+          <div class="w-8 h-8 rounded-full bg-teal-900/50 flex items-center justify-center flex-shrink-0 text-sm">&#128293;</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-white">Reconciliation streak extended to 7 weeks</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-900/50 text-teal-400">streak</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">Week 7 of consecutive reconciliation. Gold badge at week 10.</p>
+          </div>
+          <span class="text-xs text-gray-600 flex-shrink-0 whitespace-nowrap">12 min ago</span>
+        </div>
+
+        <div class="feed-item flex gap-3 py-3 px-3 rounded-md border-l-2 border-emerald-500">
+          <div class="w-8 h-8 rounded-full bg-emerald-900/50 flex items-center justify-center flex-shrink-0 text-sm">&#9989;</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-white">ANZ Business cheque reconciled</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-900/50 text-emerald-400">account</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">23 transactions matched. Balance: $45,892.30</p>
+          </div>
+          <span class="text-xs text-gray-600 flex-shrink-0 whitespace-nowrap">28 min ago</span>
+        </div>
+
+        <div class="feed-item flex gap-3 py-3 px-3 rounded-md border-l-2 border-emerald-500">
+          <div class="w-8 h-8 rounded-full bg-emerald-900/50 flex items-center justify-center flex-shrink-0 text-sm">&#9989;</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-white">Westpac savings reconciled</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-900/50 text-emerald-400">account</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">14 transactions matched. Balance: $128,450.00</p>
+          </div>
+          <span class="text-xs text-gray-600 flex-shrink-0 whitespace-nowrap">35 min ago</span>
+        </div>
+
+        <div class="feed-item flex gap-3 py-3 px-3 rounded-md border-l-2 border-emerald-500">
+          <div class="w-8 h-8 rounded-full bg-emerald-900/50 flex items-center justify-center flex-shrink-0 text-sm">&#9989;</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-white">Amex credit card reconciled</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-900/50 text-emerald-400">account</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">10 transactions matched. Balance: -$2,340.50</p>
+          </div>
+          <span class="text-xs text-gray-600 flex-shrink-0 whitespace-nowrap">42 min ago</span>
+        </div>
+
+        <!-- Yesterday -->
+        <div class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3 mt-6">Yesterday</div>
+
+        <div class="feed-item flex gap-3 py-3 px-3 rounded-md border-l-2 border-gray-700">
+          <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0 text-sm">&#128202;</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-white">New bank transactions imported</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-800 text-gray-400">import</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">47 transactions across 3 bank accounts ready for reconciliation.</p>
+          </div>
+          <span class="text-xs text-gray-600 flex-shrink-0 whitespace-nowrap">Yesterday</span>
+        </div>
+
+        <div class="feed-item flex gap-3 py-3 px-3 rounded-md border-l-2 border-amber-500">
+          <div class="w-8 h-8 rounded-full bg-amber-900/50 flex items-center justify-center flex-shrink-0 text-sm">&#9889;</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-medium text-white">Reconciliation reminder</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-900/50 text-amber-400">nudge</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">47 unreconciled transactions waiting. Keep that streak alive!</p>
+          </div>
+          <span class="text-xs text-gray-600 flex-shrink-0 whitespace-nowrap">Yesterday</span>
+        </div>
+
+        <!-- Load More -->
+        <div class="text-center py-6">
+          <button class="text-xs text-gray-500 hover:text-gray-400 transition-colors">Load more activity...</button>
+          <div class="mt-2 flex justify-center gap-1">
+            <div class="w-1 h-1 rounded-full bg-gray-700"></div>
+            <div class="w-1 h-1 rounded-full bg-gray-700"></div>
+            <div class="w-1 h-1 rounded-full bg-gray-700"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

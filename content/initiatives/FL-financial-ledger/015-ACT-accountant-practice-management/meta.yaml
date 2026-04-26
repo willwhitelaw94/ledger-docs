@@ -1,0 +1,10 @@
+epic: 015-ACT
+name: Accountant & Practice Management
+initiative: FL-financial-ledger
+status: complete
+created: 2026-03-14
+depends_on:
+  - 013-WSP
+  - 003-AUT
+blocks: []
+effort: XL

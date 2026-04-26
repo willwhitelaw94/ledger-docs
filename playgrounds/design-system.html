@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC Portal Design System Playground</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a2e;--surface:#16213e;--surface-2:#0f3460;--border:#2a2a4a;
+  --text:#e0e0e0;--text-muted:#8888aa;--text-bright:#ffffff;
+  --accent:#007F7E;--accent-light:#43C0BE;
+}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.6;min-height:100vh}
+code,.mono{font-family:'SF Mono',SFMono-Regular,Consolas,'Liberation Mono',Menlo,Courier,monospace;font-size:0.85em}
+a{color:var(--accent-light);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Layout */
+.app{max-width:1400px;margin:0 auto;padding:24px}
+.header{display:flex;align-items:center;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+.header h1{font-size:1.5rem;font-weight:700;color:var(--text-bright)}
+.header .badge{background:var(--accent);color:#fff;font-size:0.7rem;padding:2px 8px;border-radius:99px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:24px;overflow-x:auto;flex-wrap:nowrap}
+.tab{padding:10px 20px;cursor:pointer;border:none;background:transparent;color:var(--text-muted);font-size:0.9rem;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;font-family:inherit}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent-light);border-bottom-color:var(--accent-light)}
+.panel{display:none}
+.panel.active{display:block}
+
+/* Section */
+.section{margin-bottom:32px}
+.section-title{font-size:1.1rem;font-weight:600;color:var(--text-bright);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+
+/* Colour swatches */
+.palette-group{margin-bottom:24px}
+.palette-label{font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px}
+.swatches{display:flex;flex-wrap:wrap;gap:6px}
+.swatch{width:72px;cursor:pointer;border-radius:8px;overflow:hidden;transition:transform .15s,box-shadow .15s;border:1px solid rgba(255,255,255,0.06)}
+.swatch:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.4)}
+.swatch-color{height:48px;position:relative}
+.swatch-color .contrast{position:absolute;bottom:2px;right:4px;font-size:0.55rem;font-weight:600;padding:1px 3px;border-radius:3px;opacity:0;transition:opacity .15s}
+.swatch:hover .contrast{opacity:1}
+.swatch-info{padding:4px 6px;background:var(--surface);font-size:0.65rem}
+.swatch-info .shade{font-weight:600;color:var(--text-bright)}
+.swatch-info .hex{color:var(--text-muted);font-family:'SF Mono',monospace}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#007F7E;color:#fff;padding:8px 20px;border-radius:8px;font-size:0.85rem;font-weight:500;z-index:9999;transition:transform .3s cubic-bezier(.2,1,.3,1);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* Background toggle */
+.bg-toggle{display:flex;gap:8px;margin-bottom:16px;align-items:center}
+.bg-toggle label{font-size:0.8rem;color:var(--text-muted)}
+.toggle-btn{padding:4px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-size:0.75rem;font-family:inherit;transition:all .15s}
+.toggle-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Typography */
+.type-row{display:flex;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--border)}
+.type-row:last-child{border-bottom:none}
+.type-label{min-width:120px;font-size:0.75rem;color:var(--accent-light);font-family:'SF Mono',monospace}
+.type-preview{flex:1;color:var(--text-bright)}
+.type-meta{font-size:0.7rem;color:var(--text-muted);min-width:80px;text-align:right;font-family:'SF Mono',monospace}
+
+/* Controls */
+.control-row{display:flex;gap:16px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.control-row label{font-size:0.8rem;color:var(--text-muted);min-width:80px}
+.control-row input[type=range]{flex:1;max-width:300px;accent-color:var(--accent)}
+.control-row input[type=text]{flex:1;max-width:400px;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:6px;font-family:inherit;font-size:0.85rem}
+.weight-value{font-family:'SF Mono',monospace;font-size:0.8rem;color:var(--accent-light);min-width:30px}
+
+/* Spacing */
+.spacing-row{display:flex;align-items:center;gap:12px;padding:6px 0}
+.spacing-bar{height:20px;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:4px;transition:width .2s}
+.spacing-label{min-width:50px;font-size:0.75rem;color:var(--text-muted);font-family:'SF Mono',monospace}
+.spacing-px{font-size:0.7rem;color:var(--text-muted);font-family:'SF Mono',monospace}
+.spacing-demo{margin-top:24px;display:flex;gap:24px;flex-wrap:wrap}
+.spacing-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;transition:all .2s}
+.spacing-card-inner{background:var(--accent);opacity:0.15;border-radius:4px;width:100%;height:60px}
+.spacing-card-label{font-size:0.7rem;color:var(--text-muted);text-align:center;padding:8px;font-family:'SF Mono',monospace}
+
+/* Components */
+.comp-section{margin-bottom:32px}
+.comp-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.btn{padding:8px 20px;border-radius:8px;font-size:0.875rem;font-weight:500;cursor:pointer;border:2px solid transparent;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:#007F7E;color:#fff;border-color:#007F7E}
+.btn-primary:hover{background:#005656}
+.btn-primary:focus{box-shadow:0 0 0 3px rgba(67,192,190,0.5)}
+.btn-secondary{background:#2C4C79;color:#fff;border-color:#2C4C79}
+.btn-secondary:hover{background:#1E3452}
+.btn-danger{background:#E04B51;color:#fff;border-color:#E04B51}
+.btn-danger:hover{background:#BE373C}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,0.05);border-color:var(--text-muted)}
+
+.input-demo{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:0.875rem;width:260px;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+.input-demo:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(67,192,190,0.3)}
+
+.card-demo{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:320px}
+.card-demo.light{background:#fff;color:#333;border-color:#DBDBDB}
+.card-demo h3{font-size:1rem;font-weight:600;margin-bottom:8px}
+.card-demo.light h3{color:#13171D}
+.card-demo p{font-size:0.85rem;color:var(--text-muted)}
+.card-demo.light p{color:#666}
+
+.badge-demo{display:inline-flex;padding:2px 10px;border-radius:99px;font-size:0.75rem;font-weight:600}
+
+.table-demo{width:100%;max-width:600px;border-collapse:collapse;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.table-demo th{background:var(--surface-2);color:var(--text-bright);text-align:left;padding:10px 14px;font-size:0.8rem;font-weight:600}
+.table-demo td{padding:10px 14px;font-size:0.85rem;border-top:1px solid var(--border)}
+.table-demo tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+.table-demo tr:nth-child(odd) td{background:transparent}
+.table-demo.light{border-color:#DBDBDB}
+.table-demo.light th{background:#F2F2F2;color:#333}
+.table-demo.light td{color:#4D4D4D;border-color:#F2F2F2}
+.table-demo.light tr:nth-child(even) td{background:#FAFAFA}
+.table-demo.light tr:nth-child(odd) td{background:#fff}
+
+/* Palette Builder */
+.builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+@media(max-width:768px){.builder-grid{grid-template-columns:1fr}}
+.builder-controls{display:flex;flex-direction:column;gap:16px}
+.builder-control label{font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:6px}
+.builder-select{width:100%;padding:8px 12px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:0.85rem;font-family:inherit;cursor:pointer}
+.builder-select:focus{outline:none;border-color:var(--accent)}
+.preset-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.preset-btn{padding:6px 14px;border:1px solid var(--border);background:transparent;color:var(--text-muted);border-radius:6px;cursor:pointer;font-size:0.8rem;font-family:inherit;transition:all .15s}
+.preset-btn:hover,.preset-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.builder-preview{border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.builder-card-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.builder-card-header h3{font-size:1rem;font-weight:600;color:#fff}
+.builder-card-body{padding:20px;background:rgba(255,255,255,0.95);color:#333}
+.builder-card-body p{font-size:0.85rem;margin-bottom:12px;color:#666}
+.builder-card-stat{display:flex;gap:16px}
+.builder-stat-item{flex:1;border-radius:8px;padding:12px;text-align:center}
+.builder-stat-item .stat-val{font-size:1.5rem;font-weight:700}
+.builder-stat-item .stat-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}
+.builder-card-footer{padding:12px 20px;display:flex;justify-content:flex-end;gap:8px;background:rgba(255,255,255,0.9);border-top:1px solid #e0e0e0}
+.builder-card-footer .btn{font-size:0.8rem;padding:6px 16px}
+
+/* Prompt output */
+.prompt-output{margin-top:32px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.prompt-output h3{font-size:0.9rem;font-weight:600;color:var(--text-bright);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.prompt-output pre{background:var(--bg);padding:16px;border-radius:8px;font-size:0.8rem;line-height:1.7;color:var(--accent-light);overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.copy-btn{padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;font-size:0.7rem;font-family:inherit;transition:all .15s}
+.copy-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Responsive */
+@media(max-width:640px){
+  .app{padding:12px}
+  .swatches{gap:4px}
+  .swatch{width:56px}
+  .swatch-color{height:36px}
+  .type-label{min-width:80px}
+  .type-meta{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <h1>TC Portal Design System</h1>
+    <span class="badge">Playground</span>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="colours" role="tab">Colours</button>
+    <button class="tab" data-tab="typography" role="tab">Typography</button>
+    <button class="tab" data-tab="spacing" role="tab">Spacing</button>
+    <button class="tab" data-tab="components" role="tab">Component Preview</button>
+    <button class="tab" data-tab="builder" role="tab">Palette Builder</button>
+  </div>
+
+  <!-- ============ COLOURS ============ -->
+  <div class="panel active" id="panel-colours">
+    <div class="bg-toggle">
+      <label>Preview background:</label>
+      <button class="toggle-btn active" data-bg="dark">Dark</button>
+      <button class="toggle-btn" data-bg="light">Light</button>
+    </div>
+    <div id="colour-container"></div>
+  </div>
+
+  <!-- ============ TYPOGRAPHY ============ -->
+  <div class="panel" id="panel-typography">
+    <div class="section">
+      <div class="section-title"><span class="dot"></span>Controls</div>
+      <div class="control-row">
+        <label>Weight</label>
+        <input type="range" id="weight-slider" min="100" max="900" step="100" value="400">
+        <span class="weight-value" id="weight-value">400</span>
+      </div>
+      <div class="control-row">
+        <label>Sample text</label>
+        <input type="text" id="sample-text" value="The quick brown fox jumps over the lazy dog" placeholder="Type sample text...">
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span class="dot"></span>Heading Scale</div>
+      <div id="type-headings"></div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span class="dot"></span>Body &amp; Utility</div>
+      <div id="type-body"></div>
+    </div>
+  </div>
+
+  <!-- ============ SPACING ============ -->
+  <div class="panel" id="panel-spacing">
+    <div class="section">
+      <div class="section-title"><span class="dot"></span>Tailwind Spacing Scale</div>
+      <div id="spacing-bars"></div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span class="dot"></span>Interactive Preview</div>
+      <div class="control-row">
+        <label>Spacing</label>
+        <input type="range" id="spacing-slider" min="0" max="33" value="4">
+        <span class="weight-value" id="spacing-val">p-4 (16px)</span>
+      </div>
+      <div class="spacing-demo" id="spacing-demo"></div>
+    </div>
+  </div>
+
+  <!-- ============ COMPONENTS ============ -->
+  <div class="panel" id="panel-components">
+    <div class="comp-section">
+      <div class="section-title"><span class="dot"></span>Buttons</div>
+      <div class="comp-row">
+        <button class="btn btn-primary">Primary (Teal)</button>
+        <button class="btn btn-secondary">Secondary (Blue)</button>
+        <button class="btn btn-danger">Danger (Red)</button>
+        <button class="btn btn-ghost">Ghost</button>
+      </div>
+      <div class="comp-row" style="margin-top:8px">
+        <button class="btn btn-primary" disabled style="opacity:0.5;cursor:not-allowed">Disabled</button>
+        <button class="btn btn-primary" style="font-size:0.75rem;padding:4px 12px">Small</button>
+        <button class="btn btn-primary" style="font-size:1rem;padding:12px 28px">Large</button>
+      </div>
+    </div>
+
+    <div class="comp-section">
+      <div class="section-title"><span class="dot"></span>Form Inputs</div>
+      <div class="comp-row">
+        <input class="input-demo" type="text" placeholder="Text input (border-radius: 8px)">
+        <input class="input-demo" type="text" value="With value" style="border-color:#007F7E">
+      </div>
+      <div class="comp-row" style="margin-top:8px">
+        <input class="input-demo" type="text" value="Error state" style="border-color:#E04B51;box-shadow:0 0 0 3px rgba(224,75,81,0.2)">
+        <input class="input-demo" type="text" placeholder="Disabled" disabled style="opacity:0.5;cursor:not-allowed">
+      </div>
+    </div>
+
+    <div class="comp-section">
+      <div class="section-title"><span class="dot"></span>Cards</div>
+      <div class="comp-row" style="align-items:stretch">
+        <div class="card-demo">
+          <h3>Dark Card</h3>
+          <p>Card component on dark background with subtle border and surface colour.</p>
+        </div>
+        <div class="card-demo light">
+          <h3>Light Card</h3>
+          <p>Card component on light background matching the page (#F3F4F6) context.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-section">
+      <div class="section-title"><span class="dot"></span>Badges / Pills</div>
+      <div class="comp-row">
+        <span class="badge-demo" style="background:#D5F1F0;color:#007F7E">Active</span>
+        <span class="badge-demo" style="background:#D6E1F0;color:#2C4C79">Info</span>
+        <span class="badge-demo" style="background:#FFCCCE;color:#9C262A">Alert</span>
+        <span class="badge-demo" style="background:#FFEA91;color:#F7A81A">Warning</span>
+        <span class="badge-demo" style="background:#D6F5E0;color:#32764A">Success</span>
+        <span class="badge-demo" style="background:#F2F2F2;color:#666666">Default</span>
+        <span class="badge-demo" style="background:#FFDAC6;color:#9C481A">Pending</span>
+        <span class="badge-demo" style="background:#DBDAFC;color:#4A47A7">Draft</span>
+      </div>
+    </div>
+
+    <div class="comp-section">
+      <div class="section-title"><span class="dot"></span>Table (Zebra Striping)</div>
+      <div style="overflow-x:auto">
+        <table class="table-demo light">
+          <thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Last Active</th></tr></thead>
+          <tbody>
+            <tr><td>Sarah Chen</td><td>Care Partner</td><td><span class="badge-demo" style="background:#D5F1F0;color:#007F7E;font-size:0.7rem">Active</span></td><td>Today</td></tr>
+            <tr><td>James Nguyen</td><td>Coordinator</td><td><span class="badge-demo" style="background:#D5F1F0;color:#007F7E;font-size:0.7rem">Active</span></td><td>Yesterday</td></tr>
+            <tr><td>Emily Watson</td><td>Care Partner</td><td><span class="badge-demo" style="background:#FFEA91;color:#F7A81A;font-size:0.7rem">On Leave</span></td><td>3 days ago</td></tr>
+            <tr><td>Michael Torres</td><td>Admin</td><td><span class="badge-demo" style="background:#F2F2F2;color:#666;font-size:0.7rem">Inactive</span></td><td>2 weeks ago</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PALETTE BUILDER ============ -->
+  <div class="panel" id="panel-builder">
+    <div class="section">
+      <div class="section-title"><span class="dot"></span>Presets</div>
+      <div class="preset-row">
+        <button class="preset-btn active" data-preset="default">Default TC</button>
+        <button class="preset-btn" data-preset="clinical">Clinical</button>
+        <button class="preset-btn" data-preset="finance">Finance</button>
+        <button class="preset-btn" data-preset="coordinator">Coordinator</button>
+      </div>
+    </div>
+    <div class="builder-grid">
+      <div class="builder-controls">
+        <div>
+          <label>Primary Colour</label>
+          <select class="builder-select" id="builder-primary"></select>
+        </div>
+        <div>
+          <label>Secondary Colour</label>
+          <select class="builder-select" id="builder-secondary"></select>
+        </div>
+        <div>
+          <label>Accent Colour</label>
+          <select class="builder-select" id="builder-accent"></select>
+        </div>
+      </div>
+      <div>
+        <div class="builder-preview" id="builder-preview"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ PROMPT OUTPUT ============ -->
+  <div class="prompt-output">
+    <h3>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1.5h8a2.5 2.5 0 012.5 2.5v8a2.5 2.5 0 01-2.5 2.5H4A2.5 2.5 0 011.5 12V4A2.5 2.5 0 014 1.5zm0 1A1.5 1.5 0 002.5 4v8A1.5 1.5 0 004 13.5h8a1.5 1.5 0 001.5-1.5V4A1.5 1.5 0 0012 2.5H4zm1 2h6a.5.5 0 010 1H5a.5.5 0 010-1zm0 3h6a.5.5 0 010 1H5a.5.5 0 010-1zm0 3h4a.5.5 0 010 1H5a.5.5 0 010-1z"/></svg>
+      Tailwind Class Reference
+      <button class="copy-btn" onclick="copyPrompt()">Copy</button>
+    </h3>
+    <pre id="prompt-text">Use `bg-teal-700 text-white` for primary buttons.
+Use `bg-primary-blue-700 text-white` for secondary buttons.
+Use `bg-red-500 text-white` for danger buttons.
+Use `text-primary-blue-700` for links.
+Use `border-gray-200` for card borders.
+Use `rounded-input` (8px) for form field border-radius.
+Use `bg-page` (#F3F4F6) for page backgrounds.
+Use `bg-gray-50` / `bg-white` alternating for table zebra rows.
+Use `text-red-500` for error messages.
+Use `text-sun-yellow-500` for warning messages.
+Use `text-teal-600` for success messages.
+Use `ring-teal-500/50` (focus ring) on active interactive elements.
+Use `font-serif` for Roboto Flex (configured as serif stack).</pre>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+// ── Colour Data (from tailwind.config.js) ──
+const PALETTES = {
+  'Teal (Primary)': {
+    50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',
+    500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D'
+  },
+  'Primary Blue': {
+    50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',
+    500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D'
+  },
+  'Gray': {
+    50:'#FAFAFA',100:'#F2F2F2',200:'#DBDBDB',300:'#CCCCCC',400:'#B3B3B3',
+    500:'#999999',600:'#808080',700:'#666666',800:'#4D4D4D',900:'#333333'
+  },
+  'Red': {
+    50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',300:'#FF858A',400:'#FF6168',
+    500:'#E04B51',600:'#BE373C',700:'#9C262A',800:'#7A181C',900:'#580D10'
+  },
+  'Orange': {
+    50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',300:'#FFA878',400:'#FF8F51',
+    500:'#E0763C',600:'#BE5E29',700:'#9C481A',800:'#7A340E',900:'#582305'
+  },
+  'Yellow': {
+    50:'#FFFBF5',100:'#FFEECC',200:'#FFDA90',300:'#FFCC63',400:'#FFBD36',
+    500:'#DDA023',600:'#BB8414',700:'#996908',800:'#775000',900:'#553900'
+  },
+  'Sun Yellow': {
+    100:'#FFEA91',300:'#FFD463',500:'#FFBD36',700:'#F7A81A',900:'#F09A1F'
+  },
+  'Green': {
+    50:'#F7FDF9',100:'#D6F5E0',200:'#B9EECB',300:'#91E3AD',400:'#71D092',
+    500:'#4DC375',600:'#37A45D',700:'#32764A',800:'#235234',900:'#183924'
+  },
+  'Blue': {
+    50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',300:'#8FCEF0',400:'#64BCEA',
+    500:'#35A8E4',600:'#1B8ECA',700:'#156F9D',800:'#0F5070',900:'#093043'
+  },
+  'Pink': {
+    50:'#FDF6FA',100:'#F7D4E6',200:'#F1B2D3',300:'#EA91BF',400:'#E66FAC',
+    500:'#E14F9A',600:'#BF4382',700:'#7C2C54',800:'#5A1F3D',900:'#44182E'
+  },
+  'Purple': {
+    50:'#F7F7FE',100:'#DBDAFC',200:'#BEBDF8',300:'#A09FF5',400:'#8582F3',
+    500:'#6A65F0',600:'#5A56CB',700:'#4A47A7',800:'#3A3883',900:'#2B2960'
+  },
+  'Navy (Legacy)': {
+    100:'#5273A2',300:'#395A88',500:'#2C4C79',700:'#1E3B63',900:'#152B4B'
+  },
+  'Skyblue (Legacy)': {
+    100:'#9CDCF8',300:'#90CFF2',500:'#64BCEA',700:'#39A8DF',900:'#009DDA'
+  },
+  'Dark Teal (Legacy)': {
+    100:'#3E9E9D',300:'#179394',500:'#007F7E',700:'#0D7069',900:'#00645B'
+  }
+};
+
+// ── Utility: relative luminance & contrast ratio ──
+function hexToRgb(hex) {
+  const h = hex.replace('#','');
+  return [parseInt(h.substring(0,2),16), parseInt(h.substring(2,4),16), parseInt(h.substring(4,6),16)];
+}
+function luminance(r,g,b) {
+  const [rs,gs,bs] = [r,g,b].map(c => { c /= 255; return c <= 0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4); });
+  return 0.2126*rs + 0.7152*gs + 0.0722*bs;
+}
+function contrastRatio(hex1,hex2) {
+  const [r1,g1,b1] = hexToRgb(hex1);
+  const [r2,g2,b2] = hexToRgb(hex2);
+  const l1 = luminance(r1,g1,b1), l2 = luminance(r2,g2,b2);
+  const lighter = Math.max(l1,l2), darker = Math.min(l1,l2);
+  return ((lighter + 0.05)/(darker + 0.05)).toFixed(1);
+}
+function textColorFor(hex) {
+  const [r,g,b] = hexToRgb(hex);
+  return luminance(r,g,b) > 0.179 ? '#000' : '#fff';
+}
+
+// ── Toast ──
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+// ── Tab switching ──
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ── COLOURS PANEL ──
+let colourBg = 'dark';
+function renderColours() {
+  const container = document.getElementById('colour-container');
+  container.innerHTML = '';
+  const bgColor = colourBg === 'dark' ? '#1a1a2e' : '#F3F4F6';
+  const contrastAgainst = colourBg === 'dark' ? '#ffffff' : '#000000';
+  const contrastLabel = colourBg === 'dark' ? 'W' : 'B';
+
+  for (const [name, shades] of Object.entries(PALETTES)) {
+    const group = document.createElement('div');
+    group.className = 'palette-group';
+    group.innerHTML = '<div class="palette-label">' + name + '</div>';
+    const row = document.createElement('div');
+    row.className = 'swatches';
+
+    for (const [shade, hex] of Object.entries(shades)) {
+      const swatch = document.createElement('div');
+      swatch.className = 'swatch';
+      const cr = contrastRatio(hex, contrastAgainst);
+      const passAANormal = parseFloat(cr) >= 4.5;
+      const crBadgeColor = passAANormal ? '#4DC375' : '#E04B51';
+      const crBadgeBg = passAANormal ? 'rgba(77,195,117,0.2)' : 'rgba(224,75,81,0.2)';
+      swatch.innerHTML =
+        '<div class="swatch-color" style="background:' + hex + '">' +
+          '<span class="contrast" style="color:' + crBadgeColor + ';background:' + crBadgeBg + '">' + cr + ':1 ' + contrastLabel + '</span>' +
+        '</div>' +
+        '<div class="swatch-info"><div class="shade">' + shade + '</div><div class="hex">' + hex + '</div></div>';
+      swatch.addEventListener('click', () => {
+        navigator.clipboard.writeText(hex).then(() => showToast('Copied ' + hex));
+      });
+      row.appendChild(swatch);
+    }
+    group.appendChild(row);
+    container.appendChild(group);
+  }
+}
+
+document.querySelectorAll('.bg-toggle .toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.bg-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    colourBg = btn.dataset.bg;
+    renderColours();
+  });
+});
+renderColours();
+
+// ── TYPOGRAPHY PANEL ──
+const HEADINGS = [
+  { cls: 'text-5xl', size: '3rem / 48px', tag: 'H1' },
+  { cls: 'text-4xl', size: '2.25rem / 36px', tag: 'H2' },
+  { cls: 'text-3xl', size: '1.875rem / 30px', tag: 'H3' },
+  { cls: 'text-2xl', size: '1.5rem / 24px', tag: 'H4' },
+  { cls: 'text-xl',  size: '1.25rem / 20px', tag: 'H5' },
+  { cls: 'text-lg',  size: '1.125rem / 18px', tag: 'H6' },
+];
+const BODY = [
+  { cls: 'text-base',  size: '1rem / 16px', label: 'Body' },
+  { cls: 'text-sm',    size: '0.875rem / 14px', label: 'Small' },
+  { cls: 'text-xs',    size: '0.75rem / 12px', label: 'Caption' },
+];
+const HEADING_SIZES = [48, 36, 30, 24, 20, 18];
+const BODY_SIZES   = [16, 14, 12];
+
+function renderTypography() {
+  const weight = document.getElementById('weight-slider').value;
+  const sample = document.getElementById('sample-text').value || 'The quick brown fox jumps over the lazy dog';
+  document.getElementById('weight-value').textContent = weight;
+
+  const hContainer = document.getElementById('type-headings');
+  hContainer.innerHTML = '';
+  HEADINGS.forEach((h, i) => {
+    const row = document.createElement('div');
+    row.className = 'type-row';
+    row.innerHTML =
+      '<div class="type-label">' + h.tag + ' &middot; ' + h.cls + '</div>' +
+      '<div class="type-preview" style="font-size:' + HEADING_SIZES[i] + 'px;font-weight:' + weight + ';font-family:\'Roboto Flex\',serif">' + sample + '</div>' +
+      '<div class="type-meta">' + h.size + '</div>';
+    hContainer.appendChild(row);
+  });
+
+  const bContainer = document.getElementById('type-body');
+  bContainer.innerHTML = '';
+  BODY.forEach((b, i) => {
+    const row = document.createElement('div');
+    row.className = 'type-row';
+    row.innerHTML =
+      '<div class="type-label">' + b.label + ' &middot; ' + b.cls + '</div>' +
+      '<div class="type-preview" style="font-size:' + BODY_SIZES[i] + 'px;font-weight:' + weight + ';font-family:\'Roboto Flex\',serif">' + sample + '</div>' +
+      '<div class="type-meta">' + b.size + '</div>';
+    bContainer.appendChild(row);
+  });
+}
+
+document.getElementById('weight-slider').addEventListener('input', renderTypography);
+document.getElementById('sample-text').addEventListener('input', renderTypography);
+renderTypography();
+
+// ── SPACING PANEL ──
+const SPACING_SCALE = [
+  [0,0],[0.5,2],[1,4],[1.5,6],[2,8],[2.5,10],[3,12],[3.5,14],
+  [4,16],[5,20],[6,24],[7,28],[8,32],[9,36],[10,40],[11,44],[12,48],
+  [14,56],[16,64],[20,80],[24,96],[28,112],[32,128],[36,144],
+  [40,160],[44,176],[48,192],[52,208],[56,224],[60,240],[64,256],
+  [72,288],[80,320],[96,384]
+];
+
+function renderSpacingBars() {
+  const container = document.getElementById('spacing-bars');
+  container.innerHTML = '';
+  const maxPx = 384;
+  SPACING_SCALE.forEach(([tw, px]) => {
+    const row = document.createElement('div');
+    row.className = 'spacing-row';
+    const barWidth = Math.max(2, (px / maxPx) * 100);
+    row.innerHTML =
+      '<span class="spacing-label">' + tw + '</span>' +
+      '<div class="spacing-bar" style="width:' + barWidth + '%;min-width:2px"></div>' +
+      '<span class="spacing-px">' + px + 'px</span>';
+    container.appendChild(row);
+  });
+}
+renderSpacingBars();
+
+function renderSpacingDemo() {
+  const idx = parseInt(document.getElementById('spacing-slider').value);
+  const [tw, px] = SPACING_SCALE[idx];
+  document.getElementById('spacing-val').textContent = 'p-' + tw + ' (' + px + 'px)';
+
+  const demo = document.getElementById('spacing-demo');
+  demo.innerHTML = '';
+
+  ['Padding','Margin','Gap'].forEach(prop => {
+    const card = document.createElement('div');
+    card.className = 'spacing-card';
+    if (prop === 'Padding') {
+      card.style.padding = px + 'px';
+      card.innerHTML = '<div class="spacing-card-inner"></div><div class="spacing-card-label">padding: ' + px + 'px<br><code>p-' + tw + '</code></div>';
+    } else if (prop === 'Margin') {
+      card.style.padding = '0';
+      card.innerHTML = '<div style="margin:' + px + 'px"><div class="spacing-card-inner"></div></div><div class="spacing-card-label">margin: ' + px + 'px<br><code>m-' + tw + '</code></div>';
+    } else {
+      card.style.padding = '12px';
+      card.innerHTML =
+        '<div style="display:flex;gap:' + px + 'px">' +
+          '<div class="spacing-card-inner" style="flex:1"></div>' +
+          '<div class="spacing-card-inner" style="flex:1"></div>' +
+        '</div><div class="spacing-card-label">gap: ' + px + 'px<br><code>gap-' + tw + '</code></div>';
+    }
+    demo.appendChild(card);
+  });
+}
+document.getElementById('spacing-slider').addEventListener('input', renderSpacingDemo);
+renderSpacingDemo();
+
+// ── PALETTE BUILDER ──
+const BUILDER_OPTIONS = [
+  { label: 'Teal 700', value: '#007F7E', name: 'teal-700' },
+  { label: 'Teal 600', value: '#2F9E9C', name: 'teal-600' },
+  { label: 'Teal 500', value: '#43C0BE', name: 'teal-500' },
+  { label: 'Primary Blue 700', value: '#2C4C79', name: 'primary-blue-700' },
+  { label: 'Primary Blue 500', value: '#4B7BBE', name: 'primary-blue-500' },
+  { label: 'Red 500', value: '#E04B51', name: 'red-500' },
+  { label: 'Red 700', value: '#9C262A', name: 'red-700' },
+  { label: 'Orange 500', value: '#E0763C', name: 'orange-500' },
+  { label: 'Sun Yellow 500', value: '#FFBD36', name: 'sun-yellow-500' },
+  { label: 'Sun Yellow 700', value: '#F7A81A', name: 'sun-yellow-700' },
+  { label: 'Green 600', value: '#37A45D', name: 'green-600' },
+  { label: 'Green 700', value: '#32764A', name: 'green-700' },
+  { label: 'Blue 500', value: '#35A8E4', name: 'blue-500' },
+  { label: 'Purple 500', value: '#6A65F0', name: 'purple-500' },
+  { label: 'Pink 500', value: '#E14F9A', name: 'pink-500' },
+  { label: 'Gray 700', value: '#666666', name: 'gray-700' },
+  { label: 'Gray 900', value: '#333333', name: 'gray-900' },
+];
+
+const PRESETS = {
+  default:     { primary: '#007F7E', secondary: '#2C4C79', accent: '#FFBD36' },
+  clinical:    { primary: '#E04B51', secondary: '#2C4C79', accent: '#FFBD36' },
+  finance:     { primary: '#2C4C79', secondary: '#007F7E', accent: '#43C0BE' },
+  coordinator: { primary: '#43C0BE', secondary: '#2C4C79', accent: '#F7A81A' },
+};
+
+function populateBuilderSelects() {
+  ['builder-primary','builder-secondary','builder-accent'].forEach(id => {
+    const sel = document.getElementById(id);
+    sel.innerHTML = '';
+    BUILDER_OPTIONS.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt.value;
+      o.textContent = opt.label + ' (' + opt.value + ')';
+      sel.appendChild(o);
+    });
+  });
+}
+populateBuilderSelects();
+
+function applyPreset(name) {
+  const p = PRESETS[name];
+  document.getElementById('builder-primary').value = p.primary;
+  document.getElementById('builder-secondary').value = p.secondary;
+  document.getElementById('builder-accent').value = p.accent;
+  renderBuilderPreview();
+}
+
+function renderBuilderPreview() {
+  const primary = document.getElementById('builder-primary').value;
+  const secondary = document.getElementById('builder-secondary').value;
+  const accent = document.getElementById('builder-accent').value;
+  const primaryText = textColorFor(primary);
+  const accentText = textColorFor(accent);
+
+  const preview = document.getElementById('builder-preview');
+  preview.innerHTML =
+    '<div class="builder-card-header" style="background:' + primary + '">' +
+      '<h3 style="color:' + primaryText + '">Dashboard Overview</h3>' +
+      '<span style="background:' + accent + ';color:' + accentText + ';padding:2px 10px;border-radius:99px;font-size:0.7rem;font-weight:600">Live</span>' +
+    '</div>' +
+    '<div class="builder-card-body">' +
+      '<p>Sample dashboard card using your selected palette. Metrics update in real-time.</p>' +
+      '<div class="builder-card-stat">' +
+        '<div class="builder-stat-item" style="background:' + primary + '15;border:1px solid ' + primary + '30">' +
+          '<div class="stat-val" style="color:' + primary + '">24</div>' +
+          '<div class="stat-label" style="color:' + primary + '99">Active Clients</div>' +
+        '</div>' +
+        '<div class="builder-stat-item" style="background:' + secondary + '15;border:1px solid ' + secondary + '30">' +
+          '<div class="stat-val" style="color:' + secondary + '">8</div>' +
+          '<div class="stat-label" style="color:' + secondary + '99">Pending Tasks</div>' +
+        '</div>' +
+        '<div class="builder-stat-item" style="background:' + accent + '20;border:1px solid ' + accent + '40">' +
+          '<div class="stat-val" style="color:' + accent + '">3</div>' +
+          '<div class="stat-label" style="color:' + accent + '">Alerts</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="builder-card-footer">' +
+      '<button class="btn btn-ghost" style="border-color:' + secondary + ';color:' + secondary + '">Details</button>' +
+      '<button class="btn" style="background:' + primary + ';color:' + primaryText + ';border-color:' + primary + '">View All</button>' +
+    '</div>';
+}
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyPreset(btn.dataset.preset);
+  });
+});
+document.getElementById('builder-primary').addEventListener('change', renderBuilderPreview);
+document.getElementById('builder-secondary').addEventListener('change', renderBuilderPreview);
+document.getElementById('builder-accent').addEventListener('change', renderBuilderPreview);
+applyPreset('default');
+
+// ── Copy prompt output ──
+function copyPrompt() {
+  const text = document.getElementById('prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied Tailwind reference!'));
+}
+
+// ── Load Roboto Flex from Google Fonts (self-contained, single external font) ──
+// We load it dynamically to keep the file self-contained by default
+(function loadFont() {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..900&display=swap';
+  document.head.appendChild(link);
+})();
+</script>
+
+</body>
+</html>

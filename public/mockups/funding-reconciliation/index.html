@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRR - Funding Reconciliation & Refunds Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">Finance</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">Adjustments & Refunds</span>
+  </div>
+  <div class="w-8 h-8 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-xs font-medium">FP</div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('index')" id="tab-index" class="py-3 text-sm tab-active">Adjustments Index</button>
+    <button onclick="showScreen('raise')" id="tab-raise" class="py-3 text-sm tab-inactive">Raise Adjustment</button>
+    <button onclick="showScreen('detail')" id="tab-detail" class="py-3 text-sm tab-inactive">Adjustment Detail</button>
+    <button onclick="showScreen('unmatched')" id="tab-unmatched" class="py-3 text-sm tab-inactive">Unmatched (MYOB)</button>
+  </nav>
+</div>
+
+<!-- Adjustments Index -->
+<div id="screen-index" class="max-w-6xl mx-auto p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">Adjustments</h1>
+      <p class="text-sm text-gray-500 mt-1">All adjustments across Portal and MYOB</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700">Export CSV</button>
+      <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">+ Raise Manual Adjustment</button>
+    </div>
+  </div>
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Pending Approval</div>
+      <div class="text-2xl font-semibold text-amber-600">5</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Pending SA Application</div>
+      <div class="text-2xl font-semibold text-blue-600">12</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Total Outstanding Credits</div>
+      <div class="text-2xl font-semibold text-gray-900">$14,580.00</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Applied to SA Claims</div>
+      <div class="text-2xl font-semibold text-green-600">$8,420.00</div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-4 py-3">Client</th>
+          <th class="px-4 py-3">Direction</th>
+          <th class="px-4 py-3 text-right">Amount</th>
+          <th class="px-4 py-3">Funding Stream</th>
+          <th class="px-4 py-3">Source</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">SA Status</th>
+          <th class="px-4 py-3">MYOB</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 text-sm">
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3"><div class="font-medium text-gray-900">Margaret Thompson</div><div class="text-xs text-gray-400">KF-273342</div></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Debit</span></td>
+          <td class="px-4 py-3 text-right font-medium">$220.00</td>
+          <td class="px-4 py-3 text-gray-500">ON</td>
+          <td class="px-4 py-3"><span class="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">MYOB Auto</span></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Approved</span></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Pending SA</span></td>
+          <td class="px-4 py-3"><a href="#" class="text-tc-teal-700 text-xs hover:underline">MYOB-89452</a></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3"><div class="font-medium text-gray-900">Robert Jenkins</div><div class="text-xs text-gray-400">KF-284561</div></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Debit</span></td>
+          <td class="px-4 py-3 text-right font-medium">$1,450.00</td>
+          <td class="px-4 py-3 text-gray-500">HC</td>
+          <td class="px-4 py-3"><span class="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700">Manual</span></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Pending</span></td>
+          <td class="px-4 py-3 text-gray-400">--</td>
+          <td class="px-4 py-3"><a href="#" class="text-tc-teal-700 text-xs hover:underline">MYOB-89501</a></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3"><div class="font-medium text-gray-900">Dorothy Walsh</div><div class="text-xs text-gray-400">KF-291845</div></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Credit</span></td>
+          <td class="px-4 py-3 text-right font-medium">$85.00</td>
+          <td class="px-4 py-3 text-gray-500">ON</td>
+          <td class="px-4 py-3"><span class="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700">MYOB Auto</span></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Approved</span></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Applied</span></td>
+          <td class="px-4 py-3"><a href="#" class="text-tc-teal-700 text-xs hover:underline">MYOB-89340</a></td>
+        </tr>
+        <tr class="hover:bg-gray-50 bg-red-50/30">
+          <td class="px-4 py-3"><div class="font-medium text-gray-900">Henry Nguyen</div><div class="text-xs text-gray-400">KF-301982</div></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Debit</span></td>
+          <td class="px-4 py-3 text-right font-medium">$3,200.00</td>
+          <td class="px-4 py-3 text-gray-500">AT</td>
+          <td class="px-4 py-3"><span class="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700">Manual</span></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Approved</span></td>
+          <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">68 days</span></td>
+          <td class="px-4 py-3 text-gray-400">--</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Raise Adjustment -->
+<div id="screen-raise" class="max-w-3xl mx-auto p-6 hidden">
+  <h1 class="text-xl font-semibold text-gray-900 mb-1">Raise Manual Adjustment</h1>
+  <p class="text-sm text-gray-500 mb-6">Create an adjustment against a paid bill</p>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <!-- Selected bill -->
+    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-sm font-medium text-gray-900">Bill #B-4521 &mdash; Margaret Thompson</div>
+          <div class="text-xs text-gray-500">KF-273342 &bull; Paid 3 Feb 2026 &bull; Total: $263.25</div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span>
+      </div>
+    </div>
+    <!-- Bill items -->
+    <div class="mb-6">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Select Bill Items</label>
+      <div class="space-y-2">
+        <label class="flex items-center justify-between bg-gray-50 rounded-lg p-3 cursor-pointer hover:bg-gray-100">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-tc-teal-700">
+            <div>
+              <div class="text-sm text-gray-900">Personal Care - Showering (Mon)</div>
+              <div class="text-xs text-gray-500">ON Stream &bull; 1.5 hrs</div>
+            </div>
+          </div>
+          <span class="text-sm font-medium">$87.75</span>
+        </label>
+        <label class="flex items-center justify-between bg-gray-50 rounded-lg p-3 cursor-pointer hover:bg-gray-100">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-tc-teal-700">
+            <div>
+              <div class="text-sm text-gray-900">Personal Care - Showering (Wed)</div>
+              <div class="text-xs text-gray-500">ON Stream &bull; 1.5 hrs</div>
+            </div>
+          </div>
+          <span class="text-sm font-medium">$87.75</span>
+        </label>
+        <label class="flex items-center justify-between bg-gray-50 rounded-lg p-3 cursor-pointer hover:bg-gray-100">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-tc-teal-700">
+            <div>
+              <div class="text-sm text-gray-900">Personal Care - Showering (Fri)</div>
+              <div class="text-xs text-gray-500">ON Stream &bull; 1.5 hrs</div>
+            </div>
+          </div>
+          <span class="text-sm font-medium">$87.75</span>
+        </label>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Direction *</label>
+        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option selected>Debit (Refund - restores budget)</option>
+          <option>Credit (Additional charge)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Adjustment Amount *</label>
+        <input type="text" value="$87.75" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <p class="text-xs text-gray-400 mt-1">Cannot exceed selected items total: $87.75</p>
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Reason *</label>
+      <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="3" placeholder="Describe the reason for this adjustment...">Service not delivered on Monday 3 Feb - carer did not attend. Refund processed in MYOB.</textarea>
+    </div>
+    <div class="mb-6">
+      <label class="block text-sm font-medium text-gray-700 mb-1">MYOB Reference (Optional)</label>
+      <input type="text" placeholder="e.g., MYOB-89452" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+    </div>
+    <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+      <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700">Cancel</button>
+      <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Submit for Approval</button>
+    </div>
+  </div>
+</div>
+
+<!-- Adjustment Detail -->
+<div id="screen-detail" class="max-w-3xl mx-auto p-6 hidden">
+  <h1 class="text-lg font-semibold text-gray-900 mb-6">Adjustment Detail</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">Approved</span>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-1.5 text-xs border border-red-300 text-red-700 rounded-lg">Void Adjustment</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div><label class="text-xs text-gray-500">Client</label><div class="text-sm font-medium">Margaret Thompson (KF-273342)</div></div>
+      <div><label class="text-xs text-gray-500">Amount</label><div class="text-sm font-semibold">$220.00 (Debit)</div></div>
+      <div><label class="text-xs text-gray-500">Funding Stream</label><div class="text-sm font-medium">ON - Ongoing Support</div></div>
+      <div><label class="text-xs text-gray-500">Source</label><div class="text-sm font-medium">MYOB Auto-Detected</div></div>
+      <div><label class="text-xs text-gray-500">Original Bill</label><div class="text-sm font-medium text-tc-teal-700"><a href="#">Bill #B-4412</a></div></div>
+      <div><label class="text-xs text-gray-500">MYOB Reference</label><div class="text-sm font-medium"><a href="#" class="text-tc-teal-700 hover:underline">MYOB-89452</a></div></div>
+      <div><label class="text-xs text-gray-500">Reason</label><div class="text-sm text-gray-700">Duplicate charge for home maintenance service. MYOB debit note raised and closed.</div></div>
+      <div><label class="text-xs text-gray-500">SA Application Status</label><div class="text-sm font-medium text-amber-600">Pending SA Application (32 days)</div></div>
+    </div>
+    <div class="border-t border-gray-200 pt-4">
+      <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Approval History</h3>
+      <div class="space-y-2 text-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+          <span class="text-gray-500">11 Feb 2026, 10:30 AM</span>
+          <span>MYOB webhook received (closed status)</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+          <span class="text-gray-500">11 Feb 2026, 10:30 AM</span>
+          <span>Auto-created from MYOB debit note, matched via bill_item_id</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-green-500"></div>
+          <span class="text-gray-500">11 Feb 2026, 2:15 PM</span>
+          <span>Approved by Finance Patel</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-green-500"></div>
+          <span class="text-gray-500">11 Feb 2026, 2:15 PM</span>
+          <span>Budget restored: ON +$220.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Unmatched -->
+<div id="screen-unmatched" class="max-w-5xl mx-auto p-6 hidden">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">Unmatched MYOB Adjustments</h1>
+      <p class="text-sm text-gray-500 mt-1">Adjustments received via webhook that could not be matched to a Portal bill</p>
+    </div>
+  </div>
+  <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 text-sm text-amber-800">
+    <strong>3 unmatched adjustments</strong> require manual review. Match each to a Portal bill or mark as resolved.
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">MYOB UID</th>
+          <th class="px-6 py-3">MYOB Customer</th>
+          <th class="px-6 py-3">Direction</th>
+          <th class="px-6 py-3 text-right">Amount</th>
+          <th class="px-6 py-3">Service Date</th>
+          <th class="px-6 py-3">Received</th>
+          <th class="px-6 py-3">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 text-sm">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 font-mono text-xs text-gray-500">MYOB-89678</td>
+          <td class="px-6 py-4 text-gray-900">Thompson, Margaret</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Debit</span></td>
+          <td class="px-6 py-4 text-right font-medium">$45.00</td>
+          <td class="px-6 py-4 text-gray-500">1 Mar 2026</td>
+          <td class="px-6 py-4 text-gray-500">14 Mar 2026</td>
+          <td class="px-6 py-4"><button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Match to Bill</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 font-mono text-xs text-gray-500">MYOB-89690</td>
+          <td class="px-6 py-4 text-gray-900">Walsh, Dorothy</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Credit</span></td>
+          <td class="px-6 py-4 text-right font-medium">$120.00</td>
+          <td class="px-6 py-4 text-gray-500">28 Feb 2026</td>
+          <td class="px-6 py-4 text-gray-500">14 Mar 2026</td>
+          <td class="px-6 py-4"><button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Match to Bill</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

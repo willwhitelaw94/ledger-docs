@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documents - Gamified Gina</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{50:"#F0FAFA",100:"#D5F1F0",200:"#BAE8E7",300:"#94DBDA",400:"#66CCCA",500:"#43C0BE",600:"#2F9E9C",700:"#007F7E",800:"#005656",900:"#003D3D"},"primary-blue":{50:"#F0F4FA",100:"#D6E1F0",200:"#BCCEE7",300:"#96B2D9",400:"#7197CC",500:"#4B7BBE",600:"#39639D",700:"#2C4C79",800:"#1E3452",900:"#101C2D"}}}}}</script>
+<style>@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(0,127,126,0.4)}70%{box-shadow:0 0 0 6px rgba(0,127,126,0)}100%{box-shadow:0 0 0 0 rgba(0,127,126,0)}}.step-pulse{animation:pulse-ring 2s infinite}</style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+<script src="viewer-toolbar.js"></script>
+
+  <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-7 h-7 bg-teal-700 rounded flex items-center justify-center text-white font-bold text-xs">TC</div><span class="font-semibold text-primary-blue-700">Trilogy Care</span></div><div class="flex items-center gap-3"><span class="text-sm text-gray-600">Acme Allied Health</span></div></header>
+  <div class="md:hidden bg-white border-b border-gray-200 px-4 py-3"><div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-gray-500">Step 4 of 5</span><span class="text-xs text-teal-700 font-medium">Documents</span></div><div class="flex items-center gap-1"><div class="flex-1 h-1.5 rounded-full bg-green-500"></div><div class="flex-1 h-1.5 rounded-full bg-green-500"></div><div class="flex-1 h-1.5 rounded-full bg-green-500"></div><div class="flex-1 h-1.5 rounded-full bg-teal-700"></div><div class="flex-1 h-1.5 rounded-full bg-gray-200"></div></div></div>
+  <div class="flex min-h-[calc(100vh-57px)]">
+    <aside class="hidden md:block w-64 bg-white border-r border-gray-200 p-6 flex-shrink-0">
+      <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-6">Your Progress</h2>
+      <div class="space-y-0">
+        <div class="flex gap-3 pb-8 relative"><div class="absolute left-[15px] top-9 bottom-0 w-0.5 bg-green-400"></div><div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white flex-shrink-0 z-10"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><div><p class="font-medium text-gray-700 text-sm">Business Details</p><p class="text-xs text-green-600">Complete</p></div></div>
+        <div class="flex gap-3 pb-8 relative"><div class="absolute left-[15px] top-9 bottom-0 w-0.5 bg-green-400"></div><div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white flex-shrink-0 z-10"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><div><p class="font-medium text-gray-700 text-sm">Locations</p><p class="text-xs text-green-600">Complete</p></div></div>
+        <div class="flex gap-3 pb-8 relative"><div class="absolute left-[15px] top-9 bottom-0 w-0.5 bg-green-400"></div><div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white flex-shrink-0 z-10"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><div><p class="font-medium text-gray-700 text-sm">Pricing</p><p class="text-xs text-green-600">Complete</p></div></div>
+        <div class="flex gap-3 pb-8 relative"><div class="absolute left-[15px] top-9 bottom-0 w-0.5 bg-gray-200"></div><div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 z-10 step-pulse">4</div><div><p class="font-semibold text-gray-900 text-sm">Documents</p><p class="text-xs text-teal-700">In progress</p></div></div>
+        <div class="flex gap-3 relative"><div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm font-bold flex-shrink-0 z-10">5</div><div><p class="font-medium text-gray-400 text-sm">Agreements</p></div></div>
+      </div>
+      <div class="mt-8 bg-gray-50 rounded-lg p-4 text-center"><p class="text-2xl font-bold text-gray-900">3 <span class="text-sm font-normal text-gray-500">of 5</span></p><p class="text-xs text-gray-500">steps completed</p></div>
+    </aside>
+    <main class="flex-1 p-6 md:p-10"><div class="max-w-2xl">
+      <h1 class="text-2xl font-bold text-gray-900 mb-1">Step 4: Documents</h1>
+      <p class="text-gray-500 text-sm mb-6">Upload compliance documents. Organisation documents are shared across all entities.</p>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm mb-4">
+        <div class="px-5 py-4 flex items-center justify-between"><div class="flex items-center gap-3"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg><span class="font-medium text-gray-900 text-sm">Organisation Documents</span></div><span class="text-xs text-green-600 font-medium bg-green-50 px-2 py-1 rounded">2 of 3</span></div>
+        <div class="border-t border-gray-100 px-5 pb-4">
+          <div class="flex items-center justify-between py-3 border-b border-gray-50"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-green-50 rounded flex items-center justify-center"><svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><div><p class="text-sm font-medium text-gray-900">Public Liability Insurance</p><p class="text-xs text-gray-400">Uploaded 2 Mar 2026</p></div></div><span class="text-xs text-green-600 font-medium">Uploaded</span></div>
+          <div class="flex items-center justify-between py-3 border-b border-gray-50"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-green-50 rounded flex items-center justify-center"><svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><div><p class="text-sm font-medium text-gray-900">ABN Verification</p><p class="text-xs text-gray-400">Uploaded 2 Mar 2026</p></div></div><span class="text-xs text-green-600 font-medium">Uploaded</span></div>
+          <div class="flex items-center justify-between py-3"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-gray-100 rounded flex items-center justify-center"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg></div><div><p class="text-sm font-medium text-gray-900">Workers Compensation</p><p class="text-xs text-gray-400">PDF, JPG, or PNG &middot; Max 10MB</p></div></div><button class="text-sm text-primary-blue-700 font-medium hover:underline">Upload</button></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm mb-4">
+        <div class="px-5 py-4 flex items-center justify-between"><span class="font-medium text-gray-900 text-sm">Service-Specific Documents</span><span class="text-xs text-amber-600 font-medium bg-amber-50 px-2 py-1 rounded">0 of 2</span></div>
+        <div class="border-t border-gray-100 px-5 pb-4">
+          <div class="flex items-center justify-between py-3 border-b border-gray-50"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-gray-100 rounded flex items-center justify-center"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg></div><div><p class="text-sm font-medium text-gray-900">Professional Indemnity</p></div></div><button class="text-sm text-primary-blue-700 font-medium">Upload</button></div>
+          <div class="flex items-center justify-between py-3"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-red-50 rounded flex items-center justify-center"><svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></div><div><p class="text-sm font-medium text-gray-900">Police Check Certificate</p><p class="text-xs text-red-600 font-medium">REJECTED: Expired certificate</p></div></div><button class="text-sm text-red-600 font-medium">Re-upload</button></div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between mt-8"><button class="border border-gray-300 text-gray-700 font-medium py-2.5 px-6 rounded-lg hover:bg-gray-50 transition">&larr; Back</button><button class="bg-primary-blue-700 hover:bg-primary-blue-800 text-white font-medium py-2.5 px-6 rounded-lg transition">Continue &rarr;</button></div>
+    </div></main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+title: 'Email Infrastructure & Transactional Notifications'
+prefix: EML
+status: complete
+summary: "Transactional email delivery via Resend — auth emails, domain event notifications, branded templates, and user preferences"
+gates:
+  idea:
+    passed: false
+    date:
+    notes:

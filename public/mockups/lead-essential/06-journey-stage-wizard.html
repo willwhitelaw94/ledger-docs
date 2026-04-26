@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LES Mockup - Journey Stage Wizard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="viewer-toolbar.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' },
+            info: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',500:'#43C0BE',700:'#007F7E',900:'#003D3D' },
+            success: { 50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',500:'#35A8E4',700:'#156F9D' },
+            warning: { 50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',500:'#E0763C',700:'#9C481A' },
+            danger: { 50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',500:'#E04B51',700:'#9C262A' },
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-primary { color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+    .stage-card { transition: all 0.15s ease; }
+    .stage-card:hover { border-color: #43C0BE; background-color: #F0FAFA; }
+    .stage-card.selected { border-color: #007F7E; background-color: #F0FAFA; box-shadow: 0 0 0 2px rgba(67, 192, 190, 0.5); }
+    .stage-card.current-stage { border-color: #BAE8E7; background-color: #F0FAFA; }
+    .required-fields { animation: slideDown 0.2s ease-out; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="font-sans min-h-screen">
+
+  <!-- Dimmed background simulating the profile page behind the modal -->
+  <div class="min-h-screen bg-gray-100 relative">
+
+    <!-- Faux background content (blurred/dimmed) -->
+    <div class="opacity-30 pointer-events-none">
+      <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="text-teal-700 font-bold text-lg">TC Portal</div>
+          <span class="text-gray-300">/</span>
+          <span class="text-secondary text-sm">Leads</span>
+          <span class="text-gray-300">/</span>
+          <span class="text-sm font-semibold">Margaret Wilson</span>
+        </div>
+      </nav>
+      <div class="bg-white border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center gap-1 max-w-3xl">
+          <div class="flex flex-col items-center gap-1 min-w-[80px]">
+            <div class="w-2.5 h-2.5 rounded-full bg-teal-400"></div>
+            <span class="text-xs text-teal-600">Pre-Care</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-teal-400"></div>
+          <div class="flex flex-col items-center gap-1 min-w-[80px]">
+            <div class="w-2.5 h-2.5 rounded-full bg-teal-400"></div>
+            <span class="text-xs text-teal-600">ACAT Booked</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-teal-400"></div>
+          <div class="flex flex-col items-center gap-1 min-w-[80px]">
+            <div class="w-2.5 h-2.5 rounded-full bg-teal-700 ring-4 ring-teal-200"></div>
+            <span class="text-xs text-teal-700 font-bold">Approved</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-gray-200"></div>
+          <div class="flex flex-col items-center gap-1 min-w-[80px]">
+            <div class="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
+            <span class="text-xs text-secondary">Allocated</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-gray-200"></div>
+          <div class="flex flex-col items-center gap-1 min-w-[80px]">
+            <div class="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
+            <span class="text-xs text-secondary">Active</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-gray-200"></div>
+          <div class="flex flex-col items-center gap-1 min-w-[80px]">
+            <div class="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
+            <span class="text-xs text-secondary">Converted</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-6">
+        <div class="max-w-4xl mx-auto bg-white rounded-lg border border-gray-200 p-6 h-64"></div>
+      </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+      <!-- Modal -->
+      <div class="bg-white rounded-lg shadow-xl w-[560px] max-h-[90vh] overflow-y-auto" id="modal">
+
+        <!-- Header -->
+        <div class="px-6 py-4 border-b border-gray-200">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-primary">Update Journey Stage</h2>
+            <button class="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+          <div class="mt-2 flex items-center gap-2">
+            <span class="text-sm text-secondary">Current:</span>
+            <span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-200 text-teal-900 ring-1 ring-inset ring-teal-700">Approved (ACAT Assessment Conducted)</span>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="px-6 py-5">
+
+          <!-- Stage Selector -->
+          <div class="mb-5">
+            <label class="text-sm font-semibold text-primary block mb-3">Select New Stage</label>
+            <div class="grid grid-cols-3 gap-2">
+
+              <!-- Pre-Care -->
+              <div class="stage-card cursor-pointer rounded-lg border border-gray-200 p-3 text-center" onclick="selectStage(this, 'pre-care')">
+                <div class="flex items-center justify-center mb-1.5">
+                  <div class="w-2 h-2 rounded-full bg-teal-400 mr-1.5"></div>
+                  <span class="text-sm font-medium text-primary">Pre-Care</span>
+                </div>
+                <p class="text-[10px] text-secondary leading-tight">Initial enquiry stage</p>
+              </div>
+
+              <!-- ACAT Booked -->
+              <div class="stage-card cursor-pointer rounded-lg border border-gray-200 p-3 text-center" onclick="selectStage(this, 'acat-booked')">
+                <div class="flex items-center justify-center mb-1.5">
+                  <div class="w-2 h-2 rounded-full bg-teal-400 mr-1.5"></div>
+                  <span class="text-sm font-medium text-primary">ACAT Booked</span>
+                </div>
+                <p class="text-[10px] text-secondary leading-tight">Assessment scheduled</p>
+              </div>
+
+              <!-- Approved (current) -->
+              <div class="stage-card current-stage cursor-not-allowed rounded-lg border p-3 text-center relative" title="Current stage">
+                <div class="absolute -top-1.5 -right-1.5">
+                  <span class="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-teal-700">
+                    <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                  </span>
+                </div>
+                <div class="flex items-center justify-center mb-1.5">
+                  <div class="w-2 h-2 rounded-full bg-teal-700 mr-1.5"></div>
+                  <span class="text-sm font-semibold text-teal-700">Approved</span>
+                </div>
+                <p class="text-[10px] text-teal-600 leading-tight">ACAT Conducted</p>
+              </div>
+
+              <!-- Allocated (SELECTED) -->
+              <div class="stage-card selected cursor-pointer rounded-lg border p-3 text-center" id="allocated-card" onclick="selectStage(this, 'allocated')">
+                <div class="absolute -top-1.5 -right-1.5 hidden">
+                </div>
+                <div class="flex items-center justify-center mb-1.5">
+                  <div class="w-2.5 h-2.5 rounded-full border-2 border-teal-700 bg-teal-700 mr-1.5 flex items-center justify-center">
+                    <div class="w-1 h-1 rounded-full bg-white"></div>
+                  </div>
+                  <span class="text-sm font-semibold text-teal-700">Allocated</span>
+                </div>
+                <p class="text-[10px] text-teal-600 leading-tight">Package allocated</p>
+              </div>
+
+              <!-- Active -->
+              <div class="stage-card cursor-pointer rounded-lg border border-gray-200 p-3 text-center" onclick="selectStage(this, 'active')">
+                <div class="flex items-center justify-center mb-1.5">
+                  <div class="w-2 h-2 rounded-full bg-gray-300 mr-1.5"></div>
+                  <span class="text-sm font-medium text-primary">Active</span>
+                </div>
+                <p class="text-[10px] text-secondary leading-tight">Receiving care</p>
+              </div>
+
+              <!-- Converted -->
+              <div class="stage-card cursor-pointer rounded-lg border border-gray-200 p-3 text-center" onclick="selectStage(this, 'converted')">
+                <div class="flex items-center justify-center mb-1.5">
+                  <div class="w-2 h-2 rounded-full bg-gray-300 mr-1.5"></div>
+                  <span class="text-sm font-medium text-primary">Converted</span>
+                </div>
+                <p class="text-[10px] text-secondary leading-tight">Became consumer</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Required Fields (shown for Allocated) -->
+          <div class="required-fields border-t border-gray-200 pt-5" id="required-fields">
+            <div class="flex items-center gap-2 mb-4">
+              <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <span class="text-sm font-semibold text-primary">Required for Allocated</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <!-- HCP Level -->
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1.5">
+                  HCP Level <span class="text-danger-500">*</span>
+                </label>
+                <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 appearance-none bg-white bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg%20xmlns%3d%22http%3a%2f%2fwww.w3.org%2f2000%2fsvg%22%20width%3d%2212%22%20height%3d%2212%22%20viewBox%3d%220%200%2012%2012%22%3e%3cpath%20fill%3d%22%23666666%22%20d%3d%22M2.22%204.47a.75.75%200%20011.06%200L6%207.19l2.72-2.72a.75.75%200%20011.06%201.06l-3.25%203.25a.75.75%200%2001-1.06%200L2.22%205.53a.75.75%200%20010-1.06z%22%2f%3e%3c%2fsvg%3e')] bg-[length:12px] bg-[right_12px_center] bg-no-repeat pr-8">
+                  <option value="" disabled>Select HCP Level</option>
+                  <option value="1">Level 1 — Basic Care</option>
+                  <option value="2" selected>Level 2 — Low-Level Care</option>
+                  <option value="3">Level 3 — Intermediate Care</option>
+                  <option value="4">Level 4 — High-Level Care</option>
+                </select>
+              </div>
+
+              <!-- Allocation Date -->
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1.5">
+                  Allocation Date <span class="text-danger-500">*</span>
+                </label>
+                <input type="date" value="2026-02-21" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 bg-gray-50 rounded-b-lg">
+          <button class="px-5 py-2.5 text-sm font-bold rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+            Cancel
+          </button>
+          <button class="px-5 py-2.5 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600 transition-colors shadow-sm">
+            Update Stage
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectStage(card, stageName) {
+      // Don't allow selecting "Approved" (current stage)
+      if (card.classList.contains('current-stage')) return;
+
+      // Remove selected from all cards
+      document.querySelectorAll('.stage-card').forEach(c => {
+        if (!c.classList.contains('current-stage')) {
+          c.classList.remove('selected');
+        }
+      });
+
+      // Select clicked card
+      card.classList.add('selected');
+
+      // Show/hide required fields based on stage
+      const fieldsSection = document.getElementById('required-fields');
+      if (stageName === 'allocated') {
+        fieldsSection.style.display = 'block';
+        fieldsSection.innerHTML = `
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="text-sm font-semibold text-primary">Required for Allocated</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">HCP Level <span class="text-danger-500">*</span></label>
+              <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 appearance-none bg-white bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg%20xmlns%3d%22http%3a%2f%2fwww.w3.org%2f2000%2fsvg%22%20width%3d%2212%22%20height%3d%2212%22%20viewBox%3d%220%200%2012%2012%22%3e%3cpath%20fill%3d%22%23666666%22%20d%3d%22M2.22%204.47a.75.75%200%20011.06%200L6%207.19l2.72-2.72a.75.75%200%20011.06%201.06l-3.25%203.25a.75.75%200%2001-1.06%200L2.22%205.53a.75.75%200%20010-1.06z%22%2f%3e%3c%2fsvg%3e')] bg-[length:12px] bg-[right_12px_center] bg-no-repeat pr-8">
+                <option value="" disabled>Select HCP Level</option>
+                <option value="1">Level 1 — Basic Care</option>
+                <option value="2">Level 2 — Low-Level Care</option>
+                <option value="3">Level 3 — Intermediate Care</option>
+                <option value="4">Level 4 — High-Level Care</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Allocation Date <span class="text-danger-500">*</span></label>
+              <input type="date" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            </div>
+          </div>`;
+      } else if (stageName === 'active') {
+        fieldsSection.style.display = 'block';
+        fieldsSection.innerHTML = `
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="text-sm font-semibold text-primary">Required for Active</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Service Start Date <span class="text-danger-500">*</span></label>
+              <input type="date" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Care Manager <span class="text-danger-500">*</span></label>
+              <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 appearance-none bg-white bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg%20xmlns%3d%22http%3a%2f%2fwww.w3.org%2f2000%2fsvg%22%20width%3d%2212%22%20height%3d%2212%22%20viewBox%3d%220%200%2012%2012%22%3e%3cpath%20fill%3d%22%23666666%22%20d%3d%22M2.22%204.47a.75.75%200%20011.06%200L6%207.19l2.72-2.72a.75.75%200%20011.06%201.06l-3.25%203.25a.75.75%200%2001-1.06%200L2.22%205.53a.75.75%200%20010-1.06z%22%2f%3e%3c%2fsvg%3e')] bg-[length:12px] bg-[right_12px_center] bg-no-repeat pr-8">
+                <option value="" disabled selected>Select care manager</option>
+                <option>Sarah Thompson</option>
+                <option>Michael Chen</option>
+              </select>
+            </div>
+          </div>`;
+      } else if (stageName === 'acat-booked') {
+        fieldsSection.style.display = 'block';
+        fieldsSection.innerHTML = `
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="text-sm font-semibold text-primary">Required for ACAT Booked</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">ACAT Date <span class="text-danger-500">*</span></label>
+              <input type="date" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            </div>
+          </div>`;
+      } else {
+        fieldsSection.style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

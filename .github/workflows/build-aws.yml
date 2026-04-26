@@ -1,0 +1,129 @@
+name: "Docs: Build Next.js Docker Image for ECS"
+
+run-name: "🏗️ Docs Build #${{ github.run_number }} [${{ github.ref_name }}] → ECR · ${{ github.event.head_commit.message }}"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'content/**'
+      - 'public/**'
+      - 'Dockerfile'
+      - 'next.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'postcss.config.mjs'
+      - 'tailwind.config.*'
+      - 'components.json'
+      - '.github/workflows/**'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build'
+        required: false
+        default: 'main'
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ap-southeast-2
+  NODE_VERSION: '24'
+  DEVOPS_ACCOUNT_ID: '967883357946'
+  DOCKERFILE_PATH: Dockerfile
+  DOCKER_BUILD_CONTEXT: .
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: codebuild-trilogy-care-organisation-build-${{ github.run_id }}-${{ github.run_attempt }}
+    timeout-minutes: 45
+
+    outputs:
+      image-uri: ${{ steps.build-image.outputs.image }}
+      image-tag: ${{ github.sha }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Determine environment and ECR repository
+        id: env-config
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "environment=prod" >> $GITHUB_OUTPUT
+            echo "ecr_repository=trilogycare/tc-docs-main" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/stage" ]]; then
+            echo "environment=stage" >> $GITHUB_OUTPUT
+            echo "ecr_repository=trilogycare/tc-docs-stage" >> $GITHUB_OUTPUT
+          else
+            echo "environment=dev" >> $GITHUB_OUTPUT
+            echo "ecr_repository=trilogycare/tc-docs-dev" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        env:
+          NODE_OPTIONS: '--max-old-space-size=8192'
+        run: npx next build
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ steps.env-config.outputs.ecr_repository }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -f ${{ env.DOCKERFILE_PATH }} \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
+            ${{ env.DOCKER_BUILD_CONTEXT }}
+
+          docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
+
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "✅ Image pushed: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "✅ Image tagged as: latest"
+
+      - name: Build Summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          ### 🏗️ Docker Build Successful
+
+          | Property | Value |
+          |----------|-------|
+          | **Branch** | `${{ github.ref_name }}` |
+          | **Commit** | `${{ github.sha }}` |
+          | **Build #** | #${{ github.run_number }} |
+          | **Environment** | ${{ steps.env-config.outputs.environment }} |
+          | **ECR Repository** | `${{ steps.env-config.outputs.ecr_repository }}` |
+          | **Image Tag** | `${{ github.sha }}` |
+          | **Also Tagged** | `latest` |
+
+          🚀 **Next:** Deployment will start automatically
+          EOF

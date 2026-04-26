@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REF-00036 — Record Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tc-teal': { 500: '#43C0BE', 700: '#007F7E' },
+                        'tc-blue': { 700: '#2C4C79' },
+                    },
+                    fontFamily: { sans: ['Roboto Flex', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .step-connector { position: relative; }
+        .step-connector::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 12px;
+            background: #d1d5db;
+        }
+        .step-connector.completed::after { background: #007F7E; }
+        .step-connector:last-child::after { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 flex font-sans">
+    <!-- Sidebar -->
+    <aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+        <div class="px-4 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div><div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+            <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+        </div>
+        <div class="px-3 py-3"><div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div></div>
+        <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div></div>
+        </nav>
+        <div class="border-t border-gray-100 px-3 py-3">
+            <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div><div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div></div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-h-screen">
+        <!-- Tier Banner (Amber = Medium) -->
+        <div class="bg-gradient-to-r from-amber-500 to-amber-400 px-8 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                <span class="text-white font-semibold text-sm uppercase tracking-wide">Medium Priority</span>
+                <span class="text-white/70 text-sm">&middot; Tier 2 of 3</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-white/80 text-xs">Pyramid position: Middle tier</span>
+                <div class="flex flex-col items-center gap-px ml-2">
+                    <div class="w-3 h-1.5 bg-white/30 rounded-t-sm" style="clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);"></div>
+                    <div class="w-5 h-1.5 bg-white rounded-sm"></div>
+                    <div class="w-7 h-1.5 bg-white/30 rounded-b-sm"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 px-8 py-5">
+            <div class="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                <a href="01-index.html" class="hover:text-tc-teal-700 transition">Feedback Records</a>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-600">REF-00036</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-xl font-semibold text-gray-900">Medication timing consistently late</h1>
+                    <p class="text-sm text-gray-500 mt-0.5">Dorothy Evans &middot; Complaint &middot; Opened 15 Feb 2026</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="05-notes-section.html" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Notes</a>
+                    <a href="06-action-plan.html" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">Action Plan</a>
+                    <button class="px-4 py-2.5 text-sm font-medium text-white bg-tc-teal-700 rounded-lg hover:bg-tc-teal-700/90 transition">Advance Stage</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 px-8 py-6">
+            <div class="flex gap-6">
+                <!-- Left Content -->
+                <div class="flex-1 space-y-6">
+                    <!-- Stage Progression — Ascending Steps (like climbing the pyramid) -->
+                    <div class="bg-white rounded-xl border border-gray-200 p-6">
+                        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-5">Stage Progression</h3>
+                        <div class="flex items-end gap-1">
+                            <!-- Step 0: New -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-[9px] text-gray-500 mb-1.5 font-medium">New</span>
+                                <div class="w-14 h-8 bg-tc-teal-700 rounded-md flex items-center justify-center">
+                                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                            </div>
+                            <!-- Step 1: Received -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-[9px] text-gray-500 mb-1.5 font-medium">Received</span>
+                                <div class="w-14 h-12 bg-tc-teal-700 rounded-md flex items-center justify-center">
+                                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                            </div>
+                            <!-- Step 2: Triage -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-[9px] text-gray-500 mb-1.5 font-medium">Triage</span>
+                                <div class="w-14 h-16 bg-tc-teal-700 rounded-md flex items-center justify-center">
+                                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                            </div>
+                            <!-- Step 3: Owner Accepted -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-[9px] text-gray-500 mb-1.5 font-medium">Accepted</span>
+                                <div class="w-14 h-20 bg-tc-teal-700 rounded-md flex items-center justify-center">
+                                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                            </div>
+                            <!-- Step 4: Investigation (CURRENT) -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-[9px] text-amber-600 mb-1.5 font-bold">Investigation</span>
+                                <div class="w-14 h-24 bg-amber-500 rounded-md flex items-center justify-center ring-2 ring-amber-300 ring-offset-2">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></div>
+                                </div>
+                            </div>
+                            <!-- Step 5: Resolution -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-[9px] text-gray-400 mb-1.5 font-medium">Resolution</span>
+                                <div class="w-14 h-28 bg-gray-200 rounded-md flex items-center justify-center">
+                                    <span class="text-gray-400 text-[10px]">5</span>
+                                </div>
+                            </div>
+                            <!-- Step 6: Closed -->
+                            <div class="flex flex-col items-center">
+                                <span class="text-[9px] text-gray-400 mb-1.5 font-medium">Closed</span>
+                                <div class="w-14 h-32 bg-gray-200 rounded-md flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21l3-3m0 0l3-3m-3 3V3m15 18l-3-3m0 0l-3-3m3 3V3"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-3 italic">Ascending steps show progress toward resolution — taller = closer to the summit</p>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="bg-white rounded-xl border border-gray-200 p-6">
+                        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Description</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            Mrs Dorothy Evans' daughter, Karen Evans, contacted the office on 15 February to report that her mother's evening medication has been consistently administered 45-60 minutes late over the past two weeks. Mrs Evans takes Warfarin at 6pm daily — late administration affects her INR levels and increases bleeding risk.
+                        </p>
+                    </div>
+
+                    <!-- Background -->
+                    <div class="bg-white rounded-xl border border-gray-200 p-6">
+                        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Background</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            Dorothy Evans has been receiving HCP Level 3 services since August 2024. She has a complex medication schedule managed by two rotating care partners. The issue appears to coincide with a recent roster change that moved her evening visit from the 5:30pm slot to 6:30pm without updating the medication schedule. Karen Evans has previously raised concerns about medication management in September 2025, which was resolved promptly.
+                        </p>
+                    </div>
+
+                    <!-- Categories & Source -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl border border-gray-200 p-6">
+                            <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Categories</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">Medication Management</span>
+                                <span class="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">Timeliness</span>
+                                <span class="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">Clinical Safety</span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl border border-gray-200 p-6">
+                            <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">Outcome Sought</h3>
+                            <p class="text-sm text-gray-700">Complainant requests medication be administered within the prescribed time window and requests a formal review of the rostering process to prevent recurrence.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar — Properties -->
+                <div class="w-80 shrink-0 space-y-4">
+                    <!-- Properties Panel -->
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
+                        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Properties</h3>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Stage</p>
+                            <span class="text-sm font-medium text-red-700 bg-red-50 px-2.5 py-1 rounded">4. Investigation</span>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Triage Level</p>
+                            <span class="inline-flex items-center gap-1.5 text-sm font-medium text-amber-700 bg-amber-50 px-2.5 py-1 rounded">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                Medium
+                            </span>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Type</p>
+                            <p class="text-sm text-gray-900">Complaint</p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Department</p>
+                            <p class="text-sm text-gray-900">Clinical Services</p>
+                        </div>
+
+                        <hr class="border-gray-100">
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Complainant</p>
+                            <p class="text-sm text-gray-900">Karen Evans <span class="text-gray-400">(daughter)</span></p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Impacted Recipient</p>
+                            <p class="text-sm text-gray-900">Dorothy Evans</p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Assigned Coordinator</p>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <div class="w-6 h-6 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-[10px] font-medium">LP</div>
+                                <p class="text-sm text-gray-900">Lisa Park</p>
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-100">
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Created</p>
+                            <p class="text-sm text-gray-900">15 Feb 2026</p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Last Updated</p>
+                            <p class="text-sm text-gray-900">7 Mar 2026</p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Due Date</p>
+                            <p class="text-sm text-red-600 font-medium">1 Mar 2026 <span class="text-xs text-red-500">(overdue)</span></p>
+                        </div>
+
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Source</p>
+                            <p class="text-sm text-gray-900">Phone call</p>
+                        </div>
+                    </div>
+
+                    <!-- CRM Sync -->
+                    <div class="bg-white rounded-xl border border-gray-200 p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">CRM Sync</h3>
+                            <span class="w-2 h-2 rounded-full bg-green-500" title="Synced"></span>
+                        </div>
+                        <div class="space-y-2">
+                            <div>
+                                <p class="text-xs text-gray-500">CRM Record ID</p>
+                                <p class="text-sm text-gray-700 font-mono">ZH-4829173</p>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Last Synced</p>
+                                <p class="text-sm text-gray-700">7 Mar 2026, 2:14 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

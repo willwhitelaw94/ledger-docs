@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBM - Coordinator Budget Management Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">Coordinator Portal</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">Budget Management</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <span class="text-sm text-gray-500">CareConnect Coordination</span>
+    <div class="w-8 h-8 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-xs font-medium">JR</div>
+  </div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('portfolio')" id="tab-portfolio" class="py-3 text-sm tab-active">Client Portfolio</button>
+    <button onclick="showScreen('budget-view')" id="tab-budget-view" class="py-3 text-sm tab-inactive">Budget View</button>
+    <button onclick="showScreen('approval-queue')" id="tab-approval-queue" class="py-3 text-sm tab-inactive">Approval Queue (Care Partner)</button>
+    <button onclick="showScreen('notifications')" id="tab-notifications" class="py-3 text-sm tab-inactive">Status & Notifications</button>
+  </nav>
+</div>
+
+<!-- Client Portfolio -->
+<div id="screen-portfolio" class="max-w-6xl mx-auto p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">My Clients</h1>
+      <p class="text-sm text-gray-500 mt-1">CareConnect Coordination &mdash; Julie Roberts</p>
+    </div>
+    <input type="text" placeholder="Search clients..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm w-64">
+  </div>
+  <!-- Segment: New -->
+  <div class="mb-6">
+    <h2 class="text-sm font-semibold text-amber-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-amber-500"></span> New Clients (2)
+    </h2>
+    <div class="grid grid-cols-1 gap-3">
+      <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 font-semibold text-sm">PK</div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">Patricia Kelly</div>
+            <div class="text-xs text-gray-500">KF-312456 &bull; Commenced 1 Mar 2026</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">No Budget</span>
+          <button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Create Budget</button>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 font-semibold text-sm">BW</div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">Brian Whitfield</div>
+            <div class="text-xs text-gray-500">KF-314789 &bull; Commenced 8 Mar 2026</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Draft</span>
+          <button class="px-3 py-1.5 text-xs border border-gray-300 rounded-lg text-gray-700">Continue Draft</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Segment: Active -->
+  <div class="mb-6">
+    <h2 class="text-sm font-semibold text-green-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-green-500"></span> Active Clients (4)
+    </h2>
+    <div class="grid grid-cols-1 gap-3">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-semibold text-sm">MT</div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">Margaret Thompson</div>
+            <div class="text-xs text-gray-500">KF-273342 &bull; Level 4 (High)</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="text-right">
+            <div class="text-xs text-gray-500">Utilisation</div>
+            <div class="text-sm font-semibold text-green-600">42%</div>
+          </div>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Approved</span>
+          <button class="px-3 py-1.5 text-xs border border-gray-300 rounded-lg text-gray-700">Edit</button>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-semibold text-sm">RJ</div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">Robert Jenkins</div>
+            <div class="text-xs text-gray-500">KF-284561 &bull; Level 3 (Intermediate)</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="text-right">
+            <div class="text-xs text-gray-500">Utilisation</div>
+            <div class="text-sm font-semibold text-amber-600">78%</div>
+          </div>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Submitted</span>
+          <span class="text-xs text-gray-400">Awaiting approval</span>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-semibold text-sm">DW</div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">Dorothy Walsh</div>
+            <div class="text-xs text-gray-500">KF-291845 &bull; Level 4 (High)</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="text-right">
+            <div class="text-xs text-gray-500">Utilisation</div>
+            <div class="text-sm font-semibold text-red-600">92%</div>
+          </div>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Rejected</span>
+          <button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Revise</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Segment: Archived -->
+  <div>
+    <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-gray-400"></span> Archived (1)
+    </h2>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex items-center justify-between opacity-60">
+      <div class="flex items-center gap-4">
+        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-semibold text-sm">EN</div>
+        <div>
+          <div class="text-sm font-medium text-gray-700">Edna Nguyen</div>
+          <div class="text-xs text-gray-400">KF-245890 &bull; Archived 15 Feb 2026</div>
+        </div>
+      </div>
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">Archived</span>
+    </div>
+  </div>
+</div>
+
+<!-- Budget View with Utilisation -->
+<div id="screen-budget-view" class="max-w-5xl mx-auto p-6 hidden">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">Margaret Thompson &mdash; Budget Q1 2026</h1>
+      <p class="text-sm text-gray-500 mt-1">KF-273342 &bull; Level 4 (High)</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700">Duplicate to Draft</button>
+      <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Submit for Approval</button>
+    </div>
+  </div>
+  <!-- Utilisation -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-xs text-gray-500">Package Utilisation</div>
+      <div class="text-2xl font-semibold text-green-600 mt-1">42%</div>
+      <div class="mt-1 bg-gray-200 rounded-full h-2"><div class="bg-green-500 h-2 rounded-full" style="width: 42%"></div></div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-xs text-gray-500">Total Budget</div>
+      <div class="text-2xl font-semibold text-gray-900 mt-1">$18,240</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-xs text-gray-500">Spent to Date</div>
+      <div class="text-2xl font-semibold text-amber-600 mt-1">$7,661</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-xs text-gray-500">Remaining</div>
+      <div class="text-2xl font-semibold text-green-600 mt-1">$10,579</div>
+    </div>
+  </div>
+  <!-- Service lines -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Service</th>
+          <th class="px-6 py-3 text-right">Contract Price</th>
+          <th class="px-6 py-3 text-right">Sourced Price</th>
+          <th class="px-6 py-3 text-right">Utilisation</th>
+          <th class="px-6 py-3">Variance</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Personal Care</td>
+          <td class="px-6 py-4 text-sm text-right">$58.50/hr</td>
+          <td class="px-6 py-4 text-sm text-right">$55.00/hr</td>
+          <td class="px-6 py-4 text-sm text-right">38%</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Under budget</span></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Home Maintenance</td>
+          <td class="px-6 py-4 text-sm text-right">$55.00/hr</td>
+          <td class="px-6 py-4 text-sm text-right">$55.00/hr</td>
+          <td class="px-6 py-4 text-sm text-right">50%</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">On budget</span></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 text-sm font-medium text-gray-900">Social Support</td>
+          <td class="px-6 py-4 text-sm text-right">$35.00/hr</td>
+          <td class="px-6 py-4 text-sm text-right font-medium text-red-600">$42.00/hr</td>
+          <td class="px-6 py-4 text-sm text-right">55%</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Over budget</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Approval Queue (Care Partner View) -->
+<div id="screen-approval-queue" class="max-w-5xl mx-auto p-6 hidden">
+  <h1 class="text-xl font-semibold text-gray-900 mb-1">Budget Approval Queue</h1>
+  <p class="text-sm text-gray-500 mb-6">Care Partner view &mdash; Sarah Mitchell</p>
+  <div class="space-y-4">
+    <div class="bg-white rounded-xl shadow-sm border border-blue-200 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold text-sm">RJ</div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">Robert Jenkins &mdash; Budget Q1 2026</div>
+            <div class="text-xs text-gray-500">KF-284561 &bull; Submitted by Julie Roberts (CareConnect) &bull; 11 Mar 2026</div>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Pending Review</span>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-4 text-sm">
+        <div><span class="text-gray-500">Total Budget:</span> <span class="font-medium">$14,500.00</span></div>
+        <div><span class="text-gray-500">Services:</span> <span class="font-medium">5 line items</span></div>
+        <div><span class="text-gray-500">Net Change:</span> <span class="font-medium text-red-600">+$1,200.00</span></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Review & Approve</button>
+        <button class="px-4 py-2 text-sm border border-red-300 text-red-700 rounded-lg">Reject</button>
+        <button class="px-4 py-2 text-sm border border-gray-300 text-gray-700 rounded-lg">View Changes</button>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-blue-200 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold text-sm">HN</div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">Henry Nguyen &mdash; Budget Q1 2026</div>
+            <div class="text-xs text-gray-500">KF-301982 &bull; Submitted by Lisa Park (ActiveCare) &bull; 9 Mar 2026</div>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Pending Review</span>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-4 text-sm">
+        <div><span class="text-gray-500">Total Budget:</span> <span class="font-medium">$9,800.00</span></div>
+        <div><span class="text-gray-500">Services:</span> <span class="font-medium">3 line items</span></div>
+        <div><span class="text-gray-500">Net Change:</span> <span class="font-medium text-green-600">New budget</span></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Review & Approve</button>
+        <button class="px-4 py-2 text-sm border border-red-300 text-red-700 rounded-lg">Reject</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Notifications -->
+<div id="screen-notifications" class="max-w-3xl mx-auto p-6 hidden">
+  <h1 class="text-xl font-semibold text-gray-900 mb-6">Budget Status Updates</h1>
+  <div class="space-y-3">
+    <div class="bg-white rounded-xl shadow-sm border border-green-200 p-4 flex items-start gap-4">
+      <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+      </div>
+      <div>
+        <div class="text-sm font-medium text-gray-900">Margaret Thompson's budget approved</div>
+        <div class="text-xs text-gray-500">Approved by Sarah Mitchell (Care Partner) &bull; 13 Mar 2026, 2:15 PM</div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-2">Approved</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-red-200 p-4 flex items-start gap-4">
+      <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </div>
+      <div>
+        <div class="text-sm font-medium text-gray-900">Dorothy Walsh's budget rejected</div>
+        <div class="text-xs text-gray-500">Rejected by Sarah Mitchell &bull; 12 Mar 2026, 4:30 PM</div>
+        <div class="text-xs text-red-600 mt-1 bg-red-50 rounded p-2">Reason: Social support rate exceeds contract price by 20%. Please source at $35/hr or below.</div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 mt-2">Rejected</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-blue-200 p-4 flex items-start gap-4">
+      <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </div>
+      <div>
+        <div class="text-sm font-medium text-gray-900">Robert Jenkins's budget submitted</div>
+        <div class="text-xs text-gray-500">You submitted this budget &bull; 11 Mar 2026, 10:00 AM</div>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2">Submitted</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

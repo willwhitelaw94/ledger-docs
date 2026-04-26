@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Voting Playground — Lead Essential</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            },
+            'primary-blue': {
+              50: '#F0F4FA', 100: '#D6E1F0', 200: '#BCCEE7', 300: '#96B2D9',
+              400: '#7197CC', 500: '#4B7BBE', 600: '#39639D', 700: '#2C4C79',
+              800: '#1E3452', 900: '#101C2D'
+            },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+    /* Vote card styles */
+    .vote-card { transition: all 0.2s ease; cursor: default; }
+    .vote-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08); }
+
+    /* Reviewer avatar button */
+    .reviewer-avatar {
+      transition: all 0.15s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .reviewer-avatar:hover { transform: scale(1.1); }
+    .reviewer-avatar.voted {
+      box-shadow: 0 0 0 2px #007F7E;
+      background-color: #007F7E !important;
+      color: white !important;
+    }
+
+    /* Solo mode — simple toggle on the whole card */
+    .vote-card.solo-voted { border-color: #007F7E; background-color: #F0FAFA; }
+    .vote-card.solo-voted .solo-check { display: flex; }
+    .solo-check { display: none; }
+
+    /* Consensus badges */
+    .consensus-unanimous { background-color: #D5F1F0; color: #005656; }
+    .consensus-majority { background-color: #FEF3C7; color: #92400E; }
+    .consensus-split { background-color: #FEE2E2; color: #991B1B; }
+    .consensus-none { background-color: #F1F5F9; color: #64748B; }
+
+    /* Priority badges */
+    .priority-p0 { background-color: #FEE2E2; color: #991B1B; }
+    .priority-p1 { background-color: #FEF3C7; color: #92400E; }
+    .priority-p2 { background-color: #E0E7FF; color: #3730A3; }
+
+    /* Source student badges */
+    .source-linear { background-color: #F3E8FF; color: #7C3AED; }
+    .source-notion { background-color: #FEF3C7; color: #D97706; }
+    .source-github { background-color: #F1F5F9; color: #475569; }
+    .source-superhuman { background-color: #D5F1F0; color: #007F7E; }
+    .source-hubspot { background-color: #FFE4E6; color: #BE123C; }
+
+    /* Smooth section transitions */
+    .setup-section, .voting-section, .matrix-section { transition: opacity 0.3s ease; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm" style="background-color: #2C4C79">TC</div>
+          <div>
+            <h1 class="text-lg font-bold text-gray-900">Design Voting Playground</h1>
+            <p class="text-xs text-gray-500">Lead Essential — Cherry-Pick Patterns</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2" id="header-reviewer-count">
+          <span class="text-sm text-gray-400" id="header-status">Set up reviewers to begin</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-6 py-8">
+
+    <!-- ==================== SETUP SECTION ==================== -->
+    <div id="setup-section" class="setup-section">
+      <div class="max-w-lg mx-auto">
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
+          <div class="text-center mb-6">
+            <div class="w-12 h-12 rounded-full bg-teal-50 flex items-center justify-center mx-auto mb-3">
+              <svg class="w-6 h-6 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+            <h2 class="text-xl font-bold text-gray-900">How many people are reviewing?</h2>
+            <p class="text-sm text-gray-500 mt-1">Each person gets their own vote on every pattern</p>
+          </div>
+
+          <!-- Quick count buttons -->
+          <div class="flex items-center justify-center gap-3 mb-6">
+            <button onclick="setReviewerCount(1)" class="count-btn w-12 h-12 rounded-xl border-2 border-gray-200 hover:border-teal-500 flex items-center justify-center text-lg font-bold text-gray-700 hover:text-teal-700 transition">1</button>
+            <button onclick="setReviewerCount(2)" class="count-btn w-12 h-12 rounded-xl border-2 border-gray-200 hover:border-teal-500 flex items-center justify-center text-lg font-bold text-gray-700 hover:text-teal-700 transition">2</button>
+            <button onclick="setReviewerCount(3)" class="count-btn w-12 h-12 rounded-xl border-2 border-teal-500 bg-teal-50 flex items-center justify-center text-lg font-bold text-teal-700 transition">3</button>
+            <button onclick="setReviewerCount(4)" class="count-btn w-12 h-12 rounded-xl border-2 border-gray-200 hover:border-teal-500 flex items-center justify-center text-lg font-bold text-gray-700 hover:text-teal-700 transition">4</button>
+            <button onclick="setReviewerCount(5)" class="count-btn w-12 h-12 rounded-xl border-2 border-gray-200 hover:border-teal-500 flex items-center justify-center text-lg font-bold text-gray-700 hover:text-teal-700 transition">5</button>
+          </div>
+
+          <!-- Name inputs (dynamic) -->
+          <div id="name-inputs" class="space-y-3 mb-6">
+            <!-- Populated by JS -->
+          </div>
+
+          <button onclick="startVoting()" id="start-btn" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-6 rounded-lg transition flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            Start Voting
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== VOTING SECTION ==================== -->
+    <div id="voting-section" class="voting-section hidden">
+
+      <!-- Reviewer legend -->
+      <div class="flex items-center gap-2 mb-6 flex-wrap" id="reviewer-legend">
+        <span class="text-sm font-medium text-gray-500">Reviewers:</span>
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Pattern cards grouped by priority -->
+      <div id="pattern-cards">
+        <!-- P0 — Must Have -->
+        <div class="mb-8">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="priority-p0 text-xs font-bold px-2 py-1 rounded">P0</span>
+            <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Must Have</h3>
+          </div>
+          <div class="grid gap-3" id="p0-cards">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- P1 — Should Have -->
+        <div class="mb-8">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="priority-p1 text-xs font-bold px-2 py-1 rounded">P1</span>
+            <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Should Have</h3>
+          </div>
+          <div class="grid gap-3" id="p1-cards">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- P2 — Nice to Have -->
+        <div class="mb-8">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="priority-p2 text-xs font-bold px-2 py-1 rounded">P2</span>
+            <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Nice to Have</h3>
+          </div>
+          <div class="grid gap-3" id="p2-cards">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="mb-8">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Additional feedback or direction</label>
+        <textarea
+          id="feedback-text"
+          rows="3"
+          class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none"
+          placeholder="Any comments on what's working, what's not, specific requests for the unified design..."
+        ></textarea>
+      </div>
+
+      <!-- ==================== CONSENSUS MATRIX ==================== -->
+      <div class="mb-8 matrix-section">
+        <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">Consensus Matrix</h3>
+        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm" id="consensus-table">
+              <thead>
+                <tr class="bg-gray-50 border-b border-gray-200">
+                  <th class="text-left px-4 py-3 font-semibold text-gray-700">Pattern</th>
+                  <th class="text-left px-4 py-3 font-semibold text-gray-700">Source</th>
+                  <!-- Reviewer columns added by JS -->
+                  <th class="text-center px-4 py-3 font-semibold text-gray-700">Consensus</th>
+                </tr>
+              </thead>
+              <tbody id="consensus-body">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== EXPORT ==================== -->
+      <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-semibold text-gray-900">Synthesized Prompt</h3>
+            <p class="text-xs text-gray-500 mt-0.5">Auto-generated from votes — paste back into conversation</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-500" id="vote-stats">0 / 12 patterns voted</span>
+          </div>
+        </div>
+
+        <!-- Prompt preview -->
+        <div id="prompt-preview" class="bg-gray-50 rounded-lg border border-gray-200 p-4 mb-4 text-sm text-gray-700 font-mono whitespace-pre-wrap max-h-64 overflow-y-auto">
+          Vote on patterns above to generate the prompt...
+        </div>
+
+        <button
+          onclick="copyPrompt()"
+          id="copy-btn"
+          class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-6 rounded-lg transition flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+          Copy Prompt to Clipboard
+        </button>
+        <p class="text-xs text-gray-400 text-center mt-3">Paste this back into the conversation to generate the unified design.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="border-t border-gray-200 bg-white py-4 mt-8">
+    <div class="max-w-5xl mx-auto px-6 text-center text-xs text-gray-400">
+      Voting Playground Prototype &middot; <strong class="text-gray-500">/trilogy-mockup --challenge</strong> &middot; Trilogy Care
+    </div>
+  </div>
+
+  <script>
+    // =====================================================
+    // PATTERN DATA — extracted from Lead Essential comparison.md
+    // =====================================================
+    const patterns = [
+      // P0 — Must Have
+      {
+        id: 'split-pane',
+        name: 'Split Pane Layout',
+        description: 'List + detail side by side eliminates page transitions; critical for high-volume coordinators',
+        sources: ['superhuman', 'linear'],
+        sourceLabel: 'Sam + Lisa',
+        priority: 'p0'
+      },
+      {
+        id: 'quick-actions',
+        name: 'Quick Actions Bar',
+        description: 'Call/Note/Task always visible above the fold; the #1 action on every lead',
+        sources: ['hubspot'],
+        sourceLabel: 'Hannah',
+        priority: 'p0'
+      },
+      {
+        id: 'stage-tabs-counts',
+        name: 'Journey Stage Tabs with Counts',
+        description: 'Instant pipeline visibility; answers "what needs attention today" without interaction',
+        sources: ['github', 'hubspot'],
+        sourceLabel: 'Gary + Hannah',
+        priority: 'p0'
+      },
+      {
+        id: 'gated-transitions',
+        name: 'Gated Stage Transitions',
+        description: 'Required/suggested field split; compliance requirement in aged care (ACAT, funding type)',
+        sources: ['hubspot', 'github'],
+        sourceLabel: 'Hannah + Gary',
+        priority: 'p0'
+      },
+      // P1 — Should Have
+      {
+        id: 'mixed-timeline',
+        name: 'Mixed Activity Timeline',
+        description: 'Notes and calls as full cards; system events (stage change, status update) as compact rows',
+        sources: ['github', 'hubspot'],
+        sourceLabel: 'Gary + Hannah',
+        priority: 'p1'
+      },
+      {
+        id: 'click-to-set',
+        name: 'Click-to-Set Sidebar Properties',
+        description: 'One-click metadata changes without opening an edit mode; reduces cognitive overhead',
+        sources: ['linear', 'github'],
+        sourceLabel: 'Lisa + Gary',
+        priority: 'p1'
+      },
+      {
+        id: 'optimistic-undo',
+        name: 'Optimistic UI with Undo Toast',
+        description: 'Instant feedback on all mutations; Z to undo stage changes and status updates',
+        sources: ['superhuman'],
+        sourceLabel: 'Sam',
+        priority: 'p1'
+      },
+      {
+        id: 'saved-views',
+        name: 'Saved Views',
+        description: 'Named workflow tabs (My Leads, Needs Follow-up, Pending ACAT) as first-class objects',
+        sources: ['notion', 'hubspot'],
+        sourceLabel: 'Nick + Hannah',
+        priority: 'p1'
+      },
+      {
+        id: 'pinned-activities',
+        name: 'Pinned Activities',
+        description: 'Critical context (family preferences, funding notes) pinned to timeline top',
+        sources: ['hubspot'],
+        sourceLabel: 'Hannah',
+        priority: 'p1'
+      },
+      // P2 — Nice to Have
+      {
+        id: 'inline-editing',
+        name: 'Inline Property Editing',
+        description: 'Edit where you read; no separate edit mode for sidebar fields',
+        sources: ['notion', 'linear'],
+        sourceLabel: 'Nick + Lisa',
+        priority: 'p2'
+      },
+      {
+        id: 'keyboard-shortcuts',
+        name: 'Keyboard Shortcuts',
+        description: 'J/K navigation, S for status, Cmd+K palette for power users once familiar',
+        sources: ['linear', 'superhuman'],
+        sourceLabel: 'Lisa + Sam',
+        priority: 'p2'
+      },
+      {
+        id: 'command-palette',
+        name: 'Command Palette / Cmd+K',
+        description: 'Universal action dispatch; find lead, log note, advance stage without mouse',
+        sources: ['linear', 'superhuman'],
+        sourceLabel: 'Lisa + Sam',
+        priority: 'p2'
+      }
+    ];
+
+    // Reviewer colours (cycle through these)
+    const REVIEWER_COLOURS = [
+      { bg: '#007F7E', text: '#FFFFFF' },  // teal
+      { bg: '#7C3AED', text: '#FFFFFF' },  // purple
+      { bg: '#D97706', text: '#FFFFFF' },  // amber
+      { bg: '#2563EB', text: '#FFFFFF' },  // blue
+      { bg: '#DC2626', text: '#FFFFFF' },  // red
+    ];
+
+    const SOURCE_CLASS_MAP = {
+      linear: 'source-linear',
+      notion: 'source-notion',
+      github: 'source-github',
+      superhuman: 'source-superhuman',
+      hubspot: 'source-hubspot'
+    };
+
+    // =====================================================
+    // STATE
+    // =====================================================
+    let reviewerCount = 3;
+    let reviewers = [];         // { name, initials, colour }
+    let votes = {};             // { patternId: { reviewerIndex: true/false } }
+    let soloMode = false;
+    let soloVotes = {};         // { patternId: true/false } — only in solo mode
+
+    // =====================================================
+    // SETUP
+    // =====================================================
+    function setReviewerCount(count) {
+      reviewerCount = count;
+      document.querySelectorAll('.count-btn').forEach((btn, i) => {
+        if (i + 1 === count) {
+          btn.className = 'count-btn w-12 h-12 rounded-xl border-2 border-teal-500 bg-teal-50 flex items-center justify-center text-lg font-bold text-teal-700 transition';
+        } else {
+          btn.className = 'count-btn w-12 h-12 rounded-xl border-2 border-gray-200 hover:border-teal-500 flex items-center justify-center text-lg font-bold text-gray-700 hover:text-teal-700 transition';
+        }
+      });
+      renderNameInputs();
+    }
+
+    function renderNameInputs() {
+      const container = document.getElementById('name-inputs');
+      if (reviewerCount === 1) {
+        container.innerHTML = '<p class="text-sm text-gray-500 text-center">Solo mode — simple toggle voting</p>';
+        return;
+      }
+      let html = '';
+      for (let i = 0; i < reviewerCount; i++) {
+        const colour = REVIEWER_COLOURS[i % REVIEWER_COLOURS.length];
+        const placeholder = ['Will', 'Sam', 'Duc', 'Amy', 'Tom'][i] || `Person ${i + 1}`;
+        html += `
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
+                 style="background-color: ${colour.bg}; color: ${colour.text}"
+                 id="avatar-preview-${i}">
+              ${placeholder[0]}
+            </div>
+            <input
+              type="text"
+              class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+              placeholder="${placeholder}"
+              value="${placeholder}"
+              id="reviewer-name-${i}"
+              oninput="updateAvatarPreview(${i})"
+            />
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    function updateAvatarPreview(index) {
+      const input = document.getElementById(`reviewer-name-${index}`);
+      const avatar = document.getElementById(`avatar-preview-${index}`);
+      const name = input.value.trim();
+      avatar.textContent = name ? name.charAt(0).toUpperCase() : '?';
+    }
+
+    function startVoting() {
+      soloMode = reviewerCount === 1;
+
+      if (!soloMode) {
+        reviewers = [];
+        for (let i = 0; i < reviewerCount; i++) {
+          const input = document.getElementById(`reviewer-name-${i}`);
+          const name = input ? input.value.trim() : `Person ${i + 1}`;
+          const colour = REVIEWER_COLOURS[i % REVIEWER_COLOURS.length];
+          reviewers.push({
+            name: name || `Person ${i + 1}`,
+            initials: (name || `P${i + 1}`).charAt(0).toUpperCase(),
+            colour
+          });
+        }
+      }
+
+      // Init vote state
+      votes = {};
+      soloVotes = {};
+      patterns.forEach(p => {
+        votes[p.id] = {};
+      });
+
+      document.getElementById('setup-section').classList.add('hidden');
+      document.getElementById('voting-section').classList.remove('hidden');
+
+      renderReviewerLegend();
+      renderPatternCards();
+      renderConsensusTable();
+      updatePromptPreview();
+      updateHeaderStatus();
+    }
+
+    // =====================================================
+    // RENDERING
+    // =====================================================
+    function renderReviewerLegend() {
+      const container = document.getElementById('reviewer-legend');
+      if (soloMode) {
+        container.innerHTML = '<span class="text-sm text-gray-500">Solo mode — click cards to select</span>';
+        return;
+      }
+      let html = '<span class="text-sm font-medium text-gray-500">Reviewers:</span>';
+      reviewers.forEach((r, i) => {
+        html += `
+          <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium"
+                style="background-color: ${r.colour.bg}20; color: ${r.colour.bg}">
+            <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+                  style="background-color: ${r.colour.bg}">${r.initials}</span>
+            ${r.name}
+          </span>
+        `;
+      });
+      // Edit button
+      html += `<button onclick="resetSetup()" class="text-xs text-gray-400 hover:text-gray-600 underline ml-2">Edit</button>`;
+      container.innerHTML = html;
+    }
+
+    function renderPatternCards() {
+      const groups = { p0: [], p1: [], p2: [] };
+      patterns.forEach(p => groups[p.priority].push(p));
+
+      Object.entries(groups).forEach(([priority, pats]) => {
+        const container = document.getElementById(`${priority}-cards`);
+        container.innerHTML = pats.map(p => renderPatternCard(p)).join('');
+      });
+    }
+
+    function renderPatternCard(pattern) {
+      const sourceBadges = pattern.sources.map(s => {
+        const cls = SOURCE_CLASS_MAP[s] || 'source-github';
+        const label = s.charAt(0).toUpperCase() + s.slice(1);
+        return `<span class="${cls} text-[10px] font-medium px-1.5 py-0.5 rounded">${label}</span>`;
+      }).join(' ');
+
+      if (soloMode) {
+        return `
+          <div class="vote-card bg-white rounded-lg border border-gray-200 p-4 flex items-start gap-4"
+               id="card-${pattern.id}"
+               onclick="toggleSoloVote('${pattern.id}')">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <h4 class="font-semibold text-gray-900 text-sm">${pattern.name}</h4>
+                ${sourceBadges}
+              </div>
+              <p class="text-xs text-gray-500 leading-relaxed">${pattern.description}</p>
+            </div>
+            <div class="solo-check w-6 h-6 rounded-full bg-teal-700 text-white items-center justify-center shrink-0 mt-0.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            </div>
+          </div>
+        `;
+      }
+
+      // Multi-reviewer: show avatar buttons per reviewer
+      const avatarButtons = reviewers.map((r, i) => `
+        <button
+          class="reviewer-avatar w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold transition"
+          style="background-color: ${r.colour.bg}30; color: ${r.colour.bg}"
+          id="vote-${pattern.id}-${i}"
+          onclick="event.stopPropagation(); toggleVote('${pattern.id}', ${i})"
+          title="${r.name}"
+        >${r.initials}</button>
+      `).join('');
+
+      return `
+        <div class="vote-card bg-white rounded-lg border border-gray-200 p-4" id="card-${pattern.id}">
+          <div class="flex items-start gap-4">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <h4 class="font-semibold text-gray-900 text-sm">${pattern.name}</h4>
+                ${sourceBadges}
+              </div>
+              <p class="text-xs text-gray-500 leading-relaxed">${pattern.description}</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              ${avatarButtons}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderConsensusTable() {
+      // Table header
+      const thead = document.querySelector('#consensus-table thead tr');
+      // Remove old reviewer columns (keep Pattern, Source, Consensus)
+      while (thead.children.length > 3) {
+        thead.removeChild(thead.children[2]);
+      }
+
+      if (!soloMode) {
+        // Insert reviewer columns before Consensus
+        const consensusHeader = thead.lastElementChild;
+        reviewers.forEach(r => {
+          const th = document.createElement('th');
+          th.className = 'text-center px-3 py-3 font-semibold text-gray-700';
+          th.innerHTML = `<span class="w-6 h-6 rounded-full inline-flex items-center justify-center text-[10px] font-bold text-white" style="background-color: ${r.colour.bg}">${r.initials}</span>`;
+          thead.insertBefore(th, consensusHeader);
+        });
+      }
+
+      updateConsensusBody();
+    }
+
+    function updateConsensusBody() {
+      const tbody = document.getElementById('consensus-body');
+      tbody.innerHTML = patterns.map(p => {
+        const consensus = getConsensus(p.id);
+
+        let reviewerCells = '';
+        if (!soloMode) {
+          reviewerCells = reviewers.map((r, i) => {
+            const voted = votes[p.id] && votes[p.id][i];
+            return `<td class="text-center px-3 py-2.5">${voted ? '<span class="text-teal-700 font-bold">Y</span>' : '<span class="text-gray-300">-</span>'}</td>`;
+          }).join('');
+        }
+
+        const consensusBadge = getConsensusBadge(consensus);
+
+        const sourceBadges = p.sources.map(s => {
+          const cls = SOURCE_CLASS_MAP[s] || 'source-github';
+          return `<span class="${cls} text-[10px] px-1 py-0.5 rounded">${s.charAt(0).toUpperCase() + s.slice(1)}</span>`;
+        }).join(' ');
+
+        return `
+          <tr class="border-b border-gray-100 hover:bg-gray-50">
+            <td class="px-4 py-2.5 font-medium text-gray-900 text-sm">${p.name}</td>
+            <td class="px-4 py-2.5">${sourceBadges}</td>
+            ${reviewerCells}
+            <td class="text-center px-4 py-2.5">${consensusBadge}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // =====================================================
+    // VOTING LOGIC
+    // =====================================================
+    function toggleVote(patternId, reviewerIndex) {
+      if (!votes[patternId]) votes[patternId] = {};
+
+      if (votes[patternId][reviewerIndex]) {
+        delete votes[patternId][reviewerIndex];
+      } else {
+        votes[patternId][reviewerIndex] = true;
+      }
+
+      // Update avatar button visual
+      const btn = document.getElementById(`vote-${patternId}-${reviewerIndex}`);
+      if (btn) {
+        const r = reviewers[reviewerIndex];
+        if (votes[patternId][reviewerIndex]) {
+          btn.classList.add('voted');
+        } else {
+          btn.classList.remove('voted');
+        }
+      }
+
+      // Update card border based on any votes
+      const card = document.getElementById(`card-${patternId}`);
+      const hasAnyVotes = Object.keys(votes[patternId]).length > 0;
+      if (hasAnyVotes) {
+        card.classList.add('border-teal-300');
+        card.classList.remove('border-gray-200');
+      } else {
+        card.classList.remove('border-teal-300');
+        card.classList.add('border-gray-200');
+      }
+
+      updateConsensusBody();
+      updatePromptPreview();
+      updateHeaderStatus();
+    }
+
+    function toggleSoloVote(patternId) {
+      soloVotes[patternId] = !soloVotes[patternId];
+      const card = document.getElementById(`card-${patternId}`);
+      if (soloVotes[patternId]) {
+        card.classList.add('solo-voted');
+      } else {
+        card.classList.remove('solo-voted');
+      }
+      updateConsensusBody();
+      updatePromptPreview();
+      updateHeaderStatus();
+    }
+
+    function getConsensus(patternId) {
+      if (soloMode) {
+        return soloVotes[patternId] ? 'adopt' : 'none';
+      }
+
+      const patternVotes = votes[patternId] || {};
+      const yesCount = Object.keys(patternVotes).length;
+      const total = reviewers.length;
+
+      if (yesCount === 0) return 'none';
+      if (yesCount === total) return 'unanimous';
+      if (yesCount > total / 2) return 'majority';
+      if (yesCount === total / 2) return 'split';
+      return 'minority';
+    }
+
+    function getConsensusBadge(consensus) {
+      const map = {
+        unanimous: { cls: 'consensus-unanimous', label: 'Unanimous' },
+        majority: { cls: 'consensus-majority', label: 'Majority' },
+        split: { cls: 'consensus-split', label: 'Split' },
+        minority: { cls: 'consensus-split', label: 'Minority' },
+        adopt: { cls: 'consensus-unanimous', label: 'Adopt' },
+        none: { cls: 'consensus-none', label: '-' },
+      };
+      const m = map[consensus] || map.none;
+      return `<span class="${m.cls} text-xs font-medium px-2 py-1 rounded-full">${m.label}</span>`;
+    }
+
+    // =====================================================
+    // PROMPT GENERATION
+    // =====================================================
+    function updatePromptPreview() {
+      const preview = document.getElementById('prompt-preview');
+      const prompt = generatePrompt();
+      preview.textContent = prompt;
+      updateVoteStats();
+    }
+
+    function generatePrompt() {
+      const feedback = document.getElementById('feedback-text')?.value.trim() || '';
+
+      if (soloMode) {
+        return generateSoloPrompt(feedback);
+      }
+      return generateGroupPrompt(feedback);
+    }
+
+    function generateSoloPrompt(feedback) {
+      const adopted = patterns.filter(p => soloVotes[p.id]);
+      const skipped = patterns.filter(p => !soloVotes[p.id]);
+
+      if (adopted.length === 0) return 'Vote on patterns above to generate the prompt...';
+
+      let prompt = `## Design Challenge Selections\n\n`;
+      prompt += `### Adopted Patterns (${adopted.length})\n`;
+      adopted.forEach(p => {
+        prompt += `- **${p.name}** (${p.sourceLabel}) — ${p.description}\n`;
+      });
+
+      if (skipped.length > 0) {
+        prompt += `\n### Skipped (${skipped.length})\n`;
+        skipped.forEach(p => {
+          prompt += `- ${p.name}\n`;
+        });
+      }
+
+      if (feedback) {
+        prompt += `\n### Feedback\n${feedback}\n`;
+      }
+
+      prompt += `\n---\nPlease generate the unified design based on these selections.`;
+      return prompt;
+    }
+
+    function generateGroupPrompt(feedback) {
+      const results = patterns.map(p => ({
+        ...p,
+        consensus: getConsensus(p.id),
+        yesCount: Object.keys(votes[p.id] || {}).length,
+        voters: reviewers.map((r, i) => votes[p.id]?.[i] ? 'Y' : 'N')
+      }));
+
+      const hasVotes = results.some(r => r.yesCount > 0);
+      if (!hasVotes) return 'Vote on patterns above to generate the prompt...';
+
+      const unanimous = results.filter(r => r.consensus === 'unanimous');
+      const majority = results.filter(r => r.consensus === 'majority');
+      const split = results.filter(r => r.consensus === 'split');
+      const minority = results.filter(r => r.consensus === 'minority');
+      const none = results.filter(r => r.consensus === 'none');
+
+      let prompt = `## Design Challenge Selections — Group Review\n\n`;
+      prompt += `### Reviewers: ${reviewers.map(r => `${r.name} (${r.initials})`).join(', ')}\n\n`;
+
+      // Vote matrix table
+      prompt += `### Pattern Votes\n`;
+      prompt += `| Pattern | Source | ${reviewers.map(r => r.initials).join(' | ')} | Consensus |\n`;
+      prompt += `|---------|--------${reviewers.map(() => '|---').join('')}|----------|\n`;
+      results.filter(r => r.yesCount > 0).forEach(r => {
+        const consensusLabel = r.consensus === 'unanimous' ? `Adopt (${r.yesCount}/${reviewers.length})`
+          : r.consensus === 'majority' ? `Adopt (${r.yesCount}/${reviewers.length})`
+          : r.consensus === 'split' ? `Split (${r.yesCount}/${reviewers.length})`
+          : `Minority (${r.yesCount}/${reviewers.length})`;
+        prompt += `| ${r.name} | ${r.sourceLabel} | ${r.voters.join(' | ')} | ${consensusLabel} |\n`;
+      });
+
+      prompt += `\n### Synthesized Prompt\n`;
+      prompt += `Based on group consensus, generate the unified design with:\n`;
+
+      if (unanimous.length > 0) {
+        prompt += `- **Adopt (unanimous)**: ${unanimous.map(p => p.name).join(', ')}\n`;
+      }
+      if (majority.length > 0) {
+        prompt += `- **Adopt (majority)**: ${majority.map(p => p.name).join(', ')}\n`;
+      }
+      if (split.length > 0) {
+        prompt += `- **Contested (split)**: ${split.map(p => p.name).join(', ')} — discuss before proceeding\n`;
+      }
+      if (minority.length > 0) {
+        prompt += `- **Minority only**: ${minority.map(p => p.name).join(', ')} — skip unless argued for\n`;
+      }
+
+      if (feedback) {
+        prompt += `\n### Feedback\n${feedback}\n`;
+      }
+
+      prompt += `\n---\nPlease generate the unified design based on these group selections.`;
+      return prompt;
+    }
+
+    function updateVoteStats() {
+      const total = patterns.length;
+      let voted = 0;
+      if (soloMode) {
+        voted = Object.keys(soloVotes).filter(k => soloVotes[k]).length;
+      } else {
+        voted = patterns.filter(p => Object.keys(votes[p.id] || {}).length > 0).length;
+      }
+      document.getElementById('vote-stats').textContent = `${voted} / ${total} patterns voted`;
+    }
+
+    function updateHeaderStatus() {
+      const el = document.getElementById('header-status');
+      if (soloMode) {
+        const count = Object.keys(soloVotes).filter(k => soloVotes[k]).length;
+        el.textContent = `${count} patterns selected`;
+      } else {
+        const total = patterns.length * reviewers.length;
+        let cast = 0;
+        patterns.forEach(p => { cast += Object.keys(votes[p.id] || {}).length; });
+        el.textContent = `${cast} / ${total} votes cast`;
+      }
+    }
+
+    // =====================================================
+    // ACTIONS
+    // =====================================================
+    function copyPrompt() {
+      const prompt = generatePrompt();
+      navigator.clipboard.writeText(prompt).then(() => {
+        const btn = document.getElementById('copy-btn');
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+        btn.classList.replace('bg-teal-700', 'bg-teal-800');
+        setTimeout(() => { btn.innerHTML = origHTML; btn.classList.replace('bg-teal-800', 'bg-teal-700'); }, 2000);
+      }).catch(() => {
+        prompt('Copy this text:', prompt);
+      });
+    }
+
+    function resetSetup() {
+      document.getElementById('voting-section').classList.add('hidden');
+      document.getElementById('setup-section').classList.remove('hidden');
+      document.getElementById('header-status').textContent = 'Set up reviewers to begin';
+    }
+
+    // Listen for feedback textarea changes to update prompt
+    document.addEventListener('input', (e) => {
+      if (e.target.id === 'feedback-text') {
+        updatePromptPreview();
+      }
+    });
+
+    // =====================================================
+    // INIT
+    // =====================================================
+    renderNameInputs();
+  </script>
+
+</body>
+</html>

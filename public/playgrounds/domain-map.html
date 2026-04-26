@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC Portal — Domain Relationship Map</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --border: #334155;
+    --teal-700: #007F7E;
+    --teal-500: #43C0BE;
+    --blue-700: #2C4C79;
+    --orange: #e07040;
+    --purple: #9b72cf;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --gray: #94a3b8;
+    --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---- Header ---- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    z-index: 10;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--teal-500);
+  }
+  header h1 span { color: var(--text-muted); font-weight: 400; }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    position: relative;
+  }
+  .search-box input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 6px 12px 6px 32px;
+    font-size: 13px;
+    width: 220px;
+    outline: none;
+    font-family: var(--font-mono);
+  }
+  .search-box input:focus { border-color: var(--teal-500); }
+  .search-box svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    fill: var(--text-muted);
+  }
+
+  select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 6px 12px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    font-family: var(--font-ui);
+  }
+  select:focus { border-color: var(--teal-500); }
+
+  /* ---- Main layout ---- */
+  .main-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ---- Sidebar (category filters) ---- */
+  .sidebar {
+    width: 220px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    padding: 16px;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .sidebar h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .filter-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    cursor: pointer;
+    font-size: 13px;
+    user-select: none;
+  }
+  .filter-item input[type="checkbox"] {
+    accent-color: var(--teal-500);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+  .filter-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .filter-label { color: var(--text); }
+
+  .sidebar-section { margin-bottom: 20px; }
+
+  .sidebar .stats {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+  .stats strong { color: var(--teal-500); font-family: var(--font-mono); }
+
+  /* ---- Canvas area ---- */
+  .canvas-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  canvas {
+    display: block;
+    cursor: grab;
+  }
+  canvas.dragging { cursor: grabbing; }
+
+  .canvas-hint {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    font-size: 11px;
+    color: var(--text-dim);
+    pointer-events: none;
+    font-family: var(--font-mono);
+  }
+
+  /* ---- Detail panel ---- */
+  .detail-panel {
+    width: 320px;
+    background: var(--bg-secondary);
+    border-left: 1px solid var(--border);
+    padding: 20px;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+  .detail-panel.hidden {
+    transform: translateX(100%);
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+  }
+
+  .detail-panel h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .detail-category {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .detail-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .detail-section {
+    margin-bottom: 16px;
+  }
+  .detail-section h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .detail-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  .detail-section li {
+    font-size: 13px;
+    padding: 3px 0;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .detail-section li:hover { color: var(--teal-500); }
+  .detail-section li::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .detail-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    margin: 2px 4px 2px 0;
+  }
+
+  .detail-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .detail-placeholder svg {
+    width: 48px;
+    height: 48px;
+    fill: var(--text-dim);
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .detail-panel { width: 260px; }
+  }
+  @media (max-width: 600px) {
+    .detail-panel { width: 100%; position: absolute; right: 0; top: 0; bottom: 0; z-index: 20; }
+    header h1 span { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Domain Relationship Map <span>/ TC Portal</span></h1>
+  <div class="header-controls">
+    <div class="search-box">
+      <svg viewBox="0 0 20 20"><path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/></svg>
+      <input type="text" id="searchInput" placeholder="Search domains..." />
+    </div>
+    <select id="personaSelect">
+      <option value="">All Personas</option>
+      <option value="care_partner">Care Partner</option>
+      <option value="care_coordinator">Care Coordinator</option>
+      <option value="bill_processor">Bill Processor</option>
+      <option value="admin">Admin / Manager</option>
+      <option value="supplier">Supplier</option>
+      <option value="sales">Sales</option>
+      <option value="consumer">Consumer / Client</option>
+    </select>
+    <button id="resetBtn" style="background:var(--bg-tertiary);border:1px solid var(--border);color:var(--text-muted);padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Reset View</button>
+  </div>
+</header>
+
+<div class="main-layout">
+  <!-- Sidebar filters -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <h3>Categories</h3>
+      <div id="categoryFilters"></div>
+    </div>
+    <div class="stats">
+      <div><strong id="statDomains">0</strong> domains</div>
+      <div><strong id="statEdges">0</strong> relationships</div>
+      <div><strong id="statVisible">0</strong> visible</div>
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <div class="canvas-wrap">
+    <canvas id="graphCanvas"></canvas>
+    <div class="canvas-hint">Scroll to zoom &middot; Drag to pan &middot; Click a node to inspect</div>
+  </div>
+
+  <!-- Detail panel -->
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-placeholder" id="detailPlaceholder">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      <div>Click a domain node<br>to see its details</div>
+    </div>
+    <div id="detailContent" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+const CATEGORIES = {
+  'Packages & Care':       { color: '#43C0BE', colorDim: '#007F7E' },
+  'Operations & Finance':  { color: '#5B8DEF', colorDim: '#2C4C79' },
+  'Suppliers & Services':  { color: '#e07040', colorDim: '#b85a30' },
+  'Staff & Coordination':  { color: '#9b72cf', colorDim: '#7b52af' },
+  'Sales & Onboarding':    { color: '#4ade80', colorDim: '#22c55e' },
+  'Communications':        { color: '#fbbf24', colorDim: '#d97706' },
+  'Government & Integrations': { color: '#f87171', colorDim: '#dc2626' },
+  'Platform & Infrastructure': { color: '#94a3b8', colorDim: '#64748b' },
+};
+
+const PERSONA_MAP = {
+  care_partner:     'Care Partner',
+  care_coordinator: 'Care Coordinator',
+  bill_processor:   'Bill Processor',
+  admin:            'Admin / Manager',
+  supplier:         'Supplier',
+  sales:            'Sales',
+  consumer:         'Consumer / Client',
+};
+
+const DOMAINS = [
+  // Packages & Care
+  { id: 'budget',           name: 'Budget Management',         cat: 'Packages & Care',  desc: 'Budget planning, service plans, funding allocation', personas: ['care_partner','care_coordinator','bill_processor','admin'], initiatives: ['Budget Redesign'] },
+  { id: 'care_plan',        name: 'Care Plan',                 cat: 'Packages & Care',  desc: 'Needs, risks, goals, assessments', personas: ['care_partner','care_coordinator'], initiatives: ['Care Plan V2'] },
+  { id: 'incident',         name: 'Incident Management',       cat: 'Packages & Care',  desc: 'Clinical incident tracking, SIRS compliance, triage', personas: ['care_partner','care_coordinator','admin'], initiatives: ['Incident Reporting'] },
+  { id: 'mgmt_plans',       name: 'Management Plans',          cat: 'Packages & Care',  desc: 'Clinical recommendations, prescriptions', personas: ['care_partner','care_coordinator'], initiatives: [] },
+  { id: 'risk',             name: 'Risk Management',           cat: 'Packages & Care',  desc: 'Risk identification, assessment, clinical governance', personas: ['care_partner','care_coordinator'], initiatives: [] },
+  { id: 'contacts',         name: 'Package Contacts',          cat: 'Packages & Care',  desc: 'Representatives, EPOAs, family members', personas: ['care_partner','care_coordinator'], initiatives: [] },
+  { id: 'utilisation',      name: 'Utilisation Rate',          cat: 'Packages & Care',  desc: 'Package utilisation tracking, reporting', personas: ['care_partner','care_coordinator','admin'], initiatives: [] },
+  { id: 'care_mgmt',        name: 'Care Mgmt Activities',      cat: 'Packages & Care',  desc: '15-min monthly direct care, regulatory compliance', personas: ['care_partner','care_coordinator'], initiatives: [] },
+  { id: 'hca',              name: 'Home Care Agreement',       cat: 'Packages & Care',  desc: 'Agreement lifecycle, signatures, amendments', personas: ['care_partner','care_coordinator','consumer'], initiatives: [] },
+
+  // Operations & Finance
+  { id: 'bill',             name: 'Bill Processing',           cat: 'Operations & Finance', desc: 'Invoice lifecycle, approval workflows, matching', personas: ['bill_processor','admin','supplier'], initiatives: ['Bill Processing V2','OHB'] },
+  { id: 'claims',           name: 'Claims',                    cat: 'Operations & Finance', desc: 'Services Australia claims, IPA reconciliation', personas: ['bill_processor','admin'], initiatives: [] },
+  { id: 'statements',       name: 'Statements',                cat: 'Operations & Finance', desc: 'Transaction history, client statements', personas: ['care_partner','admin','consumer'], initiatives: [] },
+  { id: 'contributions',    name: 'Contributions',             cat: 'Operations & Finance', desc: 'Voluntary contributions, top-ups', personas: ['care_partner','admin','consumer'], initiatives: [] },
+  { id: 'fees',             name: 'Fees',                      cat: 'Operations & Finance', desc: 'Self-Managed and Coordinator fees', personas: ['admin','bill_processor'], initiatives: [] },
+  { id: 'collections',      name: 'Collections',               cat: 'Operations & Finance', desc: 'Direct debit, Easy Collect, fee payer management', personas: ['admin','bill_processor'], initiatives: [] },
+  { id: 'complaints',       name: 'Complaints',                cat: 'Operations & Finance', desc: 'Incident tracking, 28-day SLA, escalation', personas: ['care_partner','care_coordinator','admin'], initiatives: [] },
+
+  // Suppliers & Services
+  { id: 'supplier',         name: 'Supplier Management',       cat: 'Suppliers & Services', desc: 'Supplier onboarding, agreements, verification', personas: ['admin','supplier','bill_processor'], initiatives: ['Supplier REDONE'] },
+  { id: 'documents',        name: 'Documents',                 cat: 'Suppliers & Services', desc: 'Document management, storage, compliance', personas: ['admin','supplier','care_partner'], initiatives: [] },
+
+  // Staff & Coordination
+  { id: 'coordinator',      name: 'Coordinator Portal',        cat: 'Staff & Coordination', desc: 'Care coordinator dashboards, workload management', personas: ['care_coordinator'], initiatives: ['Coordinator Portal'] },
+  { id: 'tasks',            name: 'Task Management',           cat: 'Staff & Coordination', desc: 'Composable workday, work items, queues', personas: ['care_coordinator','care_partner','admin'], initiatives: ['Tasks V2'] },
+  { id: 'teams',            name: 'Teams & Roles',             cat: 'Staff & Coordination', desc: 'User management, permissions, team pods', personas: ['admin'], initiatives: [] },
+  { id: 'notes',            name: 'Notes',                     cat: 'Staff & Coordination', desc: 'Internal notes, communication logging', personas: ['care_partner','care_coordinator'], initiatives: [] },
+  { id: 'telephony',        name: 'Telephony',                 cat: 'Staff & Coordination', desc: 'Call bridge UI, Aircall integration', personas: ['care_coordinator','care_partner'], initiatives: [] },
+
+  // Sales & Onboarding
+  { id: 'leads',            name: 'Lead Management',           cat: 'Sales & Onboarding', desc: 'Sales pipeline, lead tracking', personas: ['sales','admin'], initiatives: [] },
+  { id: 'onboarding',       name: 'Onboarding',               cat: 'Sales & Onboarding', desc: 'Consumer journey, package creation, magic links', personas: ['sales','admin','consumer'], initiatives: [] },
+
+  // Communications
+  { id: 'emails',           name: 'Emails',                    cat: 'Communications', desc: 'Transactional emails by recipient type', personas: ['admin'], initiatives: [] },
+  { id: 'notifications',    name: 'Notifications',             cat: 'Communications', desc: 'In-app notification bell', personas: ['care_partner','care_coordinator','admin'], initiatives: [] },
+
+  // Government & Integrations
+  { id: 'dva',              name: 'DVA',                       cat: 'Government & Integrations', desc: 'Department of Veterans\' Affairs', personas: ['admin','bill_processor'], initiatives: [] },
+  { id: 'ndis',             name: 'NDIS',                      cat: 'Government & Integrations', desc: 'National Disability Insurance Scheme', personas: ['admin','care_coordinator'], initiatives: [] },
+  { id: 'sa_api',           name: 'Services Australia API',    cat: 'Government & Integrations', desc: 'Government claims API', personas: ['admin','bill_processor'], initiatives: [] },
+  { id: 'myob',             name: 'MYOB',                      cat: 'Government & Integrations', desc: 'Acumatica integration, AR invoices', personas: ['admin','bill_processor'], initiatives: [] },
+
+  // Platform & Infrastructure
+  { id: 'auth',             name: 'Authentication',            cat: 'Platform & Infrastructure', desc: 'Login, SSO, 2FA, session management', personas: ['care_partner','care_coordinator','admin','bill_processor','supplier','sales','consumer'], initiatives: [] },
+  { id: 'flags',            name: 'Feature Flags',             cat: 'Platform & Infrastructure', desc: 'Pennant feature toggles, rollouts', personas: ['admin'], initiatives: [] },
+  { id: 'mobile',           name: 'Mobile',                    cat: 'Platform & Infrastructure', desc: 'Consumer and coordinator mobile experiences', personas: ['consumer','care_coordinator'], initiatives: ['Mobile App'] },
+  { id: 'databricks',       name: 'Databricks',               cat: 'Platform & Infrastructure', desc: 'Analytics platform, dashboards', personas: ['admin'], initiatives: [] },
+  { id: 'ai',               name: 'AI Services',               cat: 'Platform & Infrastructure', desc: 'Document Intelligence, classification', personas: ['admin'], initiatives: ['AI Integration'] },
+];
+
+const EDGES = [
+  { from: 'budget',    to: 'bill',          label: 'funding validation' },
+  { from: 'budget',    to: 'care_plan',     label: 'service plans' },
+  { from: 'budget',    to: 'statements',    label: 'transaction recording' },
+  { from: 'budget',    to: 'contributions', label: 'top-ups' },
+  { from: 'budget',    to: 'fees',          label: 'fee deductions' },
+  { from: 'bill',      to: 'supplier',      label: 'invoice source' },
+  { from: 'bill',      to: 'claims',        label: 'government claiming' },
+  { from: 'care_plan', to: 'risk',          label: 'clinical risks' },
+  { from: 'care_plan', to: 'incident',      label: 'incident triggers' },
+  { from: 'care_plan', to: 'mgmt_plans',    label: 'clinical recommendations' },
+  { from: 'coordinator', to: 'tasks',       label: 'work queue' },
+  { from: 'coordinator', to: 'telephony',   label: 'call bridge' },
+  { from: 'coordinator', to: 'notes',       label: 'communication logging' },
+  { from: 'collections', to: 'myob',        label: 'AR invoice sync' },
+  { from: 'collections', to: 'contributions', label: 'VC funding' },
+  { from: 'leads',     to: 'onboarding',    label: 'pipeline' },
+  { from: 'onboarding', to: 'hca',          label: 'agreement creation' },
+  { from: 'supplier',  to: 'documents',     label: 'compliance docs' },
+  { from: 'emails',    to: 'notifications',  label: 'communication layer' },
+  { from: 'sa_api',    to: 'claims',        label: 'claiming' },
+  // Cross-cutting: auth + flags connect broadly
+  { from: 'auth',      to: 'coordinator',   label: 'cross-cutting' },
+  { from: 'auth',      to: 'bill',          label: 'cross-cutting' },
+  { from: 'auth',      to: 'supplier',      label: 'cross-cutting' },
+  { from: 'auth',      to: 'leads',         label: 'cross-cutting' },
+  { from: 'auth',      to: 'mobile',        label: 'cross-cutting' },
+  { from: 'flags',     to: 'budget',        label: 'cross-cutting' },
+  { from: 'flags',     to: 'care_plan',     label: 'cross-cutting' },
+  { from: 'flags',     to: 'tasks',         label: 'cross-cutting' },
+  { from: 'flags',     to: 'supplier',      label: 'cross-cutting' },
+  { from: 'flags',     to: 'onboarding',    label: 'cross-cutting' },
+];
+
+// ============================================================
+// BUILD INDEX MAPS
+// ============================================================
+const domainMap = {};
+DOMAINS.forEach(d => { domainMap[d.id] = d; });
+
+const adjacency = {};
+DOMAINS.forEach(d => { adjacency[d.id] = new Set(); });
+EDGES.forEach(e => {
+  adjacency[e.from].add(e.to);
+  adjacency[e.to].add(e.from);
+});
+
+// ============================================================
+// SIMULATION STATE
+// ============================================================
+const nodes = DOMAINS.map((d, i) => ({
+  id: d.id,
+  x: 0,
+  y: 0,
+  vx: 0,
+  vy: 0,
+  radius: 22 + Math.min(adjacency[d.id].size * 2, 14),
+  domain: d,
+}));
+
+const nodeMap = {};
+nodes.forEach(n => { nodeMap[n.id] = n; });
+
+// Initial positions: cluster by category in a circle
+const catList = Object.keys(CATEGORIES);
+const catAngle = {};
+catList.forEach((c, i) => { catAngle[c] = (i / catList.length) * Math.PI * 2; });
+
+nodes.forEach(n => {
+  const a = catAngle[n.domain.cat];
+  const spread = 200;
+  n.x = Math.cos(a) * spread + (Math.random() - 0.5) * 120;
+  n.y = Math.sin(a) * spread + (Math.random() - 0.5) * 120;
+});
+
+// ============================================================
+// CANVAS SETUP
+// ============================================================
+const canvas = document.getElementById('graphCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+let transform = { x: 0, y: 0, scale: 1 };
+
+function resize() {
+  const wrap = canvas.parentElement;
+  W = wrap.clientWidth;
+  H = wrap.clientHeight;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+}
+resize();
+window.addEventListener('resize', () => { resize(); });
+
+// Center transform
+transform.x = W / 2;
+transform.y = H / 2;
+
+// ============================================================
+// INTERACTION STATE
+// ============================================================
+let selectedNode = null;
+let hoveredNode = null;
+let dragNode = null;
+let isPanning = false;
+let panStart = { x: 0, y: 0 };
+let searchTerm = '';
+let activePersona = '';
+let categoryVisible = {};
+catList.forEach(c => { categoryVisible[c] = true; });
+
+// ============================================================
+// FORCE SIMULATION
+// ============================================================
+let simAlpha = 1;
+let simRunning = true;
+
+function tick() {
+  const alpha = simAlpha;
+  if (alpha < 0.001) { simRunning = false; return; }
+  simAlpha *= 0.995;
+
+  // Repulsion (all pairs)
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const minDist = a.radius + b.radius + 40;
+      let force = -800 / (dist * dist);
+      // Extra repulsion when overlapping
+      if (dist < minDist) { force -= (minDist - dist) * 0.5; }
+      const fx = (dx / dist) * force * alpha;
+      const fy = (dy / dist) * force * alpha;
+      a.vx -= fx; a.vy -= fy;
+      b.vx += fx; b.vy += fy;
+    }
+  }
+
+  // Attraction (edges)
+  EDGES.forEach(e => {
+    const a = nodeMap[e.from], b = nodeMap[e.to];
+    if (!a || !b) return;
+    let dx = b.x - a.x, dy = b.y - a.y;
+    let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const target = 160;
+    const force = (dist - target) * 0.005 * alpha;
+    const fx = (dx / dist) * force;
+    const fy = (dy / dist) * force;
+    a.vx += fx; a.vy += fy;
+    b.vx -= fx; b.vy -= fy;
+  });
+
+  // Category clustering
+  nodes.forEach(n => {
+    const a = catAngle[n.domain.cat];
+    const cx = Math.cos(a) * 180;
+    const cy = Math.sin(a) * 180;
+    n.vx += (cx - n.x) * 0.003 * alpha;
+    n.vy += (cy - n.y) * 0.003 * alpha;
+  });
+
+  // Center gravity
+  nodes.forEach(n => {
+    n.vx -= n.x * 0.001 * alpha;
+    n.vy -= n.y * 0.001 * alpha;
+  });
+
+  // Apply velocity + damping
+  nodes.forEach(n => {
+    if (n === dragNode) return;
+    n.vx *= 0.85;
+    n.vy *= 0.85;
+    n.x += n.vx;
+    n.y += n.vy;
+  });
+}
+
+// ============================================================
+// VISIBILITY / FILTERING
+// ============================================================
+function isNodeVisible(n) {
+  if (!categoryVisible[n.domain.cat]) return false;
+  if (searchTerm) {
+    const s = searchTerm.toLowerCase();
+    if (!n.domain.name.toLowerCase().includes(s) && !n.domain.desc.toLowerCase().includes(s)) return false;
+  }
+  if (activePersona && !n.domain.personas.includes(activePersona)) return false;
+  return true;
+}
+
+function isNodeHighlighted(n) {
+  if (selectedNode) {
+    return n === selectedNode || adjacency[selectedNode.id].has(n.id);
+  }
+  return true;
+}
+
+function isEdgeVisible(e) {
+  const a = nodeMap[e.from], b = nodeMap[e.to];
+  return isNodeVisible(a) && isNodeVisible(b);
+}
+
+// ============================================================
+// DRAW
+// ============================================================
+function screenToWorld(sx, sy) {
+  return {
+    x: (sx - transform.x) / transform.scale,
+    y: (sy - transform.y) / transform.scale,
+  };
+}
+
+function worldToScreen(wx, wy) {
+  return {
+    x: wx * transform.scale + transform.x,
+    y: wy * transform.scale + transform.y,
+  };
+}
+
+function draw() {
+  ctx.save();
+  ctx.clearRect(0, 0, W, H);
+
+  // Apply transform
+  ctx.translate(transform.x, transform.y);
+  ctx.scale(transform.scale, transform.scale);
+
+  const visibleNodes = nodes.filter(n => isNodeVisible(n));
+  const visibleIds = new Set(visibleNodes.map(n => n.id));
+
+  // Draw edges
+  EDGES.forEach(e => {
+    const a = nodeMap[e.from], b = nodeMap[e.to];
+    if (!visibleIds.has(a.id) || !visibleIds.has(b.id)) return;
+
+    const highlighted = isNodeHighlighted(a) && isNodeHighlighted(b);
+    const isCrossCutting = e.label === 'cross-cutting';
+
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+
+    if (isCrossCutting) {
+      ctx.setLineDash([4, 6]);
+    } else {
+      ctx.setLineDash([]);
+    }
+
+    if (selectedNode) {
+      if ((e.from === selectedNode.id || e.to === selectedNode.id) && highlighted) {
+        ctx.strokeStyle = 'rgba(67, 192, 190, 0.6)';
+        ctx.lineWidth = 2;
+      } else {
+        ctx.strokeStyle = 'rgba(100, 116, 139, 0.1)';
+        ctx.lineWidth = 0.5;
+      }
+    } else {
+      ctx.strokeStyle = highlighted
+        ? (isCrossCutting ? 'rgba(148, 163, 184, 0.15)' : 'rgba(148, 163, 184, 0.3)')
+        : 'rgba(148, 163, 184, 0.08)';
+      ctx.lineWidth = isCrossCutting ? 0.8 : 1.2;
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Edge label on hover when edge is connected to selected node
+    if (selectedNode && (e.from === selectedNode.id || e.to === selectedNode.id) && highlighted && !isCrossCutting) {
+      const mx = (a.x + b.x) / 2;
+      const my = (a.y + b.y) / 2;
+      ctx.font = '9px ' + getComputedStyle(document.body).fontFamily;
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.7)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(e.label, mx, my - 6);
+    }
+  });
+
+  // Directed edge: leads -> onboarding
+  EDGES.forEach(e => {
+    if (e.from !== 'leads' || e.to !== 'onboarding') return;
+    const a = nodeMap[e.from], b = nodeMap[e.to];
+    if (!visibleIds.has(a.id) || !visibleIds.has(b.id)) return;
+    // Arrow head
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const ux = dx / dist, uy = dy / dist;
+    const tipX = b.x - ux * b.radius;
+    const tipY = b.y - uy * b.radius;
+    const arrowLen = 10;
+    ctx.beginPath();
+    ctx.moveTo(tipX, tipY);
+    ctx.lineTo(tipX - ux * arrowLen + uy * 5, tipY - uy * arrowLen - ux * 5);
+    ctx.lineTo(tipX - ux * arrowLen - uy * 5, tipY - uy * arrowLen + ux * 5);
+    ctx.closePath();
+    ctx.fillStyle = selectedNode
+      ? ((e.from === selectedNode.id || e.to === selectedNode.id) ? 'rgba(67, 192, 190, 0.6)' : 'rgba(100, 116, 139, 0.1)')
+      : 'rgba(148, 163, 184, 0.3)';
+    ctx.fill();
+  });
+
+  // Draw nodes
+  visibleNodes.forEach(n => {
+    const cat = CATEGORIES[n.domain.cat];
+    const highlighted = isNodeHighlighted(n);
+    const isSelected = n === selectedNode;
+    const isHovered = n === hoveredNode;
+    const dimmed = selectedNode && !highlighted;
+
+    // Glow for selected
+    if (isSelected) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius + 8, 0, Math.PI * 2);
+      const glow = ctx.createRadialGradient(n.x, n.y, n.radius, n.x, n.y, n.radius + 8);
+      glow.addColorStop(0, cat.color + '40');
+      glow.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow;
+      ctx.fill();
+    }
+
+    // Circle
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+    const alpha = dimmed ? 0.15 : (isHovered || isSelected ? 1 : 0.75);
+    ctx.fillStyle = hexToRgba(cat.colorDim, alpha);
+    ctx.fill();
+
+    if (isSelected || isHovered) {
+      ctx.strokeStyle = cat.color;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+    } else if (!dimmed) {
+      ctx.strokeStyle = hexToRgba(cat.color, 0.4);
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Label
+    const fontSize = Math.max(9, Math.min(11, n.radius * 0.45));
+    ctx.font = `600 ${fontSize}px ${getComputedStyle(document.body).fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = dimmed ? 'rgba(226, 232, 240, 0.15)' : 'rgba(226, 232, 240, 0.95)';
+
+    // Word-wrap label
+    const words = n.domain.name.split(' ');
+    if (words.length <= 2) {
+      ctx.fillText(n.domain.name, n.x, n.y);
+    } else {
+      const mid = Math.ceil(words.length / 2);
+      const line1 = words.slice(0, mid).join(' ');
+      const line2 = words.slice(mid).join(' ');
+      ctx.fillText(line1, n.x, n.y - fontSize * 0.55);
+      ctx.fillText(line2, n.x, n.y + fontSize * 0.55);
+    }
+  });
+
+  ctx.restore();
+
+  // Stats
+  document.getElementById('statDomains').textContent = DOMAINS.length;
+  document.getElementById('statEdges').textContent = EDGES.length;
+  document.getElementById('statVisible').textContent = visibleNodes.length;
+}
+
+function hexToRgba(hex, a) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+// ============================================================
+// ANIMATION LOOP
+// ============================================================
+function loop() {
+  if (simRunning) tick();
+  draw();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// ============================================================
+// INTERACTION: mouse
+// ============================================================
+function getMouseWorld(e) {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left;
+  const sy = e.clientY - rect.top;
+  return screenToWorld(sx, sy);
+}
+
+function findNodeAt(wx, wy) {
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const n = nodes[i];
+    if (!isNodeVisible(n)) continue;
+    const dx = wx - n.x, dy = wy - n.y;
+    if (dx * dx + dy * dy < n.radius * n.radius) return n;
+  }
+  return null;
+}
+
+canvas.addEventListener('mousedown', e => {
+  const w = getMouseWorld(e);
+  const node = findNodeAt(w.x, w.y);
+  if (node) {
+    dragNode = node;
+    canvas.classList.add('dragging');
+    // Reheat sim slightly for smooth drag
+    simAlpha = Math.max(simAlpha, 0.3);
+    simRunning = true;
+  } else {
+    isPanning = true;
+    panStart.x = e.clientX - transform.x;
+    panStart.y = e.clientY - transform.y;
+    canvas.classList.add('dragging');
+  }
+});
+
+canvas.addEventListener('mousemove', e => {
+  const w = getMouseWorld(e);
+  if (dragNode) {
+    dragNode.x = w.x;
+    dragNode.y = w.y;
+    dragNode.vx = 0;
+    dragNode.vy = 0;
+  } else if (isPanning) {
+    transform.x = e.clientX - panStart.x;
+    transform.y = e.clientY - panStart.y;
+  } else {
+    const node = findNodeAt(w.x, w.y);
+    hoveredNode = node;
+    canvas.style.cursor = node ? 'pointer' : 'grab';
+  }
+});
+
+canvas.addEventListener('mouseup', e => {
+  if (dragNode) {
+    // If barely moved, treat as click
+    const w = getMouseWorld(e);
+    const node = findNodeAt(w.x, w.y);
+    if (node === dragNode) {
+      selectNode(node);
+    }
+    dragNode = null;
+  }
+  isPanning = false;
+  canvas.classList.remove('dragging');
+});
+
+canvas.addEventListener('mouseleave', () => {
+  dragNode = null;
+  isPanning = false;
+  hoveredNode = null;
+  canvas.classList.remove('dragging');
+});
+
+// Zoom
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  const zoomFactor = e.deltaY < 0 ? 1.08 : 1 / 1.08;
+  const newScale = Math.max(0.2, Math.min(5, transform.scale * zoomFactor));
+  const ratio = newScale / transform.scale;
+
+  transform.x = mx - (mx - transform.x) * ratio;
+  transform.y = my - (my - transform.y) * ratio;
+  transform.scale = newScale;
+}, { passive: false });
+
+// ============================================================
+// DETAIL PANEL
+// ============================================================
+function selectNode(node) {
+  if (selectedNode === node) {
+    selectedNode = null;
+    showPlaceholder();
+    return;
+  }
+  selectedNode = node;
+  showDetail(node);
+}
+
+function showPlaceholder() {
+  document.getElementById('detailPlaceholder').style.display = 'flex';
+  document.getElementById('detailContent').style.display = 'none';
+  document.getElementById('detailPanel').classList.remove('hidden');
+}
+
+function showDetail(node) {
+  const d = node.domain;
+  const cat = CATEGORIES[d.cat];
+  const connected = Array.from(adjacency[d.id]).map(id => domainMap[id]).filter(Boolean);
+  const edgesForNode = EDGES.filter(e => e.from === d.id || e.to === d.id);
+
+  let html = '';
+  html += `<h2 style="color:${cat.color}">${d.name}</h2>`;
+  html += `<div class="detail-category" style="background:${hexToRgba(cat.color, 0.15)};color:${cat.color}">${d.cat}</div>`;
+  html += `<div class="detail-desc">${d.desc}</div>`;
+
+  // Connected domains
+  if (connected.length) {
+    html += `<div class="detail-section"><h4>Connected Domains (${connected.length})</h4><ul>`;
+    connected.forEach(c => {
+      const cc = CATEGORIES[c.cat];
+      const edge = edgesForNode.find(e => (e.from === d.id && e.to === c.id) || (e.to === d.id && e.from === c.id));
+      html += `<li data-domain="${c.id}" style="--dot-color:${cc.color}"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${cc.color};margin-right:8px;vertical-align:middle;"></span>${c.name}`;
+      if (edge && edge.label !== 'cross-cutting') html += ` <span style="color:var(--text-dim);font-size:11px;font-style:italic">- ${edge.label}</span>`;
+      html += `</li>`;
+    });
+    html += `</ul></div>`;
+  }
+
+  // Personas
+  if (d.personas.length) {
+    html += `<div class="detail-section"><h4>Personas</h4><div>`;
+    d.personas.forEach(p => {
+      html += `<span class="detail-tag">${PERSONA_MAP[p] || p}</span>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // Initiatives
+  if (d.initiatives.length) {
+    html += `<div class="detail-section"><h4>Initiatives</h4><div>`;
+    d.initiatives.forEach(i => {
+      html += `<span class="detail-tag" style="background:var(--teal-700);color:#fff">${i}</span>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // Connection count
+  html += `<div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);font-family:var(--font-mono);">`;
+  html += `${connected.length} connections &middot; ${d.personas.length} personas`;
+  html += `</div>`;
+
+  document.getElementById('detailPlaceholder').style.display = 'none';
+  const content = document.getElementById('detailContent');
+  content.innerHTML = html;
+  content.style.display = 'block';
+  document.getElementById('detailPanel').classList.remove('hidden');
+
+  // Click connected domain in detail to navigate
+  content.querySelectorAll('li[data-domain]').forEach(li => {
+    li.addEventListener('click', () => {
+      const target = nodeMap[li.dataset.domain];
+      if (target) selectNode(target);
+    });
+  });
+}
+
+// ============================================================
+// SIDEBAR: Category filters
+// ============================================================
+function buildFilters() {
+  const container = document.getElementById('categoryFilters');
+  container.innerHTML = '';
+  catList.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'filter-item';
+    const id = 'filter_' + cat.replace(/\W/g, '_');
+    div.innerHTML = `
+      <input type="checkbox" id="${id}" checked>
+      <span class="filter-dot" style="background:${CATEGORIES[cat].color}"></span>
+      <span class="filter-label">${cat}</span>
+    `;
+    container.appendChild(div);
+    div.querySelector('input').addEventListener('change', e => {
+      categoryVisible[cat] = e.target.checked;
+      reheat();
+    });
+  });
+}
+buildFilters();
+
+// ============================================================
+// SEARCH
+// ============================================================
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchTerm = e.target.value;
+});
+
+// ============================================================
+// PERSONA FILTER
+// ============================================================
+document.getElementById('personaSelect').addEventListener('change', e => {
+  activePersona = e.target.value;
+  reheat();
+});
+
+// ============================================================
+// RESET
+// ============================================================
+document.getElementById('resetBtn').addEventListener('click', () => {
+  selectedNode = null;
+  hoveredNode = null;
+  searchTerm = '';
+  activePersona = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('personaSelect').value = '';
+  catList.forEach(c => { categoryVisible[c] = true; });
+  buildFilters();
+  transform = { x: W / 2, y: H / 2, scale: 1 };
+  showPlaceholder();
+  reheat();
+});
+
+function reheat() {
+  simAlpha = 0.5;
+  simRunning = true;
+}
+
+// ============================================================
+// TOUCH SUPPORT
+// ============================================================
+let touchId = null;
+let pinchDist = null;
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  if (e.touches.length === 1) {
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const sx = t.clientX - rect.left;
+    const sy = t.clientY - rect.top;
+    const w = screenToWorld(sx, sy);
+    const node = findNodeAt(w.x, w.y);
+    if (node) {
+      dragNode = node;
+      touchId = t.identifier;
+      simAlpha = Math.max(simAlpha, 0.3);
+      simRunning = true;
+    } else {
+      isPanning = true;
+      panStart.x = t.clientX - transform.x;
+      panStart.y = t.clientY - transform.y;
+      touchId = t.identifier;
+    }
+  } else if (e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    pinchDist = Math.sqrt(dx * dx + dy * dy);
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (e.touches.length === 2 && pinchDist !== null) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const newDist = Math.sqrt(dx * dx + dy * dy);
+    const scale = newDist / pinchDist;
+    const mid = {
+      x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+      y: (e.touches[0].clientY + e.touches[1].clientY) / 2,
+    };
+    const rect = canvas.getBoundingClientRect();
+    const mx = mid.x - rect.left;
+    const my = mid.y - rect.top;
+    const newScale = Math.max(0.2, Math.min(5, transform.scale * scale));
+    const ratio = newScale / transform.scale;
+    transform.x = mx - (mx - transform.x) * ratio;
+    transform.y = my - (my - transform.y) * ratio;
+    transform.scale = newScale;
+    pinchDist = newDist;
+    return;
+  }
+  for (let i = 0; i < e.touches.length; i++) {
+    const t = e.touches[i];
+    if (t.identifier === touchId) {
+      const rect = canvas.getBoundingClientRect();
+      const sx = t.clientX - rect.left;
+      const sy = t.clientY - rect.top;
+      const w = screenToWorld(sx, sy);
+      if (dragNode) {
+        dragNode.x = w.x;
+        dragNode.y = w.y;
+        dragNode.vx = 0;
+        dragNode.vy = 0;
+      } else if (isPanning) {
+        transform.x = t.clientX - panStart.x;
+        transform.y = t.clientY - panStart.y;
+      }
+    }
+  }
+}, { passive: false });
+
+canvas.addEventListener('touchend', e => {
+  if (dragNode) {
+    // Check if it was a tap
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      if (e.changedTouches[i].identifier === touchId) {
+        const t = e.changedTouches[i];
+        const rect = canvas.getBoundingClientRect();
+        const sx = t.clientX - rect.left;
+        const sy = t.clientY - rect.top;
+        const w = screenToWorld(sx, sy);
+        const node = findNodeAt(w.x, w.y);
+        if (node === dragNode) selectNode(node);
+      }
+    }
+    dragNode = null;
+  }
+  isPanning = false;
+  touchId = null;
+  pinchDist = null;
+});
+</script>
+</body>
+</html>

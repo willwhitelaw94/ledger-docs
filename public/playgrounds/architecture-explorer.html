@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture Layer Explorer - TC Portal</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-hover: #1f2b47;
+    --bg-panel: #0f3460;
+    --teal-700: #007F7E;
+    --teal-500: #43C0BE;
+    --blue-700: #2C4C79;
+    --text: #e0e0e0;
+    --text-muted: #8892a4;
+    --text-bright: #ffffff;
+    --border: #2a3a5c;
+    --radius: 8px;
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Menlo', 'Consolas', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-panel) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.3px;
+  }
+  .header h1 span { color: var(--teal-500); }
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .header-controls label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .header-controls select {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: var(--sans);
+    cursor: pointer;
+    min-width: 200px;
+  }
+  .header-controls select:focus {
+    outline: none;
+    border-color: var(--teal-500);
+  }
+
+  .trace-btn {
+    background: var(--teal-700);
+    color: var(--text-bright);
+    border: none;
+    border-radius: var(--radius);
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-family: var(--sans);
+    white-space: nowrap;
+  }
+  .trace-btn:hover { background: var(--teal-500); }
+  .trace-btn:active { transform: scale(0.97); }
+  .trace-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Main layout */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 0;
+    min-height: calc(100vh - 60px);
+  }
+  @media (max-width: 900px) {
+    .main { grid-template-columns: 1fr; }
+    .detail-panel { border-left: none; border-top: 1px solid var(--border); }
+  }
+
+  /* Layers column */
+  .layers-col {
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  /* Trace description bar */
+  .trace-desc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    display: none;
+  }
+  .trace-desc.visible { display: block; }
+  .trace-desc .step-highlight {
+    color: var(--teal-500);
+    font-weight: 600;
+  }
+
+  /* Layer cards */
+  .layer {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 4px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+  }
+  .layer.active {
+    border-color: var(--teal-500);
+    box-shadow: 0 0 20px rgba(67, 192, 190, 0.15);
+  }
+  .layer.tracing {
+    border-color: var(--teal-500);
+    box-shadow: 0 0 30px rgba(67, 192, 190, 0.3);
+    animation: tracePulse 0.6s ease-in-out;
+  }
+  @keyframes tracePulse {
+    0% { box-shadow: 0 0 0 rgba(67, 192, 190, 0); }
+    50% { box-shadow: 0 0 40px rgba(67, 192, 190, 0.4); }
+    100% { box-shadow: 0 0 20px rgba(67, 192, 190, 0.15); }
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .layer-header:hover { background: var(--bg-hover); }
+
+  .layer-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    color: var(--text-bright);
+    font-weight: 700;
+  }
+
+  .layer-info { flex: 1; min-width: 0; }
+  .layer-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-bright);
+  }
+  .layer-tech {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .layer-chevron {
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .layer.expanded .layer-chevron { transform: rotate(90deg); }
+
+  .layer-body {
+    display: none;
+    padding: 0 16px 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .layer.expanded .layer-body { display: block; }
+
+  .layer-section {
+    margin-top: 12px;
+  }
+  .layer-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal-500);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+
+  .file-tree {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    padding: 10px 12px;
+    line-height: 1.8;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .file-tree .dir { color: var(--teal-500); }
+  .file-tree .comment { color: var(--text-muted); }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tech-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: rgba(67, 192, 190, 0.1);
+    color: var(--teal-500);
+    border: 1px solid rgba(67, 192, 190, 0.2);
+    font-weight: 500;
+  }
+
+  .convention-list {
+    list-style: none;
+    font-size: 12px;
+  }
+  .convention-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .convention-list li:last-child { border-bottom: none; }
+  .convention-list .rule-icon {
+    color: var(--teal-500);
+    flex-shrink: 0;
+    font-size: 10px;
+    margin-top: 3px;
+  }
+  .convention-list code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: rgba(67, 192, 190, 0.1);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--teal-500);
+  }
+
+  /* Connector arrows between layers */
+  .connector {
+    display: flex;
+    justify-content: center;
+    padding: 2px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: color 0.3s;
+  }
+  .connector.active { color: var(--teal-500); }
+  .connector svg {
+    width: 20px;
+    height: 16px;
+  }
+
+  /* Detail panel */
+  .detail-panel {
+    border-left: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 24px;
+    overflow-y: auto;
+  }
+  .detail-panel h2 {
+    font-size: 16px;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .detail-panel .detail-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .detail-section {
+    margin-bottom: 20px;
+  }
+  .detail-section h3 {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal-500);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+  .detail-section p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .gotcha-card {
+    background: rgba(243, 156, 18, 0.08);
+    border: 1px solid rgba(243, 156, 18, 0.2);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #f0c060;
+    line-height: 1.6;
+  }
+  .gotcha-card strong {
+    color: #f5d080;
+  }
+
+  .detail-file-tree {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    padding: 12px 14px;
+    line-height: 1.8;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .detail-placeholder {
+    color: var(--text-muted);
+    font-size: 14px;
+    text-align: center;
+    padding: 60px 20px;
+    line-height: 1.8;
+  }
+  .detail-placeholder .hint {
+    font-size: 12px;
+    margin-top: 12px;
+    opacity: 0.6;
+  }
+
+  /* Trace step indicator */
+  .trace-step-badge {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: var(--teal-700);
+    color: var(--text-bright);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    z-index: 2;
+  }
+  .layer.tracing .trace-step-badge,
+  .layer.trace-visited .trace-step-badge {
+    display: inline-block;
+  }
+  .layer.trace-visited {
+    border-color: rgba(67, 192, 190, 0.3);
+  }
+  .layer.trace-visited .trace-step-badge {
+    background: rgba(67, 192, 190, 0.2);
+    color: var(--teal-500);
+  }
+
+  /* Request flow summary */
+  .flow-summary {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-top: 20px;
+    display: none;
+  }
+  .flow-summary.visible { display: block; }
+  .flow-summary h3 {
+    font-size: 12px;
+    color: var(--teal-500);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+  }
+  .flow-summary .flow-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+    font-family: var(--mono);
+  }
+  .flow-summary .flow-arrow { color: var(--teal-500); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><span>TC Portal</span> Architecture Layer Explorer</h1>
+  <div class="header-controls">
+    <label for="scenario-select">Scenario</label>
+    <select id="scenario-select">
+      <option value="">-- Select a scenario --</option>
+      <option value="create-bill">Create a new bill</option>
+      <option value="view-budget">View participant budget</option>
+      <option value="submit-invoice">Submit supplier invoice</option>
+      <option value="feature-flag">Toggle feature flag</option>
+      <option value="event-sourcing">Process event sourcing</option>
+    </select>
+    <button class="trace-btn" id="trace-btn" disabled>Trace Request</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="layers-col" id="layers-col">
+    <!-- Layers injected by JS -->
+  </div>
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-placeholder">
+      <div>Click a layer to explore its details</div>
+      <div class="hint">Or select a scenario and click "Trace Request" to watch a request flow through the stack</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ─── Layer Data ───────────────────────────────────────────────
+  const LAYERS = [
+    {
+      id: 'frontend',
+      name: 'Frontend Layer',
+      tech: 'Vue 3 + Inertia.js v2 + Tailwind CSS v3',
+      icon: 'V',
+      iconBg: '#42b883',
+      description: 'Client-side rendering with Vue 3 Composition API, server-driven via Inertia.js. No traditional SPA routing -- Laravel handles all routing. Tailwind CSS for utility-first styling.',
+      technologies: ['Vue 3', 'Inertia.js v2', 'Tailwind CSS v3', 'Ziggy v2', 'Common Components'],
+      files: [
+        { path: 'resources/js/Pages/', desc: 'Vue page components' },
+        { path: 'resources/js/Components/Common/', desc: 'Shared component library' },
+        { path: 'resources/js/composables/', desc: 'Vue composables' },
+        { path: 'resources/css/', desc: 'Tailwind config & global styles' },
+        { path: 'vite.config.js', desc: 'Build configuration' },
+      ],
+      conventions: [
+        'All components use <code>&lt;script setup lang="ts"&gt;</code>',
+        'Common Components only -- no PrimeVue',
+        'Inertia <code>useForm()</code> for form handling',
+        'Named routes via Ziggy -- <code>route(\'bills.index\')</code>',
+        'Inertia v2 features: deferred props, prefetching, polling',
+      ],
+      gotchas: [
+        '<strong>CommonRadioGroup / CommonSelectMenu:</strong> Object items need <code>value-key="value"</code> or model gets JSON object instead of string',
+        '<strong>CommonTabs:</strong> Prop is <code>:items</code> not <code>:tabs</code>, items need <code>title</code> not <code>label</code>',
+        '<strong>Inertia modal return type:</strong> Returns <code>App\\Extends\\Modal\\Modal</code>, not <code>Inertia\\Response</code> -- use <code>mixed</code>',
+      ],
+    },
+    {
+      id: 'webserver',
+      name: 'Web Server',
+      tech: 'Laravel Herd (Nginx)',
+      icon: 'H',
+      iconBg: '#e74c3c',
+      description: 'Laravel Herd serves the application locally via Nginx. Available at https://tc-portal.test. No manual server configuration needed.',
+      technologies: ['Laravel Herd', 'Nginx'],
+      files: [
+        { path: 'public/', desc: 'Web root' },
+        { path: 'public/index.php', desc: 'Application entry point' },
+      ],
+      conventions: [
+        'Site available at <code>https://tc-portal.test</code>',
+        'No manual server commands needed -- Herd handles everything',
+      ],
+      gotchas: [],
+    },
+    {
+      id: 'middleware',
+      name: 'Middleware Stack',
+      tech: 'Session, CSRF, Auth, Pennant, Custom Guards',
+      icon: 'M',
+      iconBg: '#9b59b6',
+      description: 'Middleware pipeline registered in app/Http/Kernel.php (Laravel 10 structure). Handles session, CSRF protection, authentication (Sanctum), feature flags (Pennant), and custom supplier/organisation guards.',
+      technologies: ['Sanctum v4', 'Pennant v1', 'Custom Middleware'],
+      files: [
+        { path: 'app/Http/Kernel.php', desc: 'Middleware registration' },
+        { path: 'app/Http/Middleware/', desc: 'Custom middleware classes' },
+        { path: 'app/Http/Middleware/EnsureSupplierContext.php', desc: 'Supplier portal guard' },
+        { path: 'app/Http/Middleware/EnsureOrganisationAdministrator.php', desc: 'Org admin guard' },
+        { path: 'app/Http/Middleware/EnsureSupplierPortalEnabled.php', desc: 'Portal feature guard' },
+      ],
+      conventions: [
+        'Laravel 10 structure -- middleware in <code>app/Http/Kernel.php</code>, not <code>bootstrap/app.php</code>',
+        'Pennant feature flags checked via middleware for conditional access',
+        'Sanctum for API token authentication',
+      ],
+      gotchas: [
+        '<strong>No bootstrap/app.php config:</strong> This project uses Laravel 10 file structure even on Laravel 12. All middleware registration is in Kernel.php.',
+      ],
+    },
+    {
+      id: 'router',
+      name: 'Router',
+      tech: 'Laravel Routes + Ziggy',
+      icon: 'R',
+      iconBg: '#3498db',
+      description: 'Laravel routing maps HTTP requests to controllers. Routes defined in routes/web.php and routes/api.php. Ziggy exposes named routes to the frontend.',
+      technologies: ['Laravel Router', 'Ziggy v2'],
+      files: [
+        { path: 'routes/web.php', desc: 'Web routes' },
+        { path: 'routes/api.php', desc: 'API routes' },
+        { path: 'domain/*/Routes/', desc: 'Domain-specific route files' },
+      ],
+      conventions: [
+        'Use named routes everywhere -- <code>route(\'bills.create\')</code>',
+        'API routes are versioned -- <code>/api/v1/</code>, <code>/api/v2/</code>',
+        'Domain route files loaded by their ServiceProvider',
+      ],
+      gotchas: [],
+    },
+    {
+      id: 'controller',
+      name: 'Controller Layer',
+      tech: 'HTTP handling, Data class validation, delegation to Actions',
+      icon: 'C',
+      iconBg: '#2C4C79',
+      description: 'Controllers handle HTTP concerns only: receive request, validate via Data classes, delegate business logic to Actions, return Inertia response or JSON.',
+      technologies: ['Laravel Controllers', 'Spatie Laravel Data'],
+      files: [
+        { path: 'app/Http/Controllers/', desc: 'Application controllers' },
+        { path: 'domain/*/Http/Controllers/', desc: 'Domain controllers' },
+        { path: 'domain/*/Data/', desc: 'Data classes (DTOs + validation)' },
+      ],
+      conventions: [
+        '<strong>NO Form Request classes</strong> -- Data classes handle all validation',
+        'Data classes must be <strong>anemic</strong> -- no business logic, only properties and casting',
+        'Controllers delegate to Actions for any business logic',
+        'Use <code>Gate::authorize()</code> not <code>$this->authorize()</code>',
+        'Return <code>Inertia::render()</code> for pages, JSON for APIs',
+      ],
+      gotchas: [
+        '<strong>Authorization:</strong> Controllers extend <code>Illuminate\\Routing\\Controller</code> (no AuthorizesRequests trait). Always use <code>Gate::authorize()</code>.',
+        '<strong>Data classes:</strong> Must use <code>#[MapName(SnakeCaseMapper::class)]</code> for snake_case request to camelCase property mapping.',
+      ],
+    },
+    {
+      id: 'action',
+      name: 'Action Layer',
+      tech: 'Single-responsibility business logic',
+      icon: 'A',
+      iconBg: '#007F7E',
+      description: 'Actions encapsulate a single unit of business logic. They may query models, fire domain events, record to event sourcing aggregates, or dispatch queued jobs. Each action does one thing well.',
+      technologies: ['Laravel Actions', 'Queued Jobs'],
+      files: [
+        { path: 'domain/*/Actions/', desc: 'Business logic actions' },
+        { path: 'domain/*/Jobs/', desc: 'Queued background jobs' },
+      ],
+      conventions: [
+        'One action per business operation -- <code>CreateBillAction</code>, <code>ApprovePriceAction</code>',
+        'Actions can call other actions for composition',
+        'Time-consuming operations dispatched as queued <code>ShouldQueue</code> jobs',
+        'Never put business logic in Data classes or Controllers',
+      ],
+      gotchas: [],
+    },
+    {
+      id: 'domain',
+      name: 'Domain Layer',
+      tech: 'DDD-lite: Models, Enums, Policies, Events',
+      icon: 'D',
+      iconBg: '#e67e22',
+      description: 'Domain-Driven Design lite structure. Each domain has its own folder under domain/ with Models, Enums, Policies, Events, and Services. Eloquent models with relationships, casts, and scopes.',
+      technologies: ['Eloquent ORM', 'Laravel Policies', 'Domain Events'],
+      files: [
+        { path: 'domain/', desc: 'All domain folders' },
+        { path: 'domain/*/Models/', desc: 'Eloquent models' },
+        { path: 'domain/*/Enums/', desc: 'Backed enums' },
+        { path: 'domain/*/Policies/', desc: 'Authorization policies' },
+        { path: 'domain/*/Events/', desc: 'Domain events & listeners' },
+        { path: 'domain/*/Services/', desc: 'Domain services' },
+        { path: 'domain/*/Providers/', desc: 'Domain service providers' },
+      ],
+      conventions: [
+        'Enums use <code>SCREAMING_SNAKE_CASE</code> -- e.g. <code>FAVORITE_PERSON</code>',
+        'Prefer <code>Model::query()</code> over <code>DB::</code> facade',
+        'Eager load relationships to prevent N+1 queries',
+        'No magic numbers -- define as <code>public const</code> on models with docblocks',
+        'Model casts defined in <code>casts()</code> method, not <code>$casts</code> property',
+      ],
+      gotchas: [
+        '<strong>Never use DB:: facade</strong> -- always use <code>Model::query()</code> or Eloquent relationship methods.',
+        '<strong>Never use enum column types in migrations</strong> -- use <code>string</code> with comment instead.',
+      ],
+    },
+    {
+      id: 'eventsourcing',
+      name: 'Event Sourcing',
+      tech: 'Aggregates, StoredEvents, Projectors',
+      icon: 'E',
+      iconBg: '#8e44ad',
+      description: 'Event sourcing captures state changes as immutable events. Aggregates record events, which are stored in domain-specific tables. Projectors consume events to update read models.',
+      technologies: ['Spatie Event Sourcing', 'Aggregates', 'Projectors'],
+      files: [
+        { path: 'domain/*/Aggregates/', desc: 'Aggregate roots' },
+        { path: 'domain/*/Projectors/', desc: 'Event projectors' },
+        { path: 'domain/*/Events/', desc: 'Stored events' },
+        { path: 'bootstrap/cache/event-handlers.php', desc: 'Projector cache (must rebuild!)' },
+      ],
+      conventions: [
+        'Each domain has its own stored_events table',
+        'Rebuild cache after new projectors: <code>php artisan event-sourcing:cache-event-handlers</code>',
+        'Aggregates guard updates/deletes -- check event history exists',
+        'Data classes for events must use <code>#[DataCollectionOf()]</code> -- never raw array shapes',
+      ],
+      gotchas: [
+        '<strong>Projector cache:</strong> <code>bootstrap/cache/event-handlers.php</code> must be rebuilt after adding new projectors. Delete the cache file first, then run <code>php artisan event-sourcing:cache-event-handlers</code>.',
+        '<strong>Factory-created entries have no event history</strong> -- tests must create via the full event sourcing pipeline for aggregates to work.',
+      ],
+    },
+    {
+      id: 'data',
+      name: 'Data Layer',
+      tech: 'MySQL + Redis + Typesense',
+      icon: 'S',
+      iconBg: '#27ae60',
+      description: 'Primary storage is MySQL via Eloquent. Redis handles caching, queue backends, and sessions. Typesense provides full-text search via Laravel Scout.',
+      technologies: ['MySQL', 'Redis', 'Typesense', 'Laravel Scout v10', 'Horizon v5'],
+      files: [
+        { path: 'database/migrations/', desc: 'Schema migrations' },
+        { path: 'database/seeders/', desc: 'Data seeders' },
+        { path: 'database/factories/', desc: 'Model factories (for tests)' },
+        { path: 'config/database.php', desc: 'DB configuration' },
+        { path: 'config/horizon.php', desc: 'Queue / Horizon config' },
+      ],
+      conventions: [
+        'Always use migrations for schema changes',
+        'Use factories and seeders for test data',
+        'Queue management via <code>Horizon</code> dashboard',
+        'Full-text search via Scout + Typesense',
+      ],
+      gotchas: [
+        '<strong>Column modifications:</strong> Migration must include ALL previously defined attributes on the column, or they will be dropped.',
+      ],
+    },
+    {
+      id: 'external',
+      name: 'External Integrations',
+      tech: 'Services Australia, MYOB, Aircall, Sentry, PostHog',
+      icon: 'X',
+      iconBg: '#c0392b',
+      description: 'External API integrations for government claims, accounting, telephony, customer support, error tracking, and analytics.',
+      technologies: ['Services Australia API', 'MYOB Acumatica', 'Aircall', 'Easy Collect', 'Intercom', 'Sentry', 'PostHog'],
+      files: [
+        { path: 'domain/*/Services/', desc: 'API client services' },
+        { path: 'config/services.php', desc: 'Service credentials' },
+      ],
+      conventions: [
+        'API clients wrapped in domain services',
+        'Use environment variables only in config files -- <code>config(\'services.myob.key\')</code>',
+        'Never use <code>env()</code> directly outside config files',
+      ],
+      gotchas: [],
+    },
+  ];
+
+  // ─── Scenario Data ────────────────────────────────────────────
+  const SCENARIOS = {
+    'create-bill': {
+      name: 'Create a New Bill',
+      description: 'A care partner creates a new bill for a participant service.',
+      flow: 'Browser <span class="flow-arrow">&rarr;</span> Inertia form submit <span class="flow-arrow">&rarr;</span> BillController <span class="flow-arrow">&rarr;</span> BillData (validates) <span class="flow-arrow">&rarr;</span> CreateBillAction (business logic) <span class="flow-arrow">&rarr;</span> Bill model <span class="flow-arrow">&rarr;</span> BillCreated event <span class="flow-arrow">&rarr;</span> BillProjector (updates read model) <span class="flow-arrow">&rarr;</span> Inertia redirect to bill list',
+      steps: [
+        { layer: 'frontend', label: 'Step 1', desc: 'Vue form component calls <code>useForm().post(route(\'bills.store\'))</code>' },
+        { layer: 'webserver', label: 'Step 2', desc: 'Herd/Nginx receives POST request' },
+        { layer: 'middleware', label: 'Step 3', desc: 'Session, CSRF, Auth middleware execute' },
+        { layer: 'router', label: 'Step 4', desc: 'Route matches <code>POST /bills</code> to <code>BillController@store</code>' },
+        { layer: 'controller', label: 'Step 5', desc: '<code>BillController::store(BillData $data)</code> -- validates via Data class, delegates to action' },
+        { layer: 'action', label: 'Step 6', desc: '<code>CreateBillAction::execute($data)</code> -- creates bill, fires BillCreated event' },
+        { layer: 'domain', label: 'Step 7', desc: '<code>Bill::create()</code> -- Eloquent persists to MySQL' },
+        { layer: 'eventsourcing', label: 'Step 8', desc: 'BillCreated stored event recorded, BillProjector updates read model' },
+        { layer: 'data', label: 'Step 9', desc: 'MySQL writes bill record + event store entry' },
+        { layer: 'controller', label: 'Step 10', desc: 'Returns <code>redirect()->route(\'bills.index\')</code>' },
+        { layer: 'frontend', label: 'Step 11', desc: 'Inertia navigates to bill list, Vue reactivity renders updated data' },
+      ],
+    },
+    'view-budget': {
+      name: 'View Participant Budget',
+      description: 'A care partner views the budget overview for a participant.',
+      flow: 'Browser <span class="flow-arrow">&rarr;</span> Inertia visit <span class="flow-arrow">&rarr;</span> BudgetController <span class="flow-arrow">&rarr;</span> BudgetService <span class="flow-arrow">&rarr;</span> Model::query() <span class="flow-arrow">&rarr;</span> MySQL <span class="flow-arrow">&rarr;</span> Inertia::render()',
+      steps: [
+        { layer: 'frontend', label: 'Step 1', desc: 'Vue Link component triggers Inertia visit to budget page' },
+        { layer: 'webserver', label: 'Step 2', desc: 'Herd/Nginx routes GET request' },
+        { layer: 'middleware', label: 'Step 3', desc: 'Auth middleware verifies session, Pennant checks feature flags' },
+        { layer: 'router', label: 'Step 4', desc: 'Route matches to <code>BudgetController@show</code>' },
+        { layer: 'controller', label: 'Step 5', desc: 'Controller calls BudgetService to fetch data' },
+        { layer: 'action', label: 'Step 6', desc: 'BudgetService queries funding streams, calculates remaining budget' },
+        { layer: 'domain', label: 'Step 7', desc: '<code>FundingStream::query()->with(\'items\')</code> -- eager loads relationships' },
+        { layer: 'data', label: 'Step 8', desc: 'MySQL returns budget records with joined items' },
+        { layer: 'controller', label: 'Step 9', desc: '<code>Inertia::render(\'Budget/Show\', [\'budget\' => $data])</code>' },
+        { layer: 'frontend', label: 'Step 10', desc: 'Vue component receives props and renders budget view' },
+      ],
+    },
+    'submit-invoice': {
+      name: 'Submit Supplier Invoice',
+      description: 'A supplier submits an invoice through the supplier portal API.',
+      flow: 'API Request <span class="flow-arrow">&rarr;</span> Sanctum auth <span class="flow-arrow">&rarr;</span> EnsureSupplierContext <span class="flow-arrow">&rarr;</span> SupplierBillController <span class="flow-arrow">&rarr;</span> UploadBillAction <span class="flow-arrow">&rarr;</span> Job dispatch <span class="flow-arrow">&rarr;</span> JSON response',
+      steps: [
+        { layer: 'frontend', label: 'Step 1', desc: 'Supplier portal sends API request with Sanctum token' },
+        { layer: 'webserver', label: 'Step 2', desc: 'Herd/Nginx routes to <code>/api/v2/</code> endpoint' },
+        { layer: 'middleware', label: 'Step 3', desc: '<code>auth:sanctum</code>, <code>EnsureSupplierContext</code>, <code>EnsureSupplierPortalEnabled</code>' },
+        { layer: 'router', label: 'Step 4', desc: 'API route matches to <code>SupplierBillController@store</code>' },
+        { layer: 'controller', label: 'Step 5', desc: 'Validates via <code>UploadBillData</code>, authorizes via <code>Gate::authorize()</code>' },
+        { layer: 'action', label: 'Step 6', desc: '<code>UploadBillAction</code> processes invoice, dispatches async job for heavy processing' },
+        { layer: 'domain', label: 'Step 7', desc: 'Bill model created, SupplierDocument associated' },
+        { layer: 'data', label: 'Step 8', desc: 'MySQL persists bill + document records. Redis queues the processing job.' },
+        { layer: 'controller', label: 'Step 9', desc: 'Returns JSON response with bill ID and status' },
+      ],
+    },
+    'feature-flag': {
+      name: 'Toggle Feature Flag',
+      description: 'A feature flag controls conditional rendering of a new UI component.',
+      flow: 'Request <span class="flow-arrow">&rarr;</span> Pennant middleware <span class="flow-arrow">&rarr;</span> Feature::active() <span class="flow-arrow">&rarr;</span> Conditional render <span class="flow-arrow">&rarr;</span> Vue @feature directive',
+      steps: [
+        { layer: 'frontend', label: 'Step 1', desc: 'User navigates to a page with a flagged feature' },
+        { layer: 'webserver', label: 'Step 2', desc: 'Request hits Laravel' },
+        { layer: 'middleware', label: 'Step 3', desc: 'Pennant middleware evaluates feature flags for the current user/org scope' },
+        { layer: 'controller', label: 'Step 4', desc: 'Controller checks <code>Feature::active(\'new-dashboard\')</code>, includes extra props if enabled' },
+        { layer: 'domain', label: 'Step 5', desc: 'Pennant queries flag state from database (cached in Redis)' },
+        { layer: 'data', label: 'Step 6', desc: 'Redis returns cached flag value, or MySQL is queried on miss' },
+        { layer: 'controller', label: 'Step 7', desc: '<code>Inertia::render()</code> passes <code>featureEnabled</code> prop' },
+        { layer: 'frontend', label: 'Step 8', desc: 'Vue component conditionally renders new UI based on prop' },
+      ],
+    },
+    'event-sourcing': {
+      name: 'Process Event Sourcing',
+      description: 'An aggregate records a domain event, which triggers a projector to update a read model.',
+      flow: 'Action <span class="flow-arrow">&rarr;</span> Aggregate::retrieve() <span class="flow-arrow">&rarr;</span> recordThat(Event) <span class="flow-arrow">&rarr;</span> StoredEvent persisted <span class="flow-arrow">&rarr;</span> Projector fires <span class="flow-arrow">&rarr;</span> Read model updated',
+      steps: [
+        { layer: 'action', label: 'Step 1', desc: 'Action retrieves aggregate: <code>MyAggregate::retrieve($uuid)</code>' },
+        { layer: 'eventsourcing', label: 'Step 2', desc: 'Aggregate replays past events to reconstruct state' },
+        { layer: 'data', label: 'Step 3', desc: 'Domain stored_events table queried for aggregate UUID' },
+        { layer: 'eventsourcing', label: 'Step 4', desc: 'Aggregate calls <code>recordThat(new ThingHappened(...))</code>' },
+        { layer: 'action', label: 'Step 5', desc: '<code>$aggregate->persist()</code> saves new event' },
+        { layer: 'data', label: 'Step 6', desc: 'StoredEvent written to domain-specific events table' },
+        { layer: 'eventsourcing', label: 'Step 7', desc: 'Projector handles event, updates read model table' },
+        { layer: 'domain', label: 'Step 8', desc: 'Read model (Eloquent) now reflects the new state' },
+      ],
+    },
+  };
+
+  // ─── State ────────────────────────────────────────────────────
+  let activeLayerId = null;
+  let tracing = false;
+  let currentScenario = null;
+
+  // ─── Render Layers ────────────────────────────────────────────
+  function renderLayers() {
+    const col = document.getElementById('layers-col');
+    col.innerHTML = '';
+
+    LAYERS.forEach((layer, i) => {
+      // Layer card
+      const el = document.createElement('div');
+      el.className = 'layer' + (activeLayerId === layer.id ? ' active expanded' : '');
+      el.id = 'layer-' + layer.id;
+      el.innerHTML = `
+        <span class="trace-step-badge" id="badge-${layer.id}"></span>
+        <div class="layer-header" data-layer="${layer.id}">
+          <div class="layer-icon" style="background:${layer.iconBg}">${layer.icon}</div>
+          <div class="layer-info">
+            <div class="layer-name">${layer.name}</div>
+            <div class="layer-tech">${layer.tech}</div>
+          </div>
+          <div class="layer-chevron">&#9654;</div>
+        </div>
+        <div class="layer-body">
+          <div class="layer-section">
+            <div class="layer-section-title">Technologies</div>
+            <div class="tech-tags">
+              ${layer.technologies.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+            </div>
+          </div>
+          <div class="layer-section">
+            <div class="layer-section-title">Key Files</div>
+            <div class="file-tree">${layer.files.map(f =>
+              `<span class="dir">${f.path}</span>  <span class="comment"># ${f.desc}</span>`
+            ).join('\n')}</div>
+          </div>
+          <div class="layer-section">
+            <div class="layer-section-title">Conventions</div>
+            <ul class="convention-list">
+              ${layer.conventions.map(c => `<li><span class="rule-icon">&#9670;</span><span>${c}</span></li>`).join('')}
+            </ul>
+          </div>
+          ${layer.gotchas.length ? `
+          <div class="layer-section">
+            <div class="layer-section-title">Gotchas</div>
+            ${layer.gotchas.map(g => `<div class="gotcha-card">${g}</div>`).join('')}
+          </div>` : ''}
+        </div>
+      `;
+      col.appendChild(el);
+
+      // Connector arrow between layers
+      if (i < LAYERS.length - 1) {
+        const conn = document.createElement('div');
+        conn.className = 'connector';
+        conn.id = 'conn-' + i;
+        conn.innerHTML = `<svg viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="10" y1="2" x2="10" y2="10"/><polyline points="6,7 10,12 14,7"/></svg>`;
+        col.appendChild(conn);
+      }
+    });
+
+    // Flow summary
+    const summary = document.createElement('div');
+    summary.className = 'flow-summary';
+    summary.id = 'flow-summary';
+    summary.innerHTML = '<h3>Request Flow</h3><div class="flow-text" id="flow-text"></div>';
+    col.appendChild(summary);
+
+    // Trace description
+    const traceDesc = document.createElement('div');
+    traceDesc.className = 'trace-desc';
+    traceDesc.id = 'trace-desc';
+    col.insertBefore(traceDesc, col.firstChild);
+
+    // Bind click events
+    document.querySelectorAll('.layer-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const layerId = header.dataset.layer;
+        toggleLayer(layerId);
+      });
+    });
+  }
+
+  function toggleLayer(layerId) {
+    if (tracing) return;
+
+    const wasActive = activeLayerId === layerId;
+    activeLayerId = wasActive ? null : layerId;
+
+    document.querySelectorAll('.layer').forEach(el => {
+      const id = el.id.replace('layer-', '');
+      el.classList.toggle('active', id === activeLayerId);
+      el.classList.toggle('expanded', id === activeLayerId);
+    });
+
+    renderDetailPanel(activeLayerId);
+  }
+
+  // ─── Detail Panel ─────────────────────────────────────────────
+  function renderDetailPanel(layerId) {
+    const panel = document.getElementById('detail-panel');
+
+    if (!layerId) {
+      panel.innerHTML = `<div class="detail-placeholder">
+        <div>Click a layer to explore its details</div>
+        <div class="hint">Or select a scenario and click "Trace Request" to watch a request flow through the stack</div>
+      </div>`;
+      return;
+    }
+
+    const layer = LAYERS.find(l => l.id === layerId);
+    if (!layer) return;
+
+    let html = `
+      <h2>${layer.name}</h2>
+      <div class="detail-subtitle">${layer.tech}</div>
+      <div class="detail-section">
+        <h3>Overview</h3>
+        <p>${layer.description}</p>
+      </div>
+      <div class="detail-section">
+        <h3>Technologies</h3>
+        <div class="tech-tags" style="margin-bottom:4px">
+          ${layer.technologies.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="detail-section">
+        <h3>File Structure</h3>
+        <div class="detail-file-tree">${layer.files.map(f =>
+          `<span style="color:var(--teal-500)">${f.path}</span>\n  <span style="color:var(--text-muted)">${f.desc}</span>`
+        ).join('\n\n')}</div>
+      </div>
+      <div class="detail-section">
+        <h3>Conventions &amp; Rules</h3>
+        <ul class="convention-list">
+          ${layer.conventions.map(c => `<li><span class="rule-icon">&#9670;</span><span>${c}</span></li>`).join('')}
+        </ul>
+      </div>
+    `;
+
+    if (layer.gotchas.length) {
+      html += `<div class="detail-section">
+        <h3>Gotchas &amp; Warnings</h3>
+        ${layer.gotchas.map(g => `<div class="gotcha-card">${g}</div>`).join('')}
+      </div>`;
+    }
+
+    // Show scenario context if tracing
+    if (currentScenario) {
+      const scenario = SCENARIOS[currentScenario];
+      const relevantSteps = scenario.steps.filter(s => s.layer === layerId);
+      if (relevantSteps.length) {
+        html += `<div class="detail-section">
+          <h3>In This Scenario: ${scenario.name}</h3>
+          ${relevantSteps.map(s => `
+            <div style="background:rgba(67,192,190,0.06);border:1px solid rgba(67,192,190,0.15);border-radius:6px;padding:10px 12px;margin-bottom:8px;">
+              <div style="font-size:11px;font-weight:700;color:var(--teal-500);margin-bottom:4px">${s.label}</div>
+              <div style="font-size:12px;color:var(--text);line-height:1.6">${s.desc}</div>
+            </div>
+          `).join('')}
+        </div>`;
+      }
+    }
+
+    panel.innerHTML = html;
+  }
+
+  // ─── Scenario Select ──────────────────────────────────────────
+  const scenarioSelect = document.getElementById('scenario-select');
+  const traceBtn = document.getElementById('trace-btn');
+
+  scenarioSelect.addEventListener('change', () => {
+    const val = scenarioSelect.value;
+    traceBtn.disabled = !val;
+    currentScenario = val || null;
+    clearTrace();
+  });
+
+  traceBtn.addEventListener('click', () => {
+    if (!currentScenario || tracing) return;
+    runTrace(currentScenario);
+  });
+
+  // ─── Trace Animation ─────────────────────────────────────────
+  function clearTrace() {
+    document.querySelectorAll('.layer').forEach(el => {
+      el.classList.remove('tracing', 'trace-visited');
+    });
+    document.querySelectorAll('.connector').forEach(el => {
+      el.classList.remove('active');
+    });
+    document.querySelectorAll('[id^="badge-"]').forEach(el => {
+      el.textContent = '';
+    });
+    const desc = document.getElementById('trace-desc');
+    if (desc) { desc.classList.remove('visible'); desc.innerHTML = ''; }
+    const summary = document.getElementById('flow-summary');
+    if (summary) summary.classList.remove('visible');
+  }
+
+  async function runTrace(scenarioId) {
+    const scenario = SCENARIOS[scenarioId];
+    if (!scenario) return;
+
+    tracing = true;
+    traceBtn.disabled = true;
+    scenarioSelect.disabled = true;
+    clearTrace();
+
+    // Show trace description
+    const desc = document.getElementById('trace-desc');
+    desc.innerHTML = `<strong style="color:var(--text-bright)">${scenario.name}</strong><br>${scenario.description}`;
+    desc.classList.add('visible');
+
+    // Collapse all layers first
+    activeLayerId = null;
+    document.querySelectorAll('.layer').forEach(el => {
+      el.classList.remove('active', 'expanded');
+    });
+    renderDetailPanel(null);
+
+    const steps = scenario.steps;
+
+    for (let i = 0; i < steps.length; i++) {
+      const step = steps[i];
+      const layerEl = document.getElementById('layer-' + step.layer);
+      if (!layerEl) continue;
+
+      // Remove tracing from previous
+      document.querySelectorAll('.layer.tracing').forEach(el => {
+        el.classList.remove('tracing');
+        el.classList.add('trace-visited');
+      });
+
+      // Activate connectors up to this layer
+      activateConnectorsTo(step.layer);
+
+      // Set badge
+      const badge = document.getElementById('badge-' + step.layer);
+      if (badge) badge.textContent = step.label;
+
+      // Highlight current layer
+      layerEl.classList.add('tracing', 'active', 'expanded');
+      activeLayerId = step.layer;
+      renderDetailPanel(step.layer);
+
+      // Update trace description with current step
+      desc.innerHTML = `<strong style="color:var(--text-bright)">${scenario.name}</strong> &mdash; <span class="step-highlight">${step.label}</span><br>${step.desc}`;
+
+      // Scroll layer into view
+      layerEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      await sleep(1200);
+    }
+
+    // Final: show flow summary
+    const summary = document.getElementById('flow-summary');
+    const flowText = document.getElementById('flow-text');
+    if (summary && flowText) {
+      flowText.innerHTML = scenario.flow;
+      summary.classList.add('visible');
+      summary.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Mark last step as visited too
+    document.querySelectorAll('.layer.tracing').forEach(el => {
+      el.classList.remove('tracing');
+      el.classList.add('trace-visited');
+    });
+
+    tracing = false;
+    traceBtn.disabled = false;
+    scenarioSelect.disabled = false;
+  }
+
+  function activateConnectorsTo(layerId) {
+    const targetIdx = LAYERS.findIndex(l => l.id === layerId);
+    document.querySelectorAll('.connector').forEach((el, i) => {
+      el.classList.toggle('active', i < targetIdx);
+    });
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // ─── Init ─────────────────────────────────────────────────────
+  renderLayers();
+})();
+</script>
+</body>
+</html>

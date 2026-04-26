@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition & Hydration — Margaret Thompson | Trilogy Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tc-teal': { 500: '#43C0BE', 700: '#007F7E' },
+                        'tc-blue': { 700: '#2C4C79' },
+                        'tier-1': { light: '#FEF2F2', DEFAULT: '#EF4444', dark: '#DC2626' },
+                        'tier-2': { light: '#FFFBEB', DEFAULT: '#F59E0B', dark: '#D97706' },
+                        'tier-3': { light: '#ECFDF5', DEFAULT: '#10B981', dark: '#059669' },
+                        'tier-4': { light: '#EFF6FF', DEFAULT: '#3B82F6', dark: '#2563EB' },
+                        'tier-5': { light: '#F5F3FF', DEFAULT: '#8B5CF6', dark: '#7C3AED' },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .pyramid-bar {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .pyramid-bar:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+        .pyramid-bar.selected {
+            transform: scale(1.03);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.3), 0 4px 20px rgba(0,0,0,0.15);
+            opacity: 1 !important;
+        }
+        .pyramid-bar:not(.selected) {
+            opacity: 0.7;
+        }
+        .pyramid-bar:not(.selected):hover {
+            opacity: 0.9;
+        }
+        .pyramid-bar.selected::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+        .pyramid-bar[data-tier="1"].selected::after { border-left: 10px solid #DC2626; }
+        .pyramid-bar[data-tier="2"].selected::after { border-left: 10px solid #D97706; }
+        .pyramid-bar[data-tier="3"].selected::after { border-left: 10px solid #059669; }
+        .pyramid-bar[data-tier="4"].selected::after { border-left: 10px solid #2563EB; }
+        .pyramid-bar[data-tier="5"].selected::after { border-left: 10px solid #7C3AED; }
+        .service-card {
+            transition: all 0.2s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex">
+<!-- ===== SIDEBAR (skeleton — framing only) ===== -->
+<aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+    <div class="px-4 py-4 border-b border-gray-100">
+        <div class="flex items-center gap-2.5">
+            <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div>
+            <div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+    </div>
+    <div class="px-3 py-3"><div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div></div>
+    <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div></div>
+    </nav>
+    <div class="border-t border-gray-100 px-3 py-3">
+        <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div><div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div></div>
+    </div>
+</aside>
+<!-- ===== MAIN CONTENT ===== -->
+<main class="flex-1 flex flex-col min-h-screen">
+
+    <!-- Page Header -->
+    <header class="bg-white border-b border-gray-200">
+        <div class="px-6 py-4">
+            <nav class="flex items-center gap-1.5 text-sm text-gray-500 mb-3">
+                <a href="#" class="hover:text-tc-teal-700">Clients</a>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="#" class="hover:text-tc-teal-700">Margaret Thompson</a>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="#" class="hover:text-tc-teal-700">Package</a>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="01-needs-list.html" class="hover:text-tc-teal-700">Needs</a>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-gray-900 font-medium">Nutrition & Hydration</span>
+            </nav>
+
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-xl font-semibold text-gray-900">Margaret Thompson</h1>
+                    <p class="text-sm text-gray-500 mt-0.5">HCP Level 4 &middot; DOB: 12 Mar 1938 &middot; UR: MT-20241087</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                        Add Service
+                    </button>
+                    <button class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+                        Archive
+                    </button>
+                    <button class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-tc-teal-700 rounded-lg hover:bg-tc-teal-500 shadow-sm transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Bar -->
+        <div class="px-6">
+            <nav class="flex gap-6 -mb-px">
+                <a href="#" class="px-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Overview</a>
+                <a href="#" class="px-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Services</a>
+                <a href="#" class="px-1 py-3 text-sm font-medium text-tc-teal-700 border-b-2 border-tc-teal-700">Needs</a>
+                <a href="#" class="px-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Risks</a>
+                <a href="#" class="px-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Budget</a>
+                <a href="#" class="px-1 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Documents</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Detail Content -->
+    <div class="flex-1 p-6">
+        <div class="flex gap-8 items-start">
+
+            <!-- ===== LEFT: Compact Pyramid Context ===== -->
+            <div class="shrink-0 w-[200px]">
+                <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+                    <h2 class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-3">Position in Hierarchy</h2>
+
+                    <!-- Compact CSS Pyramid -->
+                    <div class="flex flex-col items-center gap-[3px] pr-3">
+                        <div class="pyramid-bar flex items-center justify-between rounded-md h-[32px] px-2.5"
+                             style="width: 50%; background: linear-gradient(to right, #8B5CF6, #7C3AED);"
+                             data-tier="5" onclick="window.location.href='01-needs-list.html'">
+                            <span class="text-white text-[10px] font-semibold truncate">Growth</span>
+                            <span class="shrink-0 w-4 h-4 rounded-full bg-white flex items-center justify-center">
+                                <span class="text-[8px] font-bold text-violet-600">1</span>
+                            </span>
+                        </div>
+                        <div class="pyramid-bar flex items-center justify-between rounded-md h-[32px] px-2.5"
+                             style="width: 62.5%; background: linear-gradient(to right, #3B82F6, #2563EB);"
+                             data-tier="4" onclick="window.location.href='01-needs-list.html'">
+                            <span class="text-white text-[10px] font-semibold truncate">Dignity</span>
+                            <span class="shrink-0 w-4 h-4 rounded-full bg-white flex items-center justify-center">
+                                <span class="text-[8px] font-bold text-blue-600">1</span>
+                            </span>
+                        </div>
+                        <div class="pyramid-bar flex items-center justify-between rounded-md h-[32px] px-2.5"
+                             style="width: 75%; background: linear-gradient(to right, #10B981, #059669);"
+                             data-tier="3" onclick="window.location.href='01-needs-list.html'">
+                            <span class="text-white text-[10px] font-semibold truncate">Connection</span>
+                            <span class="shrink-0 w-4 h-4 rounded-full bg-white flex items-center justify-center">
+                                <span class="text-[8px] font-bold text-emerald-600">1</span>
+                            </span>
+                        </div>
+                        <div class="pyramid-bar flex items-center justify-between rounded-md h-[32px] px-2.5"
+                             style="width: 87.5%; background: linear-gradient(to right, #F59E0B, #D97706);"
+                             data-tier="2" onclick="window.location.href='01-needs-list.html'">
+                            <span class="text-white text-[10px] font-semibold truncate">Safety</span>
+                            <span class="shrink-0 w-4 h-4 rounded-full bg-white flex items-center justify-center">
+                                <span class="text-[8px] font-bold text-amber-600">2</span>
+                            </span>
+                        </div>
+                        <!-- Tier 1 — SELECTED (this need is here) -->
+                        <div class="pyramid-bar selected flex items-center justify-between rounded-md h-[32px] px-2.5"
+                             style="width: 100%; background: linear-gradient(to right, #EF4444, #DC2626);"
+                             data-tier="1" onclick="window.location.href='01-needs-list.html'">
+                            <span class="text-white text-[10px] font-semibold truncate">Essential</span>
+                            <span class="shrink-0 w-4 h-4 rounded-full bg-white flex items-center justify-center">
+                                <span class="text-[8px] font-bold text-red-600">3</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Current need context -->
+                    <div class="mt-4 pt-3 border-t border-gray-100">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-wide font-medium mb-1">Viewing</p>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            <span class="text-xs font-medium text-gray-700">Nutrition & Hydration</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-1">Tier 1 — Essential Care</p>
+                    </div>
+
+                    <!-- Other Tier 1 needs -->
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-wide font-medium mb-2">Also in this tier</p>
+                        <div class="space-y-1.5">
+                            <a href="#" class="block text-xs text-gray-500 hover:text-tc-teal-700 truncate">Mobility & Transfers</a>
+                            <a href="#" class="block text-xs text-gray-500 hover:text-tc-teal-700 truncate">Pain & Symptom Mgmt</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT: Need Detail ===== -->
+            <div class="flex-1 min-w-0 space-y-6">
+
+                <!-- Tier Colour Banner Header -->
+                <div class="rounded-xl overflow-hidden shadow-sm" style="background: linear-gradient(to right, #EF4444, #DC2626);">
+                    <div class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-xs text-red-100 font-medium uppercase tracking-wide">Tier 1 — Essential Care</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/20 text-white">Nutrition & Hydration</span>
+                                </div>
+                                <h2 class="text-lg font-semibold text-white">Requires modified diet and meal assistance</h2>
+                            </div>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-white text-green-700">Active</span>
+                        </div>
+                        <div class="flex items-center gap-4 mt-3 text-xs text-red-100">
+                            <span>Created: 15 Jan 2026</span>
+                            <span>&middot;</span>
+                            <span>Updated: 8 Mar 2026</span>
+                            <span>&middot;</span>
+                            <span>Funding: HCP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Need Description -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="text-sm font-semibold text-gray-900">Need Description</h2>
+                    </div>
+                    <div class="p-5 space-y-4">
+                        <div>
+                            <h3 class="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">What is the need?</h3>
+                            <p class="text-sm text-gray-700 leading-relaxed">Margaret requires support with meal preparation due to reduced mobility in her left hand following a stroke in 2023. Modified texture diet (soft foods) as per speech pathologist recommendation dated 15 Nov 2025. She is also at risk of dehydration due to reduced thirst sensation — requires prompting to drink at least 1.5L water daily.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">How will this need be met?</h3>
+                            <p class="text-sm text-gray-700 leading-relaxed">Weekly meal preparation service (3x/week) with pre-cut and soft-cooked meals provided by Sunrise Home Care. Dietitian review every 6 months to monitor nutritional status and adjust diet plan. Daughter (Susan) supplements with weekend meals and monitors fluid intake on Saturdays and Sundays. Hydration tracking chart placed on fridge door.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linked Services -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <div>
+                            <h2 class="text-sm font-semibold text-gray-900">Linked Services</h2>
+                            <p class="text-xs text-gray-500 mt-0.5">2 services addressing this need</p>
+                        </div>
+                        <button class="text-xs text-tc-teal-700 hover:text-tc-teal-500 font-medium underline">+ Link More</button>
+                    </div>
+                    <div class="p-5 space-y-3">
+                        <div class="service-card border border-gray-200 rounded-lg p-4 flex items-start gap-4">
+                            <div class="shrink-0 w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-tc-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-semibold text-gray-900">Meal Preparation Service</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Sunrise Home Care &middot; 3x weekly (Mon, Wed, Fri)</p>
+                                <div class="flex items-center gap-3 mt-2">
+                                    <span class="text-xs font-medium text-gray-700">$185/week</span>
+                                    <span class="text-xs text-gray-400">&middot;</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-medium bg-green-50 text-green-700">Active</span>
+                                </div>
+                            </div>
+                            <button class="shrink-0 text-gray-400 hover:text-red-500 p-1" title="Unlink service">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <div class="service-card border border-gray-200 rounded-lg p-4 flex items-start gap-4">
+                            <div class="shrink-0 w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-tc-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-semibold text-gray-900">Dietitian Review</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">Allied Health Plus &middot; 6-monthly</p>
+                                <div class="flex items-center gap-3 mt-2">
+                                    <span class="text-xs font-medium text-gray-700">$95/session</span>
+                                    <span class="text-xs text-gray-400">&middot;</span>
+                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-medium bg-green-50 text-green-700">Active</span>
+                                    <span class="text-xs text-gray-400">&middot;</span>
+                                    <span class="text-xs text-amber-600">Next: 15 May 2026</span>
+                                </div>
+                            </div>
+                            <button class="shrink-0 text-gray-400 hover:text-red-500 p-1" title="Unlink service">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Log -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                    <div class="px-5 py-4 border-b border-gray-100">
+                        <h2 class="text-sm font-semibold text-gray-900">Activity</h2>
+                    </div>
+                    <div class="p-5">
+                        <ol class="relative border-l-2 border-gray-100 ml-3 space-y-5">
+                            <li class="ml-6">
+                                <span class="absolute -left-[9px] flex items-center justify-center w-4 h-4 rounded-full bg-tc-teal-700 ring-4 ring-white">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                </span>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-sm font-medium text-gray-900">Description updated</span>
+                                    <span class="text-xs text-gray-400">8 Mar 2026, 2:14 PM</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-0.5">by Sarah Mitchell, RN — Added hydration risk detail and tracking chart reference</p>
+                            </li>
+                            <li class="ml-6">
+                                <span class="absolute -left-[9px] flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 ring-4 ring-white">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                </span>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-sm font-medium text-gray-900">Dietitian Review service linked</span>
+                                    <span class="text-xs text-gray-400">22 Feb 2026, 10:30 AM</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-0.5">by Dr. James Nguyen — Linked following annual nutritional assessment</p>
+                            </li>
+                            <li class="ml-6">
+                                <span class="absolute -left-[9px] flex items-center justify-center w-4 h-4 rounded-full bg-green-500 ring-4 ring-white">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                </span>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-sm font-medium text-gray-900">Need created and set to Active</span>
+                                    <span class="text-xs text-gray-400">15 Jan 2026, 3:45 PM</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-0.5">by Sarah Mitchell, RN — Created during initial care plan assessment with family present</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Back link -->
+                <div class="pb-6">
+                    <a href="01-needs-list.html" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-tc-teal-700 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        Back to all needs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

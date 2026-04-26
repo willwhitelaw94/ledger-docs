@@ -1,0 +1,31 @@
+epic: 103-MPS
+name: Map Performance & Scale
+initiative: FL-financial-ledger
+status: in progress
+created: 2026-04-19
+effort: S
+summary: "Scale the Entity Map to millions of workspaces via client clustering, bbox-viewport API, caching, and (eventually) PostGIS vector tiles."
+parent_epic: 102-PPL
+dependencies:
+  - 102-PPL
+gates:
+  idea:
+    passed: true
+    date: 2026-04-19
+    notes: "Will Whitelaw (PO/Dev/A). Follow-up to 102-PPL scale-plan.md. Phased A/B/C; Phase A immediate, B/C gated on trigger thresholds. Linear skipped (no FL project)."
+  spec:
+    passed: true
+    date: 2026-04-19
+    notes: "11 FRs, 5 user stories (P1/P2/P3). 100-record clustering threshold locked as FR-007. Self-clarified 10 questions inline."
+  design: pending
+  architecture:
+    passed: true
+    date: 2026-04-19
+    notes: "Gate 3 passed in plan.md. 16/16 checks PASS; no red flags. Phase A is pure application-layer, no schema changes."
+  code_quality:
+    passed: true
+    date: 2026-04-19
+    phase: A
+    notes: "Phase A complete. Backend: 4 feature tests, 15 assertions — all green. PlatformPulse suite: 6 tests/33 assertions pass. Pint clean on all touched files. TypeScript clean on all platform-pulse files (pre-existing scenarios errors unrelated). Phase B/C gated on trigger thresholds per plan.md."
+  qa: pending
+  release: pending

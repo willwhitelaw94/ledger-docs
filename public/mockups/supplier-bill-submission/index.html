@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Bill Submission — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">SBS — Bill Submission</span>
+  <button onclick="show('email')" id="nav-email" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Email Address &amp; Dashboard</button>
+  <button onclick="show('clients')" id="nav-clients" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Clients Page</button>
+  <button onclick="show('public')" id="nav-public" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Public Form</button>
+  <button onclick="show('intray')" id="nav-intray" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Bulk Upload / In Tray</button>
+  <button onclick="show('onhold')" id="nav-onhold" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">OHB Supplier View</button>
+</nav>
+
+<!-- Email Address on Dashboard -->
+<div id="email" class="screen active p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Supplier Dashboard</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-sm font-semibold text-gray-700 uppercase">Your Submission Email</h2>
+        <p class="text-sm text-gray-500 mt-1">Send invoices as PDF attachments to this address.</p>
+      </div>
+    </div>
+    <div class="mt-3 flex items-center gap-3 bg-gray-50 rounded-lg p-4 border border-gray-200">
+      <code class="text-sm font-mono text-gray-900 flex-1">supplier-xk9m2p@inbound.trilogycare.com.au</code>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+        Copy
+      </button>
+    </div>
+    <p class="text-xs text-gray-400 mt-2">PDF attachments only &middot; Processed within 5 minutes &middot; Confirmation email sent automatically</p>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Submitted This Month</p><p class="text-2xl font-bold text-gray-900 mt-1">24</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Paid This Month</p><p class="text-2xl font-bold text-teal-700 mt-1">$18,450</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">On Hold</p><p class="text-2xl font-bold text-amber-600 mt-1">2</p></div>
+  </div>
+</div>
+
+<!-- Clients Page with Tabs -->
+<div id="clients" class="screen p-6 max-w-5xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">My Clients</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-3 bg-gray-50 border-b border-gray-200 flex items-center gap-3">
+      <button class="px-3 py-1.5 bg-teal-700 text-white text-xs rounded-full font-medium">All Clients (8)</button>
+      <button class="px-3 py-1.5 bg-gray-200 text-gray-600 text-xs rounded-full">With Agreements (5)</button>
+      <button class="px-3 py-1.5 bg-gray-200 text-gray-600 text-xs rounded-full">Invoiced (7)</button>
+      <button class="px-3 py-1.5 bg-gray-200 text-gray-600 text-xs rounded-full">Archived (1)</button>
+    </div>
+    <table class="w-full">
+      <thead><tr class="text-xs text-gray-500 uppercase border-b border-gray-200 bg-gray-50"><th class="px-6 py-3 text-left">Client</th><th class="px-4 py-3 text-left">Relationship</th><th class="px-4 py-3 text-left">Per-Client Email</th><th class="px-4 py-3 text-left">Last Invoice</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-3 text-sm font-medium">Margaret Johnson</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-teal-100 text-teal-700 text-xs rounded-full">Agreement</span></td>
+          <td class="px-4 py-3"><code class="text-xs font-mono text-gray-600">mj4k2@inbound.trilogycare.com.au</code><button class="ml-2 text-xs text-teal-700">Copy</button></td>
+          <td class="px-4 py-3 text-sm text-gray-500">16 Mar 2026</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 text-sm font-medium">Robert Chen</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-teal-100 text-teal-700 text-xs rounded-full">Agreement</span></td>
+          <td class="px-4 py-3"><button class="text-xs text-teal-700 hover:underline">Generate Email</button></td>
+          <td class="px-4 py-3 text-sm text-gray-500">14 Mar 2026</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 text-sm font-medium">Dorothy Walsh</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">Invoiced Only</span></td>
+          <td class="px-4 py-3"><button class="text-xs text-teal-700 hover:underline">Generate Email</button></td>
+          <td class="px-4 py-3 text-sm text-gray-500">10 Mar 2026</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Public Submission Form -->
+<div id="public" class="screen p-6 max-w-2xl mx-auto">
+  <div class="text-center mb-6">
+    <div class="w-12 h-12 bg-teal-700 rounded-xl flex items-center justify-center mx-auto mb-3"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+    <h1 class="text-2xl font-bold text-gray-900">Submit an Invoice</h1>
+    <p class="text-sm text-gray-500 mt-1">No account required. Submit your invoice to Trilogy Care.</p>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+    <div><label class="text-sm font-medium text-gray-700">Your ABN</label><input type="text" placeholder="12 345 678 901" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+    <div><label class="text-sm font-medium text-gray-700">Business Name</label><input type="text" placeholder="Your trading name" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+    <div><label class="text-sm font-medium text-gray-700">Client Name</label><input type="text" placeholder="Client you are invoicing" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+    <div><label class="text-sm font-medium text-gray-700">Service Type</label><select class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>Select a service...</option><option>Domestic Assistance</option><option>Personal Care</option><option>Allied Health</option><option>Nursing</option><option>Transport</option></select></div>
+    <div>
+      <label class="text-sm font-medium text-gray-700">Invoice PDF</label>
+      <div class="mt-1 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-teal-500 cursor-pointer">
+        <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+        <p class="text-sm text-gray-500">Drop your PDF here or click to browse</p>
+      </div>
+    </div>
+    <button class="w-full py-3 bg-teal-700 text-white font-medium rounded-lg text-sm">Submit Invoice</button>
+    <p class="text-xs text-gray-400 text-center">Protected by reCAPTCHA &middot; Max 25MB &middot; Reference number provided on submission</p>
+  </div>
+</div>
+
+<!-- Bulk Upload / In Tray -->
+<div id="intray" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Bulk Upload — In Tray</h1>
+  <p class="text-sm text-gray-500 mb-6">Upload multiple invoices at once. AI will detect and split multi-invoice PDFs.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="p-6">
+      <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-teal-500 cursor-pointer">
+        <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+        <p class="text-sm font-medium text-gray-700">Drag and drop PDFs here</p>
+        <p class="text-xs text-gray-500 mt-1">Up to 50 files per upload &middot; Multi-invoice PDFs will be auto-split</p>
+      </div>
+    </div>
+
+    <div class="px-6 pb-4">
+      <h3 class="text-sm font-semibold text-gray-700 mb-3">Processing Status</h3>
+      <div class="space-y-2">
+        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg><span class="text-sm">invoice_march_batch.pdf</span></div>
+          <span class="text-xs text-green-700">Split into 3 invoices — #TC-4550, #TC-4551, #TC-4552</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg><span class="text-sm">cleaning_feb28.pdf</span></div>
+          <span class="text-xs text-green-700">1 invoice created — #TC-4553</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-200 animate-pulse">
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-yellow-600 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg><span class="text-sm">nursing_invoices.pdf</span></div>
+          <span class="text-xs text-yellow-700">Processing... detecting pages</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200">
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span class="text-sm">receipt_scan.jpg</span></div>
+          <span class="text-xs text-red-700">Failed — not a PDF file</span>
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-3">3 of 4 files processed successfully</p>
+    </div>
+  </div>
+</div>
+
+<!-- OHB Supplier View -->
+<div id="onhold" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">My Invoices</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="divide-y divide-gray-200">
+      <div class="px-6 py-4 flex items-center justify-between">
+        <div><span class="text-sm font-medium">#TC-4521</span><span class="text-sm text-gray-500 ml-2">Margaret Johnson &middot; $485.00</span></div>
+        <span class="px-2.5 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-medium">Paid</span>
+      </div>
+      <!-- Reject-Resubmit -->
+      <div class="px-6 py-4 bg-red-50">
+        <div class="flex items-center justify-between mb-2">
+          <div><span class="text-sm font-medium">#TC-4518</span><span class="text-sm text-gray-500 ml-2">Robert Chen &middot; $1,250.00</span></div>
+          <span class="px-2.5 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-medium">Action Required</span>
+        </div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="px-2 py-0.5 bg-red-200 text-red-800 text-xs rounded font-medium">2 issues</span>
+          <span class="text-xs text-gray-600">ABN/GST error &middot; Calculation error</span>
+        </div>
+        <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Resubmit</button>
+      </div>
+      <!-- On Hold -->
+      <div class="px-6 py-4 bg-amber-50">
+        <div class="flex items-center justify-between mb-2">
+          <div><span class="text-sm font-medium">#TC-4530</span><span class="text-sm text-gray-500 ml-2">Dorothy Walsh &middot; $890.00</span></div>
+          <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">On Hold</span>
+        </div>
+        <p class="text-xs text-gray-600">No action needed from you. Other processes are being completed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

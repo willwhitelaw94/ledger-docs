@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Questions Tab — Care Partner Check-Ins</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: { 50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf', 500: '#43C0BE', 600: '#0d9488', 700: '#007F7E', 800: '#115e59', 900: '#134e4a' },
+                        primary: { 700: '#2C4C79' }
+                    },
+                    fontFamily: { sans: ['Roboto Flex', 'Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-50 flex font-sans">
+
+    <!-- ===== SIDEBAR (skeleton — framing only) ===== -->
+    <aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+        <div class="px-4 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2.5">
+                <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div>
+                <div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div>
+            </div>
+            <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+        </div>
+        <div class="px-3 py-3"><div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div></div>
+        <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div></div>
+            <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-14 rounded bg-gray-200 animate-pulse"></div></div>
+        </nav>
+        <div class="border-t border-gray-100 px-3 py-3">
+            <div class="flex items-center gap-2.5">
+                <div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div>
+                <div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="flex-1 flex flex-col min-h-screen">
+
+        <!-- Page header -->
+        <header class="bg-white border-b border-gray-200 px-6 py-4">
+            <nav class="text-xs text-gray-400 mb-1">
+                <span>Clients</span> <span class="mx-1">/</span>
+                <span>Margaret Thompson</span> <span class="mx-1">/</span>
+                <span>Package: Home Care Level 4</span> <span class="mx-1">/</span>
+                <span>Risks</span> <span class="mx-1">/</span>
+                <span class="text-gray-700 font-medium">Falls Risk</span>
+            </nav>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <h1 class="text-xl font-semibold text-gray-900">Falls Risk</h1>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">Medium</span>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Active</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Risk page content with tabs -->
+        <div class="flex-1">
+
+            <!-- Tabs -->
+            <div class="bg-white border-b border-gray-200 px-6">
+                <nav class="flex gap-6">
+                    <button class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Details</button>
+                    <button class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">History</button>
+                    <button class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Documents</button>
+                    <button class="py-3 text-sm font-medium text-teal-700 border-b-2 border-teal-700">
+                        Check-In Questions
+                        <span class="ml-1.5 inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-teal-100 text-teal-700">2</span>
+                    </button>
+                    <button class="py-3 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent">Responses</button>
+                </nav>
+            </div>
+
+            <!-- Tab content: Check-In Questions -->
+            <div class="p-6">
+                <div class="max-w-3xl">
+
+                    <!-- Info banner -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 mb-6 flex items-start gap-3">
+                        <svg class="w-5 h-5 text-blue-500 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                        <div>
+                            <p class="text-sm text-blue-800">Questions defined here will be automatically included in future check-ins for any client with this active risk on their primary package.</p>
+                        </div>
+                    </div>
+
+                    <!-- Questions list -->
+                    <div class="space-y-3">
+
+                        <!-- Question 1 -->
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                            <div class="px-4 py-3 flex items-start justify-between gap-4">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-xs font-medium text-gray-400">Q1</span>
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200">Yes / No</span>
+                                    </div>
+                                    <p class="text-sm text-gray-900">Have you had any falls or near-falls since our last check-in?</p>
+                                    <p class="text-xs text-gray-400 mt-1">Added by Dr. Sarah Chen · 12 Sep 2025</p>
+                                </div>
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <button class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                                    </button>
+                                    <button class="p-1.5 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                            <div class="px-4 py-3 flex items-start justify-between gap-4">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-xs font-medium text-gray-400">Q2</span>
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200">Multiple Choice</span>
+                                    </div>
+                                    <p class="text-sm text-gray-900">Are you using the walking frame the OT provided?</p>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <span class="text-xs text-gray-400">Options:</span>
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-600">Yes, always</span>
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-600">Sometimes</span>
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-600">No</span>
+                                    </div>
+                                    <p class="text-xs text-gray-400 mt-1">Added by Dr. Sarah Chen · 12 Sep 2025</p>
+                                </div>
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <button class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                                    </button>
+                                    <button class="p-1.5 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Add Question Form -->
+                    <div class="mt-6 bg-white rounded-lg border-2 border-dashed border-gray-300 shadow-sm">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <h4 class="text-sm font-semibold text-gray-900">Add New Question</h4>
+                        </div>
+                        <div class="px-4 py-4 space-y-4">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Question Text</label>
+                                <textarea rows="2" class="w-full rounded-lg border border-gray-300 text-sm py-2 px-3 text-gray-700 focus:border-teal-500 focus:ring-teal-500 resize-none" placeholder="Enter the question to ask during check-in calls..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Answer Type</label>
+                                <select class="rounded-lg border border-gray-300 text-sm py-2 px-3 text-gray-700 focus:border-teal-500 focus:ring-teal-500 w-48">
+                                    <option>Free Text</option>
+                                    <option>Yes / No</option>
+                                    <option>Multiple Choice</option>
+                                    <option>Rating (1-5)</option>
+                                </select>
+                            </div>
+                            <div class="flex justify-end">
+                                <button class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-lg hover:bg-teal-800 transition shadow-sm">
+                                    Add Question
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Responses Preview -->
+                    <div class="mt-8">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-semibold text-gray-900">Recent Responses</h3>
+                            <a href="#" class="text-xs font-medium text-teal-700 hover:text-teal-800">View all responses →</a>
+                        </div>
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm divide-y divide-gray-100">
+                            <!-- Response 1 -->
+                            <div class="px-4 py-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-medium text-gray-900">Margaret Thompson</span>
+                                        <span class="text-xs text-gray-400">· Check-in 15 Oct 2025</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">by Sarah Mitchell</span>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex items-start gap-2">
+                                        <span class="text-xs text-gray-500 shrink-0 w-6">Q1:</span>
+                                        <span class="text-xs text-gray-700"><span class="font-medium">No</span> — No falls reported</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="text-xs text-gray-500 shrink-0 w-6">Q2:</span>
+                                        <span class="text-xs text-gray-700"><span class="font-medium">Sometimes</span> — Uses frame indoors, not always in garden</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Response 2 -->
+                            <div class="px-4 py-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-medium text-gray-900">David Chen</span>
+                                        <span class="text-xs text-gray-400">· Check-in 10 Oct 2025</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">by Sarah Mitchell</span>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex items-start gap-2">
+                                        <span class="text-xs text-gray-500 shrink-0 w-6">Q1:</span>
+                                        <span class="text-xs text-gray-700"><span class="font-medium text-red-600">Yes</span> — One near-fall in bathroom last week, no injury</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="text-xs text-gray-500 shrink-0 w-6">Q2:</span>
+                                        <span class="text-xs text-gray-700"><span class="font-medium">Yes, always</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

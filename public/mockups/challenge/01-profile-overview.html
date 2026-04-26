@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LES Challenge — GitHub Gary — Profile Overview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' },
+            info: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',500:'#43C0BE',700:'#007F7E',900:'#003D3D' },
+            success: { 50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',500:'#35A8E4',700:'#156F9D' },
+            warning: { 50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',500:'#E0763C',700:'#9C481A' },
+            danger: { 50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',500:'#E04B51',700:'#9C262A' },
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+          borderRadius: { 'input': '8px' },
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-primary { color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+
+    body { background: #f6f8fa; font-family: 'Roboto Flex', system-ui, sans-serif; }
+
+    .gh-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 20px;
+      border: 1px solid transparent;
+    }
+    .gh-badge-green { background: #dafbe1; color: #1a7f37; border-color: rgba(26,127,55,0.2); }
+    .gh-badge-grey { background: #eaeef2; color: #57606a; border-color: rgba(87,96,106,0.2); }
+    .gh-badge-purple { background: #eddeff; color: #6639ba; border-color: rgba(102,57,186,0.2); }
+    .gh-badge-blue { background: #ddf4ff; color: #0969da; border-color: rgba(9,105,218,0.2); }
+    .gh-badge-yellow { background: #fff8c5; color: #9a6700; border-color: rgba(154,103,0,0.2); }
+    .gh-badge-red { background: #ffebe9; color: #cf222e; border-color: rgba(207,34,46,0.2); }
+    .gh-badge-teal { background: #dafbe1; color: #007F7E; border-color: rgba(0,127,126,0.2); }
+
+    .label-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 8px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 22px;
+    }
+
+    .timeline-item { position: relative; padding-left: 40px; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #d0d7de;
+    }
+    .timeline-item:last-child::before { display: none; }
+    .timeline-dot {
+      position: absolute;
+      left: 8px;
+      top: 16px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #d0d7de;
+      z-index: 1;
+    }
+    .timeline-dot-event {
+      left: 10px;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+    }
+
+    .comment-card {
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .comment-header {
+      background: #f6f8fa;
+      border-bottom: 1px solid #d0d7de;
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+
+    .sidebar-section {
+      padding: 12px 0;
+      border-bottom: 1px solid #d0d7de;
+    }
+    .sidebar-section:last-child { border-bottom: none; }
+
+    .gear-btn {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      color: #57606a;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .gear-btn:hover { background: #eaeef2; color: #24292f; }
+
+    .stage-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .stage-dot-filled { background: #007F7E; }
+    .stage-dot-empty { background: #d0d7de; }
+    .stage-dot-current { background: #007F7E; box-shadow: 0 0 0 3px rgba(0,127,126,0.25); }
+
+    .mono { font-family: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace; }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .btn-primary {
+      background: #007F7E;
+      color: #fff;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #2F9E9C; }
+
+    .progress-bar-bg {
+      background: #eaeef2;
+      border-radius: 6px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: #007F7E;
+      height: 100%;
+      border-radius: 6px;
+      transition: width 0.3s;
+    }
+
+    .nav-tab {
+      padding: 8px 16px;
+      font-size: 14px;
+      color: #57606a;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .nav-tab:hover { color: #24292f; }
+    .nav-tab-active {
+      color: #24292f;
+      font-weight: 600;
+      border-bottom-color: #007F7E;
+    }
+  </style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body class="min-h-screen">
+  <!-- Top navigation bar -->
+  <header class="bg-[#24292f] text-white">
+    <div class="max-w-[1280px] mx-auto px-6 flex items-center h-12 gap-6">
+      <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <span class="font-semibold text-sm">Trilogy Care</span>
+      <span class="text-gray-400 text-sm">/</span>
+      <span class="text-sm text-gray-300">Lead Essential</span>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-gray-300">Sarah Chen</span>
+        <div class="avatar bg-teal-600">SC</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sub navigation -->
+  <div class="bg-white border-b border-gray-200">
+    <div class="max-w-[1280px] mx-auto px-6 flex items-center gap-0">
+      <div class="nav-tab nav-tab-active">Overview</div>
+      <div class="nav-tab">Activity</div>
+      <div class="nav-tab">Documents</div>
+      <div class="nav-tab">Communications</div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <main class="max-w-[1280px] mx-auto px-6 py-6">
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 mb-4 text-sm">
+      <a href="02-list-view.html" class="text-[#0969da] hover:underline">Leads</a>
+      <span class="text-tertiary">/</span>
+      <span class="text-tertiary">Margaret Thornton</span>
+    </div>
+
+    <!-- Header -->
+    <div class="mb-6">
+      <div class="flex items-start gap-3 mb-2">
+        <h1 class="text-[28px] font-normal text-primary leading-tight">
+          Margaret Thornton
+          <span class="text-tertiary font-light">#TC-1042</span>
+        </h1>
+      </div>
+      <div class="flex items-center gap-3 flex-wrap">
+        <span class="gh-badge gh-badge-green">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="8"/></svg>
+          Active
+        </span>
+        <span class="gh-badge gh-badge-teal">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm3.78 4.22a.75.75 0 00-1.06 0L7 7.94 5.28 6.22a.75.75 0 10-1.06 1.06l2.25 2.25a.75.75 0 001.06 0l4.25-4.25a.75.75 0 000-1.06z"/></svg>
+          ACAT Booked
+        </span>
+        <span class="text-secondary text-sm">
+          Opened 3 days ago by <a href="#" class="text-[#0969da] hover:underline font-medium">Sarah Chen</a>
+        </span>
+      </div>
+    </div>
+
+    <!-- Two column layout -->
+    <div class="flex gap-6">
+      <!-- Main content (75%) -->
+      <div class="flex-1 min-w-0" style="flex-basis: 75%;">
+
+        <!-- Description card -->
+        <div class="comment-card mb-6">
+          <div class="comment-header flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="avatar bg-teal-600" style="width:22px;height:22px;font-size:10px;">SC</div>
+              <span class="font-medium text-primary">Sarah Chen</span>
+              <span class="text-tertiary">opened this 3 days ago</span>
+            </div>
+            <span class="text-xs text-tertiary px-2 py-0.5 border border-gray-200 rounded-full">Lead Owner</span>
+          </div>
+          <div class="p-4 bg-white text-sm text-primary leading-relaxed">
+            <p class="mb-3"><strong>Initial Contact Summary</strong></p>
+            <p class="mb-3">Margaret called in regarding home care services for herself. She is 78 years old, lives alone in her home in Paddington, QLD. Her daughter (Helen) lives interstate in Melbourne and is concerned about her mother's wellbeing after a recent fall.</p>
+            <p class="mb-3"><strong>Key Details:</strong></p>
+            <ul class="list-disc list-inside mb-3 space-y-1 text-secondary">
+              <li>Currently no existing care package</li>
+              <li>GP: Dr. Patricia Kim, Paddington Medical Centre</li>
+              <li>Mobility concerns following fall 2 weeks ago</li>
+              <li>Daughter Helen requesting regular check-ins</li>
+              <li>Interested in HCP Level 2 initially</li>
+            </ul>
+            <p class="text-secondary"><strong>Next Steps:</strong> ACAT assessment booked for 28 Feb 2026. Need to follow up with Margaret's GP for referral letter.</p>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold text-primary mb-4 flex items-center gap-2">
+            <svg class="w-4 h-4 text-secondary" viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zm.5 4.75a.75.75 0 00-1.5 0v3.5a.75.75 0 00.37.65l2.5 1.5a.75.75 0 10.76-1.3L8.5 7.94V4.75z"/></svg>
+            Activity
+          </h3>
+
+          <!-- System event -->
+          <div class="timeline-item py-2">
+            <div class="timeline-dot timeline-dot-event" style="background: #dafbe1; border-color: #1a7f37;"></div>
+            <div class="text-sm text-secondary">
+              <span class="font-medium text-primary">Sarah Chen</span> changed Journey Stage from <span class="gh-badge gh-badge-grey" style="font-size:11px;padding:0 6px;">Pre-Care</span> to <span class="gh-badge gh-badge-teal" style="font-size:11px;padding:0 6px;">ACAT Booked</span>
+              <span class="text-tertiary ml-1">2 days ago</span>
+            </div>
+          </div>
+
+          <!-- System event -->
+          <div class="timeline-item py-2">
+            <div class="timeline-dot timeline-dot-event" style="background: #ddf4ff; border-color: #0969da;"></div>
+            <div class="text-sm text-secondary">
+              <span class="font-medium text-primary">Sarah Chen</span> added labels
+              <span class="label-pill bg-[#ddf4ff] text-[#0969da] ml-1">High Intent</span>
+              <span class="label-pill bg-[#eddeff] text-[#6639ba] ml-1">HCP</span>
+              <span class="text-tertiary ml-1">2 days ago</span>
+            </div>
+          </div>
+
+          <!-- Authored comment -->
+          <div class="timeline-item py-3">
+            <div class="timeline-dot" style="background: #fff; border-color: #d0d7de;"></div>
+            <div class="comment-card">
+              <div class="comment-header flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="avatar bg-primary-blue-600" style="width:22px;height:22px;font-size:10px;">DW</div>
+                  <span class="font-medium text-primary">David Williams</span>
+                  <span class="text-tertiary">commented 2 days ago</span>
+                </div>
+              </div>
+              <div class="p-4 bg-white text-sm text-secondary leading-relaxed">
+                <p>Spoke with Margaret's daughter Helen over the phone. She's very supportive and wants to be kept in the loop. Helen mentioned Margaret has been reluctant to accept help but the fall has been a wake-up call.</p>
+                <p class="mt-2">Helen's contact: 0412 555 891 (prefers text messages during work hours).</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- System event -->
+          <div class="timeline-item py-2">
+            <div class="timeline-dot timeline-dot-event" style="background: #eaeef2; border-color: #57606a;"></div>
+            <div class="text-sm text-secondary">
+              <span class="font-medium text-primary">System</span> set ACAT assessment date to <span class="mono text-xs bg-gray-100 px-1.5 py-0.5 rounded">28 Feb 2026</span>
+              <span class="text-tertiary ml-1">2 days ago</span>
+            </div>
+          </div>
+
+          <!-- System event -->
+          <div class="timeline-item py-2">
+            <div class="timeline-dot timeline-dot-event" style="background: #eaeef2; border-color: #57606a;"></div>
+            <div class="text-sm text-secondary">
+              <span class="font-medium text-primary">Sarah Chen</span> assigned <span class="font-medium text-primary">David Williams</span>
+              <span class="text-tertiary ml-1">3 days ago</span>
+            </div>
+          </div>
+
+          <!-- Authored comment -->
+          <div class="timeline-item py-3">
+            <div class="timeline-dot" style="background: #fff; border-color: #d0d7de;"></div>
+            <div class="comment-card">
+              <div class="comment-header flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="avatar bg-teal-600" style="width:22px;height:22px;font-size:10px;">SC</div>
+                  <span class="font-medium text-primary">Sarah Chen</span>
+                  <span class="text-tertiary">commented 3 days ago</span>
+                </div>
+                <span class="text-xs text-tertiary px-2 py-0.5 border border-gray-200 rounded-full">Lead Owner</span>
+              </div>
+              <div class="p-4 bg-white text-sm text-secondary leading-relaxed">
+                <p>Initial intake call completed. Margaret was very pleasant and forthcoming with information. She's been living independently for 12 years since her husband passed.</p>
+                <p class="mt-2">She's aware of the My Aged Care process and has already registered. MAC ID needs to be confirmed at next contact.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- System event -->
+          <div class="timeline-item py-2">
+            <div class="timeline-dot timeline-dot-event" style="background: #dafbe1; border-color: #1a7f37;"></div>
+            <div class="text-sm text-secondary">
+              <span class="font-medium text-primary">Sarah Chen</span> changed Lead Status from <span class="gh-badge gh-badge-grey" style="font-size:11px;padding:0 6px;">Not Contacted</span> to <span class="gh-badge gh-badge-green" style="font-size:11px;padding:0 6px;">Made Contact</span>
+              <span class="text-tertiary ml-1">3 days ago</span>
+            </div>
+          </div>
+
+          <!-- System event (created) -->
+          <div class="timeline-item py-2">
+            <div class="timeline-dot timeline-dot-event" style="background: #eaeef2; border-color: #57606a;"></div>
+            <div class="text-sm text-secondary">
+              <span class="font-medium text-primary">Sarah Chen</span> created this lead
+              <span class="text-tertiary ml-1">3 days ago</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comment input -->
+        <div class="comment-card">
+          <div class="comment-header flex items-center gap-2">
+            <div class="avatar bg-teal-600" style="width:22px;height:22px;font-size:10px;">SC</div>
+            <span class="text-sm text-secondary">Add a note...</span>
+          </div>
+          <div class="p-4 bg-white">
+            <textarea id="commentBox" class="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" rows="4" placeholder="Leave a note..."></textarea>
+            <div class="flex items-center justify-between mt-3">
+              <div class="flex items-center gap-2">
+                <!-- Formatting toolbar -->
+                <button class="p-1.5 rounded hover:bg-gray-100 text-secondary" title="Bold">
+                  <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2h4.5a3.501 3.501 0 012.852 5.53A3.499 3.499 0 019.5 14H4a1 1 0 01-1-1V3a1 1 0 011-1zm1 7v3h4.5a1.5 1.5 0 000-3H5zm3.5-2a1.5 1.5 0 000-3H5v3h3.5z"/></svg>
+                </button>
+                <button class="p-1.5 rounded hover:bg-gray-100 text-secondary" title="Italic">
+                  <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path d="M6 2.75A.75.75 0 016.75 2h6.5a.75.75 0 010 1.5h-2.505l-3.858 9H9.25a.75.75 0 010 1.5h-6.5a.75.75 0 010-1.5h2.505l3.858-9H6.75A.75.75 0 016 2.75z"/></svg>
+                </button>
+                <button class="p-1.5 rounded hover:bg-gray-100 text-secondary" title="List">
+                  <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M2 4a1 1 0 100-2 1 1 0 000 2zm3.75-1.5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zm0 5a.75.75 0 000 1.5h8.5a.75.75 0 000-1.5h-8.5zM3 8a1 1 0 11-2 0 1 1 0 012 0zm-1 6a1 1 0 100-2 1 1 0 000 2z"/></svg>
+                </button>
+                <div class="w-px h-4 bg-gray-200 mx-1"></div>
+                <button class="p-1.5 rounded hover:bg-gray-100 text-secondary" title="Attach file">
+                  <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M3.5 9.5a5 5 0 017.07-4.57l.07.07L14 1.64A7 7 0 002.28 8.49l-.14.14 3.36 3.36a5 5 0 01-2-2.49zm4.57 4.57A5 5 0 0012.5 6.5a5 5 0 00-2.49-2l3.36 3.36.14-.14A7 7 0 006.64 14l3.43-3.43.07.07a5 5 0 01-2.07 3.43z"/></svg>
+                </button>
+              </div>
+              <button class="btn-primary" onclick="postComment()">Comment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right sidebar (25%) -->
+      <div class="w-[280px] flex-shrink-0">
+        <div class="border border-gray-200 rounded-md bg-white">
+
+          <!-- Journey Stage -->
+          <div class="sidebar-section px-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-secondary uppercase tracking-wide">Journey Stage</span>
+              <span class="gear-btn" onclick="showGearPopup(this, 'stage')" title="Change stage">
+                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M7.429 1.525a6.593 6.593 0 011.142 0c.036.003.108.036.137.146l.289 1.105c.147.56.55.967.997 1.189.174.086.341.183.501.29.417.278.97.423 1.53.27l1.102-.303c.11-.03.175.016.195.046.219.31.41.641.573.989.014.031.022.11-.059.19l-.815.806c-.411.406-.562.957-.53 1.456a4.588 4.588 0 010 .582c-.032.499.119 1.05.53 1.456l.815.806c.08.08.073.159.059.19a6.494 6.494 0 01-.573.99c-.02.029-.086.074-.195.045l-1.103-.303c-.559-.153-1.112-.008-1.529.27-.16.107-.327.204-.5.29-.449.222-.851.628-.998 1.189l-.289 1.105c-.029.11-.1.143-.137.146a6.613 6.613 0 01-1.142 0c-.036-.003-.108-.037-.137-.146l-.289-1.105c-.147-.56-.55-.967-.997-1.189a4.502 4.502 0 01-.501-.29c-.417-.278-.97-.423-1.53-.27l-1.102.303c-.11.03-.175-.016-.195-.046a6.492 6.492 0 01-.573-.989c-.014-.031-.022-.11.059-.19l.815-.806c.411-.406.562-.957.53-1.456a4.587 4.587 0 010-.582c.032-.499-.119-1.05-.53-1.456l-.815-.806c-.08-.08-.073-.159-.059-.19a6.44 6.44 0 01.573-.99c.02-.029.086-.074.195-.045l1.103.303c.559.153 1.112.008 1.529-.27.16-.107.327-.204.5-.29.449-.222.851-.628.998-1.189l.289-1.105c.029-.11.1-.143.137-.146zM8 0c-.236 0-.47.01-.701.03-.743.065-1.29.615-1.458 1.261l-.29 1.106c-.017.066-.078.158-.211.224a5.994 5.994 0 00-.668.386c-.123.082-.233.117-.3.1L3.27 2.801c-.644-.177-1.392.02-1.82.63a7.977 7.977 0 00-.704 1.217c-.315.675-.111 1.422.363 1.891l.815.806c.05.048.098.147.088.294a6.084 6.084 0 000 .772c.01.147-.038.246-.088.294l-.815.806c-.474.469-.678 1.216-.363 1.891.2.428.436.835.704 1.218.428.609 1.176.806 1.82.63l1.103-.303c.066-.018.177.018.3.1.216.144.443.273.668.386.133.066.194.158.212.224l.289 1.106c.169.646.715 1.196 1.458 1.26a8.094 8.094 0 001.402 0c.743-.064 1.29-.614 1.458-1.26l.29-1.106c.017-.066.078-.158.211-.224a5.98 5.98 0 00.668-.386c.123-.082.233-.117.3-.1l1.102.302c.644.177 1.392-.02 1.82-.63.268-.382.505-.789.704-1.217.315-.675.111-1.422-.364-1.891l-.814-.806c-.05-.048-.098-.147-.088-.294a6.1 6.1 0 000-.772c-.01-.147.039-.246.088-.294l.814-.806c.475-.469.679-1.216.364-1.891a7.992 7.992 0 00-.704-1.218c-.428-.609-1.176-.806-1.82-.63l-1.103.303c-.066.018-.177-.018-.3-.1a5.971 5.971 0 00-.668-.386c-.133-.066-.194-.158-.212-.224L10.16 1.29C9.99.645 9.444.095 8.701.031A8.094 8.094 0 008 0zm-.571 7.429a.571.571 0 111.143 0 .571.571 0 01-1.143 0zM8 5.143a2.857 2.857 0 100 5.714 2.857 2.857 0 000-5.714z"/></svg>
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5 mb-2">
+              <span class="stage-dot stage-dot-filled"></span>
+              <span class="stage-dot stage-dot-current"></span>
+              <span class="stage-dot stage-dot-empty"></span>
+              <span class="stage-dot stage-dot-empty"></span>
+              <span class="stage-dot stage-dot-empty"></span>
+              <span class="stage-dot stage-dot-empty"></span>
+            </div>
+            <span class="text-sm font-medium text-primary">ACAT Booked</span>
+            <a href="03-journey-stage-wizard.html" class="block text-xs text-[#0969da] hover:underline mt-1">Advance stage &rarr;</a>
+          </div>
+
+          <!-- Lead Status -->
+          <div class="sidebar-section px-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-secondary uppercase tracking-wide">Lead Status</span>
+              <span class="gear-btn" onclick="showGearPopup(this, 'status')" title="Change status">
+                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M7.429 1.525a6.593 6.593 0 011.142 0c.036.003.108.036.137.146l.289 1.105c.147.56.55.967.997 1.189.174.086.341.183.501.29.417.278.97.423 1.53.27l1.102-.303c.11-.03.175.016.195.046.219.31.41.641.573.989.014.031.022.11-.059.19l-.815.806c-.411.406-.562.957-.53 1.456a4.588 4.588 0 010 .582c-.032.499.119 1.05.53 1.456l.815.806c.08.08.073.159.059.19a6.494 6.494 0 01-.573.99c-.02.029-.086.074-.195.045l-1.103-.303c-.559-.153-1.112-.008-1.529.27-.16.107-.327.204-.5.29-.449.222-.851.628-.998 1.189l-.289 1.105c-.029.11-.1.143-.137.146a6.613 6.613 0 01-1.142 0c-.036-.003-.108-.037-.137-.146l-.289-1.105c-.147-.56-.55-.967-.997-1.189a4.502 4.502 0 01-.501-.29c-.417-.278-.97-.423-1.53-.27l-1.102.303c-.11.03-.175-.016-.195-.046a6.492 6.492 0 01-.573-.989c-.014-.031-.022-.11.059-.19l.815-.806c.411-.406.562-.957.53-1.456a4.587 4.587 0 010-.582c.032-.499-.119-1.05-.53-1.456l-.815-.806c-.08-.08-.073-.159-.059-.19a6.44 6.44 0 01.573-.99c.02-.029.086-.074.195-.045l1.103.303c.559.153 1.112.008 1.529-.27.16-.107.327-.204.5-.29.449-.222.851-.628.998-1.189l.289-1.105c.029-.11.1-.143.137-.146zM8 0c-.236 0-.47.01-.701.03-.743.065-1.29.615-1.458 1.261l-.29 1.106c-.017.066-.078.158-.211.224a5.994 5.994 0 00-.668.386c-.123.082-.233.117-.3.1L3.27 2.801c-.644-.177-1.392.02-1.82.63a7.977 7.977 0 00-.704 1.217c-.315.675-.111 1.422.363 1.891l.815.806c.05.048.098.147.088.294a6.084 6.084 0 000 .772c.01.147-.038.246-.088.294l-.815.806c-.474.469-.678 1.216-.363 1.891.2.428.436.835.704 1.218.428.609 1.176.806 1.82.63l1.103-.303c.066-.018.177.018.3.1.216.144.443.273.668.386.133.066.194.158.212.224l.289 1.106c.169.646.715 1.196 1.458 1.26a8.094 8.094 0 001.402 0c.743-.064 1.29-.614 1.458-1.26l.29-1.106c.017-.066.078-.158.211-.224a5.98 5.98 0 00.668-.386c.123-.082.233-.117.3-.1l1.102.302c.644.177 1.392-.02 1.82-.63.268-.382.505-.789.704-1.217.315-.675.111-1.422-.364-1.891l-.814-.806c-.05-.048-.098-.147-.088-.294a6.1 6.1 0 000-.772c-.01-.147.039-.246.088-.294l.814-.806c.475-.469.679-1.216.364-1.891a7.992 7.992 0 00-.704-1.218c-.428-.609-1.176-.806-1.82-.63l-1.103.303c-.066.018-.177-.018-.3-.1a5.971 5.971 0 00-.668-.386c-.133-.066-.194-.158-.212-.224L10.16 1.29C9.99.645 9.444.095 8.701.031A8.094 8.094 0 008 0zm-.571 7.429a.571.571 0 111.143 0 .571.571 0 01-1.143 0zM8 5.143a2.857 2.857 0 100 5.714 2.857 2.857 0 000-5.714z"/></svg>
+              </span>
+            </div>
+            <span class="gh-badge gh-badge-green">Made Contact</span>
+          </div>
+
+          <!-- Assigned Agent -->
+          <div class="sidebar-section px-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-secondary uppercase tracking-wide">Assigned Agent</span>
+              <span class="gear-btn" onclick="showGearPopup(this, 'agent')" title="Reassign">
+                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M7.429 1.525a6.593 6.593 0 011.142 0c.036.003.108.036.137.146l.289 1.105c.147.56.55.967.997 1.189.174.086.341.183.501.29.417.278.97.423 1.53.27l1.102-.303c.11-.03.175.016.195.046.219.31.41.641.573.989.014.031.022.11-.059.19l-.815.806c-.411.406-.562.957-.53 1.456a4.588 4.588 0 010 .582c-.032.499.119 1.05.53 1.456l.815.806c.08.08.073.159.059.19a6.494 6.494 0 01-.573.99c-.02.029-.086.074-.195.045l-1.103-.303c-.559-.153-1.112-.008-1.529.27-.16.107-.327.204-.5.29-.449.222-.851.628-.998 1.189l-.289 1.105c-.029.11-.1.143-.137.146a6.613 6.613 0 01-1.142 0c-.036-.003-.108-.037-.137-.146l-.289-1.105c-.147-.56-.55-.967-.997-1.189a4.502 4.502 0 01-.501-.29c-.417-.278-.97-.423-1.53-.27l-1.102.303c-.11.03-.175-.016-.195-.046a6.492 6.492 0 01-.573-.989c-.014-.031-.022-.11.059-.19l.815-.806c.411-.406.562-.957.53-1.456a4.587 4.587 0 010-.582c.032-.499-.119-1.05-.53-1.456l-.815-.806c-.08-.08-.073-.159-.059-.19a6.44 6.44 0 01.573-.99c.02-.029.086-.074.195-.045l1.103.303c.559.153 1.112.008 1.529-.27.16-.107.327-.204.5-.29.449-.222.851-.628.998-1.189l.289-1.105c.029-.11.1-.143.137-.146zM8 0c-.236 0-.47.01-.701.03-.743.065-1.29.615-1.458 1.261l-.29 1.106c-.017.066-.078.158-.211.224a5.994 5.994 0 00-.668.386c-.123.082-.233.117-.3.1L3.27 2.801c-.644-.177-1.392.02-1.82.63a7.977 7.977 0 00-.704 1.217c-.315.675-.111 1.422.363 1.891l.815.806c.05.048.098.147.088.294a6.084 6.084 0 000 .772c.01.147-.038.246-.088.294l-.815.806c-.474.469-.678 1.216-.363 1.891.2.428.436.835.704 1.218.428.609 1.176.806 1.82.63l1.103-.303c.066-.018.177.018.3.1.216.144.443.273.668.386.133.066.194.158.212.224l.289 1.106c.169.646.715 1.196 1.458 1.26a8.094 8.094 0 001.402 0c.743-.064 1.29-.614 1.458-1.26l.29-1.106c.017-.066.078-.158.211-.224a5.98 5.98 0 00.668-.386c.123-.082.233-.117.3-.1l1.102.302c.644.177 1.392-.02 1.82-.63.268-.382.505-.789.704-1.217.315-.675.111-1.422-.364-1.891l-.814-.806c-.05-.048-.098-.147-.088-.294a6.1 6.1 0 000-.772c-.01-.147.039-.246.088-.294l.814-.806c.475-.469.679-1.216.364-1.891a7.992 7.992 0 00-.704-1.218c-.428-.609-1.176-.806-1.82-.63l-1.103.303c-.066.018-.177-.018-.3-.1a5.971 5.971 0 00-.668-.386c-.133-.066-.194-.158-.212-.224L10.16 1.29C9.99.645 9.444.095 8.701.031A8.094 8.094 0 008 0zm-.571 7.429a.571.571 0 111.143 0 .571.571 0 01-1.143 0zM8 5.143a2.857 2.857 0 100 5.714 2.857 2.857 0 000-5.714z"/></svg>
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="avatar bg-primary-blue-600" style="width:24px;height:24px;font-size:10px;">DW</div>
+              <span class="text-sm font-medium text-primary">David Williams</span>
+            </div>
+          </div>
+
+          <!-- Labels -->
+          <div class="sidebar-section px-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-secondary uppercase tracking-wide">Labels</span>
+              <span class="gear-btn" onclick="showGearPopup(this, 'labels')" title="Edit labels">
+                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M7.429 1.525a6.593 6.593 0 011.142 0c.036.003.108.036.137.146l.289 1.105c.147.56.55.967.997 1.189.174.086.341.183.501.29.417.278.97.423 1.53.27l1.102-.303c.11-.03.175.016.195.046.219.31.41.641.573.989.014.031.022.11-.059.19l-.815.806c-.411.406-.562.957-.53 1.456a4.588 4.588 0 010 .582c-.032.499.119 1.05.53 1.456l.815.806c.08.08.073.159.059.19a6.494 6.494 0 01-.573.99c-.02.029-.086.074-.195.045l-1.103-.303c-.559-.153-1.112-.008-1.529.27-.16.107-.327.204-.5.29-.449.222-.851.628-.998 1.189l-.289 1.105c-.029.11-.1.143-.137.146a6.613 6.613 0 01-1.142 0c-.036-.003-.108-.037-.137-.146l-.289-1.105c-.147-.56-.55-.967-.997-1.189a4.502 4.502 0 01-.501-.29c-.417-.278-.97-.423-1.53-.27l-1.102.303c-.11.03-.175-.016-.195-.046a6.492 6.492 0 01-.573-.989c-.014-.031-.022-.11.059-.19l.815-.806c.411-.406.562-.957.53-1.456a4.587 4.587 0 010-.582c.032-.499-.119-1.05-.53-1.456l-.815-.806c-.08-.08-.073-.159-.059-.19a6.44 6.44 0 01.573-.99c.02-.029.086-.074.195-.045l1.103.303c.559.153 1.112.008 1.529-.27.16-.107.327-.204.5-.29.449-.222.851-.628.998-1.189l.289-1.105c.029-.11.1-.143.137-.146zM8 0c-.236 0-.47.01-.701.03-.743.065-1.29.615-1.458 1.261l-.29 1.106c-.017.066-.078.158-.211.224a5.994 5.994 0 00-.668.386c-.123.082-.233.117-.3.1L3.27 2.801c-.644-.177-1.392.02-1.82.63a7.977 7.977 0 00-.704 1.217c-.315.675-.111 1.422.363 1.891l.815.806c.05.048.098.147.088.294a6.084 6.084 0 000 .772c.01.147-.038.246-.088.294l-.815.806c-.474.469-.678 1.216-.363 1.891.2.428.436.835.704 1.218.428.609 1.176.806 1.82.63l1.103-.303c.066-.018.177.018.3.1.216.144.443.273.668.386.133.066.194.158.212.224l.289 1.106c.169.646.715 1.196 1.458 1.26a8.094 8.094 0 001.402 0c.743-.064 1.29-.614 1.458-1.26l.29-1.106c.017-.066.078-.158.211-.224a5.98 5.98 0 00.668-.386c.123-.082.233-.117.3-.1l1.102.302c.644.177 1.392-.02 1.82-.63.268-.382.505-.789.704-1.217.315-.675.111-1.422-.364-1.891l-.814-.806c-.05-.048-.098-.147-.088-.294a6.1 6.1 0 000-.772c-.01-.147.039-.246.088-.294l.814-.806c.475-.469.679-1.216.364-1.891a7.992 7.992 0 00-.704-1.218c-.428-.609-1.176-.806-1.82-.63l-1.103.303c-.066.018-.177-.018-.3-.1a5.971 5.971 0 00-.668-.386c-.133-.066-.194-.158-.212-.224L10.16 1.29C9.99.645 9.444.095 8.701.031A8.094 8.094 0 008 0zm-.571 7.429a.571.571 0 111.143 0 .571.571 0 01-1.143 0zM8 5.143a2.857 2.857 0 100 5.714 2.857 2.857 0 000-5.714z"/></svg>
+              </span>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="label-pill bg-[#ddf4ff] text-[#0969da]">High Intent</span>
+              <span class="label-pill bg-[#eddeff] text-[#6639ba]">HCP</span>
+              <span class="label-pill bg-[#fff8c5] text-[#9a6700]">Referral</span>
+            </div>
+          </div>
+
+          <!-- Care Type -->
+          <div class="sidebar-section px-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-secondary uppercase tracking-wide">Care Type</span>
+              <span class="gear-btn" onclick="showGearPopup(this, 'careType')" title="Change care type">
+                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M7.429 1.525a6.593 6.593 0 011.142 0c.036.003.108.036.137.146l.289 1.105c.147.56.55.967.997 1.189.174.086.341.183.501.29.417.278.97.423 1.53.27l1.102-.303c.11-.03.175.016.195.046.219.31.41.641.573.989.014.031.022.11-.059.19l-.815.806c-.411.406-.562.957-.53 1.456a4.588 4.588 0 010 .582c-.032.499.119 1.05.53 1.456l.815.806c.08.08.073.159.059.19a6.494 6.494 0 01-.573.99c-.02.029-.086.074-.195.045l-1.103-.303c-.559-.153-1.112-.008-1.529.27-.16.107-.327.204-.5.29-.449.222-.851.628-.998 1.189l-.289 1.105c-.029.11-.1.143-.137.146a6.613 6.613 0 01-1.142 0c-.036-.003-.108-.037-.137-.146l-.289-1.105c-.147-.56-.55-.967-.997-1.189a4.502 4.502 0 01-.501-.29c-.417-.278-.97-.423-1.53-.27l-1.102.303c-.11.03-.175-.016-.195-.046a6.492 6.492 0 01-.573-.989c-.014-.031-.022-.11.059-.19l.815-.806c.411-.406.562-.957.53-1.456a4.587 4.587 0 010-.582c.032-.499-.119-1.05-.53-1.456l-.815-.806c-.08-.08-.073-.159-.059-.19a6.44 6.44 0 01.573-.99c.02-.029.086-.074.195-.045l1.103.303c.559.153 1.112.008 1.529-.27.16-.107.327-.204.5-.29.449-.222.851-.628.998-1.189l.289-1.105c.029-.11.1-.143.137-.146zM8 0c-.236 0-.47.01-.701.03-.743.065-1.29.615-1.458 1.261l-.29 1.106c-.017.066-.078.158-.211.224a5.994 5.994 0 00-.668.386c-.123.082-.233.117-.3.1L3.27 2.801c-.644-.177-1.392.02-1.82.63a7.977 7.977 0 00-.704 1.217c-.315.675-.111 1.422.363 1.891l.815.806c.05.048.098.147.088.294a6.084 6.084 0 000 .772c.01.147-.038.246-.088.294l-.815.806c-.474.469-.678 1.216-.363 1.891.2.428.436.835.704 1.218.428.609 1.176.806 1.82.63l1.103-.303c.066-.018.177.018.3.1.216.144.443.273.668.386.133.066.194.158.212.224l.289 1.106c.169.646.715 1.196 1.458 1.26a8.094 8.094 0 001.402 0c.743-.064 1.29-.614 1.458-1.26l.29-1.106c.017-.066.078-.158.211-.224a5.98 5.98 0 00.668-.386c.123-.082.233-.117.3-.1l1.102.302c.644.177 1.392-.02 1.82-.63.268-.382.505-.789.704-1.217.315-.675.111-1.422-.364-1.891l-.814-.806c-.05-.048-.098-.147-.088-.294a6.1 6.1 0 000-.772c-.01-.147.039-.246.088-.294l.814-.806c.475-.469.679-1.216.364-1.891a7.992 7.992 0 00-.704-1.218c-.428-.609-1.176-.806-1.82-.63l-1.103.303c-.066.018-.177-.018-.3-.1a5.971 5.971 0 00-.668-.386c-.133-.066-.194-.158-.212-.224L10.16 1.29C9.99.645 9.444.095 8.701.031A8.094 8.094 0 008 0zm-.571 7.429a.571.571 0 111.143 0 .571.571 0 01-1.143 0zM8 5.143a2.857 2.857 0 100 5.714 2.857 2.857 0 000-5.714z"/></svg>
+              </span>
+            </div>
+            <span class="text-sm text-primary">Home Care Package (HCP)</span>
+          </div>
+
+          <!-- Profile Completion -->
+          <div class="sidebar-section px-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-secondary uppercase tracking-wide">Profile Completion</span>
+            </div>
+            <div class="flex items-center gap-2 mb-1">
+              <div class="progress-bar-bg flex-1">
+                <div class="progress-bar-fill" style="width: 72%"></div>
+              </div>
+              <span class="text-xs font-medium text-secondary mono">72%</span>
+            </div>
+            <span class="text-xs text-tertiary">3 fields missing</span>
+          </div>
+
+          <!-- Lead Source -->
+          <div class="sidebar-section px-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-secondary uppercase tracking-wide">Lead Source</span>
+            </div>
+            <span class="text-sm text-primary">Phone Inquiry</span>
+          </div>
+
+          <!-- Linked Consumer -->
+          <div class="sidebar-section px-4">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-secondary uppercase tracking-wide">Linked Consumer</span>
+            </div>
+            <span class="text-sm text-tertiary italic">Not yet converted</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Gear popup (reusable) -->
+  <div id="gearPopup" class="fixed hidden bg-white border border-gray-200 rounded-lg shadow-lg z-50" style="width: 240px;">
+    <div class="p-2 border-b border-gray-100">
+      <input type="text" id="gearSearch" class="w-full text-sm border border-gray-200 rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-teal-500" placeholder="Filter...">
+    </div>
+    <div id="gearOptions" class="max-h-48 overflow-y-auto p-1"></div>
+  </div>
+
+  <script>
+    // Comment posting
+    function postComment() {
+      const box = document.getElementById('commentBox');
+      const text = box.value.trim();
+      if (!text) return;
+
+      const timeline = document.querySelector('.mb-6:has(.timeline-item)');
+      const commentInput = document.querySelector('.comment-card:last-child');
+
+      const item = document.createElement('div');
+      item.className = 'timeline-item py-3';
+      item.innerHTML = `
+        <div class="timeline-dot" style="background: #fff; border-color: #d0d7de;"></div>
+        <div class="comment-card">
+          <div class="comment-header flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="avatar bg-teal-600" style="width:22px;height:22px;font-size:10px;">SC</div>
+              <span class="font-medium text-primary">Sarah Chen</span>
+              <span class="text-tertiary">commented just now</span>
+            </div>
+            <span class="text-xs text-tertiary px-2 py-0.5 border border-gray-200 rounded-full">Lead Owner</span>
+          </div>
+          <div class="p-4 bg-white text-sm text-secondary leading-relaxed">
+            <p>${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+          </div>
+        </div>
+      `;
+
+      // Insert before the comment input area
+      timeline.appendChild(item);
+      box.value = '';
+    }
+
+    // Gear popup
+    const popupData = {
+      stage: ['Pre-Care', 'ACAT Booked', 'Approved', 'Allocated', 'Active', 'Converted'],
+      status: ['Not Contacted', 'Attempted Contact', 'Made Contact', 'Lost'],
+      agent: ['Sarah Chen', 'David Williams', 'Maria Santos', 'James Park', 'Lisa Thompson'],
+      labels: ['High Intent', 'Low Intent', 'HCP', 'CHSP', 'Referral', 'Self-Referred', 'Urgent', 'Follow Up'],
+      careType: ['Home Care Package (HCP)', 'CHSP', 'Residential Care', 'Respite', 'Other'],
+    };
+
+    function showGearPopup(btn, type) {
+      const popup = document.getElementById('gearPopup');
+      const options = document.getElementById('gearOptions');
+      const search = document.getElementById('gearSearch');
+
+      const rect = btn.getBoundingClientRect();
+      popup.style.top = (rect.bottom + 4) + 'px';
+      popup.style.left = Math.min(rect.left, window.innerWidth - 260) + 'px';
+      popup.classList.remove('hidden');
+
+      search.value = '';
+      search.placeholder = `Filter ${type}...`;
+
+      renderOptions(type, '');
+      search.oninput = () => renderOptions(type, search.value);
+      search.focus();
+
+      function closePopup(e) {
+        if (!popup.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+          popup.classList.add('hidden');
+          document.removeEventListener('click', closePopup);
+        }
+      }
+      setTimeout(() => document.addEventListener('click', closePopup), 0);
+    }
+
+    function renderOptions(type, filter) {
+      const options = document.getElementById('gearOptions');
+      const items = popupData[type].filter(i => i.toLowerCase().includes(filter.toLowerCase()));
+      options.innerHTML = items.map(item =>
+        `<div class="px-3 py-1.5 text-sm text-primary rounded cursor-pointer hover:bg-gray-100 flex items-center gap-2">
+          <svg class="w-3.5 h-3.5 text-teal-700 opacity-0" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+          ${item}
+        </div>`
+      ).join('');
+    }
+  </script>
+</body>
+</html>

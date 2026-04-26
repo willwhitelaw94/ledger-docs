@@ -1,0 +1,28 @@
+epic_code: CFT
+epic_number: "028"
+name: Consolidation & Family Tree
+initiative: FL-financial-ledger
+status: design
+stage: design
+gates:
+  idea:
+    passed: true
+    date: "2026-03-15"
+    notes: "William Whitelaw (PO/Dev), XL effort (6 sprints), HIGH risk: elimination logic complexity"
+  spec:
+    passed: true
+    date: "2026-03-15"
+    notes: "7 stories, 38 FRs, 10 clarifications — hierarchy, consolidation, invitable groups, auto net worth, magic links, commentary"
+  architecture:
+    passed: true
+    date: "2026-03-15"
+    notes: "Gate 3 all sections passed. Custom SVG/CSS tree (no library). ConsolidationEngine service with 5-min cache. 6 controllers, 25 routes."
+created: "2026-03-15"
+author: William Whitelaw
+branch: feature/028-CFT-consolidation-family-tree
+depends_on:
+  - 027-PMV-practice-management-v2
+  - 007-FRC-financial-reporting-compliance
+  - 002-CLE-core-ledger-engine
+supersedes:
+  - 014-CON-consolidation-net-worth

@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASS2 - Inclusion Request (from ASS1 Assessment)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{700:'#007F7E',600:'#009695',500:'#43C0BE',50:'#F0FDFA'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>
+.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}
+.screen{display:none}.screen.active{display:block}
+.item-selected{background:#F0FDFA;border-color:#007F7E}
+.fade-in{animation:fadeIn .3s ease-in}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4 overflow-x-auto sticky top-0 z-50">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">ASS2 - Inclusion Request</span>
+  <div class="flex gap-1 ml-4">
+    <button onclick="showScreen('screen1')" id="btn-screen1" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap tab-active">1. Assessment Summary</button>
+    <button onclick="showScreen('screen2')" id="btn-screen2" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">2. Select Items</button>
+    <button onclick="showScreen('screen3')" id="btn-screen3" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">3. Inclusion Request</button>
+    <button onclick="showScreen('screen4')" id="btn-screen4" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">4. Request Detail</button>
+    <button onclick="showScreen('screen5')" id="btn-screen5" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">5. My Requests</button>
+    <span class="text-gray-300 mx-1">|</span>
+    <button onclick="showScreen('screen6')" id="btn-screen6" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">6. Quote Upload</button>
+    <button onclick="showScreen('screen7')" id="btn-screen7" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">7. Approved &rarr; Budget</button>
+  </div>
+</nav>
+
+<!-- ============================================================ -->
+<!-- SCREEN 1: Assessment Summary (OT Report — the starting point) -->
+<!-- ============================================================ -->
+<div id="screen1" class="screen active p-6 max-w-5xl mx-auto">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-2">
+      <a href="#" class="text-sm text-teal-700 hover:underline">&larr; Back to Assessments</a>
+    </div>
+    <div class="flex items-start justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+        <h1 class="text-2xl font-bold text-gray-900">OT Assessment &mdash; AR-001</h1>
+        <div class="flex items-center gap-2 mt-2">
+          <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Accepted</span>
+          <span class="inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700">OT Assessment</span>
+          <span class="text-xs text-gray-400">ActiveOT Solutions &middot; Dr. Sarah Mitchell &middot; 12 Mar 2026</span>
+        </div>
+      </div>
+      <button onclick="showScreen('screen2')" class="bg-teal-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-teal-800 flex items-center gap-2 whitespace-nowrap">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Create Inclusion Request
+      </button>
+    </div>
+  </div>
+
+  <!-- Assessment Documents -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-4">
+    <h3 class="text-sm font-semibold text-gray-500 uppercase mb-3">Assessment Documents</h3>
+    <div class="space-y-2">
+      <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+        <div class="flex-shrink-0 w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center"><span class="text-xs font-bold text-red-700">PDF</span></div>
+        <div class="flex-1"><p class="text-sm font-medium text-gray-900">OT_Assessment_Report_Thompson.pdf</p><p class="text-xs text-gray-500">2.4 MB &middot; Uploaded 12 Mar 2026</p></div>
+        <a href="#" class="text-sm text-teal-700 hover:underline">View</a>
+      </div>
+      <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+        <div class="flex-shrink-0 w-9 h-9 bg-green-100 rounded-lg flex items-center justify-center"><span class="text-xs font-bold text-green-700">IMG</span></div>
+        <div class="flex-1"><p class="text-sm font-medium text-gray-900">bathroom_photos_set.zip</p><p class="text-xs text-gray-500">8.1 MB &middot; Uploaded 12 Mar 2026</p></div>
+        <a href="#" class="text-sm text-teal-700 hover:underline">View</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accepted Recommendations from ASS1 -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-sm font-semibold text-gray-500 uppercase">Accepted Recommendations</h3>
+      <span class="text-xs text-gray-400">4 items from AI extraction &middot; All confirmed by assessor</span>
+    </div>
+
+    <div class="space-y-3">
+      <!-- Item 1 -->
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+              <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Inclusion Created</span>
+            </div>
+            <p class="font-medium text-gray-900">Grab Rail &mdash; Bathroom Entry</p>
+            <p class="text-xs text-gray-500 mt-1">Stainless steel grab rail, 600mm, mounted at bathroom entry doorframe</p>
+            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+              <span>Tier-5: <span class="font-medium text-gray-700">03.06.04.001</span></span>
+              <span>Qty: 1</span>
+              <span>Est: $285</span>
+              <span>Confidence: <span class="text-green-600 font-medium">94%</span></span>
+            </div>
+          </div>
+          <a href="#" class="text-xs text-teal-700 hover:underline whitespace-nowrap">View Inclusion &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+              <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">No Inclusion Yet</span>
+            </div>
+            <p class="font-medium text-gray-900">Shower Seat &mdash; Wall-Mounted Fold-Down</p>
+            <p class="text-xs text-gray-500 mt-1">Wall-mounted fold-down shower seat with padded surface and adjustable legs</p>
+            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+              <span>Tier-5: <span class="font-medium text-gray-700">03.06.07.003</span></span>
+              <span>Qty: 1</span>
+              <span>Est: $450</span>
+              <span>Confidence: <span class="text-green-600 font-medium">91%</span></span>
+            </div>
+          </div>
+          <span class="text-xs text-gray-400 italic">Awaiting Inclusion Request</span>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Advice</span>
+              <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">No Inclusion Yet</span>
+            </div>
+            <p class="font-medium text-gray-900">Non-slip Floor Treatment</p>
+            <p class="text-xs text-gray-500 mt-1">Anti-slip treatment for bathroom floor tiles</p>
+            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+              <span>Tier-5: <span class="font-medium text-gray-700">03.06.99.000</span></span>
+              <span>Qty: 1</span>
+              <span>Est: $350</span>
+              <span>Confidence: <span class="text-amber-600 font-medium">52%</span></span>
+            </div>
+          </div>
+          <span class="text-xs text-gray-400 italic">Awaiting Inclusion Request</span>
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+              <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">No Inclusion Yet</span>
+            </div>
+            <p class="font-medium text-gray-900">Raised Toilet Seat</p>
+            <p class="text-xs text-gray-500 mt-1">Elevated toilet seat with armrests, 100mm rise</p>
+            <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+              <span>Tier-5: <span class="font-medium text-gray-700">03.06.03.002</span></span>
+              <span>Qty: 1</span>
+              <span>Est: $180</span>
+              <span>Confidence: <span class="text-green-600 font-medium">87%</span></span>
+            </div>
+          </div>
+          <span class="text-xs text-gray-400 italic">Awaiting Inclusion Request</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
+      <p class="text-sm text-blue-800"><strong>3 items</strong> from this assessment have not been added to an Inclusion Request yet. Click <strong>Create Inclusion Request</strong> to select items and begin the downstream workflow.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 2: Select Items for Inclusion Request -->
+<!-- ============================================================ -->
+<div id="screen2" class="screen p-6 max-w-5xl mx-auto">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-2">
+      <a href="#" onclick="showScreen('screen1');return false" class="text-sm text-teal-700 hover:underline">&larr; Back to Assessment</a>
+    </div>
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">Select Items for Inclusion Request</h1>
+    <p class="text-sm text-gray-500 mt-1">Choose recommended items from this OT assessment to include in a new Inclusion Request</p>
+  </div>
+
+  <!-- Source Assessment Banner -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-4 flex items-center gap-4">
+    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+      <svg class="w-5 h-5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+    </div>
+    <div class="flex-1">
+      <p class="text-sm font-medium text-gray-900">Source: OT Assessment AR-001</p>
+      <p class="text-xs text-gray-500">ActiveOT Solutions &middot; Dr. Sarah Mitchell &middot; Accepted 14 Mar 2026</p>
+    </div>
+    <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Accepted</span>
+  </div>
+
+  <!-- Selectable Items -->
+  <div class="space-y-3 mb-6">
+    <!-- Already has inclusion - disabled -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 opacity-50">
+      <div class="flex items-center gap-4">
+        <input type="checkbox" checked disabled class="rounded text-gray-400 w-5 h-5">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Already in Inclusion</span>
+          </div>
+          <p class="font-medium text-gray-600">Grab Rail &mdash; Bathroom Entry</p>
+          <p class="text-xs text-gray-400">03.06.04.001 &middot; $285 &middot; Added to INC-001 on 15 Mar 2026</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selectable Item 1 -->
+    <div id="sel-1" class="bg-white rounded-xl shadow-sm border-2 border-teal-700 p-4 item-selected cursor-pointer" onclick="toggleItem('sel-1')">
+      <div class="flex items-center gap-4">
+        <input type="checkbox" checked class="rounded text-teal-700 w-5 h-5" id="cb-1">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+            <span class="text-xs text-gray-400">Confidence: 91%</span>
+          </div>
+          <p class="font-medium text-gray-900">Shower Seat &mdash; Wall-Mounted Fold-Down</p>
+          <p class="text-xs text-gray-500 mt-1">Wall-mounted fold-down shower seat with padded surface and adjustable legs</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+            <span>Tier-5: <span class="font-medium text-gray-700">03.06.07.003</span></span>
+            <span>Qty: 1</span>
+            <span>Est: $450</span>
+            <span>Need: <span class="font-medium text-gray-700">Bathroom Safety</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selectable Item 2 -->
+    <div id="sel-2" class="bg-white rounded-xl shadow-sm border-2 border-teal-700 p-4 item-selected cursor-pointer" onclick="toggleItem('sel-2')">
+      <div class="flex items-center gap-4">
+        <input type="checkbox" checked class="rounded text-teal-700 w-5 h-5" id="cb-2">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Advice</span>
+            <span class="text-xs text-amber-600 font-medium">Confidence: 52%</span>
+          </div>
+          <p class="font-medium text-gray-900">Non-slip Floor Treatment</p>
+          <p class="text-xs text-gray-500 mt-1">Anti-slip treatment for bathroom floor tiles</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+            <span>Tier-5: <span class="font-medium text-amber-700">03.06.99.000 (review suggested)</span></span>
+            <span>Qty: 1</span>
+            <span>Est: $350</span>
+            <span>Need: <span class="font-medium text-gray-700">Bathroom Safety</span></span>
+          </div>
+          <!-- Low confidence warning -->
+          <div class="mt-2 bg-amber-50 border border-amber-200 rounded p-2">
+            <p class="text-xs text-amber-800">Low AI confidence on Tier-5 classification. Review recommended before submitting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selectable Item 3 -->
+    <div id="sel-3" class="bg-white rounded-xl shadow-sm border-2 border-teal-700 p-4 item-selected cursor-pointer" onclick="toggleItem('sel-3')">
+      <div class="flex items-center gap-4">
+        <input type="checkbox" checked class="rounded text-teal-700 w-5 h-5" id="cb-3">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+            <span class="text-xs text-gray-400">Confidence: 87%</span>
+          </div>
+          <p class="font-medium text-gray-900">Raised Toilet Seat</p>
+          <p class="text-xs text-gray-500 mt-1">Elevated toilet seat with armrests, 100mm rise</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+            <span>Tier-5: <span class="font-medium text-gray-700">03.06.03.002</span></span>
+            <span>Qty: 1</span>
+            <span>Est: $180</span>
+            <span>Need: <span class="font-medium text-gray-700">Personal Care</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Bar -->
+  <div class="sticky bottom-0 bg-white border-t border-gray-200 p-4 -mx-6 px-6 flex items-center justify-between shadow-lg">
+    <div>
+      <p class="text-sm font-medium text-gray-900"><span id="selected-count">3</span> items selected</p>
+      <p class="text-xs text-gray-500">Estimated total: <span id="selected-total" class="font-medium">$980</span></p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="showScreen('screen1')" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">Cancel</button>
+      <button onclick="showScreen('screen3')" class="bg-teal-700 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Continue to Request &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 3: Create Inclusion Request (form + workflow config) -->
+<!-- ============================================================ -->
+<div id="screen3" class="screen p-6 max-w-4xl mx-auto">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-2">
+      <a href="#" onclick="showScreen('screen2');return false" class="text-sm text-teal-700 hover:underline">&larr; Back to Item Selection</a>
+    </div>
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">New Inclusion Request</h1>
+    <p class="text-sm text-gray-500 mt-1">3 items from OT Assessment AR-001</p>
+  </div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <div class="col-span-2 space-y-5">
+      <!-- Request Details -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-4">Request Details</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Request Title</label>
+            <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" value="Bathroom Safety Equipment &mdash; Margaret Thompson">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+            <div class="flex gap-2">
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:border-gray-300">
+                <input type="radio" name="priority" class="text-red-600"><span class="text-sm">Urgent</span>
+              </label>
+              <label class="flex items-center gap-2 border-2 border-teal-700 bg-teal-50 rounded-lg px-3 py-2 cursor-pointer">
+                <input type="radio" name="priority" checked class="text-teal-700"><span class="text-sm">Standard</span>
+              </label>
+              <label class="flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer hover:border-gray-300">
+                <input type="radio" name="priority" class="text-gray-600"><span class="text-sm">Low</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Notes for Approver</label>
+            <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-20" placeholder="Additional context for the approval workflow...">Client has had 2 falls in the past month. OT recommends immediate bathroom safety modifications. Shower seat and grab rail are highest priority per assessment report.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Items Summary -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-4">Included Items</h3>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Shower Seat &mdash; Wall-Mounted Fold-Down</p>
+              <p class="text-xs text-gray-500">03.06.07.003 &middot; Prescribed &middot; AT Funding</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-medium text-gray-900">$450</p>
+              <p class="text-xs text-gray-500">Qty: 1</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Non-slip Floor Treatment</p>
+              <p class="text-xs text-gray-500">03.06.99.000 &middot; Advice &middot; HM Funding</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-medium text-gray-900">$350</p>
+              <p class="text-xs text-gray-500">Qty: 1</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div>
+              <p class="text-sm font-medium text-gray-900">Raised Toilet Seat</p>
+              <p class="text-xs text-gray-500">03.06.03.002 &middot; Prescribed &middot; AT Funding</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-medium text-gray-900">$180</p>
+              <p class="text-xs text-gray-500">Qty: 1</p>
+            </div>
+          </div>
+          <div class="border-t border-gray-200 pt-3 flex items-center justify-between">
+            <p class="text-sm font-medium text-gray-900">Total Estimated</p>
+            <p class="text-lg font-bold text-gray-900">$980</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget Impact -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-3">Budget Impact</h3>
+        <div class="space-y-3">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <p class="text-sm text-gray-700">AT &mdash; Assistive Technology</p>
+              <p class="text-xs text-gray-500">$630 of $2,400 remaining</p>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-teal-700 h-2 rounded-full" style="width:73%"></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">This request adds $630 (Shower Seat + Toilet Seat)</p>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <p class="text-sm text-gray-700">HM &mdash; Home Modifications</p>
+              <p class="text-xs text-gray-500">$350 of $5,000 remaining</p>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-blue-600 h-2 rounded-full" style="width:7%"></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">This request adds $350 (Floor Treatment)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar: Workflow & Approval -->
+    <div class="space-y-4">
+      <!-- Workflow Status -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-3">Workflow</h4>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 bg-teal-700 rounded-full flex items-center justify-center">
+              <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Items Selected</p>
+              <p class="text-xs text-gray-400">3 items from AR-001</p>
+            </div>
+          </div>
+          <div class="ml-3.5 border-l-2 border-teal-700 h-4"></div>
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 bg-teal-700 rounded-full flex items-center justify-center">
+              <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-teal-700">Draft Request</p>
+              <p class="text-xs text-gray-400">You are here</p>
+            </div>
+          </div>
+          <div class="ml-3.5 border-l-2 border-gray-200 h-4"></div>
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center">
+              <span class="text-xs font-medium text-gray-500">3</span>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Submitted for Approval</p>
+            </div>
+          </div>
+          <div class="ml-3.5 border-l-2 border-gray-200 h-4"></div>
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center">
+              <span class="text-xs font-medium text-gray-500">4</span>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Approved</p>
+              <p class="text-xs text-gray-300">Inclusions created</p>
+            </div>
+          </div>
+          <div class="ml-3.5 border-l-2 border-gray-200 h-4"></div>
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center">
+              <span class="text-xs font-medium text-gray-500">5</span>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Procurement</p>
+              <p class="text-xs text-gray-300">Quotes &amp; supplier</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Approval Routing -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Approval Routing</h4>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center"><span class="text-xs font-bold text-amber-700">!</span></div>
+            <p class="text-gray-700">Auto-routed to <strong>POD Leader</strong></p>
+          </div>
+          <p class="text-xs text-gray-500">Items over $500 total require POD Leader approval. Items over $2,000 escalate to Clinical Governance.</p>
+        </div>
+      </div>
+
+      <!-- Source Info -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Source Assessment</h4>
+        <dl class="space-y-2 text-sm">
+          <div><dt class="text-gray-400 text-xs">Assessment</dt><dd><a href="#" class="text-teal-700 hover:underline">AR-001 (OT)</a></dd></div>
+          <div><dt class="text-gray-400 text-xs">Assessor</dt><dd>Dr. Sarah Mitchell</dd></div>
+          <div><dt class="text-gray-400 text-xs">Supplier</dt><dd>ActiveOT Solutions</dd></div>
+          <div><dt class="text-gray-400 text-xs">Accepted</dt><dd>14 Mar 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="mt-6 flex items-center justify-between">
+    <button onclick="showScreen('screen2')" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">&larr; Back</button>
+    <div class="flex gap-3">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">Save as Draft</button>
+      <button onclick="showScreen('screen4')" class="bg-teal-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-teal-800">Submit for Approval</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 4: Inclusion Request Detail (post-submit, with workflow) -->
+<!-- ============================================================ -->
+<div id="screen4" class="screen p-6 max-w-5xl mx-auto">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-2">
+      <a href="#" onclick="showScreen('screen5');return false" class="text-sm text-teal-700 hover:underline">&larr; Back to My Requests</a>
+    </div>
+    <div class="flex items-start justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+        <h1 class="text-2xl font-bold text-gray-900">INCR-042 &mdash; Bathroom Safety Equipment</h1>
+        <div class="flex items-center gap-2 mt-2">
+          <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">Submitted</span>
+          <span class="text-xs text-gray-400">Submitted 2 Apr 2026 &middot; Awaiting POD Leader Approval</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <div class="col-span-2 space-y-4">
+
+      <!-- Workflow Timeline -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-4">Request Timeline</h3>
+        <div class="space-y-4">
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 bg-teal-700 rounded-full flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              </div>
+              <div class="flex-1 w-0.5 bg-teal-200 mt-1"></div>
+            </div>
+            <div class="pb-4">
+              <p class="text-sm font-medium text-gray-900">Request Created</p>
+              <p class="text-xs text-gray-500">2 Apr 2026, 9:14am &middot; By Jessica Ward (Care Partner)</p>
+              <p class="text-xs text-gray-400 mt-1">3 items selected from OT Assessment AR-001</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 bg-teal-700 rounded-full flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              </div>
+              <div class="flex-1 w-0.5 bg-teal-200 mt-1"></div>
+            </div>
+            <div class="pb-4">
+              <p class="text-sm font-medium text-gray-900">Submitted for Approval</p>
+              <p class="text-xs text-gray-500">2 Apr 2026, 9:14am &middot; Auto-routed to POD Leader (total &gt; $500)</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <div class="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
+              </div>
+              <div class="flex-1 w-0.5 bg-gray-200 mt-1"></div>
+            </div>
+            <div class="pb-4">
+              <p class="text-sm font-medium text-blue-700">Awaiting Approval</p>
+              <p class="text-xs text-gray-500">Assigned to: David Chen (POD Leader)</p>
+              <div class="mt-2 flex gap-2">
+                <button class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-teal-800">Approve All</button>
+                <button class="border border-gray-300 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-gray-50">Approve Partial</button>
+                <button class="border border-red-300 text-red-700 px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-red-50">Return for Changes</button>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"><span class="text-xs font-medium text-gray-400">4</span></div>
+              <div class="flex-1 w-0.5 bg-gray-200 mt-1"></div>
+            </div>
+            <div class="pb-4">
+              <p class="text-sm text-gray-400">Approved &mdash; Inclusions Created</p>
+              <p class="text-xs text-gray-300">Draft Inclusions will be created for each approved item</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center"><span class="text-xs font-medium text-gray-400">5</span></div>
+            </div>
+            <div>
+              <p class="text-sm text-gray-400">Procurement &amp; Fulfilment</p>
+              <p class="text-xs text-gray-300">Quotes, supplier selection, and delivery</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Request Items -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-4">Request Items</h3>
+        <div class="space-y-3">
+          <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+              </div>
+              <p class="text-sm font-medium text-gray-900">Shower Seat &mdash; Wall-Mounted Fold-Down</p>
+              <p class="text-xs text-gray-500">03.06.07.003 &middot; AT Funding &middot; Est: $450</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Pending</span>
+          </div>
+          <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Advice</span>
+              </div>
+              <p class="text-sm font-medium text-gray-900">Non-slip Floor Treatment</p>
+              <p class="text-xs text-gray-500">03.06.99.000 &middot; HM Funding &middot; Est: $350</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Pending</span>
+          </div>
+          <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-medium text-teal-700">Prescribed</span>
+              </div>
+              <p class="text-sm font-medium text-gray-900">Raised Toilet Seat</p>
+              <p class="text-xs text-gray-500">03.06.03.002 &middot; AT Funding &middot; Est: $180</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Pending</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity / Comments -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-4">Activity</h3>
+        <div class="space-y-3">
+          <div class="flex gap-3">
+            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-600">JW</div>
+            <div class="flex-1">
+              <p class="text-sm"><strong class="text-gray-900">Jessica Ward</strong> <span class="text-gray-500">submitted this request</span></p>
+              <p class="text-xs text-gray-400">2 Apr 2026, 9:14am</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center text-xs font-bold text-blue-700">SY</div>
+            <div class="flex-1">
+              <p class="text-sm"><strong class="text-gray-900">System</strong> <span class="text-gray-500">auto-routed to David Chen (POD Leader) &mdash; total exceeds $500 threshold</span></p>
+              <p class="text-xs text-gray-400">2 Apr 2026, 9:14am</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center text-xs font-bold text-blue-700">SY</div>
+            <div class="flex-1">
+              <p class="text-sm"><strong class="text-gray-900">System</strong> <span class="text-gray-500">notified David Chen via email and Portal notification</span></p>
+              <p class="text-xs text-gray-400">2 Apr 2026, 9:15am</p>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-2">
+          <input type="text" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm" placeholder="Add a comment...">
+          <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-4">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Request Summary</h4>
+        <dl class="space-y-2 text-sm">
+          <div class="flex justify-between"><dt class="text-gray-500">Request ID</dt><dd class="font-medium">INCR-042</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Status</dt><dd><span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Submitted</span></dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Priority</dt><dd class="font-medium">Standard</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Items</dt><dd class="font-medium">3</dd></div>
+          <div class="flex justify-between"><dt class="text-gray-500">Total Est.</dt><dd class="font-bold text-gray-900">$980</dd></div>
+        </dl>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Linked Entities</h4>
+        <dl class="space-y-2 text-sm">
+          <div><dt class="text-gray-400 text-xs">Source Assessment</dt><dd><a href="#" class="text-teal-700 hover:underline">AR-001 (OT Assessment)</a></dd></div>
+          <div><dt class="text-gray-400 text-xs">Client</dt><dd>Margaret Thompson (KF-273342)</dd></div>
+          <div><dt class="text-gray-400 text-xs">Package</dt><dd><a href="#" class="text-teal-700 hover:underline">PKG-1847</a></dd></div>
+          <div><dt class="text-gray-400 text-xs">Requested By</dt><dd>Jessica Ward (Care Partner)</dd></div>
+          <div><dt class="text-gray-400 text-xs">Approver</dt><dd>David Chen (POD Leader)</dd></div>
+        </dl>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Funding Breakdown</h4>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-purple-500 rounded-full"></span>
+              <span class="text-gray-700">AT Funding</span>
+            </div>
+            <span class="font-medium">$630</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
+              <span class="text-gray-700">HM Funding</span>
+            </div>
+            <span class="font-medium">$350</span>
+          </div>
+          <div class="border-t border-gray-200 pt-2 flex justify-between">
+            <span class="font-medium text-gray-900">Total</span>
+            <span class="font-bold text-gray-900">$980</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 5: My Inclusion Requests (list/dashboard) -->
+<!-- ============================================================ -->
+<div id="screen5" class="screen p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Inclusion Requests</h1>
+      <p class="text-sm text-gray-500 mt-1">Manage requests to create Inclusions from assessment recommendations</p>
+    </div>
+    <button onclick="showScreen('screen1')" class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">+ New from Assessment</button>
+  </div>
+
+  <!-- Status Cards -->
+  <div class="grid grid-cols-5 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer hover:border-gray-300">
+      <p class="text-sm text-gray-500">All Requests</p>
+      <p class="text-2xl font-bold text-gray-900">12</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer hover:border-amber-300">
+      <p class="text-sm text-gray-500">Draft</p>
+      <p class="text-2xl font-bold text-amber-600">2</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer hover:border-blue-300">
+      <p class="text-sm text-gray-500">Submitted</p>
+      <p class="text-2xl font-bold text-blue-600">3</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer hover:border-green-300">
+      <p class="text-sm text-gray-500">Approved</p>
+      <p class="text-2xl font-bold text-green-600">5</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 cursor-pointer hover:border-gray-300">
+      <p class="text-sm text-gray-500">Returned</p>
+      <p class="text-2xl font-bold text-red-600">2</p>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex gap-3 mb-4 flex-wrap">
+    <select class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm"><option>All Statuses</option><option>Draft</option><option>Submitted</option><option>Approved</option><option>Returned</option><option>Cancelled</option></select>
+    <select class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm"><option>All Clients</option><option>Margaret Thompson</option><option>Arthur Simmons</option><option>Dorothy Chen</option></select>
+    <select class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm"><option>All Assessment Types</option><option>OT Assessment</option><option>Physio</option><option>Nurse</option></select>
+    <select class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm"><option>All Priority</option><option>Urgent</option><option>Standard</option><option>Low</option></select>
+    <input type="text" class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm w-48" placeholder="Search requests...">
+  </div>
+
+  <!-- Requests Table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Request ID</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Source</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Items</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Submitted</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="hover:bg-gray-50 cursor-pointer" onclick="showScreen('screen4')">
+          <td class="px-4 py-3 text-sm font-medium text-teal-700">INCR-042</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Margaret Thompson</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Bathroom Safety Equipment</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">OT &middot; AR-001</span></td>
+          <td class="px-4 py-3 text-sm text-gray-900">3</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-900">$980</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Submitted</span></td>
+          <td class="px-4 py-3 text-sm text-gray-500">2 Apr 2026</td>
+        </tr>
+        <tr class="hover:bg-gray-50 cursor-pointer">
+          <td class="px-4 py-3 text-sm font-medium text-teal-700">INCR-041</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Arthur Simmons</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Mobility Equipment</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Physio &middot; AR-012</span></td>
+          <td class="px-4 py-3 text-sm text-gray-900">2</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-900">$640</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Approved</span></td>
+          <td class="px-4 py-3 text-sm text-gray-500">1 Apr 2026</td>
+        </tr>
+        <tr class="hover:bg-gray-50 cursor-pointer">
+          <td class="px-4 py-3 text-sm font-medium text-teal-700">INCR-040</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Dorothy Chen</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Home Access Modifications</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">OT &middot; AR-009</span></td>
+          <td class="px-4 py-3 text-sm text-gray-900">4</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-900">$3,200</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Submitted</span></td>
+          <td class="px-4 py-3 text-sm text-gray-500">31 Mar 2026</td>
+        </tr>
+        <tr class="hover:bg-gray-50 cursor-pointer">
+          <td class="px-4 py-3 text-sm font-medium text-teal-700">INCR-039</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Margaret Thompson</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Grab Rail &mdash; Bathroom Entry</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">OT &middot; AR-001</span></td>
+          <td class="px-4 py-3 text-sm text-gray-900">1</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-900">$285</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Approved</span></td>
+          <td class="px-4 py-3 text-sm text-gray-500">28 Mar 2026</td>
+        </tr>
+        <tr class="hover:bg-gray-50 cursor-pointer">
+          <td class="px-4 py-3 text-sm font-medium text-teal-700">INCR-038</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Dorothy Chen</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Kitchen Safety Assessment Items</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">OT &middot; AR-008</span></td>
+          <td class="px-4 py-3 text-sm text-gray-900">5</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-900">$1,850</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">Returned</span></td>
+          <td class="px-4 py-3 text-sm text-gray-500">25 Mar 2026</td>
+        </tr>
+        <tr class="hover:bg-gray-50 cursor-pointer">
+          <td class="px-4 py-3 text-sm font-medium text-teal-700">INCR-037</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Arthur Simmons</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Bedroom Accessibility</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700">Nurse &middot; AR-011</span></td>
+          <td class="px-4 py-3 text-sm text-gray-900">2</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-900">$520</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">Draft</span></td>
+          <td class="px-4 py-3 text-sm text-gray-500">&mdash;</td>
+        </tr>
+        <tr class="hover:bg-gray-50 cursor-pointer">
+          <td class="px-4 py-3 text-sm font-medium text-teal-700">INCR-036</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Margaret Thompson</td>
+          <td class="px-4 py-3 text-sm text-gray-900">Physio Equipment &mdash; Balance</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Physio &middot; AR-002</span></td>
+          <td class="px-4 py-3 text-sm text-gray-900">3</td>
+          <td class="px-4 py-3 text-sm font-medium text-gray-900">$1,200</td>
+          <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Approved</span></td>
+          <td class="px-4 py-3 text-sm text-gray-500">20 Mar 2026</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 flex items-center justify-between">
+    <p class="text-sm text-gray-500">Showing 7 of 12 requests</p>
+    <div class="flex gap-1">
+      <button class="px-3 py-1.5 border border-gray-300 rounded text-sm text-gray-700 bg-white">1</button>
+      <button class="px-3 py-1.5 border border-gray-300 rounded text-sm text-gray-500 bg-gray-50 hover:bg-white">2</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 6: Quote Upload — AI extracts price & exact item -->
+<!-- ============================================================ -->
+<div id="screen6" class="screen p-6 max-w-5xl mx-auto">
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-2">
+      <a href="#" onclick="showScreen('screen4');return false" class="text-sm text-teal-700 hover:underline">&larr; Back to Request Detail</a>
+    </div>
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342 &middot; INCR-042</p>
+    <h1 class="text-2xl font-bold text-gray-900">Upload Supplier Quote</h1>
+    <p class="text-sm text-gray-500 mt-1">Upload a quote document and our AI will extract the exact item purchased and the quoted price</p>
+  </div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <div class="col-span-2 space-y-5">
+
+      <!-- Upload Zone -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-4">Upload Quote Document</h3>
+        <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-teal-500 transition-colors cursor-pointer">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          <p class="mt-2 text-sm text-gray-600">Drag and drop quote files here, or <span class="text-teal-700 font-medium">browse</span></p>
+          <p class="text-xs text-gray-400 mt-1">PDF, images, or Word documents. Max 50MB per file.</p>
+        </div>
+
+        <!-- Already uploaded quotes -->
+        <div class="mt-4 space-y-2">
+          <h4 class="text-sm font-medium text-gray-700">Uploaded Quotes</h4>
+          <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+            <div class="flex-shrink-0 w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center"><span class="text-xs font-bold text-red-700">PDF</span></div>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-900">ActiveOT_Quote_ShowerSeat_Thompson.pdf</p>
+              <p class="text-xs text-gray-500">1.2 MB &middot; Uploaded just now</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Processed</span>
+          </div>
+          <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+            <div class="flex-shrink-0 w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center"><span class="text-xs font-bold text-red-700">PDF</span></div>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-900">BuildRight_Quote_FloorTreatment.pdf</p>
+              <p class="text-xs text-gray-500">0.8 MB &middot; Uploaded just now</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Processed</span>
+          </div>
+          <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-3">
+            <div class="flex-shrink-0 w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center"><span class="text-xs font-bold text-red-700">PDF</span></div>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-900">ActiveOT_Quote_ToiletSeat_Thompson.pdf</p>
+              <p class="text-xs text-gray-500">0.6 MB &middot; Uploaded just now</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Processed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Extracted Quote Details -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-medium text-gray-900">AI-Extracted Quote Details</h3>
+          <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">3 of 3 matched</span>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Extracted Item 1 -->
+          <div class="border-2 border-green-200 rounded-lg p-4 bg-green-50/30">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                <span class="text-sm font-medium text-green-800">Matched to request item</span>
+                <span class="text-xs text-gray-400">Confidence: 97%</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-xs text-gray-500 uppercase font-medium mb-1">From Quote (Extracted)</p>
+                <p class="text-sm font-medium text-gray-900">Etac Relax Wall-Mounted Shower Seat</p>
+                <p class="text-xs text-gray-500 mt-1">Supplier: ActiveOT Solutions</p>
+                <p class="text-xs text-gray-500">Model: Etac Relax 80302001</p>
+                <p class="text-xs text-gray-500">Includes: Supply, delivery &amp; install</p>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase font-medium mb-1">Request Item (Original)</p>
+                <p class="text-sm text-gray-700">Shower Seat &mdash; Wall-Mounted Fold-Down</p>
+                <p class="text-xs text-gray-500 mt-1">Tier-5: 03.06.07.003</p>
+                <p class="text-xs text-gray-500">OT Estimate: $450</p>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between bg-white rounded-lg border border-green-200 p-3">
+              <div>
+                <p class="text-xs text-gray-500">Quoted Price</p>
+                <p class="text-xl font-bold text-gray-900">$435.00</p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500">vs OT Estimate</p>
+                <p class="text-sm font-medium text-green-700">&minus;$15.00 (3.3% under)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extracted Item 2 -->
+          <div class="border-2 border-green-200 rounded-lg p-4 bg-green-50/30">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                <span class="text-sm font-medium text-green-800">Matched to request item</span>
+                <span class="text-xs text-gray-400">Confidence: 89%</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-xs text-gray-500 uppercase font-medium mb-1">From Quote (Extracted)</p>
+                <p class="text-sm font-medium text-gray-900">SlipDoctors Anti-Slip Floor Treatment &mdash; Bathroom</p>
+                <p class="text-xs text-gray-500 mt-1">Supplier: BuildRight Modifications</p>
+                <p class="text-xs text-gray-500">Coverage: 6m&sup2; bathroom floor</p>
+                <p class="text-xs text-gray-500">Includes: Prep, treatment &amp; sealer</p>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase font-medium mb-1">Request Item (Original)</p>
+                <p class="text-sm text-gray-700">Non-slip Floor Treatment</p>
+                <p class="text-xs text-gray-500 mt-1">Tier-5: 03.06.99.000</p>
+                <p class="text-xs text-gray-500">OT Estimate: $350</p>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between bg-white rounded-lg border border-green-200 p-3">
+              <div>
+                <p class="text-xs text-gray-500">Quoted Price</p>
+                <p class="text-xl font-bold text-gray-900">$380.00</p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500">vs OT Estimate</p>
+                <p class="text-sm font-medium text-amber-700">+$30.00 (8.6% over)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extracted Item 3 -->
+          <div class="border-2 border-green-200 rounded-lg p-4 bg-green-50/30">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                <span class="text-sm font-medium text-green-800">Matched to request item</span>
+                <span class="text-xs text-gray-400">Confidence: 95%</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-xs text-gray-500 uppercase font-medium mb-1">From Quote (Extracted)</p>
+                <p class="text-sm font-medium text-gray-900">Etac My-Loo Fixed Raised Toilet Seat 100mm</p>
+                <p class="text-xs text-gray-500 mt-1">Supplier: ActiveOT Solutions</p>
+                <p class="text-xs text-gray-500">Model: Etac My-Loo 80301520</p>
+                <p class="text-xs text-gray-500">Includes: Supply &amp; fitting</p>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 uppercase font-medium mb-1">Request Item (Original)</p>
+                <p class="text-sm text-gray-700">Raised Toilet Seat</p>
+                <p class="text-xs text-gray-500 mt-1">Tier-5: 03.06.03.002</p>
+                <p class="text-xs text-gray-500">OT Estimate: $180</p>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between bg-white rounded-lg border border-green-200 p-3">
+              <div>
+                <p class="text-xs text-gray-500">Quoted Price</p>
+                <p class="text-xl font-bold text-gray-900">$195.00</p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-gray-500">vs OT Estimate</p>
+                <p class="text-sm font-medium text-amber-700">+$15.00 (8.3% over)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote Summary / Comparison -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-3">Quote vs Estimate Summary</h3>
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-200">
+              <th class="text-left py-2 text-xs font-medium text-gray-500 uppercase">Item</th>
+              <th class="text-right py-2 text-xs font-medium text-gray-500 uppercase">OT Estimate</th>
+              <th class="text-right py-2 text-xs font-medium text-gray-500 uppercase">Quoted Price</th>
+              <th class="text-right py-2 text-xs font-medium text-gray-500 uppercase">Difference</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr>
+              <td class="py-2.5 text-gray-900">Shower Seat (Etac Relax)</td>
+              <td class="py-2.5 text-right text-gray-500">$450</td>
+              <td class="py-2.5 text-right font-medium text-gray-900">$435</td>
+              <td class="py-2.5 text-right text-green-700 font-medium">&minus;$15</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 text-gray-900">Floor Treatment (SlipDoctors)</td>
+              <td class="py-2.5 text-right text-gray-500">$350</td>
+              <td class="py-2.5 text-right font-medium text-gray-900">$380</td>
+              <td class="py-2.5 text-right text-amber-700 font-medium">+$30</td>
+            </tr>
+            <tr>
+              <td class="py-2.5 text-gray-900">Raised Toilet Seat (Etac My-Loo)</td>
+              <td class="py-2.5 text-right text-gray-500">$180</td>
+              <td class="py-2.5 text-right font-medium text-gray-900">$195</td>
+              <td class="py-2.5 text-right text-amber-700 font-medium">+$15</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2 border-gray-300">
+              <td class="py-3 font-bold text-gray-900">Total</td>
+              <td class="py-3 text-right text-gray-500 font-medium">$980</td>
+              <td class="py-3 text-right font-bold text-gray-900">$1,010</td>
+              <td class="py-3 text-right text-amber-700 font-bold">+$30</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-4">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-3">How It Works</h4>
+        <div class="space-y-3 text-sm text-gray-600">
+          <div class="flex gap-2">
+            <span class="flex-shrink-0 w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center text-xs font-bold text-teal-700">1</span>
+            <p>Upload the supplier quote (PDF, image, or Word)</p>
+          </div>
+          <div class="flex gap-2">
+            <span class="flex-shrink-0 w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center text-xs font-bold text-teal-700">2</span>
+            <p>AI extracts the <strong>exact item</strong>, model number, supplier, and <strong>quoted price</strong></p>
+          </div>
+          <div class="flex gap-2">
+            <span class="flex-shrink-0 w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center text-xs font-bold text-teal-700">3</span>
+            <p>System matches extracted items to the original assessment recommendations</p>
+          </div>
+          <div class="flex gap-2">
+            <span class="flex-shrink-0 w-5 h-5 bg-teal-100 rounded-full flex items-center justify-center text-xs font-bold text-teal-700">4</span>
+            <p>On approval, the <strong>quoted price</strong> (not the estimate) is used for the budget line item</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Price Alert</h4>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 bg-green-500 rounded-full"></span>
+            <span class="text-sm text-gray-700">1 item under estimate</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 bg-amber-500 rounded-full"></span>
+            <span class="text-sm text-gray-700">2 items over estimate</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+            <span class="text-sm text-gray-700">0 items &gt;20% over</span>
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-3">Items exceeding 20% of the OT estimate are flagged for additional review.</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Budget Impact</h4>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-gray-500">Original estimate</span><span class="font-medium">$980</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Quoted total</span><span class="font-bold text-gray-900">$1,010</span></div>
+          <div class="flex justify-between border-t border-gray-200 pt-2"><span class="text-gray-500">Variance</span><span class="font-medium text-amber-700">+$30 (3.1%)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 flex items-center justify-between">
+    <button onclick="showScreen('screen4')" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">&larr; Back to Request</button>
+    <div class="flex gap-3">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50">Save Quotes</button>
+      <button onclick="showScreen('screen7')" class="bg-teal-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-teal-800">Confirm &amp; Submit for Approval &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 7: Approved — Auto-Add to Budget -->
+<!-- ============================================================ -->
+<div id="screen7" class="screen p-6 max-w-5xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342 &middot; INCR-042</p>
+    <h1 class="text-2xl font-bold text-gray-900">Inclusion Request Approved</h1>
+    <div class="flex items-center gap-2 mt-2">
+      <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Approved</span>
+      <span class="text-xs text-gray-400">Approved by David Chen (POD Leader) &middot; 3 Apr 2026, 2:45pm</span>
+    </div>
+  </div>
+
+  <!-- Success Banner -->
+  <div class="bg-green-50 border border-green-200 rounded-xl p-5 mb-6">
+    <div class="flex items-start gap-3">
+      <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+      <div>
+        <p class="font-medium text-green-900">3 items approved and automatically added to budget</p>
+        <p class="text-sm text-green-800 mt-1">Each approved item has been added as a plan service line item under the correct budget category using the <strong>quoted price</strong> (not the OT estimate). Draft Inclusions have been created for each item.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <div class="col-span-2 space-y-5">
+
+      <!-- Budget Line Items Created -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-medium text-gray-900">Budget Line Items Created</h3>
+          <a href="#" class="text-sm text-teal-700 hover:underline">View Full Budget &rarr;</a>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Budget Item 1 -->
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <div class="bg-purple-50 px-4 py-2 border-b border-purple-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-purple-500 rounded-full"></span>
+                <span class="text-xs font-semibold text-purple-800 uppercase">AT &mdash; Assistive Technology</span>
+              </div>
+              <span class="text-xs text-purple-600">Plan Service Category: Equipment &amp; Assistive Technology</span>
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Auto-Added</span>
+                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">New</span>
+                  </div>
+                  <p class="text-sm font-medium text-gray-900">Etac Relax Wall-Mounted Shower Seat</p>
+                  <p class="text-xs text-gray-500">Tier-5: 03.06.07.003 &middot; Supplier: ActiveOT Solutions &middot; Inclusion: <a href="#" class="text-teal-700">INC-044</a></p>
+                </div>
+                <div class="text-right">
+                  <p class="text-lg font-bold text-gray-900">$435.00</p>
+                  <p class="text-xs text-gray-400 line-through">Est: $450</p>
+                </div>
+              </div>
+              <div class="border-t border-gray-100 pt-3 flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Auto-Added</span>
+                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">New</span>
+                  </div>
+                  <p class="text-sm font-medium text-gray-900">Etac My-Loo Fixed Raised Toilet Seat 100mm</p>
+                  <p class="text-xs text-gray-500">Tier-5: 03.06.03.002 &middot; Supplier: ActiveOT Solutions &middot; Inclusion: <a href="#" class="text-teal-700">INC-046</a></p>
+                </div>
+                <div class="text-right">
+                  <p class="text-lg font-bold text-gray-900">$195.00</p>
+                  <p class="text-xs text-gray-400 line-through">Est: $180</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-2.5 border-t border-gray-200 flex items-center justify-between">
+              <p class="text-xs text-gray-500">Category subtotal (new items)</p>
+              <p class="text-sm font-bold text-gray-900">$630.00</p>
+            </div>
+          </div>
+
+          <!-- Budget Item 2 -->
+          <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <div class="bg-blue-50 px-4 py-2 border-b border-blue-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
+                <span class="text-xs font-semibold text-blue-800 uppercase">HM &mdash; Home Modifications</span>
+              </div>
+              <span class="text-xs text-blue-600">Plan Service Category: Home Modifications</span>
+            </div>
+            <div class="p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Auto-Added</span>
+                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">New</span>
+                  </div>
+                  <p class="text-sm font-medium text-gray-900">SlipDoctors Anti-Slip Floor Treatment &mdash; Bathroom</p>
+                  <p class="text-xs text-gray-500">Tier-5: 03.06.99.000 &middot; Supplier: BuildRight Mods &middot; Inclusion: <a href="#" class="text-teal-700">INC-045</a></p>
+                </div>
+                <div class="text-right">
+                  <p class="text-lg font-bold text-gray-900">$380.00</p>
+                  <p class="text-xs text-gray-400 line-through">Est: $350</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-2.5 border-t border-gray-200 flex items-center justify-between">
+              <p class="text-xs text-gray-500">Category subtotal (new items)</p>
+              <p class="text-sm font-bold text-gray-900">$380.00</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget Balance After -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-4">Updated Budget Balances</h3>
+        <div class="space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-purple-500 rounded-full"></span>
+                <p class="text-sm font-medium text-gray-700">AT &mdash; Assistive Technology</p>
+              </div>
+              <p class="text-xs text-gray-500">$1,770 of $2,400 used</p>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div class="bg-purple-500 h-3 rounded-full relative" style="width:73.8%">
+                <div class="absolute right-0 top-0 w-1 h-3 bg-purple-800 rounded-full" title="New items added here"></div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-1">
+              <p class="text-xs text-gray-400">Previously: $1,140 used</p>
+              <p class="text-xs text-purple-700 font-medium">+$630 from INCR-042</p>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
+                <p class="text-sm font-medium text-gray-700">HM &mdash; Home Modifications</p>
+              </div>
+              <p class="text-xs text-gray-500">$380 of $5,000 used</p>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div class="bg-blue-500 h-3 rounded-full relative" style="width:7.6%">
+                <div class="absolute right-0 top-0 w-1 h-3 bg-blue-800 rounded-full" title="New items added here"></div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-1">
+              <p class="text-xs text-gray-400">Previously: $0 used</p>
+              <p class="text-xs text-blue-700 font-medium">+$380 from INCR-042</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inclusions Created -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-medium text-gray-900">Draft Inclusions Created</h3>
+          <a href="#" onclick="showScreen('screen4');return false" class="text-sm text-teal-700 hover:underline">View in Inclusion Index &rarr;</a>
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div>
+              <p class="text-sm font-medium text-gray-900">INC-044 &mdash; Etac Relax Shower Seat</p>
+              <p class="text-xs text-gray-500">03.06.07.003 &middot; AT Funding &middot; Linked to Budget</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Draft</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div>
+              <p class="text-sm font-medium text-gray-900">INC-045 &mdash; SlipDoctors Floor Treatment</p>
+              <p class="text-xs text-gray-500">03.06.99.000 &middot; HM Funding &middot; Linked to Budget</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Draft</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div>
+              <p class="text-sm font-medium text-gray-900">INC-046 &mdash; Etac My-Loo Toilet Seat</p>
+              <p class="text-xs text-gray-500">03.06.03.002 &middot; AT Funding &middot; Linked to Budget</p>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Draft</span>
+          </div>
+        </div>
+        <div class="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
+          <p class="text-xs text-blue-800">Each Inclusion starts in <strong>Draft</strong> and must pass the readiness checklist (evidence, Tier-5 confirmed, quotes, eligibility, staleness, funding) before moving to <strong>Ready</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-4">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-3">What Happened</h4>
+        <div class="space-y-3 text-sm">
+          <div class="flex gap-2">
+            <svg class="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            <p class="text-gray-700">POD Leader approved all 3 items</p>
+          </div>
+          <div class="flex gap-2">
+            <svg class="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            <p class="text-gray-700">Budget line items auto-created using <strong>quoted prices</strong></p>
+          </div>
+          <div class="flex gap-2">
+            <svg class="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            <p class="text-gray-700">Items placed under correct plan service categories</p>
+          </div>
+          <div class="flex gap-2">
+            <svg class="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            <p class="text-gray-700">Draft Inclusions created with full traceability</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Traceability Chain</h4>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 text-xs">
+            <span class="w-5 h-5 bg-purple-100 rounded flex items-center justify-center text-purple-700 font-bold">1</span>
+            <span class="text-gray-600">OT Assessment <span class="font-medium text-gray-900">AR-001</span></span>
+          </div>
+          <div class="ml-2.5 border-l border-gray-200 h-2"></div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="w-5 h-5 bg-teal-100 rounded flex items-center justify-center text-teal-700 font-bold">2</span>
+            <span class="text-gray-600">Recommendations <span class="font-medium text-gray-900">AI Extracted</span></span>
+          </div>
+          <div class="ml-2.5 border-l border-gray-200 h-2"></div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="w-5 h-5 bg-blue-100 rounded flex items-center justify-center text-blue-700 font-bold">3</span>
+            <span class="text-gray-600">Inclusion Request <span class="font-medium text-gray-900">INCR-042</span></span>
+          </div>
+          <div class="ml-2.5 border-l border-gray-200 h-2"></div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="w-5 h-5 bg-amber-100 rounded flex items-center justify-center text-amber-700 font-bold">4</span>
+            <span class="text-gray-600">Supplier Quotes <span class="font-medium text-gray-900">3 uploaded</span></span>
+          </div>
+          <div class="ml-2.5 border-l border-gray-200 h-2"></div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="w-5 h-5 bg-green-100 rounded flex items-center justify-center text-green-700 font-bold">5</span>
+            <span class="text-gray-600">Budget Line Items <span class="font-medium text-gray-900">$1,010 added</span></span>
+          </div>
+          <div class="ml-2.5 border-l border-gray-200 h-2"></div>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="w-5 h-5 bg-gray-100 rounded flex items-center justify-center text-gray-700 font-bold">6</span>
+            <span class="text-gray-600">Inclusions <span class="font-medium text-gray-900">INC-044, 045, 046</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Estimate vs Actual</h4>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-gray-500">OT Estimates</span><span class="text-gray-400 line-through">$980</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Quoted Prices</span><span class="font-bold text-gray-900">$1,010</span></div>
+          <div class="flex justify-between border-t border-gray-200 pt-2"><span class="text-gray-500">Variance</span><span class="font-medium text-amber-700">+$30 (3.1%)</span></div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2">Budget uses the real quoted price, not the OT estimate.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('tab-active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('tab-active');
+  window.scrollTo(0,0);
+}
+
+function toggleItem(id){
+  const el=document.getElementById(id);
+  const cb=el.querySelector('input[type="checkbox"]');
+  cb.checked=!cb.checked;
+  if(cb.checked){
+    el.classList.add('item-selected');
+    el.classList.remove('border-gray-200');
+    el.classList.add('border-teal-700');
+  }else{
+    el.classList.remove('item-selected');
+    el.classList.add('border-gray-200');
+    el.classList.remove('border-teal-700');
+  }
+  updateCount();
+}
+
+function updateCount(){
+  const items=[
+    {id:'cb-1',cost:450},
+    {id:'cb-2',cost:350},
+    {id:'cb-3',cost:180}
+  ];
+  let count=0,total=0;
+  items.forEach(i=>{
+    if(document.getElementById(i.id).checked){count++;total+=i.cost;}
+  });
+  document.getElementById('selected-count').textContent=count;
+  document.getElementById('selected-total').textContent='$'+total.toLocaleString();
+}
+</script>
+</body>
+</html>

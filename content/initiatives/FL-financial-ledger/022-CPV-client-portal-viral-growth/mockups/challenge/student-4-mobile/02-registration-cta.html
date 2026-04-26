@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get MoneyQuest — Free</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background: #f3f4f6;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    .option-btn {
+      transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+      cursor: pointer;
+    }
+    .option-btn:active {
+      transform: scale(0.98);
+      background-color: #F0FAFA;
+      border-color: #43C0BE;
+    }
+
+    .sign-in-btn {
+      transition: background-color 0.15s ease, transform 0.1s ease;
+      cursor: pointer;
+    }
+    .sign-in-btn:active {
+      transform: scale(0.98);
+      background-color: #f3f4f6;
+    }
+
+    /* Safe area insets */
+    .pb-safe {
+      padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+  </style>
+</head>
+<body>
+
+  <div class="flex justify-center min-h-screen min-h-dvh bg-gray-200">
+    <div class="w-full max-w-[480px] bg-white min-h-screen min-h-dvh flex flex-col">
+
+      <!-- Top brand section -->
+      <div class="flex-1 flex flex-col px-6 pt-14 pb-4">
+
+        <!-- App icon + wordmark -->
+        <div class="flex flex-col items-center mb-10">
+          <div class="w-24 h-24 rounded-[28px] bg-teal-500 flex items-center justify-center mb-4 shadow-lg" style="box-shadow: 0 12px 32px rgba(67,192,190,0.35);">
+            <span class="text-white font-bold" style="font-size: 2.75rem; line-height: 1;">M</span>
+          </div>
+          <h1 class="text-gray-900 font-bold text-2xl tracking-tight mb-1">MoneyQuest</h1>
+          <p class="text-gray-500 text-base text-center leading-snug">Personal finance, made simple.</p>
+        </div>
+
+        <!-- Social proof strip -->
+        <div class="flex items-center justify-center gap-4 mb-10 px-2">
+          <div class="flex flex-col items-center">
+            <span class="text-gray-900 font-bold text-lg leading-tight">4.8</span>
+            <span class="text-yellow-400 text-sm leading-none">⭐⭐⭐⭐⭐</span>
+            <span class="text-gray-400 text-xs mt-0.5">2.1k reviews</span>
+          </div>
+          <div class="w-px h-10 bg-gray-200"></div>
+          <div class="flex flex-col items-center">
+            <span class="text-gray-900 font-bold text-lg leading-tight">48k+</span>
+            <span class="text-gray-400 text-xs mt-1">users</span>
+          </div>
+          <div class="w-px h-10 bg-gray-200"></div>
+          <div class="flex flex-col items-center">
+            <span class="text-gray-900 font-bold text-lg leading-tight">Free</span>
+            <span class="text-gray-400 text-xs mt-1">to start</span>
+          </div>
+        </div>
+
+        <!-- Option buttons -->
+        <div class="space-y-3 mb-6">
+
+          <!-- Personal -->
+          <button class="option-btn w-full bg-white border-2 border-gray-200 rounded-2xl px-4 text-left" style="min-height: 80px; padding-top: 18px; padding-bottom: 18px;">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl mt-0.5 leading-none">🏠</span>
+                <div>
+                  <p class="text-gray-900 font-semibold text-base leading-tight">For personal use</p>
+                  <p class="text-gray-400 text-sm mt-0.5 leading-snug">Home finances, budgeting, personal P&L</p>
+                  <span class="inline-block mt-1.5 text-xs font-semibold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full">Free forever</span>
+                </div>
+              </div>
+              <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+          </button>
+
+          <!-- Business -->
+          <button class="option-btn w-full bg-white border-2 border-gray-200 rounded-2xl px-4 text-left" style="min-height: 80px; padding-top: 18px; padding-bottom: 18px;">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-start gap-3">
+                <span class="text-2xl mt-0.5 leading-none">💼</span>
+                <div>
+                  <p class="text-gray-900 font-semibold text-base leading-tight">For my business</p>
+                  <p class="text-gray-400 text-sm mt-0.5 leading-snug">Invoicing, job costing, reconciliation</p>
+                  <span class="inline-block mt-1.5 text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">14-day free trial</span>
+                </div>
+              </div>
+              <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+          </button>
+
+        </div>
+
+        <!-- Sign in -->
+        <button class="sign-in-btn w-full bg-white border-2 border-gray-200 rounded-2xl py-4 text-center" style="min-height: 56px;">
+          <span class="text-gray-700 font-semibold text-base">Already have an account? <span class="text-teal-600">Sign in</span></span>
+        </button>
+
+        <!-- Trust text -->
+        <div class="mt-6 flex items-center justify-center gap-4 text-gray-400 text-xs">
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            256-bit encryption
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            No credit card
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Cancel anytime
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Bottom safe area padding -->
+      <div class="pb-safe h-6 bg-white"></div>
+
+    </div>
+  </div>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

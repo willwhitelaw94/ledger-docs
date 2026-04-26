@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LES Mockup - Leads List View</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="viewer-toolbar.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' },
+            info: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',500:'#43C0BE',700:'#007F7E',900:'#003D3D' },
+            success: { 50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',500:'#35A8E4',700:'#156F9D' },
+            warning: { 50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',500:'#E0763C',700:'#9C481A' },
+            danger: { 50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',500:'#E04B51',700:'#9C262A' },
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+          borderRadius: { 'input': '8px' },
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-primary { color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+    .dropdown-menu { display: none; }
+    .dropdown-open .dropdown-menu { display: block; }
+    .bulk-bar { transform: translateY(100%); opacity: 0; transition: all 0.2s ease; }
+    .bulk-bar.visible { transform: translateY(0); opacity: 1; }
+    tbody tr { transition: background-color 0.1s ease; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-primary min-h-screen">
+
+  <!-- Top Nav Bar -->
+  <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex items-center gap-6">
+      <div class="text-teal-700 font-bold text-lg">TC Portal</div>
+      <div class="flex items-center gap-1">
+        <a href="#" class="px-3 py-2 text-sm font-medium text-secondary hover:text-primary rounded-md hover:bg-gray-50">Dashboard</a>
+        <a href="#" class="px-3 py-2 text-sm font-semibold text-teal-700 bg-teal-50 rounded-md">Leads</a>
+        <a href="#" class="px-3 py-2 text-sm font-medium text-secondary hover:text-primary rounded-md hover:bg-gray-50">Consumers</a>
+        <a href="#" class="px-3 py-2 text-sm font-medium text-secondary hover:text-primary rounded-md hover:bg-gray-50">Reports</a>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="p-2 text-gray-400 hover:text-teal-700 rounded-md hover:bg-gray-50" title="Notifications">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+      </button>
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-primary-blue-100 flex items-center justify-center text-primary-blue-700 text-xs font-bold">JP</div>
+        <span class="text-sm font-medium">Jacqueline Palmer</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="px-6 py-6">
+
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-primary">Leads</h1>
+        <p class="text-sm text-secondary mt-0.5">Manage and track all lead enquiries</p>
+      </div>
+      <div class="relative" id="create-dropdown">
+        <button onclick="document.getElementById('create-dropdown').classList.toggle('dropdown-open')" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600 shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          Create Lead
+          <svg class="w-4 h-4 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+        <div class="dropdown-menu absolute right-0 mt-2 w-52 rounded-lg bg-white border border-gray-200 shadow-lg py-1 z-10">
+          <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-gray-50">
+            <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <div>
+              <div class="font-medium text-primary">Quick Create</div>
+              <div class="text-xs text-secondary">Minimal fields only</div>
+            </div>
+          </a>
+          <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-gray-50">
+            <svg class="w-4 h-4 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            <div>
+              <div class="font-medium text-primary">Guided Create</div>
+              <div class="text-xs text-secondary">Step-by-step wizard</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="rounded-lg bg-white border border-gray-400/40 shadow-sm p-4 mb-4">
+      <div class="flex items-center gap-3 flex-wrap">
+        <!-- Journey Stage Multi-select -->
+        <div class="relative">
+          <select class="appearance-none rounded-[8px] border border-gray-300 px-3 py-2 pr-8 text-sm text-secondary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white min-w-[160px]">
+            <option value="">Journey Stage</option>
+            <option>Pre-Care</option>
+            <option>ACAT Booked</option>
+            <option>Approved</option>
+            <option>Allocated</option>
+            <option>Active</option>
+            <option>Converted</option>
+          </select>
+          <svg class="w-4 h-4 text-gray-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+
+        <!-- Lead Status Multi-select -->
+        <div class="relative">
+          <select class="appearance-none rounded-[8px] border border-gray-300 px-3 py-2 pr-8 text-sm text-secondary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white min-w-[150px]">
+            <option value="">Lead Status</option>
+            <option>Not Contacted</option>
+            <option>Attempted Contact</option>
+            <option>Made Contact</option>
+            <option>Qualified</option>
+            <option>Lost</option>
+          </select>
+          <svg class="w-4 h-4 text-gray-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+
+        <!-- Assigned Agent -->
+        <div class="relative">
+          <select class="appearance-none rounded-[8px] border border-gray-300 px-3 py-2 pr-8 text-sm text-secondary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white min-w-[160px]">
+            <option value="">Assigned Agent</option>
+            <option>Jacqueline Palmer</option>
+            <option>David Chen</option>
+            <option>Rachel Green</option>
+            <option>Marcus Thompson</option>
+            <option>Unassigned</option>
+          </select>
+          <svg class="w-4 h-4 text-gray-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+
+        <!-- Conversion Status -->
+        <div class="relative">
+          <select class="appearance-none rounded-[8px] border border-gray-300 px-3 py-2 pr-8 text-sm text-secondary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white min-w-[170px]">
+            <option value="">Conversion Status</option>
+            <option>Not Started</option>
+            <option>In Progress</option>
+            <option>Converted</option>
+            <option>Lost</option>
+          </select>
+          <svg class="w-4 h-4 text-gray-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+
+        <!-- Search -->
+        <div class="relative flex-1 min-w-[200px]">
+          <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <input type="text" placeholder="Search leads by name, email, or phone..." class="w-full rounded-[8px] border border-gray-300 pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 placeholder:text-gray-400">
+        </div>
+
+        <!-- Clear Filters -->
+        <button class="text-xs font-medium text-teal-700 hover:text-teal-600 hover:underline whitespace-nowrap">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="rounded-lg bg-white border border-gray-400/40 shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="bg-gray-50 border-b border-gray-200">
+              <th class="w-10 px-4 py-3"><input type="checkbox" id="select-all" onchange="toggleSelectAll()" class="w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500"></th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Lead Name</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Contact Name</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Email</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Phone</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Journey Stage</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Lead Status</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Assigned Agent</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Created</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Conversion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Row 1 -->
+            <tr class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer" onclick="if(event.target.type!=='checkbox')window.location='#'">
+              <td class="px-4 py-3"><input type="checkbox" class="row-checkbox w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500" onchange="updateBulkBar()"></td>
+              <td class="px-4 py-3"><a href="#" class="text-sm font-medium text-primary hover:text-teal-700">Margaret Wilson</a></td>
+              <td class="px-4 py-3 text-sm">Sarah Wilson</td>
+              <td class="px-4 py-3 text-sm text-secondary">margaret.w@email.com</td>
+              <td class="px-4 py-3 text-sm text-secondary">0412 345 678</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-200 text-teal-900 ring-1 ring-inset ring-teal-700">Approved</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-success-200 text-success-700 ring-1 ring-inset ring-success-700">Made Contact</span></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-primary-blue-100 flex items-center justify-center text-primary-blue-700 text-[10px] font-bold">JP</div>
+                  <span class="text-sm">Jacqueline P.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-secondary">3 Jan 2026</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-info-100 text-info-700 ring-1 ring-inset ring-info-700">In Progress</span></td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
+              <td class="px-4 py-3"><input type="checkbox" class="row-checkbox w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500" onchange="updateBulkBar()"></td>
+              <td class="px-4 py-3"><a href="#" class="text-sm font-medium text-primary hover:text-teal-700">Robert Hendricks</a></td>
+              <td class="px-4 py-3 text-sm">Robert Hendricks</td>
+              <td class="px-4 py-3 text-sm text-secondary">r.hendricks@email.com</td>
+              <td class="px-4 py-3 text-sm text-secondary">0423 456 789</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-gray-200 text-gray-700 ring-1 ring-inset ring-gray-400">Pre-Care</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-gray-200 text-gray-700 ring-1 ring-inset ring-gray-400">Not Contacted</span></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 text-[10px] font-bold">DC</div>
+                  <span class="text-sm">David C.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-secondary">18 Feb 2026</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-gray-100 text-gray-600 ring-1 ring-inset ring-gray-300">Not Started</span></td>
+            </tr>
+
+            <!-- Row 3 -->
+            <tr class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
+              <td class="px-4 py-3"><input type="checkbox" class="row-checkbox w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500" onchange="updateBulkBar()"></td>
+              <td class="px-4 py-3"><a href="#" class="text-sm font-medium text-primary hover:text-teal-700">Patricia Nguyen</a></td>
+              <td class="px-4 py-3 text-sm">Minh Nguyen</td>
+              <td class="px-4 py-3 text-sm text-secondary">p.nguyen@email.com</td>
+              <td class="px-4 py-3 text-sm text-secondary">0434 567 890</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-100 text-teal-800 ring-1 ring-inset ring-teal-600">ACAT Booked</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-success-200 text-success-700 ring-1 ring-inset ring-success-700">Made Contact</span></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-primary-blue-100 flex items-center justify-center text-primary-blue-700 text-[10px] font-bold">JP</div>
+                  <span class="text-sm">Jacqueline P.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-secondary">12 Jan 2026</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-info-100 text-info-700 ring-1 ring-inset ring-info-700">In Progress</span></td>
+            </tr>
+
+            <!-- Row 4 -->
+            <tr class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
+              <td class="px-4 py-3"><input type="checkbox" class="row-checkbox w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500" onchange="updateBulkBar()"></td>
+              <td class="px-4 py-3"><a href="#" class="text-sm font-medium text-primary hover:text-teal-700">Arthur Brennan</a></td>
+              <td class="px-4 py-3 text-sm">Lisa Brennan</td>
+              <td class="px-4 py-3 text-sm text-secondary">arthur.b@email.com</td>
+              <td class="px-4 py-3 text-sm text-secondary">0445 678 901</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-200 text-teal-900 ring-1 ring-inset ring-teal-700">Approved</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-warning-100 text-warning-700 ring-1 ring-inset ring-warning-700">Attempted</span></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-warning-100 flex items-center justify-center text-warning-700 text-[10px] font-bold">RG</div>
+                  <span class="text-sm">Rachel G.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-secondary">5 Dec 2025</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-info-100 text-info-700 ring-1 ring-inset ring-info-700">In Progress</span></td>
+            </tr>
+
+            <!-- Row 5 -->
+            <tr class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
+              <td class="px-4 py-3"><input type="checkbox" class="row-checkbox w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500" onchange="updateBulkBar()"></td>
+              <td class="px-4 py-3"><a href="#" class="text-sm font-medium text-primary hover:text-teal-700">Doris McCarthy</a></td>
+              <td class="px-4 py-3 text-sm">Doris McCarthy</td>
+              <td class="px-4 py-3 text-sm text-secondary">doris.m@email.com</td>
+              <td class="px-4 py-3 text-sm text-secondary">0456 789 012</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-primary-blue-100 text-primary-blue-700 ring-1 ring-inset ring-primary-blue-700">Allocated</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-info-100 text-info-700 ring-1 ring-inset ring-info-700">Qualified</span></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-success-100 flex items-center justify-center text-success-700 text-[10px] font-bold">MT</div>
+                  <span class="text-sm">Marcus T.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-secondary">28 Nov 2025</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-info-100 text-info-700 ring-1 ring-inset ring-info-700">In Progress</span></td>
+            </tr>
+
+            <!-- Row 6 -->
+            <tr class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
+              <td class="px-4 py-3"><input type="checkbox" class="row-checkbox w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500" onchange="updateBulkBar()"></td>
+              <td class="px-4 py-3"><a href="#" class="text-sm font-medium text-primary hover:text-teal-700">Thomas O'Brien</a></td>
+              <td class="px-4 py-3 text-sm">Karen O'Brien</td>
+              <td class="px-4 py-3 text-sm text-secondary">t.obrien@email.com</td>
+              <td class="px-4 py-3 text-sm text-secondary">0467 890 123</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-gray-200 text-gray-700 ring-1 ring-inset ring-gray-400">Pre-Care</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-danger-100 text-danger-700 ring-1 ring-inset ring-danger-700">Lost</span></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 text-[10px] font-bold">DC</div>
+                  <span class="text-sm">David C.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-secondary">15 Feb 2026</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-danger-100 text-danger-700 ring-1 ring-inset ring-danger-700">Lost</span></td>
+            </tr>
+
+            <!-- Row 7 -->
+            <tr class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
+              <td class="px-4 py-3"><input type="checkbox" class="row-checkbox w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500" onchange="updateBulkBar()"></td>
+              <td class="px-4 py-3"><a href="#" class="text-sm font-medium text-primary hover:text-teal-700">Helen Yamamoto</a></td>
+              <td class="px-4 py-3 text-sm">Ken Yamamoto</td>
+              <td class="px-4 py-3 text-sm text-secondary">h.yamamoto@email.com</td>
+              <td class="px-4 py-3 text-sm text-secondary">0478 901 234</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-100 text-teal-800 ring-1 ring-inset ring-teal-600">ACAT Booked</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-success-200 text-success-700 ring-1 ring-inset ring-success-700">Made Contact</span></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-warning-100 flex items-center justify-center text-warning-700 text-[10px] font-bold">RG</div>
+                  <span class="text-sm">Rachel G.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-secondary">8 Feb 2026</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-info-100 text-info-700 ring-1 ring-inset ring-info-700">In Progress</span></td>
+            </tr>
+
+            <!-- Row 8 -->
+            <tr class="border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
+              <td class="px-4 py-3"><input type="checkbox" class="row-checkbox w-4 h-4 text-teal-700 border-gray-300 rounded focus:ring-teal-500" onchange="updateBulkBar()"></td>
+              <td class="px-4 py-3"><a href="#" class="text-sm font-medium text-primary hover:text-teal-700">George Fitzpatrick</a></td>
+              <td class="px-4 py-3 text-sm">Anne Fitzpatrick</td>
+              <td class="px-4 py-3 text-sm text-secondary">g.fitz@email.com</td>
+              <td class="px-4 py-3 text-sm text-secondary">0489 012 345</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-700 text-white ring-1 ring-inset ring-teal-800">Converted</span></td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-info-100 text-info-700 ring-1 ring-inset ring-info-700">Qualified</span></td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-primary-blue-100 flex items-center justify-center text-primary-blue-700 text-[10px] font-bold">JP</div>
+                  <span class="text-sm">Jacqueline P.</span>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-sm text-secondary">10 Oct 2025</td>
+              <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-teal-200 text-teal-900 ring-1 ring-inset ring-teal-700">Converted</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50/50">
+        <div class="text-sm text-secondary">
+          Showing <span class="font-medium text-primary">1-25</span> of <span class="font-medium text-primary">847</span> leads
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="px-2.5 py-1.5 text-sm text-secondary rounded-md hover:bg-gray-100 disabled:opacity-40" disabled>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+          </button>
+          <button class="px-3 py-1.5 text-sm font-semibold text-white bg-teal-700 rounded-md">1</button>
+          <button class="px-3 py-1.5 text-sm text-secondary rounded-md hover:bg-gray-100">2</button>
+          <button class="px-3 py-1.5 text-sm text-secondary rounded-md hover:bg-gray-100">3</button>
+          <span class="px-2 text-secondary">...</span>
+          <button class="px-3 py-1.5 text-sm text-secondary rounded-md hover:bg-gray-100">33</button>
+          <button class="px-3 py-1.5 text-sm text-secondary rounded-md hover:bg-gray-100">34</button>
+          <button class="px-2.5 py-1.5 text-sm text-secondary rounded-md hover:bg-gray-100">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bulk Action Bar (fixed at bottom) -->
+    <div id="bulk-bar" class="bulk-bar fixed bottom-0 left-0 right-0 bg-primary-blue-700 text-white px-6 py-3 flex items-center justify-between z-50 shadow-lg">
+      <div class="flex items-center gap-4">
+        <span class="text-sm font-medium"><span id="selected-count">0</span> selected</span>
+        <button class="px-4 py-1.5 text-sm font-bold rounded-full bg-white/20 hover:bg-white/30 text-white">Assign Agent</button>
+        <button class="px-4 py-1.5 text-sm font-bold rounded-full bg-white/20 hover:bg-white/30 text-white">Export CSV</button>
+      </div>
+      <button onclick="clearSelection()" class="text-sm font-medium text-white/80 hover:text-white">Clear selection</button>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleSelectAll() {
+      const selectAll = document.getElementById('select-all');
+      const checkboxes = document.querySelectorAll('.row-checkbox');
+      checkboxes.forEach(cb => cb.checked = selectAll.checked);
+      updateBulkBar();
+    }
+
+    function updateBulkBar() {
+      const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+      const bulkBar = document.getElementById('bulk-bar');
+      const count = document.getElementById('selected-count');
+      count.textContent = checkboxes.length;
+      if (checkboxes.length > 0) {
+        bulkBar.classList.add('visible');
+      } else {
+        bulkBar.classList.remove('visible');
+      }
+    }
+
+    function clearSelection() {
+      document.getElementById('select-all').checked = false;
+      document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+      updateBulkBar();
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const dropdown = document.getElementById('create-dropdown');
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('dropdown-open');
+      }
+    });
+  </script>
+
+</body>
+</html>

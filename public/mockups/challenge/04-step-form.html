@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Radar — Step Form | Superhuman Sam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            },
+            'primary-blue': {
+              50: '#F0F4FA', 100: '#D6E1F0', 200: '#BCCEE7', 300: '#96B2D9',
+              400: '#7197CC', 500: '#4B7BBE', 600: '#39639D', 700: '#2C4C79',
+              800: '#1E3452', 900: '#101C2D'
+            },
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        }
+      }
+    }
+    </script>
+    <style>
+        * { font-family: 'Inter', system-ui, sans-serif; }
+        .kbd { font-size: 10px; padding: 1px 5px; border-radius: 3px; background: #f3f4f6; border: 1px solid #e5e7eb; color: #6b7280; font-family: 'Inter', monospace; line-height: 1.4; }
+        .kbd-dark { background: #374151; border-color: #4b5563; color: #d1d5db; }
+        .form-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(0, 127, 126, 0.4); border-color: #007F7E; }
+        .toggle-active { background-color: #007F7E; }
+        .radio-active { border-color: #007F7E; background-color: #F0FAFA; }
+    </style>
+</head>
+<body class="bg-gray-50 flex">
+
+<!-- Skeleton sidebar -->
+<aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+    <div class="px-4 py-4 border-b border-gray-100">
+        <div class="flex items-center gap-2.5">
+            <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse"></div>
+            <div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+    </div>
+    <div class="px-3 py-3"><div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div></div>
+    <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+    </nav>
+    <div class="border-t border-gray-100 px-3 py-3">
+        <div class="flex items-center gap-2.5">
+            <div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div>
+            <div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div>
+        </div>
+    </div>
+</aside>
+
+<!-- Main content with modal overlay -->
+<main class="flex-1 flex flex-col min-h-screen relative">
+    <!-- Dimmed background page header -->
+    <header class="bg-white border-b border-gray-200 px-6 py-4 opacity-30">
+        <nav class="text-xs text-gray-400 mb-1">
+            <span>Packages</span> <span class="mx-1">/</span>
+            <span>Mrs Margaret Smith</span> <span class="mx-1">/</span>
+            <span class="text-gray-700 font-medium">Risks</span>
+        </nav>
+        <div class="flex items-center justify-between">
+            <h1 class="text-xl font-semibold text-gray-900">Risk Profile</h1>
+        </div>
+    </header>
+
+    <!-- Dimmed background content -->
+    <div class="flex-1 p-6 opacity-30">
+        <div class="h-20 bg-gray-100 rounded"></div>
+    </div>
+
+    <!-- Modal overlay -->
+    <div class="absolute inset-0 bg-gray-900/50 flex items-start justify-center pt-16 z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl flex flex-col max-h-[calc(100vh-8rem)]">
+            <!-- Modal header with step pills -->
+            <div class="px-6 py-4 border-b border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-semibold text-gray-900">New Risk</h2>
+                    <button class="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700">
+                        <span class="kbd">Esc</span> Close
+                    </button>
+                </div>
+                <!-- Step pills (horizontal) -->
+                <div class="flex items-center gap-1">
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-teal-700 text-white text-xs font-medium">
+                        <span class="w-5 h-5 flex items-center justify-center rounded-full bg-white/20 text-[10px] font-bold">1</span>
+                        Basics
+                    </div>
+                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-gray-100 text-gray-400 text-xs font-medium">
+                        <span class="w-5 h-5 flex items-center justify-center rounded-full bg-gray-200 text-[10px] font-bold text-gray-500">2</span>
+                        Details
+                    </div>
+                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-gray-100 text-gray-400 text-xs font-medium">
+                        <span class="w-5 h-5 flex items-center justify-center rounded-full bg-gray-200 text-[10px] font-bold text-gray-500">3</span>
+                        Questions
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1 form content -->
+            <div class="flex-1 overflow-y-auto px-6 py-5">
+                <div class="space-y-4">
+                    <!-- Category -->
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5 block">Risk Category</label>
+                        <select class="form-input w-full px-3 py-2 text-sm border border-gray-300 rounded bg-white text-gray-900">
+                            <option value="">Select a category...</option>
+                            <option>Falls</option>
+                            <option>Mobility</option>
+                            <option>Continence</option>
+                            <option selected>Nutrition &amp; Hydration</option>
+                            <option>Medication Management</option>
+                            <option>Skin Integrity</option>
+                            <option>Pain Management</option>
+                            <option>Social Isolation</option>
+                            <option>Depression &amp; Anxiety</option>
+                            <option>Carer Stress</option>
+                            <option>Elder Abuse</option>
+                            <option>Home Safety</option>
+                        </select>
+                    </div>
+
+                    <!-- Need: inline radio -->
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5 block">Need</label>
+                        <div class="flex items-center gap-2">
+                            <label class="flex-1 flex items-center gap-2 px-3 py-2 border border-teal-700 rounded cursor-pointer radio-active">
+                                <span class="w-4 h-4 rounded-full border-2 border-teal-700 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-teal-700"></span>
+                                </span>
+                                <span class="text-sm font-medium text-gray-900">Identified</span>
+                            </label>
+                            <label class="flex-1 flex items-center gap-2 px-3 py-2 border border-gray-200 rounded cursor-pointer hover:border-gray-300">
+                                <span class="w-4 h-4 rounded-full border-2 border-gray-300 flex items-center justify-center"></span>
+                                <span class="text-sm font-medium text-gray-500">Not Identified</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Care Plan toggle -->
+                    <div class="flex items-center justify-between px-3 py-2.5 bg-gray-50 rounded">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-700">Add to Care Plan</span>
+                            <span class="kbd" style="font-size: 9px;">C</span>
+                        </div>
+                        <button class="relative w-9 h-5 rounded-full toggle-active transition-colors">
+                            <span class="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform"></span>
+                        </button>
+                    </div>
+
+                    <!-- Details -->
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5 block">Details</label>
+                        <textarea class="form-input w-full px-3 py-2 text-sm border border-gray-300 rounded bg-white text-gray-900 resize-none" rows="3" placeholder="Describe the risk details...">Client has been experiencing reduced appetite and insufficient fluid intake. Weight loss of 2kg observed over the past month.</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="px-6 py-3 border-t border-gray-100 flex items-center justify-between">
+                <div class="flex items-center gap-3 text-[11px] text-gray-400">
+                    <span class="flex items-center gap-1"><span class="kbd">Tab</span> Next field</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200 transition-colors">
+                        Cancel
+                    </button>
+                    <button class="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded hover:bg-teal-800 transition-colors">
+                        Next
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom status bar -->
+    <div class="bg-gray-800 text-gray-400 px-4 py-1.5 flex items-center gap-4 text-[11px] font-medium z-50 relative">
+        <span class="flex items-center gap-1"><span class="kbd kbd-dark">Esc</span> Cancel</span>
+        <span class="flex items-center gap-1"><span class="kbd kbd-dark">Tab</span> Next field</span>
+        <span class="flex items-center gap-1"><span class="kbd kbd-dark">&#8984;&crarr;</span> Submit</span>
+        <span class="flex items-center gap-1"><span class="kbd kbd-dark">&rarr;</span> Next step</span>
+        <div class="flex-1"></div>
+        <span class="text-gray-500">Step 1 of 3 &middot; Basics</span>
+    </div>
+</main>
+
+</body>
+</html>

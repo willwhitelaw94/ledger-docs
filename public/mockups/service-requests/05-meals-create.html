@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Meal Request</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'teal': { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+                        'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+                    },
+                    fontFamily: { sans: ['Roboto Flex','Inter','system-ui','sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        #app-sidebar { transition: width 0.2s ease; }
+        #app-sidebar.collapsed { width: 77px; }
+        #app-sidebar.collapsed .nav-label, #app-sidebar.collapsed .nav-section-title, #app-sidebar.collapsed .sidebar-brand-name, #app-sidebar.collapsed .sidebar-footer { display: none; }
+        #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+        #app-sidebar.collapsed ~ .main-content { margin-left: 77px; }
+        .slide-over { animation: slideIn 0.2s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    </style>
+    <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-100 flex min-h-screen font-sans text-gray-900">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]" style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+        <div class="flex items-center gap-3 px-5 py-4 border-b border-white/10">
+            <div class="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center text-sm font-bold">TC</div>
+            <span class="sidebar-brand-name text-sm font-semibold tracking-wide">Trilogy Care</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-3 px-3 space-y-1">
+            <div class="nav-section-title text-[10px] uppercase tracking-wider text-white/40 px-2 pb-1 pt-2">Staff</div>
+            <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/5">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm" style="background: rgba(67,192,190,0.15); color: #43C0BE; font-weight: 600;">
+                <svg class="w-5 h-5 shrink-0" style="color: #43C0BE" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                <span class="nav-label">Recipients</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer border-t border-white/10 px-4 py-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-xs font-semibold">JD</div>
+                <div class="text-xs"><div class="text-white font-medium">Jane Doe</div><div class="text-white/50">Coordinator</div></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT (dimmed) ===== -->
+    <div class="main-content flex-1 flex flex-col ml-[240px] min-h-screen">
+        <div class="bg-white border-b border-gray-200 px-6 py-5 opacity-50">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-primary-blue-100 flex items-center justify-center text-primary-blue-700 font-semibold text-lg">MT</div>
+                <div>
+                    <h1 class="text-xl font-semibold text-gray-900">Margaret Thompson</h1>
+                    <p class="text-sm text-gray-500">Meal Requests</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white border-b border-gray-200 px-6 opacity-50">
+            <nav class="flex gap-6 -mb-px">
+                <span class="py-3 px-1 text-sm text-gray-500 border-b-2 border-transparent">Overview</span>
+                <span class="py-3 px-1 text-sm text-gray-500 border-b-2 border-transparent">Care Plan</span>
+                <span class="py-3 px-1 text-sm text-gray-500 border-b-2 border-transparent">Budget</span>
+                <span class="py-3 px-1 text-sm font-semibold text-teal-700 border-b-2 border-teal-700">Service Requests</span>
+            </nav>
+        </div>
+        <div class="flex-1 opacity-30 p-6">
+            <div class="h-64 bg-gray-200 rounded-lg"></div>
+        </div>
+    </div>
+
+    <!-- ===== OVERLAY ===== -->
+    <div class="fixed inset-0 bg-black/30 z-[101]" style="margin-left: 240px;"></div>
+
+    <!-- ===== SLIDE-OVER FORM ===== -->
+    <div class="slide-over fixed top-0 right-0 bottom-0 w-full max-w-lg bg-white shadow-2xl z-[102] flex flex-col" style="top: var(--toolbar-h, 0px);">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+            <div>
+                <h2 class="text-lg font-semibold text-gray-900">New Meal Request</h2>
+                <p class="text-sm text-gray-500 mt-0.5">For Margaret Thompson</p>
+            </div>
+            <a href="01-service-requests-index.html" class="p-2 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </a>
+        </div>
+
+        <!-- Form Body -->
+        <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+
+            <!-- Cookaborough Partner Banner -->
+            <div class="rounded-lg border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-white border border-emerald-200 flex items-center justify-center shrink-0 shadow-sm">
+                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.379a48.474 48.474 0 00-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12"/></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-semibold text-emerald-900">Cookaborough</span>
+                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-700">Primary Partner</span>
+                        </div>
+                        <p class="text-xs text-emerald-700 mt-0.5">100+ local food businesses delivering dietitian-reviewed meals. Recipients pay 30% upfront — the rest is invoiced to Trilogy Care.</p>
+                        <div class="flex items-center gap-3 mt-2">
+                            <a href="https://cookaborough.com.au/" target="_blank" class="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 hover:text-emerald-900 underline underline-offset-2">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                                Open Cookaborough
+                            </a>
+                            <button onclick="document.getElementById('cooks-panel').classList.toggle('hidden')" class="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 hover:text-emerald-900 underline underline-offset-2">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+                                Find local cooks near Margaret
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expandable: Local Cooks Near Recipient -->
+                <div id="cooks-panel" class="hidden mt-3 pt-3 border-t border-emerald-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-medium text-emerald-800">Local cooks near Bundaberg, QLD</span>
+                        <span class="text-[10px] text-emerald-600">3 available</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between bg-white rounded-lg border border-emerald-100 px-3 py-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-xs font-bold">GM</div>
+                                <div>
+                                    <div class="text-xs font-medium text-gray-900">Gourmet Meals</div>
+                                    <div class="text-[10px] text-gray-500">17 menu items &middot; 4.8 &#9733;</div>
+                                </div>
+                            </div>
+                            <button onclick="selectProvider('Gourmet Meals (via Cookaborough)')" class="text-[10px] font-medium px-2 py-1 rounded bg-emerald-100 text-emerald-700 hover:bg-emerald-200">Select</button>
+                        </div>
+                        <div class="flex items-center justify-between bg-white rounded-lg border border-emerald-100 px-3 py-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xs font-bold">BC</div>
+                                <div>
+                                    <div class="text-xs font-medium text-gray-900">Bundy's Kitchen Co.</div>
+                                    <div class="text-[10px] text-gray-500">12 menu items &middot; 4.6 &#9733;</div>
+                                </div>
+                            </div>
+                            <button onclick="selectProvider('Bundy\'s Kitchen Co. (via Cookaborough)')" class="text-[10px] font-medium px-2 py-1 rounded bg-emerald-100 text-emerald-700 hover:bg-emerald-200">Select</button>
+                        </div>
+                        <div class="flex items-center justify-between bg-white rounded-lg border border-emerald-100 px-3 py-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs font-bold">MH</div>
+                                <div>
+                                    <div class="text-xs font-medium text-gray-900">Mum's Home Cooking</div>
+                                    <div class="text-[10px] text-gray-500">8 menu items &middot; 4.9 &#9733;</div>
+                                </div>
+                            </div>
+                            <button onclick="selectProvider('Mum\'s Home Cooking (via Cookaborough)')" class="text-[10px] font-medium px-2 py-1 rounded bg-emerald-100 text-emerald-700 hover:bg-emerald-200">Select</button>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-emerald-600 mt-2 text-center">Based on recipient's address: 42 Bargara Road, Bundaberg QLD 4670</p>
+                </div>
+            </div>
+
+            <!-- Pre-filled: Care Plan -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Care Plan</label>
+                <div class="flex items-center gap-2 px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
+                    <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>CP-2025-00412 — Active (01/07/2025 – 30/06/2026)</span>
+                </div>
+            </div>
+
+            <!-- Provider -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Meal Provider <span class="text-red-500">*</span></label>
+                <select id="provider-select" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-teal-700 appearance-none">
+                    <option value="">Select provider...</option>
+                    <optgroup label="Cookaborough Partners">
+                        <option selected>Gourmet Meals (via Cookaborough)</option>
+                        <option>Bundy's Kitchen Co. (via Cookaborough)</option>
+                        <option>Mum's Home Cooking (via Cookaborough)</option>
+                    </optgroup>
+                    <optgroup label="Direct Providers">
+                        <option>Gourmet Meals</option>
+                        <option>LiteNeasy</option>
+                        <option>Meals in a Moment</option>
+                        <option>Meals On Wheels</option>
+                        <option>Tender Loving Cuisine</option>
+                        <option>YouFoodz</option>
+                    </optgroup>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <!-- Budget Row -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Budget <span class="text-gray-400 font-normal">(optional)</span></label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                        <input type="text" value="80.00" class="w-full pl-7 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-teal-700" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Occurrence</label>
+                    <select class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-teal-700 appearance-none">
+                        <option value="">Select...</option>
+                        <option>per day</option>
+                        <option selected>per week</option>
+                        <option>per fortnight</option>
+                        <option>per month</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- State -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">State</label>
+                <select class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-teal-700 appearance-none">
+                    <option value="">Select state...</option>
+                    <option selected>Queensland</option>
+                    <option>New South Wales</option>
+                    <option>Victoria</option>
+                    <option>South Australia</option>
+                    <option>Western Australia</option>
+                    <option>Tasmania</option>
+                    <option>Australian Capital Territory</option>
+                    <option>Northern Territory</option>
+                </select>
+            </div>
+
+            <hr class="border-gray-200" />
+
+            <!-- Customer & Authority -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Existing Customer?</label>
+                    <div class="flex items-center gap-4">
+                        <label class="flex items-center gap-2 text-sm">
+                            <input type="radio" name="existing" value="yes" class="h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700" />
+                            <span>Yes</span>
+                        </label>
+                        <label class="flex items-center gap-2 text-sm">
+                            <input type="radio" name="existing" value="no" checked class="h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700" />
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Phone Order Authority?</label>
+                    <div class="flex items-center gap-4">
+                        <label class="flex items-center gap-2 text-sm">
+                            <input type="radio" name="phone_authority" value="yes" checked class="h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700" />
+                            <span>Yes</span>
+                        </label>
+                        <label class="flex items-center gap-2 text-sm">
+                            <input type="radio" name="phone_authority" value="no" class="h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700" />
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consumer Email -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Recipient Email <span class="text-gray-400 font-normal">(optional)</span></label>
+                <input type="email" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-teal-700" placeholder="email@example.com" />
+            </div>
+
+            <!-- CRN -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">CRN <span class="text-gray-400 font-normal">(optional)</span></label>
+                <input type="text" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-700 focus:border-teal-700" placeholder="e.g. 123456" />
+            </div>
+
+            <!-- Includes Shakes -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Includes Shakes?</label>
+                <div class="flex items-center gap-4">
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="radio" name="shakes" value="yes" class="h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700" />
+                        <span>Yes</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="radio" name="shakes" value="no" checked class="h-4 w-4 border-gray-300 text-teal-700 focus:ring-teal-700" />
+                        <span>No</span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="border-t border-gray-200 px-6 py-4 flex items-center justify-end gap-3">
+            <a href="01-service-requests-index.html" class="px-4 py-2.5 text-sm font-medium rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
+                Cancel
+            </a>
+            <button class="px-5 py-2.5 text-sm font-medium rounded-md text-white bg-teal-700 hover:bg-teal-800 shadow-sm">
+                Create Request
+            </button>
+        </div>
+    </div>
+    <script>
+        function selectProvider(name) {
+            const select = document.getElementById('provider-select');
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].text === name) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+            document.getElementById('cooks-panel').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

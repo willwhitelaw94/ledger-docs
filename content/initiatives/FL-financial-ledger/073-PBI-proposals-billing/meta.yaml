@@ -1,0 +1,24 @@
+epic_code: PBI
+epic_number: "073"
+name: Proposals, Billing & Deal Pipeline
+initiative: FL-financial-ledger
+status: design
+stage: design
+created: "2026-04-01"
+author: William Whitelaw
+branch: feature/073-PBI-proposals-billing
+depends_on:
+  - 005-IAR-invoicing-ar-ap
+  - 008-JCT-job-costing-tracking
+  - 023-EML-email-infrastructure
+  - 031-QPO-quotes-purchase-orders
+  - 072-JTW-jobs-timesheets-wip
+gates:
+  idea:
+    passed: true
+    date: "2026-04-01"
+    notes: "XL effort (7+ sprints). Practice billing lifecycle: proposals → quotes → invoices tied to jobs. Ignition-inspired. Extends existing Invoice/Job models, adds new Proposal/Service/Deal entities."
+  spec:
+    passed: false
+    date: null
+    notes: null

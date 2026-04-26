@@ -1,0 +1,17 @@
+node_modules
+.git
+.nuxt
+.data
+.nitro
+.cache
+dist
+.wrangler
+.dev.vars
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+infra/cdk/node_modules
+infra/cdk/cdk.out
+infra/cdk/dist

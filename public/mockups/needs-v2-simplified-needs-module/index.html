@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Needs V2 - Simplified Needs Module Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}.step-active{background:#007F7E;color:white}.step-done{background:#43C0BE;color:white}.step-pending{background:#e5e7eb;color:#6b7280}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4 overflow-x-auto sticky top-0 z-50">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">Needs V2 - Simplified</span>
+  <div class="flex gap-1 ml-4">
+    <button onclick="showScreen('screen1')" id="btn-screen1" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap tab-active">Needs List</button>
+    <button onclick="showScreen('screen2')" id="btn-screen2" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Step 1: Define Need</button>
+    <button onclick="showScreen('screen3')" id="btn-screen3" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Step 2: Link Risks</button>
+    <button onclick="showScreen('screen4')" id="btn-screen4" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Step 3: Budget Items</button>
+  </div>
+</nav>
+
+<!-- Screen 1: Needs List -->
+<div id="screen1" class="screen active p-6 max-w-5xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+      <h1 class="text-2xl font-bold text-gray-900">Needs</h1>
+    </div>
+    <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">+ Add Need</button>
+  </div>
+
+  <div class="space-y-3">
+    <!-- Physiological -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 border-l-4 border-l-rose-500">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-700">Physiological</span>
+            <span class="text-xs text-rose-600 font-medium">Nutrition &amp; Hydration</span>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Active</span>
+            <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-[10px] font-medium text-teal-700">Care Plan</span>
+          </div>
+          <p class="text-sm text-gray-900">Requires assistance with meal preparation due to limited mobility. Meals on Wheels 5 days/week, family provides weekend meals.</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span>Funding: <span class="text-gray-600">HCP</span></span>
+            <span>Risks: <span class="text-teal-700 font-medium">2 linked</span></span>
+            <span>Budget: <span class="text-teal-700 font-medium">1 item ($150/wk)</span></span>
+            <span>Updated: 15 Mar 2026</span>
+          </div>
+        </div>
+        <div class="flex gap-1 ml-4">
+          <button class="p-1.5 rounded hover:bg-gray-100 text-gray-400" title="Drag to reorder"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/></svg></button>
+          <button class="p-1.5 rounded hover:bg-gray-100 text-teal-700" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 border-l-4 border-l-rose-500">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-700">Physiological</span>
+            <span class="text-xs text-rose-600 font-medium">Mobility &amp; Physical Function</span>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Active</span>
+            <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-[10px] font-medium text-teal-700">Care Plan</span>
+          </div>
+          <p class="text-sm text-gray-900">Requires daily support with personal care — showering, dressing. Uses rollator for indoor mobility. OT assessment completed for bathroom modifications.</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span>Funding: <span class="text-gray-600">HCP</span></span>
+            <span>Risks: <span class="text-teal-700 font-medium">3 linked</span></span>
+            <span>Budget: <span class="text-teal-700 font-medium">2 items ($280/wk)</span></span>
+          </div>
+        </div>
+        <div class="flex gap-1 ml-4">
+          <button class="p-1.5 rounded hover:bg-gray-100 text-gray-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/></svg></button>
+          <button class="p-1.5 rounded hover:bg-gray-100 text-teal-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Safety -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 border-l-4 border-l-amber-500">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">Safety</span>
+            <span class="text-xs text-amber-600 font-medium">Home Safety</span>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">Active</span>
+          </div>
+          <p class="text-sm text-gray-900">Home safety assessment required. Stairs at front entrance are a falls risk. Bathroom needs grab rails and non-slip treatment.</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span>Funding: <span class="text-gray-600">HCP</span></span>
+            <span>Risks: <span class="text-teal-700 font-medium">1 linked</span></span>
+            <span>Budget: <span class="text-gray-400">None</span></span>
+          </div>
+        </div>
+        <div class="flex gap-1 ml-4">
+          <button class="p-1.5 rounded hover:bg-gray-100 text-gray-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/></svg></button>
+          <button class="p-1.5 rounded hover:bg-gray-100 text-teal-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Belonging -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 border-l-4 border-l-blue-500">
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">Belonging</span>
+            <span class="text-xs text-blue-600 font-medium">Social Connection</span>
+            <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">Draft</span>
+          </div>
+          <p class="text-sm text-gray-900">Would benefit from social outings and group activities. Previously attended bowls club but stopped after Harold's passing.</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span>Funding: <span class="text-gray-600">HCP</span></span>
+            <span>Risks: <span class="text-gray-400">None</span></span>
+            <span>Budget: <span class="text-gray-400">None</span></span>
+          </div>
+        </div>
+        <div class="flex gap-1 ml-4">
+          <button class="p-1.5 rounded hover:bg-gray-100 text-gray-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/></svg></button>
+          <button class="p-1.5 rounded hover:bg-gray-100 text-teal-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 2: Step 1 - Define Need -->
+<div id="screen2" class="screen p-6 max-w-3xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">Add Need</h1>
+  </div>
+
+  <!-- Step Indicator -->
+  <div class="flex items-center gap-2 mb-6">
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-active flex items-center justify-center text-sm font-bold">1</span><span class="text-sm font-medium text-teal-700">Define Need</span></div>
+    <div class="flex-1 h-0.5 bg-gray-200"></div>
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-sm font-bold">2</span><span class="text-sm text-gray-400">Link Risks</span></div>
+    <div class="flex-1 h-0.5 bg-gray-200"></div>
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-sm font-bold">3</span><span class="text-sm text-gray-400">Budget Items</span></div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-5">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+      <div class="space-y-2">
+        <div>
+          <p class="text-xs font-semibold text-rose-600 uppercase mb-1">Physiological</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="border-2 border-teal-700 bg-teal-50 rounded-lg px-3 py-1.5 text-sm font-medium text-teal-700">Nutrition &amp; Hydration</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Mobility &amp; Physical Function</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Personal Care &amp; Hygiene</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Sleep &amp; Rest</button>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-amber-600 uppercase mb-1">Safety</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Home Safety</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Medication Safety</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Health Monitoring</button>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-blue-600 uppercase mb-1">Belonging</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Social Connection</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Family Relationships</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Community Participation</button>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-purple-600 uppercase mb-1">Esteem</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Independence &amp; Dignity</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Purpose &amp; Contribution</button>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-green-600 uppercase mb-1">Self-Actualisation</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Learning &amp; Growth</button>
+            <button class="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 hover:border-gray-300">Spiritual &amp; Cultural</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">What does the client need? *</label>
+      <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-20" placeholder="Describe the need in plain language...">Requires assistance with meal preparation due to limited mobility. Cannot safely use the stove. Meals on Wheels 5 days per week, family provides weekend meals.</textarea>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">How will it be met? (optional)</label>
+      <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-16" placeholder="How the need will be addressed...">Meals on Wheels service delivery Mon-Fri. Family (daughter Sarah) provides meals Sat-Sun. Dietitian review annually.</textarea>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Funding Source *</label>
+      <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <option selected>HCP (Home Care Package)</option>
+        <option>Informal Support</option>
+        <option>PHN</option>
+        <option>PBS</option>
+        <option>Private Health Insurance</option>
+        <option>Other (specify)</option>
+      </select>
+    </div>
+
+    <label class="flex items-center gap-2">
+      <input type="checkbox" checked class="rounded text-teal-700">
+      <span class="text-sm text-gray-700">Add to Care Plan</span>
+    </label>
+
+    <div class="flex justify-end gap-3 pt-2">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">Cancel</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Next: Link Risks &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 3: Step 2 - Link Risks -->
+<div id="screen3" class="screen p-6 max-w-3xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">Add Need</h1>
+  </div>
+
+  <div class="flex items-center gap-2 mb-6">
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-done flex items-center justify-center text-sm font-bold">&#10003;</span><span class="text-sm text-gray-500">Define Need</span></div>
+    <div class="flex-1 h-0.5 bg-teal-500"></div>
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-active flex items-center justify-center text-sm font-bold">2</span><span class="text-sm font-medium text-teal-700">Link Risks</span></div>
+    <div class="flex-1 h-0.5 bg-gray-200"></div>
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-pending flex items-center justify-center text-sm font-bold">3</span><span class="text-sm text-gray-400">Budget Items</span></div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <p class="text-sm text-gray-600 mb-4">Select risks related to this need. These are the existing risks on Margaret's package.</p>
+    <div class="space-y-2">
+      <label class="flex items-center gap-3 border-2 border-teal-700 bg-teal-50 rounded-lg p-3 cursor-pointer">
+        <input type="checkbox" checked class="rounded text-teal-700">
+        <div><p class="text-sm font-medium text-gray-900">Falls Risk</p><p class="text-xs text-gray-500">Last assessed: 10 Mar 2026</p></div>
+      </label>
+      <label class="flex items-center gap-3 border-2 border-teal-700 bg-teal-50 rounded-lg p-3 cursor-pointer">
+        <input type="checkbox" checked class="rounded text-teal-700">
+        <div><p class="text-sm font-medium text-gray-900">Nutrition &amp; Hydration</p><p class="text-xs text-gray-500">Last assessed: 5 Feb 2026</p></div>
+      </label>
+      <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-gray-300">
+        <input type="checkbox" class="rounded text-teal-700">
+        <div><p class="text-sm font-medium text-gray-900">Medication Safety</p><p class="text-xs text-gray-500">Last assessed: 1 Mar 2026</p></div>
+      </label>
+      <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-gray-300">
+        <input type="checkbox" class="rounded text-teal-700">
+        <div><p class="text-sm font-medium text-gray-900">Mobility</p><p class="text-xs text-gray-500">Last assessed: 10 Mar 2026</p></div>
+      </label>
+      <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-gray-300">
+        <input type="checkbox" class="rounded text-teal-700">
+        <div><p class="text-sm font-medium text-gray-900">Continence</p><p class="text-xs text-gray-500">Last assessed: 20 Jan 2026</p></div>
+      </label>
+    </div>
+    <div class="flex justify-between gap-3 mt-6">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">&larr; Back</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Next: Budget Items &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 4: Step 3 - Budget Items -->
+<div id="screen4" class="screen p-6 max-w-3xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">Add Need</h1>
+  </div>
+
+  <div class="flex items-center gap-2 mb-6">
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-done flex items-center justify-center text-sm font-bold">&#10003;</span><span class="text-sm text-gray-500">Define Need</span></div>
+    <div class="flex-1 h-0.5 bg-teal-500"></div>
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-done flex items-center justify-center text-sm font-bold">&#10003;</span><span class="text-sm text-gray-500">Link Risks</span></div>
+    <div class="flex-1 h-0.5 bg-teal-500"></div>
+    <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-full step-active flex items-center justify-center text-sm font-bold">3</span><span class="text-sm font-medium text-teal-700">Budget Items</span></div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <p class="text-sm text-gray-600 mb-4">Associate budget items that fund this need. A budget item can serve multiple needs.</p>
+    <div class="space-y-2">
+      <label class="flex items-center gap-3 border-2 border-teal-700 bg-teal-50 rounded-lg p-3 cursor-pointer">
+        <input type="checkbox" checked class="rounded text-teal-700">
+        <div class="flex-1"><p class="text-sm font-medium text-gray-900">Meals on Wheels</p><p class="text-xs text-gray-500">Personal Care &middot; HCP</p></div>
+        <span class="text-sm font-medium text-gray-700">$150/wk</span>
+      </label>
+      <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-gray-300">
+        <input type="checkbox" class="rounded text-teal-700">
+        <div class="flex-1"><p class="text-sm font-medium text-gray-900">Personal Care Support</p><p class="text-xs text-gray-500">Personal Care &middot; HCP</p></div>
+        <span class="text-sm font-medium text-gray-700">$280/wk</span>
+      </label>
+      <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-gray-300">
+        <input type="checkbox" class="rounded text-teal-700">
+        <div class="flex-1"><p class="text-sm font-medium text-gray-900">Transport to Medical</p><p class="text-xs text-gray-500">Transport &middot; HCP</p></div>
+        <span class="text-sm font-medium text-gray-700">$60/wk</span>
+      </label>
+      <label class="flex items-center gap-3 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-gray-300">
+        <input type="checkbox" class="rounded text-teal-700">
+        <div class="flex-1"><p class="text-sm font-medium text-gray-900">Dietitian Consult</p><p class="text-xs text-gray-500">Allied Health &middot; HCP</p></div>
+        <span class="text-sm font-medium text-gray-700">$120/visit</span>
+      </label>
+    </div>
+
+    <div class="bg-gray-50 rounded-lg p-4 mt-4">
+      <p class="text-xs font-medium text-gray-500 uppercase mb-2">Summary</p>
+      <div class="text-sm space-y-1">
+        <p><span class="text-gray-500">Category:</span> <span class="font-medium">Nutrition &amp; Hydration</span></p>
+        <p><span class="text-gray-500">Risks linked:</span> <span class="font-medium">Falls Risk, Nutrition &amp; Hydration</span></p>
+        <p><span class="text-gray-500">Budget items:</span> <span class="font-medium">Meals on Wheels ($150/wk)</span></p>
+        <p><span class="text-gray-500">Funding:</span> <span class="font-medium">HCP</span></p>
+      </div>
+    </div>
+
+    <div class="flex justify-between gap-3 mt-6">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">&larr; Back</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Save Need</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('tab-active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LES Challenge — GitHub Gary — List View</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' },
+            info: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',500:'#43C0BE',700:'#007F7E',900:'#003D3D' },
+            success: { 50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',500:'#35A8E4',700:'#156F9D' },
+            warning: { 50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',500:'#E0763C',700:'#9C481A' },
+            danger: { 50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',500:'#E04B51',700:'#9C262A' },
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+          borderRadius: { 'input': '8px' },
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-primary { color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+
+    body { background: #f6f8fa; font-family: 'Roboto Flex', system-ui, sans-serif; }
+
+    .mono { font-family: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace; }
+
+    .gh-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 20px;
+      border: 1px solid transparent;
+    }
+    .gh-badge-green { background: #dafbe1; color: #1a7f37; border-color: rgba(26,127,55,0.2); }
+    .gh-badge-grey { background: #eaeef2; color: #57606a; border-color: rgba(87,96,106,0.2); }
+    .gh-badge-purple { background: #eddeff; color: #6639ba; border-color: rgba(102,57,186,0.2); }
+    .gh-badge-blue { background: #ddf4ff; color: #0969da; border-color: rgba(9,105,218,0.2); }
+    .gh-badge-yellow { background: #fff8c5; color: #9a6700; border-color: rgba(154,103,0,0.2); }
+    .gh-badge-red { background: #ffebe9; color: #cf222e; border-color: rgba(207,34,46,0.2); }
+    .gh-badge-teal { background: #dafbe1; color: #007F7E; border-color: rgba(0,127,126,0.2); }
+
+    .label-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 7px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 20px;
+    }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .tab-item {
+      padding: 8px 16px;
+      font-size: 14px;
+      color: #57606a;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-item:hover { color: #24292f; }
+    .tab-item-active {
+      color: #24292f;
+      font-weight: 600;
+      border-bottom-color: #007F7E;
+    }
+    .tab-count {
+      background: #eaeef2;
+      color: #57606a;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 0 6px;
+      border-radius: 9999px;
+      margin-left: 4px;
+      line-height: 18px;
+      display: inline-block;
+    }
+    .tab-item-active .tab-count {
+      background: #007F7E;
+      color: #fff;
+    }
+
+    .lead-row {
+      display: flex;
+      align-items: flex-start;
+      padding: 12px 16px;
+      border-bottom: 1px solid #d0d7de;
+      transition: background 0.1s;
+      cursor: pointer;
+    }
+    .lead-row:hover { background: #f6f8fa; }
+    .lead-row.selected { background: #ddf4ff; }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #24292f;
+      background: #fff;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .filter-btn:hover { background: #f6f8fa; }
+
+    .batch-bar {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      background: #ddf4ff;
+      border-bottom: 1px solid #54aeff;
+    }
+    .batch-bar.visible { display: flex; }
+    .batch-btn {
+      padding: 4px 12px;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #24292f;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .batch-btn:hover { background: #f6f8fa; border-color: #24292f; }
+
+    .comment-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: #57606a;
+      font-size: 12px;
+    }
+  </style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body class="min-h-screen">
+  <!-- Top navigation bar -->
+  <header class="bg-[#24292f] text-white">
+    <div class="max-w-[1280px] mx-auto px-6 flex items-center h-12 gap-6">
+      <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <span class="font-semibold text-sm">Trilogy Care</span>
+      <span class="text-gray-400 text-sm">/</span>
+      <span class="text-sm text-gray-300">Lead Essential</span>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-gray-300">Sarah Chen</span>
+        <div class="avatar bg-teal-600" style="width:28px;height:28px;font-size:11px;">SC</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="max-w-[1280px] mx-auto px-6 py-6">
+    <!-- Page header -->
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-semibold text-primary">Leads</h1>
+      <button class="bg-teal-700 hover:bg-teal-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors">
+        New Lead
+      </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="bg-white border border-gray-200 rounded-t-lg">
+      <div class="flex items-center border-b border-gray-200 overflow-x-auto px-2" id="tabBar">
+        <div class="tab-item tab-item-active" data-filter="all" onclick="filterTab(this, 'all')">
+          All Leads <span class="tab-count">145</span>
+        </div>
+        <div class="tab-item" data-filter="pre-care" onclick="filterTab(this, 'pre-care')">
+          Pre-Care <span class="tab-count">45</span>
+        </div>
+        <div class="tab-item" data-filter="acat-booked" onclick="filterTab(this, 'acat-booked')">
+          ACAT Booked <span class="tab-count">12</span>
+        </div>
+        <div class="tab-item" data-filter="approved" onclick="filterTab(this, 'approved')">
+          Approved <span class="tab-count">8</span>
+        </div>
+        <div class="tab-item" data-filter="allocated" onclick="filterTab(this, 'allocated')">
+          Allocated <span class="tab-count">6</span>
+        </div>
+        <div class="tab-item" data-filter="active" onclick="filterTab(this, 'active')">
+          Active <span class="tab-count">51</span>
+        </div>
+        <div class="tab-item" data-filter="converted" onclick="filterTab(this, 'converted')">
+          Converted <span class="tab-count">0</span>
+        </div>
+        <div class="tab-item" data-filter="lost" onclick="filterTab(this, 'lost')" style="color:#8b949e;">
+          Lost <span class="tab-count" style="background:#ffebe9;color:#cf222e;">23</span>
+        </div>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="flex items-center gap-3 px-4 py-3 border-b border-gray-200 bg-[#f6f8fa]" id="filterBar">
+        <div class="flex-1 relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M11.5 7a4.499 4.499 0 11-8.998 0A4.499 4.499 0 0111.5 7zm-.82 4.74a6 6 0 111.06-1.06l3.04 3.04a.75.75 0 11-1.06 1.06l-3.04-3.04z"/></svg>
+          <input type="text" class="w-full text-sm border border-gray-300 rounded-md pl-9 pr-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white mono" placeholder="is:active assignee:@me stage:pre-care" id="searchInput">
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="filter-btn">
+            Journey Stage
+            <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+          </button>
+          <button class="filter-btn">
+            Lead Status
+            <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+          </button>
+          <button class="filter-btn">
+            Assigned Agent
+            <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+          </button>
+          <button class="filter-btn">
+            Sort
+            <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Batch action bar (hidden until items selected) -->
+      <div class="batch-bar" id="batchBar">
+        <span class="text-sm font-semibold text-[#0969da]" id="selectedCount">0 selected</span>
+        <div class="flex-1"></div>
+        <button class="batch-btn">Assign</button>
+        <button class="batch-btn">Label</button>
+        <button class="batch-btn">Stage</button>
+        <button class="batch-btn" style="border-color:#d0d7de;">Export</button>
+      </div>
+
+      <!-- List header -->
+      <div class="flex items-center px-4 py-2 text-xs font-semibold text-secondary border-b border-gray-200 bg-[#f6f8fa]">
+        <div class="w-8">
+          <input type="checkbox" class="rounded border-gray-300" id="selectAll" onchange="toggleSelectAll()">
+        </div>
+        <div class="flex-1">
+          <span id="openCount">122 Open</span>
+          <span class="mx-2 text-gray-300">|</span>
+          <span class="text-tertiary" id="closedCount">23 Lost</span>
+        </div>
+        <div class="w-32 text-right">Activity</div>
+      </div>
+
+      <!-- Lead list -->
+      <div id="leadList">
+        <!-- Rows generated by JS -->
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const leads = [
+      { id:'TC-1042', name:'Margaret Thornton', stage:'ACAT Booked', status:'Made Contact', stageFilter:'acat-booked', labels:['High Intent','HCP','Referral'], agent:'David Williams', agentInitials:'DW', agentColor:'bg-primary-blue-600', opened:'3 days ago', openedBy:'Sarah Chen', comments:4, statusColor:'#1a7f37' },
+      { id:'TC-1038', name:'Robert Anderson', stage:'Pre-Care', status:'Attempted Contact', stageFilter:'pre-care', labels:['CHSP'], agent:'Sarah Chen', agentInitials:'SC', agentColor:'bg-teal-600', opened:'5 days ago', openedBy:'Maria Santos', comments:2, statusColor:'#9a6700' },
+      { id:'TC-1045', name:'Dorothy Mitchell', stage:'Approved', status:'Made Contact', stageFilter:'approved', labels:['HCP','High Intent'], agent:'James Park', agentInitials:'JP', agentColor:'bg-purple-600', opened:'1 day ago', openedBy:'James Park', comments:6, statusColor:'#1a7f37' },
+      { id:'TC-1031', name:'Harold Patterson', stage:'Pre-Care', status:'Not Contacted', stageFilter:'pre-care', labels:['Self-Referred'], agent:'Lisa Thompson', agentInitials:'LT', agentColor:'bg-amber-600', opened:'1 week ago', openedBy:'System', comments:0, statusColor:'#57606a' },
+      { id:'TC-1044', name:'Jean Campbell', stage:'ACAT Booked', status:'Made Contact', stageFilter:'acat-booked', labels:['HCP','Referral'], agent:'David Williams', agentInitials:'DW', agentColor:'bg-primary-blue-600', opened:'2 days ago', openedBy:'Sarah Chen', comments:3, statusColor:'#1a7f37' },
+      { id:'TC-1029', name:'Frank Sullivan', stage:'Active', status:'Made Contact', stageFilter:'active', labels:['HCP','Urgent'], agent:'Maria Santos', agentInitials:'MS', agentColor:'bg-rose-600', opened:'2 weeks ago', openedBy:'Lisa Thompson', comments:11, statusColor:'#1a7f37' },
+      { id:'TC-1033', name:'Shirley Watson', stage:'Pre-Care', status:'Attempted Contact', stageFilter:'pre-care', labels:['CHSP'], agent:'Sarah Chen', agentInitials:'SC', agentColor:'bg-teal-600', opened:'6 days ago', openedBy:'Sarah Chen', comments:1, statusColor:'#9a6700' },
+      { id:'TC-1046', name:'William O\'Brien', stage:'Allocated', status:'Made Contact', stageFilter:'allocated', labels:['HCP','High Intent'], agent:'James Park', agentInitials:'JP', agentColor:'bg-purple-600', opened:'12 hours ago', openedBy:'David Williams', comments:2, statusColor:'#1a7f37' },
+      { id:'TC-1027', name:'Edith MacPherson', stage:'Active', status:'Made Contact', stageFilter:'active', labels:['HCP','Follow Up'], agent:'Lisa Thompson', agentInitials:'LT', agentColor:'bg-amber-600', opened:'3 weeks ago', openedBy:'Maria Santos', comments:8, statusColor:'#1a7f37' },
+      { id:'TC-1039', name:'Arthur Brennan', stage:'Pre-Care', status:'Not Contacted', stageFilter:'pre-care', labels:[], agent:'Sarah Chen', agentInitials:'SC', agentColor:'bg-teal-600', opened:'4 days ago', openedBy:'System', comments:0, statusColor:'#57606a' },
+      { id:'TC-1036', name:'Patricia Nguyen', stage:'Approved', status:'Made Contact', stageFilter:'approved', labels:['HCP','Referral'], agent:'Maria Santos', agentInitials:'MS', agentColor:'bg-rose-600', opened:'1 week ago', openedBy:'James Park', comments:5, statusColor:'#1a7f37' },
+      { id:'TC-1041', name:'George Whitfield', stage:'Pre-Care', status:'Attempted Contact', stageFilter:'pre-care', labels:['CHSP','Low Intent'], agent:'David Williams', agentInitials:'DW', agentColor:'bg-primary-blue-600', opened:'4 days ago', openedBy:'David Williams', comments:1, statusColor:'#9a6700' },
+      { id:'TC-1025', name:'Betty Richardson', stage:'Lost', status:'Lost', stageFilter:'lost', labels:['CHSP'], agent:'Lisa Thompson', agentInitials:'LT', agentColor:'bg-amber-600', opened:'1 month ago', openedBy:'Sarah Chen', comments:3, statusColor:'#cf222e' },
+      { id:'TC-1047', name:'Allan Fitzgerald', stage:'Pre-Care', status:'Not Contacted', stageFilter:'pre-care', labels:['HCP'], agent:'James Park', agentInitials:'JP', agentColor:'bg-purple-600', opened:'6 hours ago', openedBy:'System', comments:0, statusColor:'#57606a' },
+      { id:'TC-1034', name:'Mabel Crawford', stage:'ACAT Booked', status:'Made Contact', stageFilter:'acat-booked', labels:['HCP','High Intent','Referral'], agent:'Sarah Chen', agentInitials:'SC', agentColor:'bg-teal-600', opened:'1 week ago', openedBy:'Maria Santos', comments:7, statusColor:'#1a7f37' },
+    ];
+
+    const labelColors = {
+      'High Intent': { bg:'#ddf4ff', color:'#0969da' },
+      'Low Intent': { bg:'#eaeef2', color:'#57606a' },
+      'HCP': { bg:'#eddeff', color:'#6639ba' },
+      'CHSP': { bg:'#fff8c5', color:'#9a6700' },
+      'Referral': { bg:'#fff8c5', color:'#9a6700' },
+      'Self-Referred': { bg:'#eaeef2', color:'#57606a' },
+      'Urgent': { bg:'#ffebe9', color:'#cf222e' },
+      'Follow Up': { bg:'#ddf4ff', color:'#0969da' },
+    };
+
+    const stageColors = {
+      'Pre-Care': '#57606a',
+      'ACAT Booked': '#0969da',
+      'Approved': '#1a7f37',
+      'Allocated': '#6639ba',
+      'Active': '#007F7E',
+      'Converted': '#007F7E',
+      'Lost': '#cf222e',
+    };
+
+    let selectedIds = new Set();
+    let currentFilter = 'all';
+
+    function renderLeads() {
+      const container = document.getElementById('leadList');
+      const filtered = currentFilter === 'all'
+        ? leads
+        : leads.filter(l => l.stageFilter === currentFilter);
+
+      container.innerHTML = filtered.map((lead, i) => `
+        <div class="lead-row ${selectedIds.has(lead.id) ? 'selected' : ''}" data-id="${lead.id}" data-stage="${lead.stageFilter}">
+          <div class="w-8 pt-0.5">
+            <input type="checkbox" class="rounded border-gray-300 lead-checkbox" data-id="${lead.id}" ${selectedIds.has(lead.id) ? 'checked' : ''} onchange="toggleSelect('${lead.id}')">
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="status-dot" style="background: ${lead.statusColor};" title="${lead.status}"></div>
+              <a href="01-profile-overview.html" class="text-sm font-semibold text-primary hover:text-[#0969da] hover:underline">${lead.name}</a>
+              ${lead.labels.map(l => `<span class="label-pill" style="background:${labelColors[l]?.bg || '#eaeef2'};color:${labelColors[l]?.color || '#57606a'}">${l}</span>`).join('')}
+            </div>
+            <div class="text-xs text-tertiary mt-1 pl-[18px]">
+              <span class="mono">#${lead.id}</span>
+              <span class="mx-1">&middot;</span>
+              opened ${lead.opened} by ${lead.openedBy}
+              <span class="mx-1">&middot;</span>
+              <span class="gh-badge" style="font-size:10px;padding:0 6px;line-height:16px;background:${stageColors[lead.stage]}20;color:${stageColors[lead.stage]};border-color:${stageColors[lead.stage]}33">${lead.stage}</span>
+              <span class="mx-1">&middot;</span>
+              Assigned to ${lead.agent}
+            </div>
+          </div>
+          <div class="w-32 flex items-center justify-end gap-3">
+            <div class="avatar ${lead.agentColor}" title="${lead.agent}">${lead.agentInitials}</div>
+            ${lead.comments > 0 ? `
+              <span class="comment-icon" title="${lead.comments} comments">
+                <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M2.75 2.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h2a.75.75 0 01.75.75v2.19l2.72-2.72a.75.75 0 01.53-.22h4.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25H2.75zM1 2.75C1 1.784 1.784 1 2.75 1h10.5c.966 0 1.75.784 1.75 1.75v7.5A1.75 1.75 0 0113.25 12H8.06l-3.78 3.78A.75.75 0 013 15.25v-3.25H2.75A1.75 1.75 0 011 10.25v-7.5z"/></svg>
+                ${lead.comments}
+              </span>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleSelect(id) {
+      if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+      } else {
+        selectedIds.add(id);
+      }
+      updateBatchBar();
+      renderLeads();
+    }
+
+    function toggleSelectAll() {
+      const all = document.getElementById('selectAll');
+      const filtered = currentFilter === 'all'
+        ? leads
+        : leads.filter(l => l.stageFilter === currentFilter);
+
+      if (all.checked) {
+        filtered.forEach(l => selectedIds.add(l.id));
+      } else {
+        selectedIds.clear();
+      }
+      updateBatchBar();
+      renderLeads();
+    }
+
+    function updateBatchBar() {
+      const bar = document.getElementById('batchBar');
+      const filterBar = document.getElementById('filterBar');
+      const count = document.getElementById('selectedCount');
+
+      if (selectedIds.size > 0) {
+        bar.classList.add('visible');
+        filterBar.style.display = 'none';
+        count.textContent = `${selectedIds.size} selected`;
+      } else {
+        bar.classList.remove('visible');
+        filterBar.style.display = '';
+      }
+    }
+
+    function filterTab(el, filter) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('tab-item-active'));
+      el.classList.add('tab-item-active');
+      currentFilter = filter;
+      selectedIds.clear();
+      updateBatchBar();
+      document.getElementById('selectAll').checked = false;
+      renderLeads();
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      const query = e.target.value.toLowerCase();
+      document.querySelectorAll('.lead-row').forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+
+    // Initial render
+    renderLeads();
+  </script>
+</body>
+</html>

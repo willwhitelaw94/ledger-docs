@@ -1,0 +1,52 @@
+name: Daily Backup Branch
+
+on:
+  schedule:
+    # Run daily at 15:00 UTC (01:00 AEST/Brisbane)
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  RETENTION_DAYS: 30
+
+jobs:
+  backup:
+    name: Backup main to branch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main (full history)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Create backup branch
+        run: |
+          TIMESTAMP=$(date +%Y-%m-%d)
+          COMMIT=$(git rev-parse --short HEAD)
+          BRANCH="backup/${TIMESTAMP}"
+
+          git checkout -b "$BRANCH"
+          git push origin "$BRANCH" --force
+
+          echo "✅ Backed up main ($COMMIT) → $BRANCH"
+
+      - name: Clean up old backup branches
+        run: |
+          CUTOFF=$(date -d "-${{ env.RETENTION_DAYS }} days" +%Y-%m-%d 2>/dev/null || date -v-${{ env.RETENTION_DAYS }}d +%Y-%m-%d)
+          echo "🧹 Removing backup branches older than $CUTOFF"
+
+          git branch -r \
+            | grep 'origin/backup/' \
+            | sed 's|origin/||' \
+            | while read branch; do
+                BRANCH_DATE=$(echo "$branch" | grep -oP '\d{4}-\d{2}-\d{2}')
+                if [[ -n "$BRANCH_DATE" && "$BRANCH_DATE" < "$CUTOFF" ]]; then
+                  git push origin --delete "$branch"
+                  echo "  Deleted: $branch"
+                fi
+              done

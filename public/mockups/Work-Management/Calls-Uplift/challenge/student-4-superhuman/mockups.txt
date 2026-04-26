@@ -1,0 +1,322 @@
+================================================================================
+                    CALLS INBOX - SUPERHUMAN-INSPIRED MOCKUPS
+                           Design Student 4 Variations
+================================================================================
+
+VARIATION A: SPLIT VIEW WITH KEYBOARD NAV
+=========================================
+Pattern: Split Inbox + J/K Navigation + Single-Item Focus
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                                    🔍 Cmd+K  │ Sarah Chen ▼          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │ CALLS INBOX              [1] Unlinked (5)  [2] Routine (18)  [3] Done   │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+│  ┌──────────────────────────┐  ┌────────────────────────────────────────────┐  │
+│  │ ▶ 5 calls remaining      │  │  CALL DETAIL                               │  │
+│  │   ━━━━━━━━━━━━░░░░░░░░░  │  │  ─────────────────────────────────────────  │  │
+│  │   Progress: 18/23        │  │                                            │  │
+│  ├──────────────────────────┤  │  Margaret Thompson                         │  │
+│  │                          │  │  📞 03 9555 1234  •  2:34 duration         │  │
+│  │  ┌────────────────────┐  │  │  Today 9:42 AM  •  ⚠️ UNLINKED             │  │
+│  │  │ ▸ Margaret Thompson│◀─┼──│                                            │  │
+│  │  │   9:42 AM • 2:34   │  │  ├────────────────────────────────────────────┤  │
+│  │  │   ⚠️ Unlinked      │  │  │  ▶ ━━━━━━━━━━━━━━━━━━━░░░░░░░  1:42 / 2:34 │  │
+│  │  └────────────────────┘  │  │  [Space] Play   [←][→] Seek 10s            │  │
+│  │                          │  ├────────────────────────────────────────────┤  │
+│  │  ┌────────────────────┐  │  │  TRANSCRIPT                                │  │
+│  │  │   John Williams    │  │  │  ─────────────────────────────────────────  │  │
+│  │  │   9:15 AM • 1:45   │  │  │                                            │  │
+│  │  │   ⚠️ Unlinked      │  │  │  Coordinator: "Hello Margaret, this is     │  │
+│  │  └────────────────────┘  │  │  Sarah from Trilogy Care. How are you      │  │
+│  │                          │  │  feeling today?"                           │  │
+│  │  ┌────────────────────┐  │  │                                            │  │
+│  │  │   Betty O'Connor   │  │  │  Client: "Oh hello dear, I'm doing quite   │  │
+│  │  │   8:58 AM • 3:12   │  │  │  well. The new carer came yesterday and    │  │
+│  │  │   ✓ Matched        │  │  │  she was lovely."                          │  │
+│  │  └────────────────────┘  │  │                                            │  │
+│  │                          │  │  Coordinator: "That's wonderful to hear!   │  │
+│  │  ┌────────────────────┐  │  │  Is there anything you need help with?"    │  │
+│  │  │   Frank Morrison   │  │  │                                            │  │
+│  │  │   8:30 AM • 4:01   │  │  │  Client: "Well, I was wondering about my   │  │
+│  │  │   ✓ Matched        │  │  │  next appointment..."                      │  │
+│  │  └────────────────────┘  │  │                                            │  │
+│  │                          │  ├────────────────────────────────────────────┤  │
+│  │                          │  │  LINK TO PACKAGE                           │  │
+│  │                          │  │  ─────────────────────────────────────────  │  │
+│  │                          │  │  🔍 Search packages...              [L]    │  │
+│  │                          │  │                                            │  │
+│  │                          │  │  Suggestions:                              │  │
+│  │                          │  │  • PKG-4521 Margaret Thompson (98% match)  │  │
+│  │                          │  │  • PKG-4522 Marg Thompson (72% match)      │  │
+│  │                          │  │                                            │  │
+│  │                          │  ├────────────────────────────────────────────┤  │
+│  │                          │  │  QUICK NOTES                        [N]    │  │
+│  │                          │  │  ─────────────────────────────────────────  │  │
+│  │                          │  │  ;routine  ;followup  ;escalate  ;noaction │  │
+│  │                          │  │                                            │  │
+│  │                          │  │  ┌──────────────────────────────────────┐  │  │
+│  │                          │  │  │ Type note or use snippet...          │  │  │
+│  │                          │  │  └──────────────────────────────────────┘  │  │
+│  └──────────────────────────┘  └────────────────────────────────────────────┘  │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │ [J] Next  [K] Prev  [E] Complete Review  [L] Link Package  [N] Add Note │   │
+│  │ [Space] Play/Pause  [H] Defer  [Cmd+K] Command Palette                  │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+PATTERNS APPLIED:
+• Split Inbox tabs (1/2/3 keys) - Superhuman's categorized streams
+• J/K navigation between calls - Vim-style keyboard movement
+• Progress bar showing completion - Inbox Zero gamification
+• Single focused call detail - Minimal distraction view
+• Snippet shortcuts (;routine) - Quick note templates
+• Keyboard hint footer - Learning accelerator
+
+
+================================================================================
+
+VARIATION B: FULL-SCREEN FOCUSED REVIEW
+=======================================
+Pattern: Maximum Focus + Command Palette + Progress Gamification
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │          5 of 23 calls remaining     ━━━━━━━━━━━━━━━━━━░░░░░            │   │
+│  │                                       78% complete today                │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+│                                                                                 │
+│                    ┌───────────────────────────────────────┐                    │
+│                    │                                       │                    │
+│                    │         MARGARET THOMPSON             │                    │
+│                    │         ──────────────────            │                    │
+│                    │                                       │                    │
+│                    │    📞 03 9555 1234                    │                    │
+│                    │    🕐 Today 9:42 AM                   │                    │
+│                    │    ⏱️ Duration: 2 min 34 sec          │                    │
+│                    │                                       │                    │
+│                    │    ⚠️ NO PACKAGE LINKED               │                    │
+│                    │                                       │                    │
+│                    └───────────────────────────────────────┘                    │
+│                                                                                 │
+│         ┌───────────────────────────────────────────────────────────┐          │
+│         │                                                           │          │
+│         │  ▶ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━░░░░░░  1:42 / 2:34 │          │
+│         │                                                           │          │
+│         │  [Space] Play    [←] -10s    [→] +10s    [1.5x] Speed    │          │
+│         │                                                           │          │
+│         └───────────────────────────────────────────────────────────┘          │
+│                                                                                 │
+│         ┌───────────────────────────────────────────────────────────┐          │
+│         │  TRANSCRIPT                                               │          │
+│         │  ─────────────────────────────────────────────────────────│          │
+│         │                                                           │          │
+│         │  00:00  Coordinator: "Hello Margaret, this is Sarah from  │          │
+│         │         Trilogy Care. How are you feeling today?"         │          │
+│         │                                                           │          │
+│         │  00:08  Client: "Oh hello dear, I'm doing quite well.     │          │
+│         │         The new carer came yesterday and she was lovely." │          │
+│         │                                                           │          │
+│         │  00:22  Coordinator: "That's wonderful to hear! Is there  │          │
+│         │         anything you need help with?"                     │          │
+│         │                                                           │          │
+│         │  00:35  Client: "Well, I was wondering about my next      │          │
+│         │         appointment. When is that scheduled for?"         │          │
+│         │                                                           │          │
+│         │  00:48  Coordinator: "Let me check that for you..."       │          │
+│         │                                                           │          │
+│         └───────────────────────────────────────────────────────────┘          │
+│                                                                                 │
+│                                                                                 │
+│  ╔═══════════════════════════════════════════════════════════════════════════╗ │
+│  ║                         COMPLETE THIS REVIEW                              ║ │
+│  ╠═══════════════════════════════════════════════════════════════════════════╣ │
+│  ║                                                                           ║ │
+│  ║   [L] Link Package        [N] Add Note         [E] Complete & Next        ║ │
+│  ║       (Required)              (Optional)            (Logs billing)        ║ │
+│  ║                                                                           ║ │
+│  ╚═══════════════════════════════════════════════════════════════════════════╝ │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │ Press [Cmd+K] for all commands  •  [J/K] Navigate  •  [Esc] Exit       │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+PATTERNS APPLIED:
+• Full-screen focus - Superhuman's distraction-free reading mode
+• Progress bar at top - Gamification, shows path to "Calls Zero"
+• Minimal chrome - Only essential controls visible
+• Clear action hierarchy - Primary action (E) most prominent
+• Timestamped transcript - Quick scanning for relevant moments
+• Keyboard hints persistent - Always learning shortcuts
+
+
+================================================================================
+
+VARIATION C: COMMAND PALETTE FLOW
+=================================
+Pattern: Cmd+K Everything + Inline Actions + Stream Processing
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ TC Portal                      ┌──────────────────────────────┐  Sarah Chen ▼  │
+│                                │ 🔍 link marg                 │                │
+│                                ├──────────────────────────────┤                │
+│                                │                              │                │
+│                                │ ▸ Link to: PKG-4521         L│                │
+│                                │   Margaret Thompson          │                │
+│                                │   HCP Level 3 • Active       │                │
+│                                │                              │                │
+│                                │   Link to: PKG-4522          │                │
+│                                │   Marg Thompson              │                │
+│                                │   HCP Level 2 • Active       │                │
+│                                │                              │                │
+│                                │ ────────────────────────────│                │
+│                                │   Create new package...    + │                │
+│                                │                              │                │
+│                                └──────────────────────────────┘                │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │ CALLS        [1] All (23)   [2] Unlinked (5)   [3] Today (18)          │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │                                                                         │   │
+│  │  ▸ Margaret Thompson                         ⚠️ UNLINKED    9:42 AM    │   │
+│  │    "Oh hello dear, I'm doing quite well. The new carer came..."        │   │
+│  │    📞 2:34 duration                                                     │   │
+│  │    ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄   │   │
+│  │    ▶ ━━━━━━━━━━░░░░░░░░░░░░░░░░  0:00 / 2:34                           │   │
+│  │    ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄   │   │
+│  │    [L] Link   [N] Note   [E] Complete   [Enter] Expand                 │   │
+│  │                                                                         │   │
+│  ├─────────────────────────────────────────────────────────────────────────┤   │
+│  │                                                                         │   │
+│  │    John Williams                             ⚠️ UNLINKED    9:15 AM    │   │
+│  │    "Yes, I wanted to ask about the respite care booking..."            │   │
+│  │    📞 1:45 duration                                                     │   │
+│  │                                                                         │   │
+│  ├─────────────────────────────────────────────────────────────────────────┤   │
+│  │                                                                         │   │
+│  │    Betty O'Connor → PKG-3892                 ✓ Matched     8:58 AM     │   │
+│  │    "Just calling to confirm the Thursday appointment is still on"      │   │
+│  │    📞 3:12 duration                                                     │   │
+│  │                                                                         │   │
+│  ├─────────────────────────────────────────────────────────────────────────┤   │
+│  │                                                                         │   │
+│  │    Frank Morrison → PKG-2910                 ✓ Matched     8:30 AM     │   │
+│  │    "Good morning, this is Frank calling about my mother's care plan"   │   │
+│  │    📞 4:01 duration                                                     │   │
+│  │                                                                         │   │
+│  ├─────────────────────────────────────────────────────────────────────────┤   │
+│  │                                                                         │   │
+│  │    Susan Park → PKG-1844                     ✓ Matched     8:15 AM     │   │
+│  │    "Hi there, I need to change my support hours for next week"         │   │
+│  │    📞 2:22 duration                                                     │   │
+│  │                                                                         │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────┐   │
+│  │ [Cmd+K] Commands   [J/K] Navigate   [E] Quick Complete   [?] Help      │   │
+│  └─────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+PATTERNS APPLIED:
+• Command palette overlay - Superhuman's Cmd+K universal search
+• Inline preview - See transcript snippet without opening
+• Inline audio player - Play without leaving list (like email preview)
+• Stream view - Process sequentially like email list
+• Action shortcuts on selected item - Context-aware commands
+• Smart suggestions - Package matching in command palette
+
+
+================================================================================
+
+                            COMPARISON SUMMARY
+================================================================================
+
+┌─────────────────┬──────────────────────────────────────────────────────────────┐
+│ VARIATION       │ BEST FOR                                                     │
+├─────────────────┼──────────────────────────────────────────────────────────────┤
+│ A: Split View   │ Coordinators who need to see call detail while navigating   │
+│                 │ Similar to Superhuman's default split-pane email view        │
+│                 │ Good balance of context and focus                            │
+├─────────────────┼──────────────────────────────────────────────────────────────┤
+│ B: Full Focus   │ Maximum speed when calls are straightforward                 │
+│                 │ Like Superhuman's focused reading mode                       │
+│                 │ Best for sub-30-second simple reviews                        │
+├─────────────────┼──────────────────────────────────────────────────────────────┤
+│ C: Command Flow │ Power users who memorize shortcuts                           │
+│                 │ Like Superhuman's Cmd+K-centric workflow                     │
+│                 │ Best for batch processing similar calls                      │
+└─────────────────┴──────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+
+                          KEYBOARD SHORTCUT MAP
+================================================================================
+
+All variations share these Superhuman-inspired shortcuts:
+
+  NAVIGATION
+  ──────────────────────────────────
+  J         │ Next call
+  K         │ Previous call
+  Enter     │ Expand/focus call
+  Esc       │ Collapse/exit focus
+  1/2/3     │ Switch inbox tabs
+
+  AUDIO
+  ──────────────────────────────────
+  Space     │ Play/pause audio
+  ←         │ Seek back 10 seconds
+  →         │ Seek forward 10 seconds
+  [ ]       │ Decrease/increase speed
+
+  ACTIONS
+  ──────────────────────────────────
+  E         │ Complete review (log billing)
+  L         │ Link to package
+  N         │ Add note
+  H         │ Defer (snooze)
+
+  POWER USER
+  ──────────────────────────────────
+  Cmd+K     │ Command palette
+  ;         │ Insert snippet
+  ?         │ Show all shortcuts
+
+
+================================================================================
+
+                           SNIPPET LIBRARY
+================================================================================
+
+Quick note templates (type ; then shortcut):
+
+  ;routine     →  "Routine wellness check. Client confirmed wellbeing."
+
+  ;followup    →  "Follow-up required: [reason]. Assigned to [coordinator]."
+
+  ;escalate    →  "Escalated to supervisor. Concern: [reason]"
+
+  ;noaction    →  "Informational call only. No action required."
+
+  ;appt        →  "Appointment inquiry. Confirmed [date] at [time]."
+
+  ;respite     →  "Respite care discussion. [hours] hours requested for [date]."
+
+  ;feedback    →  "Client feedback: [positive/concern]. Re: [topic]"
+
+
+================================================================================

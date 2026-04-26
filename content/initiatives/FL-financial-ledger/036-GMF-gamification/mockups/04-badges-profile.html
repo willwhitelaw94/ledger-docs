@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badges &amp; Profile — Gamification (036-GMF)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+    .badge-gold { border-color: #D97706; box-shadow: 0 0 12px rgba(217, 119, 6, 0.15); }
+    .badge-silver { border-color: #9CA3AF; box-shadow: 0 0 12px rgba(156, 163, 175, 0.1); }
+    .badge-bronze { border-color: #B45309; box-shadow: 0 0 12px rgba(180, 83, 9, 0.1); }
+    .badge-diamond { border-color: #7C3AED; box-shadow: 0 0 16px rgba(124, 58, 237, 0.2); }
+    .badge-locked { opacity: 0.35; filter: grayscale(0.8); }
+
+    .contrib-cell { width: 10px; height: 10px; border-radius: 2px; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-60 bg-gray-900 border-r border-gray-800 flex flex-col fixed inset-y-0 left-0 z-40">
+      <div class="p-4 border-b border-gray-800">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-[#007F7E] rounded-lg flex items-center justify-center text-sm font-bold text-white">MQ</div>
+          <div>
+            <div class="text-sm font-semibold text-white">MoneyQuest</div>
+            <div class="text-xs text-gray-500">Acme Corp Pty Ltd</div>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 p-3 space-y-1">
+        <a href="01-dashboard-widget.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+          Dashboard
+          <kbd class="ml-auto text-[10px] text-gray-500 bg-gray-700 px-1 rounded font-mono">D</kbd>
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Invoices
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+          Banking
+        </a>
+        <a href="03-challenges-page.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Challenges
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-800 text-white text-sm font-medium">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+          Badges
+        </a>
+      </nav>
+      <div class="p-3 border-t border-gray-800">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.573-1.066z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Settings
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-60">
+      <header class="sticky top-[88px] z-30 bg-gray-950/80 backdrop-blur border-b border-gray-800 px-8 py-4">
+        <h1 class="text-xl font-semibold text-white">Badges &amp; Achievements</h1>
+      </header>
+
+      <div class="p-8 space-y-8">
+
+        <!-- Profile Header -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <div class="flex items-center gap-6">
+            <div class="w-16 h-16 bg-[#007F7E] rounded-full flex items-center justify-center text-xl font-bold text-white">SW</div>
+            <div class="flex-1">
+              <h2 class="text-lg font-semibold text-white">Sarah Williams</h2>
+              <p class="text-sm text-gray-500">Owner &middot; Acme Corp Pty Ltd</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-4 gap-6 mt-6 pt-6 border-t border-gray-800">
+            <div>
+              <div class="text-2xl font-bold text-white">8</div>
+              <div class="text-xs text-gray-500 mt-0.5">Badges Earned</div>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-white">12 wks</div>
+              <div class="text-xs text-gray-500 mt-0.5">Longest Streak</div>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-white">42.6 hrs</div>
+              <div class="text-xs text-gray-500 mt-0.5">Total Time Saved</div>
+            </div>
+            <div>
+              <div class="text-2xl font-bold text-white">$8,400</div>
+              <div class="text-xs text-gray-500 mt-0.5">Total Money Saved</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Earned Badges -->
+        <section>
+          <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Earned</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+            <!-- Diamond badge -->
+            <div class="bg-gray-900 border-2 badge-diamond rounded-xl p-5 text-center">
+              <div class="text-3xl mb-3">&#128142;</div>
+              <h3 class="text-sm font-semibold text-white">All Clear Champion</h3>
+              <p class="text-[10px] text-gray-500 mt-1">10 All Clears in one month</p>
+              <div class="mt-3 flex items-center justify-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-violet-500"></span>
+                <span class="text-[10px] text-violet-400 font-medium">Diamond</span>
+              </div>
+              <p class="text-[10px] text-gray-600 mt-2">Earned 15 Mar 2026</p>
+            </div>
+
+            <!-- Gold badge -->
+            <div class="bg-gray-900 border-2 badge-gold rounded-xl p-5 text-center">
+              <div class="text-3xl mb-3">&#128293;</div>
+              <h3 class="text-sm font-semibold text-white">Monthly Master</h3>
+              <p class="text-[10px] text-gray-500 mt-1">Perfect streak for 12 consecutive weeks</p>
+              <div class="mt-3 flex items-center justify-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
+                <span class="text-[10px] text-amber-400 font-medium">Gold</span>
+              </div>
+              <p class="text-[10px] text-gray-600 mt-2">Earned 1 Mar 2026</p>
+            </div>
+
+            <!-- Gold badge -->
+            <div class="bg-gray-900 border-2 badge-gold rounded-xl p-5 text-center">
+              <div class="text-3xl mb-3">&#127942;</div>
+              <h3 class="text-sm font-semibold text-white">Revenue Target Hit</h3>
+              <p class="text-[10px] text-gray-500 mt-1">All invoices paid within 30 days for 3 months</p>
+              <div class="mt-3 flex items-center justify-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
+                <span class="text-[10px] text-amber-400 font-medium">Gold</span>
+              </div>
+              <p class="text-[10px] text-gray-600 mt-2">Earned 28 Feb 2026</p>
+            </div>
+
+            <!-- Silver badge -->
+            <div class="bg-gray-900 border-2 badge-silver rounded-xl p-5 text-center">
+              <div class="text-3xl mb-3">&#11088;</div>
+              <h3 class="text-sm font-semibold text-white">Perfect Week</h3>
+              <p class="text-[10px] text-gray-500 mt-1">All challenges completed 5 consecutive weeks</p>
+              <div class="mt-3 flex items-center justify-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-gray-400"></span>
+                <span class="text-[10px] text-gray-400 font-medium">Silver</span>
+              </div>
+              <p class="text-[10px] text-gray-600 mt-2">Earned 20 Feb 2026</p>
+            </div>
+
+            <!-- Silver badge -->
+            <div class="bg-gray-900 border-2 badge-silver rounded-xl p-5 text-center">
+              <div class="text-3xl mb-3">&#127919;</div>
+              <h3 class="text-sm font-semibold text-white">Reconciliation Pro</h3>
+              <p class="text-[10px] text-gray-500 mt-1">50 All Clears total</p>
+              <div class="mt-3 flex items-center justify-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-gray-400"></span>
+                <span class="text-[10px] text-gray-400 font-medium">Silver</span>
+              </div>
+              <p class="text-[10px] text-gray-600 mt-2">Earned 10 Feb 2026</p>
+            </div>
+
+            <!-- Bronze badges -->
+            <div class="bg-gray-900 border-2 badge-bronze rounded-xl p-5 text-center">
+              <div class="text-3xl mb-3">&#9889;</div>
+              <h3 class="text-sm font-semibold text-white">Quick Start</h3>
+              <p class="text-[10px] text-gray-500 mt-1">First reconciliation within 24h of signup</p>
+              <div class="mt-3 flex items-center justify-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-orange-700"></span>
+                <span class="text-[10px] text-orange-600 font-medium">Bronze</span>
+              </div>
+              <p class="text-[10px] text-gray-600 mt-2">Earned 15 Dec 2024</p>
+            </div>
+
+            <div class="bg-gray-900 border-2 badge-bronze rounded-xl p-5 text-center">
+              <div class="text-3xl mb-3">&#128200;</div>
+              <h3 class="text-sm font-semibold text-white">First Report</h3>
+              <p class="text-[10px] text-gray-500 mt-1">Generated your first P&L report</p>
+              <div class="mt-3 flex items-center justify-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-orange-700"></span>
+                <span class="text-[10px] text-orange-600 font-medium">Bronze</span>
+              </div>
+              <p class="text-[10px] text-gray-600 mt-2">Earned 20 Dec 2024</p>
+            </div>
+
+            <div class="bg-gray-900 border-2 badge-bronze rounded-xl p-5 text-center">
+              <div class="text-3xl mb-3">&#128176;</div>
+              <h3 class="text-sm font-semibold text-white">First Invoice Paid</h3>
+              <p class="text-[10px] text-gray-500 mt-1">Received payment on your first invoice</p>
+              <div class="mt-3 flex items-center justify-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-orange-700"></span>
+                <span class="text-[10px] text-orange-600 font-medium">Bronze</span>
+              </div>
+              <p class="text-[10px] text-gray-600 mt-2">Earned 3 Jan 2025</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Locked Badges -->
+        <section>
+          <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Locked</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 text-center badge-locked">
+              <div class="text-3xl mb-3">&#128142;</div>
+              <h3 class="text-sm font-semibold text-gray-400">Year-End Master</h3>
+              <p class="text-[10px] text-gray-600 mt-1">Close year-end 3 consecutive years</p>
+              <div class="mt-3">
+                <div class="w-full bg-gray-800 rounded-full h-1.5">
+                  <div class="bg-violet-500/50 h-1.5 rounded-full" style="width: 66%"></div>
+                </div>
+                <p class="text-[10px] text-gray-600 mt-1.5">2 / 3 years</p>
+              </div>
+            </div>
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 text-center badge-locked">
+              <div class="text-3xl mb-3">&#127942;</div>
+              <h3 class="text-sm font-semibold text-gray-400">Gold Reconciler</h3>
+              <p class="text-[10px] text-gray-600 mt-1">26-week reconciliation streak</p>
+              <div class="mt-3">
+                <div class="w-full bg-gray-800 rounded-full h-1.5">
+                  <div class="bg-amber-500/50 h-1.5 rounded-full" style="width: 27%"></div>
+                </div>
+                <p class="text-[10px] text-gray-600 mt-1.5">7 / 26 weeks</p>
+              </div>
+            </div>
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 text-center badge-locked">
+              <div class="text-3xl mb-3">&#11088;</div>
+              <h3 class="text-sm font-semibold text-gray-400">Diamond Streak</h3>
+              <p class="text-[10px] text-gray-600 mt-1">52-week streak on any challenge</p>
+              <div class="mt-3">
+                <div class="w-full bg-gray-800 rounded-full h-1.5">
+                  <div class="bg-violet-500/50 h-1.5 rounded-full" style="width: 23%"></div>
+                </div>
+                <p class="text-[10px] text-gray-600 mt-1.5">12 / 52 weeks</p>
+              </div>
+            </div>
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 text-center badge-locked">
+              <div class="text-3xl mb-3">&#128176;</div>
+              <h3 class="text-sm font-semibold text-gray-400">$50k Saved</h3>
+              <p class="text-[10px] text-gray-600 mt-1">Catch $50,000 in duplicate payments</p>
+              <div class="mt-3">
+                <div class="w-full bg-gray-800 rounded-full h-1.5">
+                  <div class="bg-amber-500/50 h-1.5 rounded-full" style="width: 17%"></div>
+                </div>
+                <p class="text-[10px] text-gray-600 mt-1.5">$8,400 / $50,000</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Streak History (Contribution Grid) -->
+        <section>
+          <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Activity History</h2>
+          <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs text-gray-500">Last 52 weeks</span>
+              <div class="flex items-center gap-3 text-[10px] text-gray-500">
+                <span>Less</span>
+                <div class="flex gap-0.5">
+                  <div class="contrib-cell bg-gray-800"></div>
+                  <div class="contrib-cell bg-[#007F7E]/20"></div>
+                  <div class="contrib-cell bg-[#007F7E]/40"></div>
+                  <div class="contrib-cell bg-[#007F7E]/70"></div>
+                  <div class="contrib-cell bg-[#007F7E]"></div>
+                </div>
+                <span>More</span>
+              </div>
+            </div>
+            <!-- Grid: 52 columns x 7 rows -->
+            <div class="overflow-x-auto">
+              <div class="inline-grid gap-[3px]" style="grid-template-columns: repeat(52, 10px); grid-template-rows: repeat(7, 10px);" id="contrib-grid">
+              </div>
+            </div>
+            <div class="flex items-center gap-4 mt-4 text-xs text-gray-500">
+              <div class="flex items-center gap-1.5">
+                <div class="w-2.5 h-2.5 rounded-sm bg-[#007F7E]"></div>
+                Active
+              </div>
+              <div class="flex items-center gap-1.5">
+                <div class="w-2.5 h-2.5 rounded-sm bg-amber-600"></div>
+                Recovered streak
+              </div>
+              <div class="flex items-center gap-1.5">
+                <div class="w-2.5 h-2.5 rounded-sm bg-gray-800"></div>
+                No activity
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Generate contribution grid
+    const grid = document.getElementById('contrib-grid');
+    const levels = ['bg-gray-800', 'bg-[#007F7E]/20', 'bg-[#007F7E]/40', 'bg-[#007F7E]/70', 'bg-[#007F7E]'];
+    const total = 52 * 7;
+    for (let i = 0; i < total; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'contrib-cell';
+      // More recent weeks more likely to be active
+      const weekIdx = Math.floor(i / 7);
+      const recency = weekIdx / 52;
+      const rand = Math.random();
+      let level;
+      if (recency > 0.6) {
+        // Recent: more active
+        if (rand < 0.05) level = levels[0];
+        else if (rand < 0.15) level = levels[1];
+        else if (rand < 0.35) level = levels[2];
+        else if (rand < 0.6) level = levels[3];
+        else level = levels[4];
+      } else if (recency > 0.3) {
+        if (rand < 0.2) level = levels[0];
+        else if (rand < 0.4) level = levels[1];
+        else if (rand < 0.6) level = levels[2];
+        else if (rand < 0.8) level = levels[3];
+        else level = levels[4];
+      } else {
+        if (rand < 0.4) level = levels[0];
+        else if (rand < 0.6) level = levels[1];
+        else if (rand < 0.8) level = levels[2];
+        else level = levels[3];
+      }
+      // Occasional amber "recovered" cells
+      if (rand > 0.93 && recency > 0.2) {
+        level = 'bg-amber-600';
+      }
+      cell.classList.add(...level.split(' '));
+      grid.appendChild(cell);
+    }
+  </script>
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

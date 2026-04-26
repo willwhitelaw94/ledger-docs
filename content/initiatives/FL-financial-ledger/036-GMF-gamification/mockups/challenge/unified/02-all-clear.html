@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Clear — MoneyQuest Gamification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    @keyframes ring-celebrate {
+      0% { stroke-dashoffset: 471; }
+      70% { stroke-dashoffset: 47; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes ring-glow {
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(0,127,126,0.4)); }
+      50% { filter: drop-shadow(0 0 20px rgba(67,192,190,0.7)); }
+    }
+    @keyframes check-appear {
+      0% { opacity: 0; transform: scale(0.3); }
+      60% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes confetti-1 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(-60px,-80px) scale(0); opacity: 0; } }
+    @keyframes confetti-2 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(70px,-70px) scale(0); opacity: 0; } }
+    @keyframes confetti-3 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(-40px,60px) scale(0); opacity: 0; } }
+    @keyframes confetti-4 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(50px,50px) scale(0); opacity: 0; } }
+    @keyframes confetti-5 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(-80px,20px) scale(0); opacity: 0; } }
+    @keyframes confetti-6 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(80px,10px) scale(0); opacity: 0; } }
+    @keyframes confetti-7 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(-20px,-90px) scale(0); opacity: 0; } }
+    @keyframes confetti-8 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(30px,-85px) scale(0); opacity: 0; } }
+    @keyframes confetti-9 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(-55px,-40px) scale(0); opacity: 0; } }
+    @keyframes confetti-10 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(65px,-30px) scale(0); opacity: 0; } }
+    @keyframes confetti-11 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(10px,70px) scale(0); opacity: 0; } }
+    @keyframes confetti-12 { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(-70px,40px) scale(0); opacity: 0; } }
+    .ring-celebrate { animation: ring-celebrate 2s ease-out forwards; }
+    .ring-glow { animation: ring-glow 1.5s ease-in-out infinite; animation-delay: 2s; }
+    .check-appear { animation: check-appear 0.5s ease-out 1.8s forwards; opacity: 0; }
+    .confetti { animation-duration: 1.5s; animation-delay: 2s; animation-fill-mode: forwards; opacity: 0; animation-timing-function: ease-out; }
+    .c1 { animation-name: confetti-1; } .c2 { animation-name: confetti-2; } .c3 { animation-name: confetti-3; }
+    .c4 { animation-name: confetti-4; } .c5 { animation-name: confetti-5; } .c6 { animation-name: confetti-6; }
+    .c7 { animation-name: confetti-7; } .c8 { animation-name: confetti-8; } .c9 { animation-name: confetti-9; }
+    .c10 { animation-name: confetti-10; } .c11 { animation-name: confetti-11; } .c12 { animation-name: confetti-12; }
+    @keyframes pulse-amber { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .pulse-amber { animation: pulse-amber 2s ease-in-out infinite; }
+    @keyframes badge-pop { 0% { transform: scale(0.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    .badge-dropdown { display: none; }
+    .badge-dropdown.open { display: block; animation: badge-pop 0.2s ease-out; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-60 bg-gray-900 border-r border-gray-800 flex flex-col fixed inset-y-0 left-0 z-50">
+    <div class="p-4 border-b border-gray-800">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-[#007F7E] rounded-lg flex items-center justify-center text-sm font-bold text-white">MQ</div>
+        <span class="text-base font-semibold text-white">MoneyQuest</span>
+      </div>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+      <a href="01-dashboard.html" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm">
+        <span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>Dashboard</span>
+      </a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg bg-[#007F7E]/15 text-[#43C0BE] text-sm font-medium">
+        <span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>Banking</span>
+        <span class="flex items-center gap-1 text-xs font-medium text-orange-400">🔥 7</span>
+      </a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm">
+        <span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Invoices</span>
+        <span class="w-2 h-2 rounded-full bg-amber-500 pulse-amber"></span>
+      </a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Bills</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Contacts</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Jobs</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Journal Entries</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Reports</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>Settings</span></a>
+    </nav>
+    <div class="p-3 border-t border-gray-800 relative">
+      <button onclick="document.getElementById('badge-dropdown').classList.toggle('open')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-800/50 text-left">
+        <div class="relative">
+          <div class="w-9 h-9 rounded-full bg-[#007F7E] flex items-center justify-center text-sm font-semibold text-white">EM</div>
+          <span class="absolute -top-1 -right-1 w-5 h-5 bg-violet-600 rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-gray-900">12</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-200 truncate">Emma Mason</p>
+          <p class="text-xs text-gray-500 truncate">Bookkeeper</p>
+        </div>
+      </button>
+      <div id="badge-dropdown" class="badge-dropdown absolute bottom-full left-2 right-2 mb-2 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl overflow-hidden" style="max-height: 480px; overflow-y: auto;">
+        <div class="p-4 border-b border-gray-800">
+          <p class="text-sm font-semibold text-white">Emma Mason</p>
+          <p class="text-xs text-gray-400">Bookkeeper &middot; Mason & Co</p>
+          <div class="flex gap-4 mt-3">
+            <div class="text-center"><span class="text-sm font-bold text-white">12</span><p class="text-[10px] text-gray-500">Badges</p></div>
+            <div class="text-center"><span class="text-sm font-bold text-white">7 wk</span><p class="text-[10px] text-gray-500">Streak</p></div>
+            <div class="text-center"><span class="text-sm font-bold text-white">48h</span><p class="text-[10px] text-gray-500">Saved</p></div>
+          </div>
+        </div>
+        <div class="p-4">
+          <p class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Badges Earned</p>
+          <div class="grid grid-cols-4 gap-2">
+            <div title="All Clear Champion - Earned Feb 8"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-[#007F7E] shadow-[0_0_8px_rgba(0,127,126,0.4)] mx-auto">&#x2705;</div></div>
+            <div title="Consistency King - Earned Jan 22"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-[#007F7E] shadow-[0_0_8px_rgba(0,127,126,0.4)] mx-auto">&#x1F551;</div></div>
+            <div title="Monthly Master - Earned Mar 1"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-amber-500 shadow-[0_0_8px_rgba(217,119,6,0.4)] mx-auto">&#x1F525;</div></div>
+            <div title="Report Reviewer - Earned Feb 14"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-gray-400 shadow-[0_0_8px_rgba(156,163,175,0.3)] mx-auto">&#x1F4CB;</div></div>
+            <div title="Data Driven - Earned Jan 30"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-gray-400 shadow-[0_0_8px_rgba(156,163,175,0.3)] mx-auto">&#x1F4CA;</div></div>
+            <div title="Goal Crusher - Earned Mar 5"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-amber-500 shadow-[0_0_8px_rgba(217,119,6,0.4)] mx-auto">&#x2B50;</div></div>
+            <div title="Speed Demon - Earned Feb 20"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-[#007F7E] shadow-[0_0_8px_rgba(0,127,126,0.4)] mx-auto">&#x26A1;</div></div>
+            <div title="Team Player - Earned Mar 12"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-[#007F7E] shadow-[0_0_8px_rgba(0,127,126,0.4)] mx-auto">&#x1F465;</div></div>
+            <div title="12-Week Streak - Earned Mar 15"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-amber-500 shadow-[0_0_8px_rgba(217,119,6,0.4)] mx-auto">&#x1F525;</div></div>
+            <div title="Perfect Ledger - Earned Feb 28"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-gray-400 shadow-[0_0_8px_rgba(156,163,175,0.3)] mx-auto">&#x1F4D1;</div></div>
+            <div title="Anomaly Hunter - Earned Mar 8"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-[#007F7E] shadow-[0_0_8px_rgba(0,127,126,0.4)] mx-auto">&#x1F52E;</div></div>
+            <div title="Money Saver - Earned Mar 18"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-amber-500 shadow-[0_0_8px_rgba(217,119,6,0.4)] mx-auto">&#x1F4B0;</div></div>
+          </div>
+          <div class="grid grid-cols-4 gap-2 mt-3">
+            <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-600 mx-auto"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg></div>
+            <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-600 mx-auto"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg></div>
+            <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-600 mx-auto"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg></div>
+            <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-600 mx-auto"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg></div>
+            <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-600 mx-auto"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg></div>
+            <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-600 mx-auto"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg></div>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 p-2">
+          <a href="#" class="block px-3 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg">Settings</a>
+          <a href="#" class="block px-3 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg">Sign out</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content (dimmed banking page) -->
+  <main class="ml-60 flex-1 p-8 relative">
+    <!-- Dimmed Banking Background -->
+    <div class="opacity-30 pointer-events-none">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-white">Banking — Reconciliation</h1>
+        <div class="flex gap-3">
+          <span class="px-3 py-1.5 bg-gray-800 rounded-lg text-sm text-gray-400">ANZ Business ****4521</span>
+          <span class="px-3 py-1.5 bg-[#007F7E]/20 text-[#43C0BE] rounded-lg text-sm font-medium">0 unmatched</span>
+        </div>
+      </div>
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <div class="text-center py-12">
+          <svg class="w-16 h-16 mx-auto text-gray-700" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <p class="text-lg text-gray-500 mt-4">All transactions reconciled</p>
+          <p class="text-sm text-gray-600 mt-1">47 transactions processed this session</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mt-6">
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500">Matched</p><p class="text-xl font-bold text-white">42</p></div>
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500">Created</p><p class="text-xl font-bold text-white">5</p></div>
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-4"><p class="text-xs text-gray-500">Remaining</p><p class="text-xl font-bold text-white">0</p></div>
+      </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div class="fixed inset-0 z-40 flex items-center justify-center" style="margin-left: 240px;">
+      <div class="absolute inset-0 bg-gray-950/70 backdrop-blur-sm"></div>
+      <div class="relative bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl p-10 max-w-md w-full text-center z-50">
+        <!-- Confetti particles -->
+        <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div class="confetti c1 absolute w-2 h-2 rounded-full bg-[#007F7E]" style="animation-delay: 2.0s;"></div>
+          <div class="confetti c2 absolute w-2 h-2 rounded-full bg-amber-500" style="animation-delay: 2.1s;"></div>
+          <div class="confetti c3 absolute w-1.5 h-1.5 rounded-full bg-violet-500" style="animation-delay: 2.2s;"></div>
+          <div class="confetti c4 absolute w-2 h-2 rounded-full bg-[#43C0BE]" style="animation-delay: 2.15s;"></div>
+          <div class="confetti c5 absolute w-1.5 h-1.5 rounded-full bg-amber-400" style="animation-delay: 2.05s;"></div>
+          <div class="confetti c6 absolute w-2 h-2 rounded-full bg-violet-400" style="animation-delay: 2.25s;"></div>
+          <div class="confetti c7 absolute w-1.5 h-1.5 rounded-full bg-[#007F7E]" style="animation-delay: 2.3s;"></div>
+          <div class="confetti c8 absolute w-2 h-2 rounded-full bg-amber-500" style="animation-delay: 2.1s;"></div>
+          <div class="confetti c9 absolute w-1.5 h-1.5 rounded-full bg-[#43C0BE]" style="animation-delay: 2.2s;"></div>
+          <div class="confetti c10 absolute w-2 h-2 rounded-full bg-violet-500" style="animation-delay: 2.35s;"></div>
+          <div class="confetti c11 absolute w-1.5 h-1.5 rounded-full bg-amber-400" style="animation-delay: 2.15s;"></div>
+          <div class="confetti c12 absolute w-2 h-2 rounded-full bg-[#007F7E]" style="animation-delay: 2.25s;"></div>
+        </div>
+
+        <!-- Celebration Ring -->
+        <div class="relative mx-auto mb-6" style="width: 180px; height: 180px;">
+          <svg width="180" height="180" viewBox="0 0 180 180">
+            <defs>
+              <linearGradient id="grad-celebrate" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#007F7E"/>
+                <stop offset="100%" stop-color="#43C0BE"/>
+              </linearGradient>
+            </defs>
+            <circle cx="90" cy="90" r="75" fill="none" stroke="#1f2937" stroke-width="8" opacity="0.3"/>
+            <circle cx="90" cy="90" r="75" fill="none" stroke="url(#grad-celebrate)" stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="471" stroke-dashoffset="471"
+              transform="rotate(-90 90 90)"
+              class="ring-celebrate ring-glow"/>
+          </svg>
+          <div class="check-appear absolute inset-0 flex items-center justify-center">
+            <svg class="w-16 h-16 text-[#43C0BE]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-white mb-2">All Clear!</h2>
+        <p class="text-gray-400 text-sm mb-4">47 transactions reconciled this session</p>
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/30 rounded-lg mb-6">
+          <span class="text-lg">&#x1F3C6;</span>
+          <span class="text-sm text-amber-200">3rd All Clear this month &mdash; Perfect Week!</span>
+        </div>
+        <div class="flex flex-col gap-3">
+          <a href="01-dashboard.html" class="px-6 py-2.5 bg-[#007F7E] hover:bg-[#006665] text-white rounded-lg text-sm font-medium transition-colors">Back to Dashboard</a>
+          <p class="text-xs text-gray-600">Press Esc to dismiss</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

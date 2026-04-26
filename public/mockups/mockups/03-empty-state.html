@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Empty State — Calls Uplift</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Roboto Flex', -apple-system, BlinkMacSystemFont, sans-serif; }
+    #app-sidebar { transition: width 0.2s ease; }
+    #app-sidebar.collapsed { width: 77px; }
+    #app-sidebar.collapsed .nav-label, #app-sidebar.collapsed .nav-section-title, #app-sidebar.collapsed .sidebar-brand-name, #app-sidebar.collapsed .sidebar-footer { display: none; }
+    #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+    .nav-item-active { background: rgba(0,127,126,0.12); color: #007F7E; font-weight: 600; }
+    .nav-item-active svg { color: #007F7E; }
+  </style>
+  <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-100 flex">
+
+  <!-- Sidebar -->
+  <aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]" style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+    <div class="p-4 flex items-center gap-3">
+      <div class="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center text-sm font-bold">TC</div>
+      <span class="sidebar-brand-name text-sm font-semibold">Trilogy Care</span>
+    </div>
+    <nav class="flex-1 px-3 space-y-1 text-sm overflow-y-auto">
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        <span class="nav-label">Tasks and reminders</span>
+      </a>
+      <div class="pt-4 pb-1">
+        <p class="nav-section-title px-3 text-[11px] font-semibold uppercase tracking-wider text-white/40">Communication</p>
+      </div>
+      <a href="#" class="nav-item nav-item-active flex items-center gap-3 px-3 py-2.5 rounded-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        <span class="nav-label">Calls</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        <span class="nav-label">Threads</span>
+      </a>
+      <div class="pt-4 pb-1">
+        <p class="nav-section-title px-3 text-[11px] font-semibold uppercase tracking-wider text-white/40">Operations</p>
+      </div>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span class="nav-label">Service Plans</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        <span class="nav-label">Bills</span>
+      </a>
+      <div class="pt-4 pb-1">
+        <p class="nav-section-title px-3 text-[11px] font-semibold uppercase tracking-wider text-white/40">Care Circle</p>
+      </div>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="nav-label">Clients</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+        <span class="nav-label">Care Coordinators</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-white/70 hover:text-white hover:bg-white/10">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        <span class="nav-label">Suppliers</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer p-4 border-t border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-xs font-bold">BP</div>
+        <div class="text-xs">
+          <p class="font-medium text-white">Beth Poultney</p>
+          <p class="text-white/50">Senior Care Partner</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 ml-[240px] min-h-screen flex flex-col">
+    <!-- Page Header -->
+    <div class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+      <h1 class="text-xl font-semibold text-gray-900">Calls</h1>
+    </div>
+
+    <!-- Empty State Content -->
+    <div class="flex-1 flex items-center justify-center">
+      <div class="text-center max-w-md px-6">
+        <!-- Illustration -->
+        <div class="mb-8">
+          <div class="mx-auto w-32 h-32 bg-teal-50 rounded-full flex items-center justify-center">
+            <svg class="w-16 h-16 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+          </div>
+        </div>
+
+        <h2 class="text-lg font-semibold text-gray-900 mb-2">No Aircall account connected</h2>
+        <p class="text-sm text-gray-500 mb-6">
+          Connect your Aircall account to start receiving call transcriptions and AI-generated case notes directly in the portal.
+        </p>
+
+        <!-- Setup Steps -->
+        <div class="bg-white rounded-xl border border-gray-200 p-5 text-left mb-6">
+          <h3 class="text-sm font-semibold text-gray-900 mb-4">Get started in 3 steps</h3>
+          <div class="space-y-4">
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-teal-700 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Connect Aircall</p>
+                <p class="text-xs text-gray-500">Link your Aircall workspace via the integrations settings.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
+              <div>
+                <p class="text-sm font-medium text-gray-400">Enable transcription</p>
+                <p class="text-xs text-gray-400">Turn on automatic transcription for incoming and outgoing calls.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</div>
+              <div>
+                <p class="text-sm font-medium text-gray-400">Start reviewing</p>
+                <p class="text-xs text-gray-400">Calls will appear here with AI case notes ready for your review.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="bg-teal-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-teal-800 inline-flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+          Connect Aircall
+        </button>
+        <p class="text-xs text-gray-400 mt-3">
+          Need help? <a href="#" class="text-teal-700 hover:underline">Contact support</a> or ask your team leader.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+epic: 013-WSP
+name: Workspace Entity Setup & Smart Chart of Accounts
+initiative: FL-financial-ledger
+status: complete
+created: 2026-03-14
+depends_on:
+  - 002-CLE
+  - 003-AUT
+blocks:
+  - 014-CON
+effort: L
+gates:
+  dev:
+    passed: true
+    date: 2026-03-14
+    pr: "https://github.com/willwhitelaw94/financial-ledger/pull/1"
+    notes: "318 feature tests passing, 1155 assertions. Pint clean. All ACs verified. 70 files, 5079 insertions."

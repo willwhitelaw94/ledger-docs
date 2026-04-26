@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Service Confirmation — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">QRW — QR Service Confirmation</span>
+  <button onclick="show('checkin')" id="nav-checkin" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Worker Check-In (Mobile)</button>
+  <button onclick="show('visitlog')" id="nav-visitlog" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Visit Log</button>
+  <button onclick="show('qrgen')" id="nav-qrgen" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">QR Code Generation</button>
+  <button onclick="show('wellbeing')" id="nav-wellbeing" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Wellbeing Survey</button>
+</nav>
+
+<!-- Worker Check-In (mobile view) -->
+<div id="checkin" class="screen active p-6 flex justify-center">
+  <div class="w-full max-w-sm">
+    <p class="text-sm text-gray-500 mb-4 text-center">Mobile web page after scanning QR code (/v/abc123)</p>
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+      <!-- Mobile header -->
+      <div class="bg-teal-700 px-5 py-4 text-white">
+        <p class="text-xs opacity-80">Trilogy Care — Visit Confirmation</p>
+        <h1 class="text-lg font-bold mt-0.5">Margaret J.</h1>
+        <p class="text-xs opacity-80 mt-0.5">Richmond VIC 3121</p>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div>
+          <label class="text-sm font-medium text-gray-700">Your Name</label>
+          <input type="text" placeholder="Enter your full name" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">Supplier ID</label>
+          <input type="text" placeholder="e.g. SC-1234" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm">
+        </div>
+
+        <div>
+          <label class="text-sm font-medium text-gray-700">Today's Bookings</label>
+          <div class="mt-2 space-y-2">
+            <label class="flex items-center gap-3 p-3 border-2 border-teal-500 bg-teal-50 rounded-lg cursor-pointer">
+              <input type="radio" name="booking" checked class="text-teal-700">
+              <div>
+                <p class="text-sm font-medium text-gray-900">Domestic Assistance — Cleaning</p>
+                <p class="text-xs text-gray-500">9:00 AM — 12:00 PM &middot; 3 hrs</p>
+              </div>
+              <span class="ml-auto px-2 py-0.5 bg-teal-100 text-teal-700 text-xs rounded-full">Now</span>
+            </label>
+            <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer">
+              <input type="radio" name="booking" class="text-teal-700">
+              <div>
+                <p class="text-sm font-medium text-gray-900">Personal Care</p>
+                <p class="text-xs text-gray-500">2:00 PM — 3:00 PM &middot; 1 hr</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <input type="checkbox" checked class="rounded text-teal-700">
+          <span class="text-sm text-gray-900">I confirm I have attended this visit</span>
+        </label>
+
+        <button class="w-full py-3 bg-teal-700 text-white font-medium rounded-lg text-sm hover:bg-teal-800">
+          Confirm Check-In
+        </button>
+        <p class="text-xs text-gray-400 text-center">No login required &middot; Takes ~15 seconds</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Visit Log -->
+<div id="visitlog" class="screen p-6 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div><h1 class="text-2xl font-bold text-gray-900">Visit Log</h1><p class="text-sm text-gray-500">Margaret Johnson &middot; All confirmed visits</p></div>
+    <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg text-gray-700">Export CSV</button>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead>
+        <tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+          <th class="px-6 py-3 text-left">Date</th>
+          <th class="px-4 py-3 text-left">Service</th>
+          <th class="px-4 py-3 text-left">Worker</th>
+          <th class="px-4 py-3 text-left">Check-In</th>
+          <th class="px-4 py-3 text-left">Check-Out</th>
+          <th class="px-4 py-3 text-left">Validation</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-3 text-sm">21 Mar 2026</td>
+          <td class="px-4 py-3 text-sm">Domestic Assistance</td>
+          <td class="px-4 py-3 text-sm">Jane Cooper (SC-1234)</td>
+          <td class="px-4 py-3 text-sm">9:02 AM</td>
+          <td class="px-4 py-3 text-sm">11:58 AM</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">Valid</span></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 text-sm">20 Mar 2026</td>
+          <td class="px-4 py-3 text-sm">Domestic Assistance</td>
+          <td class="px-4 py-3 text-sm">Jane Cooper (SC-1234)</td>
+          <td class="px-4 py-3 text-sm">9:15 AM</td>
+          <td class="px-4 py-3 text-sm">12:10 PM</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">Valid</span></td>
+        </tr>
+        <tr class="bg-amber-50">
+          <td class="px-6 py-3 text-sm">19 Mar 2026</td>
+          <td class="px-4 py-3 text-sm">Personal Care</td>
+          <td class="px-4 py-3 text-sm">Tom Rodriguez (MC-5678)</td>
+          <td class="px-4 py-3 text-sm">2:45 PM</td>
+          <td class="px-4 py-3 text-sm text-gray-400">— (no checkout)</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs">Exception</span></td>
+        </tr>
+        <tr class="bg-red-50">
+          <td class="px-6 py-3 text-sm">18 Mar 2026</td>
+          <td class="px-4 py-3 text-sm">Nursing Visit</td>
+          <td class="px-4 py-3 text-sm text-gray-400">—</td>
+          <td class="px-4 py-3 text-sm text-gray-400">—</td>
+          <td class="px-4 py-3 text-sm text-gray-400">—</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-xs">Unconfirmed</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- QR Code Generation -->
+<div id="qrgen" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">QR Code Management</h1>
+  <p class="text-sm text-gray-500 mb-6">Margaret Johnson — Recipient QR Code</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-start gap-6">
+      <div class="w-48 h-48 bg-gray-100 border-2 border-gray-300 rounded-xl flex items-center justify-center flex-shrink-0">
+        <div class="text-center">
+          <svg class="w-24 h-24 text-gray-800 mx-auto" viewBox="0 0 100 100" fill="currentColor">
+            <rect x="5" y="5" width="25" height="25" rx="2"/><rect x="35" y="5" width="5" height="5"/><rect x="45" y="5" width="5" height="5"/><rect x="55" y="5" width="5" height="5"/><rect x="70" y="5" width="25" height="25" rx="2"/>
+            <rect x="5" y="35" width="5" height="5"/><rect x="15" y="35" width="5" height="5"/><rect x="35" y="35" width="5" height="5"/><rect x="55" y="35" width="5" height="5"/><rect x="70" y="35" width="5" height="5"/><rect x="90" y="35" width="5" height="5"/>
+            <rect x="5" y="70" width="25" height="25" rx="2"/><rect x="35" y="75" width="5" height="5"/><rect x="50" y="70" width="5" height="5"/><rect x="65" y="80" width="5" height="5"/><rect x="80" y="70" width="5" height="5"/>
+          </svg>
+          <p class="text-xs text-gray-500 mt-1">tc.care/v/abc123</p>
+        </div>
+      </div>
+      <div class="flex-1">
+        <dl class="space-y-3 text-sm">
+          <div><dt class="text-gray-500">Short URL</dt><dd class="font-medium text-gray-900 font-mono">tc.care/v/abc123</dd></div>
+          <div><dt class="text-gray-500">Generated</dt><dd class="font-medium text-gray-900">15 Jan 2026</dd></div>
+          <div><dt class="text-gray-500">Status</dt><dd><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">Active</span></dd></div>
+          <div><dt class="text-gray-500">Scans (30 days)</dt><dd class="font-medium text-gray-900">47</dd></div>
+        </dl>
+        <div class="mt-4 flex gap-2">
+          <button class="px-4 py-2 bg-teal-700 text-white text-sm rounded-lg">Download PDF</button>
+          <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg">Print Fridge Magnet</button>
+          <button class="px-4 py-2 border border-red-300 text-red-700 text-sm rounded-lg">Revoke &amp; Regenerate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Wellbeing Survey -->
+<div id="wellbeing" class="screen active p-6 flex justify-center" style="display:none">
+  <div class="w-full max-w-sm">
+    <p class="text-sm text-gray-500 mb-4 text-center">Shown after check-in confirmation (mobile)</p>
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+      <div class="bg-teal-700 px-5 py-4 text-white">
+        <p class="text-xs opacity-80">Quick Wellbeing Check</p>
+        <h1 class="text-lg font-bold mt-0.5">How is Margaret today?</h1>
+      </div>
+      <div class="p-5 space-y-4">
+        <div>
+          <p class="text-sm font-medium text-gray-700 mb-2">Overall mood</p>
+          <div class="flex gap-2">
+            <button class="flex-1 py-2 border border-gray-300 rounded-lg text-sm hover:bg-teal-50 hover:border-teal-500">Good</button>
+            <button class="flex-1 py-2 border border-gray-300 rounded-lg text-sm hover:bg-teal-50 hover:border-teal-500">Fair</button>
+            <button class="flex-1 py-2 border border-gray-300 rounded-lg text-sm hover:bg-amber-50 hover:border-amber-500">Concerned</button>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-700 mb-2">Mobility</p>
+          <div class="flex gap-2">
+            <button class="flex-1 py-2 border border-teal-500 bg-teal-50 rounded-lg text-sm text-teal-700 font-medium">Stable</button>
+            <button class="flex-1 py-2 border border-gray-300 rounded-lg text-sm">Changed</button>
+            <button class="flex-1 py-2 border border-gray-300 rounded-lg text-sm">Declined</button>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-700 mb-2">Any concerns?</p>
+          <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Optional notes..."></textarea>
+        </div>
+        <button class="w-full py-3 bg-teal-700 text-white font-medium rounded-lg text-sm">Submit &amp; Finish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

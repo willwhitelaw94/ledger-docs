@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC Portal — Mockup Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: { 50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 500: '#43C0BE', 600: '#0d9488', 700: '#007F7E', 800: '#115e59' },
+                        'primary-blue': { 700: '#2C4C79' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Hero -->
+    <div class="bg-gradient-to-br from-primary-blue-700 to-teal-800 text-white">
+        <div class="max-w-6xl mx-auto px-6 py-16">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="h-10 w-10 rounded-lg bg-teal-500/20 flex items-center justify-center">
+                    <svg class="h-6 w-6 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                </div>
+                <span class="text-teal-300 text-sm font-medium tracking-wide uppercase">Trilogy Care</span>
+            </div>
+            <h1 class="text-4xl font-bold">Mockup Gallery</h1>
+            <p class="mt-3 text-lg text-white/70 max-w-2xl">Interactive UI mockups for every epic across the TC Portal portfolio. Click any card to explore the screens.</p>
+            <div class="mt-6 flex items-center gap-4">
+                <input id="search" type="text" placeholder="Search mockups..."
+                    class="w-full max-w-md rounded-lg border border-white/20 bg-white/10 px-4 py-2.5 text-sm text-white placeholder-white/50 backdrop-blur focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none">
+                <div id="count" class="text-sm text-white/50 whitespace-nowrap"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div id="initiatives"></div>
+    </div>
+
+    <script>
+        const INITIATIVE_META = {
+            'Clinical-And-Care-Plan': { label: 'Clinical & Care Plan', color: 'rose', icon: '🏥', order: 1 },
+            'Budgets-And-Finance': { label: 'Budgets & Finance', color: 'amber', icon: '💰', order: 2 },
+            'Supplier-Management': { label: 'Supplier Management', color: 'blue', icon: '🏢', order: 3 },
+            'Consumer-Lifecycle': { label: 'Consumer Lifecycle', color: 'emerald', icon: '👤', order: 4 },
+            'Consumer-Mobile': { label: 'Consumer Mobile', color: 'violet', icon: '📱', order: 5 },
+            'Work-Management': { label: 'Work Management', color: 'orange', icon: '📋', order: 6 },
+            'Infrastructure': { label: 'Infrastructure', color: 'slate', icon: '⚙️', order: 7 },
+            'Coordinator-Management': { label: 'Coordinator Management', color: 'cyan', icon: '🧑‍💼', order: 8 },
+            'ADHOC': { label: 'ADHOC', color: 'gray', icon: '🔧', order: 9 },
+        };
+
+        const COLOR_MAP = {
+            rose:    { bg: 'bg-rose-50',    border: 'border-rose-200',    badge: 'bg-rose-100 text-rose-700',    hover: 'hover:border-rose-400',    header: 'text-rose-800' },
+            amber:   { bg: 'bg-amber-50',   border: 'border-amber-200',   badge: 'bg-amber-100 text-amber-700',   hover: 'hover:border-amber-400',   header: 'text-amber-800' },
+            blue:    { bg: 'bg-blue-50',    border: 'border-blue-200',    badge: 'bg-blue-100 text-blue-700',    hover: 'hover:border-blue-400',    header: 'text-blue-800' },
+            emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-700', hover: 'hover:border-emerald-400', header: 'text-emerald-800' },
+            violet:  { bg: 'bg-violet-50',  border: 'border-violet-200',  badge: 'bg-violet-100 text-violet-700',  hover: 'hover:border-violet-400',  header: 'text-violet-800' },
+            orange:  { bg: 'bg-orange-50',  border: 'border-orange-200',  badge: 'bg-orange-100 text-orange-700',  hover: 'hover:border-orange-400',  header: 'text-orange-800' },
+            slate:   { bg: 'bg-slate-50',   border: 'border-slate-200',   badge: 'bg-slate-100 text-slate-700',   hover: 'hover:border-slate-400',   header: 'text-slate-800' },
+            cyan:    { bg: 'bg-cyan-50',    border: 'border-cyan-200',    badge: 'bg-cyan-100 text-cyan-700',    hover: 'hover:border-cyan-400',    header: 'text-cyan-800' },
+            gray:    { bg: 'bg-gray-50',    border: 'border-gray-200',    badge: 'bg-gray-100 text-gray-700',    hover: 'hover:border-gray-400',    header: 'text-gray-800' },
+        };
+
+        const mockups = [{"name":"Care Partner Check-Ins","path":"./001-chk-care-partner-check-ins/index.html","initiative":"Work-Management"},{"name":"Personal Context Notes Redesign","path":"./001-personal-context-notes-redesign/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Relationship Intelligence","path":"./001-rin-relationship-intelligence/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"AI Invoice V3","path":"./ai-invoice-v3/index.html","initiative":"Supplier-Management"},{"name":"Assessment Prescriptions","path":"./assessment-prescriptions/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"ATHM Funding Commitment","path":"./athm-funding-commitment/index.html","initiative":"Budgets-And-Finance"},{"name":"Budget Reloaded","path":"./budget-reloaded/index.html","initiative":"Budgets-And-Finance"},{"name":"Calendar Integration","path":"./calendar-integration/index.html","initiative":"Consumer-Lifecycle"},{"name":"Calls Uplift","path":"./calls-uplift/index.html","initiative":"Work-Management"},{"name":"Care Circle Uplift","path":"./care-circle-uplift/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"CareVicinity Job Posting","path":"./carevicinity-job-posting/index.html","initiative":"Supplier-Management"},{"name":"Client HCA","path":"./client-hca/index.html","initiative":"Consumer-Lifecycle"},{"name":"Clinical Governance Dashboard","path":"./clinical-governance-dashboard/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Clinical Pathways & Cases","path":"./clinical-pathways-cases/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"CM Activities","path":"./cm-activities/index.html","initiative":"Work-Management"},{"name":"Collections V1","path":"./collections-v1/index.html","initiative":"Budgets-And-Finance"},{"name":"Collections V2","path":"./collections-v2/index.html","initiative":"Budgets-And-Finance"},{"name":"Complaints Management","path":"./complaints-management/index.html","initiative":"Work-Management"},{"name":"Consumer Budget Preview","path":"./consumer-budget-preview/index.html","initiative":"Budgets-And-Finance"},{"name":"Consumer Mobile V1","path":"./consumer-mobile-v1/index.html","initiative":"Consumer-Mobile"},{"name":"Consumer Mobile V2","path":"./consumer-mobile-v2/index.html","initiative":"Consumer-Mobile"},{"name":"Consumer Mobile V3","path":"./consumer-mobile-v3/index.html","initiative":"Consumer-Mobile"},{"name":"Coordination Audit Process","path":"./coordination-audit-process/index.html","initiative":"Coordinator-Management"},{"name":"Coordinator Budget Management","path":"./coordinator-budget-management/index.html","initiative":"Budgets-And-Finance"},{"name":"CV Integration","path":"./cv-integration/index.html","initiative":"ADHOC"},{"name":"Digital Statements","path":"./digital-statements/index.html","initiative":"Budgets-And-Finance"},{"name":"Digital Transactions","path":"./digital-transactions/index.html","initiative":"Budgets-And-Finance"},{"name":"Documents","path":"./documents/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Email Templates & Notifications","path":"./email-templates-and-notifications/index.html","initiative":"Infrastructure"},{"name":"Enhanced Bulk Actions","path":"./enhanced-bulk-actions/index.html","initiative":"Infrastructure"},{"name":"Express Pay","path":"./express-pay/index.html","initiative":"Supplier-Management"},{"name":"Funding Reconciliation","path":"./funding-reconciliation/index.html","initiative":"Budgets-And-Finance"},{"name":"Future State Care Planning","path":"./future-state-care-planning/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Home Modifications Flow","path":"./home-modifications-flow/index.html","initiative":"Supplier-Management"},{"name":"Incident Management","path":"./incident-management/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Inclusion Integration","path":"./inclusion-integration/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Intercom on Portal","path":"./intercom-on-portal/index.html","initiative":"ADHOC"},{"name":"Invoice Reclassification","path":"./invoice-reclassification/index.html","initiative":"Budgets-And-Finance"},{"name":"Invoices V2","path":"./invoices-v2/index.html","initiative":"Supplier-Management"},{"name":"Lead Desirable","path":"./lead-desirable/index.html","initiative":"Consumer-Lifecycle"},{"name":"Lead Essential","path":"./lead-essential/index.html","initiative":"Consumer-Lifecycle"},{"name":"Lead Generation Integrations","path":"./lead-generation-integrations/index.html","initiative":"Consumer-Lifecycle"},{"name":"Lead to HCA","path":"./lead-to-hca/index.html","initiative":"Consumer-Lifecycle"},{"name":"Multi-Package Support","path":"./multi-package-support/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Needs V2","path":"./needs-v2-simplified-needs-module/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Notes Uplift","path":"./notes-uplift/index.html","initiative":"Work-Management"},{"name":"On Hold Bills Flow","path":"./on-hold-bills-flow/index.html","initiative":"Supplier-Management"},{"name":"Optimising Bill Processing","path":"./optimising-bill-processing/index.html","initiative":"Supplier-Management"},{"name":"Package Level Upgrade","path":"./package-level-upgrade/index.html","initiative":"Consumer-Lifecycle"},{"name":"Portal Bill Submission","path":"./portal-bill-submission/index.html","initiative":"Budgets-And-Finance"},{"name":"QR Code Service Confirmation","path":"./qr-code-service-confirmation/index.html","initiative":"Supplier-Management"},{"name":"Re-Assignment Rules","path":"./re-assignment-rules/index.html","initiative":"Work-Management"},{"name":"Recipient Uplift","path":"./recipient-uplift/index.html","initiative":"Consumer-Lifecycle"},{"name":"Risk Radar","path":"./risk-radar/index.html","initiative":"Clinical-And-Care-Plan"},{"name":"Roles & Permissions Refactor","path":"./roles-and-permissions-refactor/index.html","initiative":"Infrastructure"},{"name":"S@H Claims Process","path":"./sah-claims-process/index.html","initiative":"Budgets-And-Finance"},{"name":"Search Service Provider","path":"./search-service-provider/index.html","initiative":"Supplier-Management"},{"name":"Service Booking","path":"./service-booking/index.html","initiative":"Supplier-Management"},{"name":"Service Requests","path":"./service-requests/index.html","initiative":"Coordinator-Management"},{"name":"Short Term Pathway Invoicing","path":"./short-term-pathway-invoicing/index.html","initiative":"Budgets-And-Finance"},{"name":"Supplier Audit Process","path":"./supplier-audit-process/index.html","initiative":"Supplier-Management"},{"name":"Supplier Bill Submission","path":"./supplier-bill-submission/index.html","initiative":"Supplier-Management"},{"name":"Supplier Docs AI","path":"./supplier-docs-ai/index.html","initiative":"Supplier-Management"},{"name":"Supplier Onboarding 2","path":"./supplier-onboarding-2/index.html","initiative":"Supplier-Management"},{"name":"Supplier Org Identity","path":"./supplier-org-identity/index.html","initiative":"Supplier-Management"},{"name":"Supplier Pricing","path":"./supplier-pricing/index.html","initiative":"Supplier-Management"},{"name":"Supplier Service Verification","path":"./supplier-service-verification-features/index.html","initiative":"Supplier-Management"},{"name":"Task Management","path":"./task-management/index.html","initiative":"Work-Management"},{"name":"Teams Management","path":"./teams-management/index.html","initiative":"Infrastructure"},{"name":"Threads","path":"./threads/index.html","initiative":"Work-Management"},{"name":"Timeline Uplift","path":"./timeline-uplift/index.html","initiative":"Work-Management"},{"name":"Voluntary Contributions","path":"./voluntary-contributions-enhancements/index.html","initiative":"Budgets-And-Finance"}];
+
+        function render(filter = '') {
+            const container = document.getElementById('initiatives');
+            const countEl = document.getElementById('count');
+            const lc = filter.toLowerCase();
+
+            const filtered = mockups.filter(m => !lc || m.name.toLowerCase().includes(lc) || (INITIATIVE_META[m.initiative]?.label || '').toLowerCase().includes(lc));
+
+            countEl.textContent = `${filtered.length} mockup${filtered.length !== 1 ? 's' : ''}`;
+
+            // Group by initiative
+            const groups = {};
+            filtered.forEach(m => {
+                const key = m.initiative;
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(m);
+            });
+
+            // Sort groups by order
+            const sorted = Object.entries(groups).sort((a, b) => {
+                return (INITIATIVE_META[a[0]]?.order || 99) - (INITIATIVE_META[b[0]]?.order || 99);
+            });
+
+            container.innerHTML = sorted.map(([key, items]) => {
+                const meta = INITIATIVE_META[key] || { label: key, color: 'gray', icon: '📦', order: 99 };
+                const c = COLOR_MAP[meta.color] || COLOR_MAP.gray;
+
+                return `
+                    <div class="mb-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-2xl">${meta.icon}</span>
+                            <h2 class="text-xl font-bold ${c.header}">${meta.label}</h2>
+                            <span class="${c.badge} rounded-full px-2.5 py-0.5 text-xs font-semibold">${items.length} epic${items.length !== 1 ? 's' : ''}</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                            ${items.sort((a, b) => a.name.localeCompare(b.name)).map(m => `
+                                <a href="${m.path}" class="group block rounded-xl border ${c.border} bg-white p-4 shadow-sm hover:shadow-md ${c.hover} transition-all">
+                                    <div class="flex items-start justify-between gap-2">
+                                        <div class="text-sm font-semibold text-gray-900 group-hover:text-teal-700 leading-snug">${m.name}</div>
+                                        <svg class="h-4 w-4 text-gray-300 group-hover:text-teal-500 shrink-0 mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                    </div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        render();
+        document.getElementById('search').addEventListener('input', e => render(e.target.value));
+    </script>
+</body>
+</html>

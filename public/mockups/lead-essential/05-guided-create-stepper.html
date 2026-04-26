@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LES Mockup - Guided Create Lead (Stepper)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="viewer-toolbar.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' },
+            info: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',500:'#43C0BE',700:'#007F7E',900:'#003D3D' },
+            success: { 50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',500:'#35A8E4',700:'#156F9D' },
+            warning: { 50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',500:'#E0763C',700:'#9C481A' },
+            danger: { 50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',500:'#E04B51',700:'#9C262A' },
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+          borderRadius: { 'input': '8px' },
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-primary { color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+
+    /* Step indicator styles */
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .step-circle.completed {
+      background: #007F7E;
+      color: white;
+    }
+    .step-circle.current {
+      background: white;
+      color: #007F7E;
+      box-shadow: 0 0 0 2px #007F7E;
+    }
+    .step-circle.future {
+      background: #E5E7EB;
+      color: #9CA3AF;
+    }
+    .step-line {
+      height: 2px;
+      flex: 1;
+      min-width: 40px;
+      transition: background 0.2s ease;
+    }
+    .step-line.completed { background: #007F7E; }
+    .step-line.future { background: #E5E7EB; }
+
+    /* Step content panes */
+    .step-content { display: none; }
+    .step-content.active { display: block; }
+
+    /* Contact card */
+    .contact-card { transition: all 0.2s ease; }
+    .contact-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-primary min-h-screen flex flex-col">
+
+  <!-- Top Nav Bar -->
+  <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex items-center gap-4">
+      <div class="text-teal-700 font-bold text-lg">TC Portal</div>
+      <span class="text-gray-300">/</span>
+      <a href="#" class="text-secondary hover:text-teal-700 text-sm">Leads</a>
+      <span class="text-gray-300">/</span>
+      <span class="text-sm font-semibold">New Lead</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="location.reload()" class="px-3 py-2 text-sm font-bold rounded-full bg-transparent hover:bg-gray-100 text-gray-700">Discard</button>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="flex-1 flex flex-col items-center px-6 py-8">
+    <div class="w-full max-w-2xl">
+
+      <!-- Page Title -->
+      <h1 class="text-xl font-semibold text-primary mb-2">Create New Lead</h1>
+      <p class="text-sm text-secondary mb-8">Fill in the details below to create a new lead record. Fields marked with <span class="text-danger-500">*</span> are required.</p>
+
+      <!-- Step Indicator (CommonStepNavigation pattern) -->
+      <div class="flex items-center justify-center mb-10 px-4">
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center gap-2">
+          <div class="step-circle current" id="step-circle-1">1</div>
+          <span class="text-xs font-semibold text-teal-700" id="step-label-1">Personal Details</span>
+        </div>
+
+        <div class="step-line future mx-3" id="line-1-2"></div>
+
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center gap-2">
+          <div class="step-circle future" id="step-circle-2">2</div>
+          <span class="text-xs text-secondary" id="step-label-2">Aged Care Stage</span>
+        </div>
+
+        <div class="step-line future mx-3" id="line-2-3"></div>
+
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center gap-2">
+          <div class="step-circle future" id="step-circle-3">3</div>
+          <span class="text-xs text-secondary" id="step-label-3">Contacts</span>
+        </div>
+      </div>
+
+      <!-- Step Content Container -->
+      <div class="rounded-lg bg-white border border-gray-400/40 shadow-sm">
+
+        <!-- Step 1: Personal Details -->
+        <div class="step-content active" id="step-1">
+          <div class="px-6 py-4 border-b border-gray-100">
+            <h3 class="text-sm font-semibold text-primary">Personal Details</h3>
+            <p class="text-xs text-secondary mt-0.5">Basic information about the lead.</p>
+          </div>
+          <div class="px-6 py-5">
+            <div class="flex flex-col gap-4">
+
+              <!-- First Name + Last Name -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-semibold text-secondary block mb-1.5">
+                    First Name <span class="text-danger-500">*</span>
+                  </label>
+                  <input type="text" placeholder="e.g. Margaret" value="Margaret" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <div>
+                  <label class="text-xs font-semibold text-secondary block mb-1.5">
+                    Last Name <span class="text-danger-500">*</span>
+                  </label>
+                  <input type="text" placeholder="e.g. Wilson" value="Wilson" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                </div>
+              </div>
+
+              <!-- Email + Phone -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-semibold text-secondary block mb-1.5">
+                    Email <span class="text-danger-500">*</span>
+                  </label>
+                  <input type="email" placeholder="e.g. margaret.w@email.com" value="margaret.w@email.com" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <div>
+                  <label class="text-xs font-semibold text-secondary block mb-1.5">Phone</label>
+                  <input type="tel" placeholder="e.g. 0412 345 678" value="0412 345 678" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                </div>
+              </div>
+
+              <!-- Date of Birth + Gender -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-semibold text-secondary block mb-1.5">Date of Birth</label>
+                  <input type="date" value="1945-03-15" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <div>
+                  <label class="text-xs font-semibold text-secondary block mb-1.5">Gender</label>
+                  <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                    <option value="" disabled>Select gender...</option>
+                    <option value="female" selected>Female</option>
+                    <option value="male">Male</option>
+                    <option value="non-binary">Non-binary</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1.5">Address</label>
+                <input type="text" placeholder="Start typing to search address..." value="42 Maple Street, Toowong QLD 4066" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Aged Care Stage -->
+        <div class="step-content" id="step-2">
+          <div class="px-6 py-4 border-b border-gray-100">
+            <h3 class="text-sm font-semibold text-primary">Aged Care Stage</h3>
+            <p class="text-xs text-secondary mt-0.5">Where is this lead on their aged care journey?</p>
+          </div>
+          <div class="px-6 py-5">
+            <div class="flex flex-col gap-5">
+
+              <!-- Journey Stage Selector -->
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-2">
+                  Journey Stage <span class="text-danger-500">*</span>
+                </label>
+                <div class="grid grid-cols-3 gap-2">
+                  <button class="stage-option px-3 py-3 rounded-[8px] border-2 border-teal-700 bg-teal-50 text-sm font-medium text-teal-700 text-center" onclick="selectStage(this)">
+                    <div class="text-sm font-semibold">Pre-Care</div>
+                    <div class="text-[10px] text-secondary mt-0.5">No assessment yet</div>
+                  </button>
+                  <button class="stage-option px-3 py-3 rounded-[8px] border border-gray-200 bg-white text-sm font-medium text-primary text-center hover:border-teal-300 hover:bg-teal-50/30" onclick="selectStage(this)">
+                    <div class="text-sm font-semibold">ACAT Booked</div>
+                    <div class="text-[10px] text-secondary mt-0.5">Assessment scheduled</div>
+                  </button>
+                  <button class="stage-option px-3 py-3 rounded-[8px] border border-gray-200 bg-white text-sm font-medium text-primary text-center hover:border-teal-300 hover:bg-teal-50/30" onclick="selectStage(this)">
+                    <div class="text-sm font-semibold">Approved</div>
+                    <div class="text-[10px] text-secondary mt-0.5">ACAT conducted</div>
+                  </button>
+                  <button class="stage-option px-3 py-3 rounded-[8px] border border-gray-200 bg-white text-sm font-medium text-primary text-center hover:border-teal-300 hover:bg-teal-50/30" onclick="selectStage(this)">
+                    <div class="text-sm font-semibold">Allocated</div>
+                    <div class="text-[10px] text-secondary mt-0.5">Package assigned</div>
+                  </button>
+                  <button class="stage-option px-3 py-3 rounded-[8px] border border-gray-200 bg-white text-sm font-medium text-primary text-center hover:border-teal-300 hover:bg-teal-50/30" onclick="selectStage(this)">
+                    <div class="text-sm font-semibold">Active</div>
+                    <div class="text-[10px] text-secondary mt-0.5">Receiving services</div>
+                  </button>
+                  <button class="stage-option px-3 py-3 rounded-[8px] border border-gray-200 bg-white text-sm font-medium text-primary text-center hover:border-teal-300 hover:bg-teal-50/30" onclick="selectStage(this)">
+                    <div class="text-sm font-semibold">Converted</div>
+                    <div class="text-[10px] text-secondary mt-0.5">Became a client</div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Divider -->
+              <div class="h-px bg-gray-200"></div>
+
+              <!-- Purchase Intent -->
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-2">Purchase Intent</label>
+                <div class="flex gap-3">
+                  <label class="flex-1 cursor-pointer">
+                    <input type="radio" name="intent" value="hot" class="hidden peer">
+                    <div class="px-4 py-3 rounded-[8px] border border-gray-200 bg-white text-center peer-checked:border-2 peer-checked:border-danger-500 peer-checked:bg-danger-50 hover:border-danger-300 hover:bg-danger-50/30 transition-all">
+                      <div class="text-sm font-semibold">Hot</div>
+                      <div class="text-[10px] text-secondary mt-0.5">Ready to decide</div>
+                    </div>
+                  </label>
+                  <label class="flex-1 cursor-pointer">
+                    <input type="radio" name="intent" value="warm" class="hidden peer" checked>
+                    <div class="px-4 py-3 rounded-[8px] border border-gray-200 bg-white text-center peer-checked:border-2 peer-checked:border-warning-500 peer-checked:bg-warning-50 hover:border-warning-300 hover:bg-warning-50/30 transition-all">
+                      <div class="text-sm font-semibold">Warm</div>
+                      <div class="text-[10px] text-secondary mt-0.5">Actively exploring</div>
+                    </div>
+                  </label>
+                  <label class="flex-1 cursor-pointer">
+                    <input type="radio" name="intent" value="cold" class="hidden peer">
+                    <div class="px-4 py-3 rounded-[8px] border border-gray-200 bg-white text-center peer-checked:border-2 peer-checked:border-primary-blue-500 peer-checked:bg-primary-blue-50 hover:border-primary-blue-300 hover:bg-primary-blue-50/30 transition-all">
+                      <div class="text-sm font-semibold">Cold</div>
+                      <div class="text-[10px] text-secondary mt-0.5">Early inquiry</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Lead Attribution -->
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1.5">Lead Attribution</label>
+                <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                  <option value="" disabled>Select source...</option>
+                  <option value="website" selected>Website</option>
+                  <option value="referral">Referral</option>
+                  <option value="phone">Phone Enquiry</option>
+                  <option value="event">Event</option>
+                  <option value="zoho">Zoho Import</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Contacts -->
+        <div class="step-content" id="step-3">
+          <div class="px-6 py-4 border-b border-gray-100">
+            <h3 class="text-sm font-semibold text-primary">Contact Information</h3>
+            <p class="text-xs text-secondary mt-0.5">Add contacts related to this lead (family, carers, etc.).</p>
+          </div>
+          <div class="px-6 py-5">
+            <div class="flex flex-col gap-4">
+
+              <!-- Primary Contact Card -->
+              <div class="contact-card rounded-[8px] border border-teal-200 bg-teal-50/30 p-4">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-semibold rounded bg-teal-700 text-white">PRIMARY</span>
+                    <span class="text-sm font-semibold text-primary">Primary Contact</span>
+                  </div>
+                  <button class="text-xs text-danger-500 hover:text-danger-700 font-medium">Remove</button>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-xs font-semibold text-secondary block mb-1.5">
+                      Contact Name <span class="text-danger-500">*</span>
+                    </label>
+                    <input type="text" placeholder="e.g. Sarah Wilson" value="Sarah Wilson" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white">
+                  </div>
+                  <div>
+                    <label class="text-xs font-semibold text-secondary block mb-1.5">
+                      Relationship <span class="text-danger-500">*</span>
+                    </label>
+                    <select class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white">
+                      <option value="" disabled>Select...</option>
+                      <option value="self">Self</option>
+                      <option value="daughter" selected>Daughter</option>
+                      <option value="son">Son</option>
+                      <option value="spouse">Spouse</option>
+                      <option value="carer">Carer</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="text-xs font-semibold text-secondary block mb-1.5">Email</label>
+                    <input type="email" placeholder="e.g. sarah.w@email.com" value="sarah.w@email.com" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white">
+                  </div>
+                  <div>
+                    <label class="text-xs font-semibold text-secondary block mb-1.5">Phone</label>
+                    <input type="tel" placeholder="e.g. 0413 567 890" value="0413 567 890" class="w-full rounded-[8px] border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add Contact Button -->
+              <button class="w-full px-4 py-3 rounded-[8px] border-2 border-dashed border-gray-300 text-sm font-medium text-secondary hover:border-teal-400 hover:text-teal-700 hover:bg-teal-50/30 transition-all flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Add Another Contact
+              </button>
+
+              <!-- Hint -->
+              <p class="text-xs text-tertiary text-center">You can add more contacts later from the lead profile.</p>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Step Footer (always visible) -->
+        <div class="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+          <button id="back-btn" class="px-4 py-2 text-sm font-bold rounded-full bg-transparent hover:bg-gray-200 text-gray-700 invisible" onclick="goBack()">
+            <span class="flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+              Back
+            </span>
+          </button>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-secondary" id="step-counter">Step 1 of 3</span>
+            <button id="next-btn" class="px-5 py-2 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600 shadow-sm" onclick="goNext()">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    function goNext() {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateUI();
+      }
+    }
+
+    function goBack() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateUI();
+      }
+    }
+
+    function updateUI() {
+      // Update step content visibility
+      for (let i = 1; i <= totalSteps; i++) {
+        const content = document.getElementById(`step-${i}`);
+        content.classList.toggle('active', i === currentStep);
+      }
+
+      // Update step circles
+      for (let i = 1; i <= totalSteps; i++) {
+        const circle = document.getElementById(`step-circle-${i}`);
+        const label = document.getElementById(`step-label-${i}`);
+
+        circle.classList.remove('completed', 'current', 'future');
+        label.classList.remove('text-teal-700', 'font-semibold');
+        label.classList.add('text-secondary');
+
+        if (i < currentStep) {
+          circle.classList.add('completed');
+          circle.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>';
+        } else if (i === currentStep) {
+          circle.classList.add('current');
+          circle.textContent = i;
+          label.classList.remove('text-secondary');
+          label.classList.add('text-teal-700', 'font-semibold');
+        } else {
+          circle.classList.add('future');
+          circle.textContent = i;
+        }
+      }
+
+      // Update connecting lines
+      const line12 = document.getElementById('line-1-2');
+      const line23 = document.getElementById('line-2-3');
+      line12.classList.toggle('completed', currentStep > 1);
+      line12.classList.toggle('future', currentStep <= 1);
+      line23.classList.toggle('completed', currentStep > 2);
+      line23.classList.toggle('future', currentStep <= 2);
+
+      // Update back button visibility
+      const backBtn = document.getElementById('back-btn');
+      backBtn.classList.toggle('invisible', currentStep === 1);
+
+      // Update next button text
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.textContent = currentStep === totalSteps ? 'Create Lead' : 'Next';
+
+      // Update step counter
+      document.getElementById('step-counter').textContent = `Step ${currentStep} of ${totalSteps}`;
+    }
+
+    function selectStage(el) {
+      // Remove selected state from all stage options
+      document.querySelectorAll('.stage-option').forEach(btn => {
+        btn.classList.remove('border-teal-700', 'bg-teal-50', 'text-teal-700', 'border-2');
+        btn.classList.add('border-gray-200', 'bg-white', 'text-primary', 'border');
+      });
+      // Add selected state
+      el.classList.remove('border-gray-200', 'bg-white', 'text-primary', 'border');
+      el.classList.add('border-teal-700', 'bg-teal-50', 'text-teal-700', 'border-2');
+    }
+  </script>
+
+</body>
+</html>

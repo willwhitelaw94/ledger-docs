@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>056-FEX File Explorer — Spec Explorer</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#e2e8f0;--text-muted:#94a3b8;--text-dim:#64748b;
+--teal:#007F7E;--teal-light:#43C0BE;--blue:#2C4C79;
+--p1:#ef4444;--p2:#fbbf24;--p3:#64748b;
+--given:#43C0BE;--when:#fbbf24;--then:#a78bfa;
+--cat-nav:#f59e0b;--cat-browse:#3b82f6;--cat-upload:#22c55e;--cat-folders:#a855f7;
+--cat-detail:#ec4899;--cat-linking:#06b6d4;--cat-fileops:#fb923c;--cat-lifecycle:#14b8a6;
+--cat-access:#64748b;--cat-storage:#6366f1;
+--sidebar-w:320px;--detail-w:420px;--prompt-h:140px;
+}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:var(--text)}
+input{font-family:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 10px;outline:none}
+input:focus{border-color:var(--teal)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* Layout */
+#app{display:flex;height:100vh;width:100vw;overflow:hidden}
+#sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:20}
+#main{flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden}
+#canvas-wrap{flex:1;overflow:hidden;position:relative;cursor:grab}
+#canvas-wrap.grabbing{cursor:grabbing}
+#canvas{position:absolute;top:0;left:0;transform-origin:0 0}
+#detail-panel{position:absolute;top:0;right:0;width:var(--detail-w);height:calc(100% - var(--prompt-h));background:var(--surface);border-left:1px solid var(--border);z-index:15;transform:translateX(100%);transition:transform .3s ease;overflow-y:auto;padding:20px}
+#detail-panel.open{transform:translateX(0)}
+#prompt-bar{height:var(--prompt-h);min-height:var(--prompt-h);background:var(--surface);border-top:1px solid var(--border);padding:12px 16px;display:flex;flex-direction:column;z-index:10}
+
+/* SVG arrows layer */
+#arrows-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5}
+
+/* Toolbar */
+#toolbar{position:absolute;top:12px;left:12px;z-index:10;display:flex;gap:8px}
+#toolbar button{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;transition:background .15s}
+#toolbar button:hover{background:var(--border)}
+
+/* Sidebar */
+.sidebar-header{padding:16px;border-bottom:1px solid var(--border)}
+.sidebar-header h2{font-size:15px;font-weight:700;color:var(--teal-light);margin-bottom:2px}
+.sidebar-header .subtitle{font-size:11px;color:var(--text-muted)}
+.sidebar-search{padding:10px 16px}
+.sidebar-search input{width:100%;font-size:13px}
+.sidebar-tabs{display:flex;border-bottom:1px solid var(--border)}
+.sidebar-tabs button{flex:1;padding:8px 4px;font-size:12px;font-weight:600;color:var(--text-muted);border-bottom:2px solid transparent;transition:all .15s}
+.sidebar-tabs button.active{color:var(--teal-light);border-bottom-color:var(--teal-light)}
+.sidebar-tabs button:hover{color:var(--text)}
+.sidebar-content{flex:1;overflow-y:auto;padding:8px}
+.sidebar-stats{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap}
+.stat-badge{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600}
+.stat-p1{background:rgba(239,68,68,.15);color:var(--p1)}
+.stat-p2{background:rgba(251,191,36,.15);color:var(--p2)}
+.stat-p3{background:rgba(100,116,139,.15);color:var(--p3)}
+.stat-fr{background:rgba(59,130,246,.15);color:var(--cat-browse)}
+
+/* Sidebar list items */
+.sb-story{padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:4px;border:1px solid transparent;transition:all .15s}
+.sb-story:hover{background:rgba(255,255,255,.04);border-color:var(--border)}
+.sb-story.selected{background:rgba(0,127,126,.1);border-color:var(--teal)}
+.sb-story-title{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.sb-story-meta{font-size:11px;color:var(--text-muted);display:flex;gap:10px}
+.priority-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.priority-dot.p1{background:var(--p1)}.priority-dot.p2{background:var(--p2)}.priority-dot.p3{background:var(--p3)}
+
+/* FR list */
+.fr-group{margin-bottom:12px}
+.fr-group-header{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 8px;border-radius:4px;margin-bottom:4px}
+.fr-item{padding:6px 12px;font-size:12px;cursor:pointer;border-radius:4px;transition:background .1s;line-height:1.4}
+.fr-item:hover{background:rgba(255,255,255,.04)}
+.fr-item.selected{background:rgba(0,127,126,.15)}
+.fr-badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px;margin-right:4px}
+
+/* Scenario list */
+.sc-item{padding:8px 12px;border-radius:6px;cursor:pointer;margin-bottom:4px;font-size:12px;line-height:1.5;transition:background .1s}
+.sc-item:hover{background:rgba(255,255,255,.04)}
+.sc-item .sc-parent{font-size:10px;color:var(--text-dim);font-weight:600;margin-bottom:2px}
+
+/* Canvas cards */
+.story-card{position:absolute;width:280px;background:var(--surface);border:1px solid var(--border);border-radius:10px;cursor:grab;user-select:none;transition:box-shadow .15s,border-color .15s;z-index:2}
+.story-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.story-card.selected{border-color:var(--teal);box-shadow:0 0 0 2px rgba(0,127,126,.3)}
+.story-card.dragging{opacity:.8;z-index:100;cursor:grabbing}
+.card-priority-stripe{height:4px;border-radius:10px 10px 0 0}
+.card-priority-stripe.p1{background:var(--p1)}.card-priority-stripe.p2{background:var(--p2)}.card-priority-stripe.p3{background:var(--p3)}
+.card-body{padding:12px 14px}
+.card-number{font-size:11px;color:var(--text-dim);font-weight:700;margin-bottom:4px}
+.card-title{font-size:14px;font-weight:700;margin-bottom:8px;line-height:1.3}
+.card-actor{font-size:11px;color:var(--text-muted);margin-bottom:8px}
+.card-stats{display:flex;gap:8px;flex-wrap:wrap}
+.card-stat{font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.06);color:var(--text-muted);font-weight:500}
+
+/* Swim lanes */
+.swim-lane{position:absolute;border:2px dashed rgba(255,255,255,.06);border-radius:12px;pointer-events:none;z-index:0}
+.swim-lane-label{position:absolute;top:8px;left:14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.35}
+.swim-lane.p1{background:rgba(239,68,68,.02)}.swim-lane.p2{background:rgba(251,191,36,.02)}.swim-lane.p3{background:rgba(100,116,139,.02)}
+
+/* Detail panel */
+.detail-close{position:absolute;top:12px;right:12px;font-size:18px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:var(--text-muted)}
+.detail-close:hover{background:var(--border)}
+.detail-title{font-size:18px;font-weight:700;margin-bottom:4px;padding-right:32px}
+.detail-actor{font-size:13px;color:var(--text-muted);margin-bottom:12px}
+.detail-section{margin-bottom:16px}
+.detail-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-dim);margin-bottom:6px}
+.detail-priority{display:inline-block;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:700}
+.detail-priority.p1{background:rgba(239,68,68,.15);color:var(--p1)}
+.detail-priority.p2{background:rgba(251,191,36,.15);color:var(--p2)}
+.detail-priority.p3{background:rgba(100,116,139,.15);color:var(--p3)}
+.detail-why{font-size:13px;line-height:1.5;color:var(--text-muted);font-style:italic}
+.dep-tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;background:rgba(44,76,121,.3);color:#93c5fd;cursor:pointer;margin:2px 4px 2px 0;transition:background .15s}
+.dep-tag:hover{background:rgba(44,76,121,.5)}
+.scenario-block{padding:10px 12px;background:rgba(255,255,255,.03);border-radius:6px;margin-bottom:6px;font-size:12px;line-height:1.6}
+.scenario-num{font-size:10px;font-weight:700;color:var(--text-dim);margin-bottom:3px}
+.gwt-given{color:var(--given);font-weight:600}
+.gwt-when{color:var(--when);font-weight:600}
+.gwt-then{color:var(--then);font-weight:600}
+.fr-link-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin:2px;cursor:pointer;transition:opacity .15s}
+.fr-link-badge:hover{opacity:.8}
+.edge-case{padding:8px 12px;background:rgba(255,255,255,.03);border-radius:6px;margin-bottom:4px;font-size:12px;line-height:1.5;border-left:3px solid var(--cat-lifecycle)}
+
+/* Prompt bar */
+.prompt-label{font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.prompt-text{flex:1;font-size:12px;line-height:1.5;color:var(--text-muted);overflow-y:auto;padding-right:8px;white-space:pre-wrap}
+.copy-btn{background:var(--teal);color:#fff;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;transition:all .15s}
+.copy-btn:hover{background:var(--teal-light)}
+.copy-btn.copied{background:#22c55e}
+
+/* Tooltip */
+#tooltip{position:fixed;z-index:1000;background:#0f172a;border:1px solid var(--border);border-radius:8px;padding:12px 14px;max-width:300px;pointer-events:none;opacity:0;transition:opacity .15s;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+#tooltip.visible{opacity:1}
+#tooltip .tt-title{font-size:13px;font-weight:700;margin-bottom:4px}
+#tooltip .tt-actor{font-size:11px;color:var(--text-muted);margin-bottom:6px}
+#tooltip .tt-why{font-size:11px;color:var(--text-dim);font-style:italic;margin-bottom:6px;line-height:1.4}
+#tooltip .tt-stats{display:flex;gap:6px;font-size:10px;color:var(--text-muted)}
+#tooltip .tt-stats span{padding:2px 6px;background:rgba(255,255,255,.06);border-radius:3px}
+</style>
+</head>
+<body>
+<div id="app">
+<!-- Sidebar -->
+<div id="sidebar">
+<div class="sidebar-header">
+<h2>056-FEX File Explorer</h2>
+<div class="subtitle">6 Stories | 27 FRs | 35 Scenarios | 9 Edge Cases</div>
+</div>
+<div class="sidebar-search"><input id="sb-search" type="text" placeholder="Search stories, FRs, scenarios..."></div>
+<div class="sidebar-tabs">
+<button class="active" data-tab="stories">Stories</button>
+<button data-tab="requirements">Requirements</button>
+<button data-tab="scenarios">Scenarios</button>
+</div>
+<div class="sidebar-content" id="sb-content"></div>
+<div class="sidebar-stats">
+<span class="stat-badge stat-p1">P1: 3</span>
+<span class="stat-badge stat-p2">P2: 2</span>
+<span class="stat-badge stat-p3">P3: 1</span>
+<span class="stat-badge stat-fr">27 FRs</span>
+</div>
+</div>
+
+<!-- Main -->
+<div id="main">
+<div id="canvas-wrap">
+<svg id="arrows-svg"></svg>
+<div id="canvas"></div>
+<div id="toolbar">
+<button onclick="fitAll()">Fit All</button>
+<button onclick="resetZoom()">Reset Zoom</button>
+</div>
+</div>
+<div id="detail-panel">
+<button class="detail-close" onclick="closeDetail()">&times;</button>
+<div id="detail-content"></div>
+</div>
+<div id="prompt-bar">
+<div class="prompt-label">
+<span>Implementation Prompt</span>
+<button class="copy-btn" id="copy-btn" onclick="copyPrompt()">Copy</button>
+</div>
+<div class="prompt-text" id="prompt-text">Select a user story to generate an implementation prompt.</div>
+</div>
+</div>
+</div>
+
+<div id="tooltip"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────
+const stories = [
+{id:'US1',title:'Browse All Workspace Files in One Place',actor:'Bookkeeper',priority:'P1',
+why:'Without a central browsable view, users have no way to discover or locate files across the workspace. This is the foundational capability.',
+scenarios:[
+{g:'a workspace has files attached to invoices, contacts, and journal entries',w:'the user opens /files',t:'all files across the workspace are listed in a single view with filename, type, size, upload date, and linked record (if any).'},
+{g:'the file list is displayed',w:'the user types a search term',t:'results are filtered by filename in real time.'},
+{g:'the file list is displayed',w:'the user filters by file type (e.g. PDF, Images, Spreadsheets)',t:'only files matching that type are shown.'},
+{g:'the file list is displayed',w:'the user clicks a file',t:'a detail panel opens showing a file preview (for PDFs and images), metadata, and the linked record (if any) with a link to navigate to that record.'},
+{g:'the workspace has more than 50 files',w:'the user opens /files',t:'the list is paginated with server-side pagination, loading 50 files per page.'},
+{g:'the workspace has no files',w:'the user opens /files',t:'an illustrated empty state is displayed with a prompt to upload their first file.'}
+],
+frs:['FR-001','FR-002','FR-003','FR-004','FR-005','FR-006','FR-013','FR-023','FR-027'],
+deps:[],
+edgeCases:['Record deletion','Duplicate filenames','AI Document Inbox']
+},
+{id:'US2',title:'Upload Standalone Files',actor:'Accountant',priority:'P1',
+why:'Today, every file must be attached to a record. Users have no way to store general workspace documents like contracts, compliance certificates, or reference materials.',
+scenarios:[
+{g:'the user is on the /files page',w:'they drag a file onto the upload zone or click the upload button',t:'the file is uploaded and appears in the file list as a standalone document (no linked record).'},
+{g:'the user uploads a file',w:'the upload completes',t:'the file shows the uploader\'s name, upload date, file size, and type.'},
+{g:'the user uploads multiple files at once',w:'the upload completes',t:'all files appear in the list individually.'},
+{g:'the user attempts to upload an unsupported file type',w:'the upload is attempted',t:'a clear error message is shown and the file is not stored.'},
+{g:'the user uploads a file exceeding the maximum size (20 MB)',w:'the upload is attempted',t:'a clear error message is shown.'},
+{g:'the workspace has reached its storage quota',w:'the user attempts to upload a file',t:'the upload is blocked with a message showing the current usage, the plan limit, and a prompt to upgrade.'}
+],
+frs:['FR-007','FR-008','FR-009','FR-024'],
+deps:[],
+edgeCases:['Storage quota exceeded','Duplicate filenames']
+},
+{id:'US3',title:'Organise Files in Folders',actor:'Business Owner',priority:'P2',
+why:'Without folders, the file list becomes unwieldy as the workspace accumulates documents. Basic organisation is essential for any document area to be useful long-term.',
+scenarios:[
+{g:'the user is on the /files page',w:'they click "New Folder" and enter a name',t:'a folder is created and appears in the file list.'},
+{g:'a folder exists',w:'the user clicks on it',t:'the view navigates into the folder showing its contents, with a breadcrumb trail back to the root.'},
+{g:'files exist at the root level',w:'the user selects files and chooses "Move to folder"',t:'the files are moved into the selected folder.'},
+{g:'a folder exists',w:'the user creates a subfolder inside it',t:'the subfolder appears within the parent folder (maximum one level of nesting).'},
+{g:'a user attempts to create a third level of nesting',w:'the action is attempted',t:'it is prevented with a message explaining the two-level limit.'},
+{g:'a folder contains files',w:'the user renames the folder',t:'the folder name is updated and all contained files remain intact.'},
+{g:'a folder contains files but no subfolders',w:'the user deletes the folder',t:'all files in the folder are moved to the parent folder (or root if there is no parent) and the folder is removed.'},
+{g:'a folder contains subfolders',w:'the user attempts to delete the folder',t:'the deletion is prevented with a message explaining that subfolders must be emptied or deleted first.'}
+],
+frs:['FR-010','FR-011','FR-012','FR-026'],
+deps:['US1'],
+edgeCases:['Folder deletion']
+},
+{id:'US4',title:'Link Files to Records After Upload',actor:'Bookkeeper',priority:'P2',
+why:'Standalone uploads are more useful when they can be connected to records later. This bridges the gap between the file explorer and the existing attachment system.',
+scenarios:[
+{g:'a standalone file exists in the file explorer',w:'the user opens the file detail panel and clicks "Link to record"',t:'a search dialog appears allowing them to search across invoices, bills, contacts, journal entries, and jobs.'},
+{g:'the user selects a record to link',w:'they confirm',t:'the file is linked to that record and the linked record name appears on the file in the explorer.'},
+{g:'a file is linked to a record',w:'the user views that record\'s detail page',t:'the file appears in the record\'s attachment list.'},
+{g:'a file is linked to a record',w:'the user unlinks it from the file detail panel',t:'the file reverts to a standalone document and is removed from the record\'s attachment list.'},
+{g:'a file is already linked to a record',w:'the user attempts to link it to a second record',t:'the file is linked to both records (a file can be linked to multiple records).'}
+],
+frs:['FR-014','FR-015','FR-022'],
+deps:['US2'],
+edgeCases:['Record deletion','AI Document Inbox']
+},
+{id:'US5',title:'Download, Delete, and Bulk Operations',actor:'User (any with permission)',priority:'P1',
+why:'Download and delete are fundamental file operations. Without them, the file explorer is a one-way street. Bulk operations prevent tedious one-by-one management.',
+scenarios:[
+{g:'a file exists in the explorer',w:'the user clicks the download button',t:'the file is downloaded to their device with the original filename.'},
+{g:'multiple files are selected',w:'the user clicks "Download"',t:'all selected files are downloaded (individually or as a zip archive).'},
+{g:'a standalone file exists',w:'the user clicks "Delete" and confirms',t:'the file is permanently removed from the workspace.'},
+{g:'a file is linked to a record',w:'the user deletes it from the explorer',t:'it is removed from both the explorer and the record\'s attachment list, with a warning shown before confirmation.'},
+{g:'a user with the "client" role',w:'they attempt to delete a file',t:'the action is denied \u2014 only owner, accountant, and bookkeeper roles can delete files.'},
+{g:'multiple files are selected',w:'the user clicks "Move to folder" from the bulk actions bar',t:'all selected files are moved to the chosen folder.'},
+{g:'multiple files are selected',w:'the user clicks "Delete" from the bulk actions bar and confirms',t:'all selected files are permanently removed, with linked-file warnings shown where applicable.'}
+],
+frs:['FR-016','FR-017','FR-018','FR-025','FR-020'],
+deps:['US1','US2'],
+edgeCases:['Record deletion','Practice advisor access','Workspace deletion']
+},
+{id:'US6',title:'Recent Files Quick Access',actor:'User',priority:'P3',
+why:'A quality-of-life improvement that makes the file explorer feel more responsive and personal, but not essential for the core experience.',
+scenarios:[
+{g:'the user opens /files',w:'the page loads',t:'a "Recent" section at the top shows the 10 most recently uploaded or accessed files across all folders.'},
+{g:'the user clicks on a file to preview it',w:'they return to /files later',t:'that file appears in the Recents section.'}
+],
+frs:['FR-019'],
+deps:['US1'],
+edgeCases:[]
+}
+];
+
+const frCategories = [
+{name:'Navigation',color:'var(--cat-nav)',frs:[
+{id:'FR-001',text:'Each workspace MUST have a /files page accessible from the main navigation sidebar with the keyboard shortcut G then L.'}
+]},
+{name:'Browsing & Display',color:'var(--cat-browse)',frs:[
+{id:'FR-002',text:'The /files page MUST display all files in the workspace \u2014 both standalone uploads and files attached to records \u2014 in a unified list view.'},
+{id:'FR-003',text:'Each file in the list MUST show: filename, file type icon, file size, upload date, uploader name, linked record (if any), and folder location.'},
+{id:'FR-004',text:'Users MUST be able to search files by filename with real-time filtering.'},
+{id:'FR-005',text:'Users MUST be able to filter files by type category: All, Documents (PDF, DOC, DOCX), Spreadsheets (XLS, XLSX, CSV), Images (JPG, PNG, GIF, WEBP), and Other.'},
+{id:'FR-006',text:'Users MUST be able to sort files by name, date uploaded, size, or type.'},
+{id:'FR-023',text:'The file list MUST use server-side pagination for workspaces with more than 50 files, loading 50 files per page.'},
+{id:'FR-027',text:'When the workspace has no files, the /files page MUST display an illustrated empty state with an upload prompt.'}
+]},
+{name:'Upload',color:'var(--cat-upload)',frs:[
+{id:'FR-007',text:'Users MUST be able to upload files via drag-and-drop or file picker, with or without linking to a record.'},
+{id:'FR-008',text:'Supported file types MUST match the existing attachment system: PDF, JPG, JPEG, PNG, GIF, WEBP, CSV, TXT, XLS, XLSX, DOC, DOCX.'},
+{id:'FR-009',text:'Maximum file size MUST be 20 MB per file, matching the existing attachment limit.'},
+{id:'FR-024',text:'Storage quotas MUST be enforced per workspace based on the billing plan tier: Trial \u2014 500 MB, Starter \u2014 2 GB, Professional \u2014 10 GB, Enterprise \u2014 50 GB.'}
+]},
+{name:'Folders',color:'var(--cat-folders)',frs:[
+{id:'FR-010',text:'Users MUST be able to create folders and subfolders (maximum two levels deep: root > folder > subfolder).'},
+{id:'FR-011',text:'Users MUST be able to move files between folders via a "Move to" action.'},
+{id:'FR-012',text:'Users MUST be able to rename folders.'},
+{id:'FR-026',text:'Deleting a folder MUST move all contained files to the parent folder (or root if no parent). Folders containing subfolders MUST NOT be deletable until all subfolders are removed first.'}
+]},
+{name:'Detail & Preview',color:'var(--cat-detail)',frs:[
+{id:'FR-013',text:'Clicking a file MUST open a detail panel showing: file preview (PDF and image types), full metadata, linked records, and action buttons (download, delete, link/unlink, move).'}
+]},
+{name:'Linking',color:'var(--cat-linking)',frs:[
+{id:'FR-014',text:'Users MUST be able to link a standalone file to one or more records (invoice, bill, journal entry, contact, job) via a search dialog.'},
+{id:'FR-015',text:'Users MUST be able to unlink a file from a record, reverting it to a standalone document.'},
+{id:'FR-022',text:'Files from confirmed AI Document Inbox items (019-AIX) MUST appear in the file explorer automatically, linked to the record they created. This is a "when available" integration.'}
+]},
+{name:'File Operations',color:'var(--cat-fileops)',frs:[
+{id:'FR-016',text:'Users MUST be able to download individual files or multiple selected files.'},
+{id:'FR-017',text:'Users MUST be able to delete files with a confirmation dialog. Deleting a linked file MUST remove it from the associated record\'s attachment list.'},
+{id:'FR-025',text:'Users MUST be able to select multiple files and perform bulk operations: bulk delete, bulk move-to-folder, and bulk download.'}
+]},
+{name:'Data Lifecycle',color:'var(--cat-lifecycle)',frs:[
+{id:'FR-018',text:'When a record with linked files is deleted or voided, the linked files MUST remain in the explorer as standalone documents.'},
+{id:'FR-019',text:'The /files page MUST show a "Recent" section displaying the 10 most recently uploaded or accessed files.'}
+]},
+{name:'Access Control',color:'var(--cat-access)',frs:[
+{id:'FR-020',text:'Access to the /files page MUST be available to all workspace roles. File upload, move, link, and delete actions MUST be restricted to owner, accountant, and bookkeeper roles. Approver, auditor, and client roles have read-only access (view and download only). Practice advisors with an active workspace connection have read-only access.'}
+]},
+{name:'Storage',color:'var(--cat-storage)',frs:[
+{id:'FR-021',text:'The file explorer MUST display workspace storage usage (total size of all files) in the page header, showing current usage against the plan quota.'}
+]}
+];
+
+const allFRs = {};
+frCategories.forEach(c => c.frs.forEach(f => { allFRs[f.id] = {text:f.text, category:c.name, color:c.color}; }));
+
+const edgeCases = [
+{id:1,title:'Record deletion',desc:'Files remain as standalone when linked record is deleted/voided'},
+{id:2,title:'Duplicate filenames',desc:'Stored independently, differentiated by date/uploader'},
+{id:3,title:'Storage quota exceeded',desc:'Display usage, block upload, prompt upgrade'},
+{id:4,title:'AI Document Inbox',desc:'"When available" integration with 019-AIX, not a dependency'},
+{id:5,title:'External sharing',desc:'Out of scope for this epic'},
+{id:6,title:'Workspace deletion',desc:'All files deleted with workspace'},
+{id:7,title:'Folder deletion',desc:'Files move to parent, subfolders must be emptied first'},
+{id:8,title:'File versioning',desc:'Out of scope, each upload creates new independent file'},
+{id:9,title:'Practice advisor access',desc:'Read-only view/download only'}
+];
+
+const successCriteria = [
+{id:'SC-001',text:'Users can find any workspace document within 15 seconds using search or folder navigation.'},
+{id:'SC-002',text:'Uploading a standalone file takes under 10 seconds for a typical 2 MB document.'},
+{id:'SC-003',text:'100% of files attached to records via the existing attachment system are visible in the file explorer without any migration or manual action.'},
+{id:'SC-004',text:'Users can link a standalone file to a record in under 3 clicks from the file detail panel.'},
+{id:'SC-005',text:'Zero files from one workspace are visible to users of another workspace.'},
+{id:'SC-006',text:'Files survive record deletion \u2014 when a linked record is voided or removed, the file remains accessible as a standalone document.'}
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────
+let selectedStory = null;
+let selectedFR = null;
+let currentTab = 'stories';
+let searchTerm = '';
+let zoom = 1;
+let panX = 0, panY = 0;
+let isPanning = false;
+let panStartX, panStartY, panStartPanX, panStartPanY;
+let isDragging = false;
+let dragCard = null;
+let dragOffX, dragOffY;
+
+// Card positions
+const cardPositions = {
+US1:{x:60,y:40},
+US2:{x:400,y:40},
+US5:{x:740,y:40},
+US3:{x:60,y:280},
+US4:{x:400,y:280},
+US6:{x:400,y:520}
+};
+
+// ─── CANVAS ─────────────────────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const canvasWrap = document.getElementById('canvas-wrap');
+const arrowsSvg = document.getElementById('arrows-svg');
+
+function renderCanvas() {
+canvas.innerHTML = '';
+// Swim lanes
+const lanes = [
+{label:'P1 \u2014 Must Have',cls:'p1',y:0,h:230},
+{label:'P2 \u2014 Should Have',cls:'p2',y:240,h:230},
+{label:'P3 \u2014 Nice to Have',cls:'p3',y:480,h:180}
+];
+lanes.forEach(l => {
+const lane = document.createElement('div');
+lane.className = 'swim-lane ' + l.cls;
+lane.style.cssText = `left:20px;top:${l.y}px;width:1060px;height:${l.h}px;`;
+const label = document.createElement('div');
+label.className = 'swim-lane-label';
+label.textContent = l.label;
+lane.appendChild(label);
+canvas.appendChild(lane);
+});
+
+// Cards
+stories.forEach(s => {
+const card = document.createElement('div');
+card.className = 'story-card' + (selectedStory === s.id ? ' selected' : '');
+card.id = 'card-' + s.id;
+const pos = cardPositions[s.id];
+card.style.left = pos.x + 'px';
+card.style.top = pos.y + 'px';
+
+const pCls = s.priority.toLowerCase();
+card.innerHTML = `
+<div class="card-priority-stripe ${pCls}"></div>
+<div class="card-body">
+<div class="card-number">${s.id} &middot; ${s.priority}</div>
+<div class="card-title">${s.title}</div>
+<div class="card-actor">${s.actor}</div>
+<div class="card-stats">
+<span class="card-stat">${s.scenarios.length} scenarios</span>
+<span class="card-stat">${s.frs.length} FRs</span>
+${s.deps.length ? '<span class="card-stat">' + s.deps.length + ' dep' + (s.deps.length>1?'s':'') + '</span>' : ''}
+</div>
+</div>`;
+
+card.addEventListener('mousedown', e => startDrag(e, s.id));
+card.addEventListener('click', e => { if (!isDragging) selectStory(s.id); });
+card.addEventListener('mouseenter', e => showTooltip(e, s));
+card.addEventListener('mouseleave', hideTooltip);
+canvas.appendChild(card);
+});
+
+drawArrows();
+updateTransform();
+}
+
+function updateTransform() {
+canvas.style.transform = `translate(${panX}px,${panY}px) scale(${zoom})`;
+drawArrows();
+}
+
+function drawArrows() {
+arrowsSvg.innerHTML = '';
+const deps = [
+{from:'US1',to:'US3'},{from:'US1',to:'US5'},{from:'US1',to:'US6'},
+{from:'US2',to:'US4'},{from:'US2',to:'US5'}
+];
+deps.forEach(d => {
+const fromEl = document.getElementById('card-' + d.from);
+const toEl = document.getElementById('card-' + d.to);
+if (!fromEl || !toEl) return;
+const fp = cardPositions[d.from];
+const tp = cardPositions[d.to];
+const fw = 280, fh = fromEl.offsetHeight || 140;
+const tw = 280;
+
+// Find best connection points
+let x1, y1, x2, y2;
+const fcx = fp.x + fw/2, fcy = fp.y + fh/2;
+const tcx = tp.x + tw/2, tcy = tp.y + (toEl.offsetHeight||140)/2;
+
+if (Math.abs(fcx - tcx) > Math.abs(fcy - tcy)) {
+if (fcx < tcx) { x1 = fp.x + fw; y1 = fcy; x2 = tp.x; y2 = tcy; }
+else { x1 = fp.x; y1 = fcy; x2 = tp.x + tw; y2 = tcy; }
+} else {
+if (fcy < tcy) { x1 = fcx; y1 = fp.y + fh; x2 = tcx; y2 = tp.y; }
+else { x1 = fcx; y1 = fp.y; x2 = tcx; y2 = tp.y + (toEl.offsetHeight||140); }
+}
+
+// Transform to screen coords
+const sx1 = x1 * zoom + panX, sy1 = y1 * zoom + panY;
+const sx2 = x2 * zoom + panX, sy2 = y2 * zoom + panY;
+const cx1 = sx1 + (sx2-sx1)*0.4, cy1 = sy1;
+const cx2 = sx1 + (sx2-sx1)*0.6, cy2 = sy2;
+
+const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+path.setAttribute('d', `M${sx1},${sy1} C${cx1},${cy1} ${cx2},${cy2} ${sx2},${sy2}`);
+path.setAttribute('fill','none');
+path.setAttribute('stroke','rgba(67,192,190,0.3)');
+path.setAttribute('stroke-width','2');
+path.setAttribute('stroke-dasharray','6,4');
+arrowsSvg.appendChild(path);
+
+// Arrowhead
+const angle = Math.atan2(sy2-cy2, sx2-cx2);
+const ahl = 10;
+const ah = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+const ax1 = sx2 - ahl*Math.cos(angle-0.4), ay1 = sy2 - ahl*Math.sin(angle-0.4);
+const ax2 = sx2 - ahl*Math.cos(angle+0.4), ay2 = sy2 - ahl*Math.sin(angle+0.4);
+ah.setAttribute('points', `${sx2},${sy2} ${ax1},${ay1} ${ax2},${ay2}`);
+ah.setAttribute('fill','rgba(67,192,190,0.4)');
+arrowsSvg.appendChild(ah);
+});
+}
+
+// Pan
+canvasWrap.addEventListener('mousedown', e => {
+if (e.target === canvasWrap || e.target === arrowsSvg) {
+isPanning = true;
+panStartX = e.clientX; panStartY = e.clientY;
+panStartPanX = panX; panStartPanY = panY;
+canvasWrap.classList.add('grabbing');
+}
+});
+window.addEventListener('mousemove', e => {
+if (isPanning) {
+panX = panStartPanX + (e.clientX - panStartX);
+panY = panStartPanY + (e.clientY - panStartY);
+updateTransform();
+}
+if (dragCard) {
+const dx = (e.clientX - dragOffX) / zoom;
+const dy = (e.clientY - dragOffY) / zoom;
+cardPositions[dragCard].x = dx;
+cardPositions[dragCard].y = dy;
+const el = document.getElementById('card-' + dragCard);
+if (el) { el.style.left = dx + 'px'; el.style.top = dy + 'px'; }
+drawArrows();
+isDragging = true;
+}
+});
+window.addEventListener('mouseup', () => {
+isPanning = false;
+canvasWrap.classList.remove('grabbing');
+if (dragCard) {
+const el = document.getElementById('card-' + dragCard);
+if (el) el.classList.remove('dragging');
+dragCard = null;
+setTimeout(() => { isDragging = false; }, 50);
+}
+});
+
+// Zoom
+canvasWrap.addEventListener('wheel', e => {
+e.preventDefault();
+const delta = e.deltaY > 0 ? 0.9 : 1.1;
+const newZoom = Math.max(0.3, Math.min(3, zoom * delta));
+const rect = canvasWrap.getBoundingClientRect();
+const mx = e.clientX - rect.left;
+const my = e.clientY - rect.top;
+panX = mx - (mx - panX) * (newZoom / zoom);
+panY = my - (my - panY) * (newZoom / zoom);
+zoom = newZoom;
+updateTransform();
+}, {passive:false});
+
+function startDrag(e, id) {
+e.stopPropagation();
+dragCard = id;
+const pos = cardPositions[id];
+dragOffX = e.clientX - pos.x * zoom;
+dragOffY = e.clientY - pos.y * zoom;
+const el = document.getElementById('card-' + id);
+if (el) el.classList.add('dragging');
+}
+
+function fitAll() {
+const rect = canvasWrap.getBoundingClientRect();
+let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+stories.forEach(s => {
+const p = cardPositions[s.id];
+minX = Math.min(minX, p.x);
+minY = Math.min(minY, p.y);
+maxX = Math.max(maxX, p.x + 280);
+maxY = Math.max(maxY, p.y + 180);
+});
+const w = maxX - minX + 80, h = maxY - minY + 80;
+zoom = Math.min(rect.width / w, rect.height / h, 1.5);
+panX = (rect.width - w * zoom) / 2 - minX * zoom + 40;
+panY = (rect.height - h * zoom) / 2 - minY * zoom + 40;
+updateTransform();
+}
+
+function resetZoom() { zoom = 1; panX = 40; panY = 20; updateTransform(); }
+
+// ─── TOOLTIP ────────────────────────────────────────────────────────
+const tooltip = document.getElementById('tooltip');
+function showTooltip(e, s) {
+if (isDragging || dragCard) return;
+tooltip.innerHTML = `
+<div class="tt-title">${s.id}: ${s.title}</div>
+<div class="tt-actor">${s.actor} &middot; ${s.priority}</div>
+<div class="tt-why">${s.why}</div>
+<div class="tt-stats">
+<span>${s.scenarios.length} scenarios</span>
+<span>${s.frs.length} FRs</span>
+<span>${s.deps.length} deps</span>
+</div>`;
+tooltip.classList.add('visible');
+positionTooltip(e);
+}
+function positionTooltip(e) {
+let x = e.clientX + 16, y = e.clientY + 16;
+const r = tooltip.getBoundingClientRect();
+if (x + 300 > window.innerWidth) x = e.clientX - 316;
+if (y + r.height > window.innerHeight) y = e.clientY - r.height - 8;
+tooltip.style.left = x + 'px'; tooltip.style.top = y + 'px';
+}
+function hideTooltip() { tooltip.classList.remove('visible'); }
+document.addEventListener('mousemove', e => { if (tooltip.classList.contains('visible')) positionTooltip(e); });
+
+// ─── SELECTION ──────────────────────────────────────────────────────
+function selectStory(id) {
+selectedStory = id;
+selectedFR = null;
+renderCanvas();
+renderSidebar();
+renderDetail();
+renderPrompt();
+openDetail();
+}
+
+function selectFR(frId) {
+selectedFR = frId;
+// Find which story references this FR
+for (const s of stories) {
+if (s.frs.includes(frId)) { selectedStory = s.id; break; }
+}
+renderCanvas();
+renderSidebar();
+renderDetail();
+renderPrompt();
+openDetail();
+}
+
+function flyTo(id) {
+const pos = cardPositions[id];
+if (!pos) return;
+const rect = canvasWrap.getBoundingClientRect();
+panX = rect.width / 2 - (pos.x + 140) * zoom;
+panY = rect.height / 2 - (pos.y + 70) * zoom;
+updateTransform();
+}
+
+function openDetail() { document.getElementById('detail-panel').classList.add('open'); }
+function closeDetail() {
+document.getElementById('detail-panel').classList.remove('open');
+selectedStory = null; selectedFR = null;
+renderCanvas(); renderSidebar();
+document.getElementById('prompt-text').textContent = 'Select a user story to generate an implementation prompt.';
+}
+
+// ─── DETAIL PANEL ───────────────────────────────────────────────────
+function renderDetail() {
+const dc = document.getElementById('detail-content');
+if (!selectedStory) { dc.innerHTML = '<p style="color:var(--text-dim)">Select a story to view details.</p>'; return; }
+const s = stories.find(x => x.id === selectedStory);
+const pCls = s.priority.toLowerCase();
+
+let html = `<div class="detail-title">${s.id}: ${s.title}</div>`;
+html += `<div class="detail-actor">${s.actor}</div>`;
+html += `<div class="detail-section"><div class="detail-section-title">Priority</div><span class="detail-priority ${pCls}">${s.priority}</span></div>`;
+html += `<div class="detail-section"><div class="detail-section-title">Why This Priority</div><div class="detail-why">${s.why}</div></div>`;
+
+html += `<div class="detail-section"><div class="detail-section-title">Stats</div>
+<div style="display:flex;gap:8px"><span class="card-stat">${s.scenarios.length} scenarios</span><span class="card-stat">${s.frs.length} FRs</span><span class="card-stat">${s.deps.length} dependencies</span></div></div>`;
+
+if (s.deps.length) {
+html += `<div class="detail-section"><div class="detail-section-title">Dependencies</div>`;
+s.deps.forEach(d => {
+const ds = stories.find(x => x.id === d);
+html += `<span class="dep-tag" onclick="selectStory('${d}');flyTo('${d}')">${d}: ${ds ? ds.title : d}</span>`;
+});
+html += `</div>`;
+}
+
+html += `<div class="detail-section"><div class="detail-section-title">Acceptance Scenarios</div>`;
+s.scenarios.forEach((sc, i) => {
+html += `<div class="scenario-block">
+<div class="scenario-num">Scenario ${i+1}</div>
+<span class="gwt-given">Given</span> ${esc(sc.g)}, <span class="gwt-when">When</span> ${esc(sc.w)}, <span class="gwt-then">Then</span> ${esc(sc.t)}
+</div>`;
+});
+html += `</div>`;
+
+html += `<div class="detail-section"><div class="detail-section-title">Linked Functional Requirements</div><div>`;
+s.frs.forEach(fr => {
+const f = allFRs[fr];
+if (f) {
+html += `<span class="fr-link-badge" style="background:${f.color}22;color:${f.color};border:1px solid ${f.color}44" onclick="selectFR('${fr}')" title="${esc(f.text)}">${fr}</span>`;
+}
+});
+html += `</div></div>`;
+
+// Edge cases
+const relEdge = edgeCases.filter(ec => s.edgeCases.some(k => ec.title.toLowerCase().includes(k.toLowerCase())));
+if (relEdge.length) {
+html += `<div class="detail-section"><div class="detail-section-title">Related Edge Cases</div>`;
+relEdge.forEach(ec => {
+html += `<div class="edge-case"><strong>${ec.title}</strong> &mdash; ${ec.desc}</div>`;
+});
+html += `</div>`;
+}
+
+dc.innerHTML = html;
+}
+
+function esc(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── SIDEBAR ────────────────────────────────────────────────────────
+const sbContent = document.getElementById('sb-content');
+
+function renderSidebar() {
+const q = searchTerm.toLowerCase();
+if (currentTab === 'stories') renderStoriesTab(q);
+else if (currentTab === 'requirements') renderRequirementsTab(q);
+else renderScenariosTab(q);
+}
+
+function renderStoriesTab(q) {
+let html = '';
+stories.forEach(s => {
+if (q && !s.title.toLowerCase().includes(q) && !s.id.toLowerCase().includes(q) && !s.actor.toLowerCase().includes(q)) return;
+const sel = selectedStory === s.id ? ' selected' : '';
+const pCls = s.priority.toLowerCase();
+html += `<div class="sb-story${sel}" onclick="selectStory('${s.id}');flyTo('${s.id}')">
+<div class="sb-story-title"><span class="priority-dot ${pCls}"></span>${s.id}: ${s.title}</div>
+<div class="sb-story-meta"><span>${s.actor}</span><span>${s.scenarios.length} scenarios</span><span>${s.frs.length} FRs</span></div>
+</div>`;
+});
+sbContent.innerHTML = html || '<div style="padding:16px;color:var(--text-dim);text-align:center">No matching stories.</div>';
+}
+
+function renderRequirementsTab(q) {
+let html = '';
+frCategories.forEach(cat => {
+const filtered = cat.frs.filter(f => {
+if (!q) return true;
+return f.id.toLowerCase().includes(q) || f.text.toLowerCase().includes(q) || cat.name.toLowerCase().includes(q);
+});
+if (!filtered.length) return;
+html += `<div class="fr-group"><div class="fr-group-header" style="background:${cat.color}22;color:${cat.color}">${cat.name} (${filtered.length})</div>`;
+filtered.forEach(f => {
+const sel = selectedFR === f.id ? ' selected' : '';
+html += `<div class="fr-item${sel}" onclick="selectFR('${f.id}')"><span class="fr-badge" style="background:${cat.color}33;color:${cat.color}">${f.id}</span>${truncate(f.text, 80)}</div>`;
+});
+html += `</div>`;
+});
+sbContent.innerHTML = html || '<div style="padding:16px;color:var(--text-dim);text-align:center">No matching requirements.</div>';
+}
+
+function renderScenariosTab(q) {
+let html = '';
+stories.forEach(s => {
+s.scenarios.forEach((sc, i) => {
+const text = `Given ${sc.g}, When ${sc.w}, Then ${sc.t}`;
+if (q && !text.toLowerCase().includes(q) && !s.id.toLowerCase().includes(q) && !s.title.toLowerCase().includes(q)) return;
+html += `<div class="sc-item" onclick="selectStory('${s.id}');flyTo('${s.id}')">
+<div class="sc-parent">${s.id} \u2014 Scenario ${i+1}</div>
+<span class="gwt-given">Given</span> ${esc(truncate(sc.g, 60))}, <span class="gwt-when">When</span> ${esc(truncate(sc.w, 60))}, <span class="gwt-then">Then</span> ${esc(truncate(sc.t, 60))}
+</div>`;
+});
+});
+sbContent.innerHTML = html || '<div style="padding:16px;color:var(--text-dim);text-align:center">No matching scenarios.</div>';
+}
+
+function truncate(t, n) { return t.length > n ? t.substring(0, n) + '\u2026' : t; }
+
+// Tab switching
+document.querySelectorAll('.sidebar-tabs button').forEach(btn => {
+btn.addEventListener('click', () => {
+document.querySelectorAll('.sidebar-tabs button').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+currentTab = btn.dataset.tab;
+renderSidebar();
+});
+});
+
+// Search
+document.getElementById('sb-search').addEventListener('input', e => {
+searchTerm = e.target.value;
+renderSidebar();
+});
+
+// ─── PROMPT BAR ─────────────────────────────────────────────────────
+function renderPrompt() {
+const pt = document.getElementById('prompt-text');
+if (!selectedStory) { pt.textContent = 'Select a user story to generate an implementation prompt.'; return; }
+const s = stories.find(x => x.id === selectedStory);
+
+let prompt = `Implement ${s.id}: "${s.title}" for the Workspace File Explorer epic (056-FEX) in MoneyQuest Ledger.\n\n`;
+prompt += `Actor: ${s.actor}\nPriority: ${s.priority}\n\n`;
+prompt += `Purpose: ${s.why}\n\n`;
+prompt += `Acceptance Criteria:\n`;
+s.scenarios.forEach((sc, i) => {
+prompt += `${i+1}. Given ${sc.g}, When ${sc.w}, Then ${sc.t}\n`;
+});
+prompt += `\nLinked Functional Requirements:\n`;
+s.frs.forEach(fr => {
+const f = allFRs[fr];
+if (f) prompt += `- ${fr}: ${f.text}\n`;
+});
+if (s.deps.length) {
+prompt += `\nDependencies: ${s.deps.join(', ')} must be implemented first.\n`;
+}
+prompt += `\nTech Context: This is part of the Workspace File Explorer epic in MoneyQuest Ledger. Uses Laravel 12 API + Next.js 16 (React 19, TypeScript). Decoupled SPA architecture. Event-sourced double-entry accounting ledger with single-database multi-tenancy (Stancl/Tenancy). Amounts as integers (cents). Lorisleiva Actions for business logic. Spatie Laravel Data for DTOs. TanStack Query for server state. Zustand for client state. shadcn/ui components. Tailwind CSS.`;
+
+pt.textContent = prompt;
+}
+
+function copyPrompt() {
+const text = document.getElementById('prompt-text').textContent;
+navigator.clipboard.writeText(text).then(() => {
+const btn = document.getElementById('copy-btn');
+btn.textContent = 'Copied!';
+btn.classList.add('copied');
+setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+});
+}
+
+// ─── INIT ───────────────────────────────────────────────────────────
+renderCanvas();
+renderSidebar();
+fitAll();
+</script>
+</body>
+</html>

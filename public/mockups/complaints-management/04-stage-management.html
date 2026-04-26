@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stage Management — REF-00974</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Roboto Flex', ui-sans-serif, system-ui, sans-serif; }
+    #app-sidebar { transition: width 0.2s ease; }
+    #app-sidebar.collapsed { width: 77px; }
+    #app-sidebar.collapsed .nav-label,
+    #app-sidebar.collapsed .nav-section-title,
+    #app-sidebar.collapsed .sidebar-brand-name,
+    #app-sidebar.collapsed .sidebar-footer { display: none; }
+    #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+    .nav-item-active { background: rgba(0,127,126,0.12); color: #007F7E; font-weight: 600; }
+    .nav-item-active svg { color: #007F7E; }
+    .stage-step { position: relative; }
+    .stage-step::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      bottom: -12px;
+      width: 2px;
+      background: #E5E7EB;
+    }
+    .stage-step:last-child::before { display: none; }
+    .stage-step.completed::before { background: #007F7E; }
+    .stage-step.current::before { background: linear-gradient(to bottom, #007F7E 0%, #E5E7EB 100%); }
+  </style>
+</head>
+<body class="bg-gray-100 flex">
+
+  <!-- Sidebar -->
+  <aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]"
+    style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-white/10">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #007F7E">
+        <span class="text-white font-bold text-sm">TC</span>
+      </div>
+      <span class="sidebar-brand-name text-sm font-semibold tracking-wide">Trilogy Care</span>
+    </div>
+    <nav class="flex-1 py-3 px-3 space-y-1 overflow-y-auto">
+      <p class="nav-section-title text-[10px] uppercase tracking-wider text-white/40 px-2 pt-2 pb-1">Staff</p>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <a class="nav-item nav-item-active flex items-center gap-3 px-3 py-2 rounded-md text-sm transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        <span class="nav-label">Packages</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer border-t border-white/10 px-4 py-3">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-xs font-semibold">SH</div>
+        <div class="text-xs">
+          <div class="font-medium text-white/90">Sian Henderson</div>
+          <div class="text-white/40">Compliance Manager</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col ml-[240px] min-h-screen">
+
+    <!-- Header -->
+    <div class="bg-white border-b border-gray-200 px-6 py-4">
+      <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+        <a href="02-record-detail.html" class="hover:text-teal-700 flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          REF-00974
+        </a>
+        <span class="text-gray-300">&middot;</span>
+        <span>Margaret Thompson — HCP-00471</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <h1 class="text-xl font-semibold text-gray-900">Stage Management</h1>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-red-50 text-red-700 border border-red-200">Complaint</span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">3. Owner Accepted</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage Content -->
+    <div class="p-6">
+      <div class="grid grid-cols-12 gap-6">
+
+        <!-- Left: Stage Lifecycle (7 cols) -->
+        <div class="col-span-7 space-y-5">
+
+          <!-- Current Stage Card -->
+          <div class="bg-white rounded border border-teal-200 p-5" style="background: linear-gradient(135deg, #F0FAFA 0%, #FFFFFF 100%)">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <p class="text-xs text-teal-600 font-medium uppercase tracking-wide">Current Stage</p>
+                <p class="text-lg font-semibold text-gray-900 mt-1">3. Complaint Owner Accepted</p>
+                <p class="text-xs text-gray-500 mt-1">Since 30 Jan 2026 &middot; 27 days in this stage</p>
+              </div>
+              <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: #007F7E">
+                <span class="text-white font-bold text-lg">3</span>
+              </div>
+            </div>
+
+            <!-- Advance Options -->
+            <div class="border-t border-teal-100 pt-4">
+              <p class="text-xs font-medium text-gray-700 mb-3">Advance to:</p>
+              <div class="space-y-2">
+                <button class="w-full flex items-center justify-between px-4 py-3 text-sm rounded-lg border-2 border-teal-200 bg-white hover:border-teal-500 hover:bg-teal-50 transition group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">4a</div>
+                    <div class="text-left">
+                      <p class="font-medium text-gray-900">4a. Awaiting Client Response</p>
+                      <p class="text-xs text-gray-500">Waiting for complainant to provide more information</p>
+                    </div>
+                  </div>
+                  <svg class="w-4 h-4 text-gray-300 group-hover:text-teal-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+                <button class="w-full flex items-center justify-between px-4 py-3 text-sm rounded-lg border-2 border-teal-200 bg-white hover:border-teal-500 hover:bg-teal-50 transition group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">4b</div>
+                    <div class="text-left">
+                      <p class="font-medium text-gray-900">4b. Awaiting Internal Investigation</p>
+                      <p class="text-xs text-gray-500">Internal review or investigation in progress</p>
+                    </div>
+                  </div>
+                  <svg class="w-4 h-4 text-gray-300 group-hover:text-teal-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+                <button class="w-full flex items-center justify-between px-4 py-3 text-sm rounded-lg border-2 border-teal-200 bg-white hover:border-teal-500 hover:bg-teal-50 transition group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">4c</div>
+                    <div class="text-left">
+                      <p class="font-medium text-gray-900">4c. Awaiting External Information</p>
+                      <p class="text-xs text-gray-500">Waiting on supplier, regulator, or external party</p>
+                    </div>
+                  </div>
+                  <svg class="w-4 h-4 text-gray-300 group-hover:text-teal-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+                <button class="w-full flex items-center justify-between px-4 py-3 text-sm rounded-lg border-2 border-green-200 bg-white hover:border-green-500 hover:bg-green-50 transition group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">5</div>
+                    <div class="text-left">
+                      <p class="font-medium text-gray-900">5. Resolution Proposed</p>
+                      <p class="text-xs text-gray-500">Resolution has been proposed to the complainant</p>
+                    </div>
+                  </div>
+                  <svg class="w-4 h-4 text-gray-300 group-hover:text-green-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirmation Modal Preview -->
+          <div class="bg-white rounded border border-gray-200 p-5">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Stage Advance Confirmation (modal preview)</h3>
+            <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+              <div class="text-center mb-4">
+                <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center mx-auto mb-3">
+                  <svg class="w-6 h-6 text-teal-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                </div>
+                <h4 class="text-base font-semibold text-gray-900">Advance to "5. Resolution Proposed"?</h4>
+                <p class="text-sm text-gray-500 mt-1">This will record a stage transition timestamp.</p>
+              </div>
+              <div class="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-xs text-gray-400">From</p>
+                    <p class="font-medium text-gray-900">3. Owner Accepted</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-gray-400">To</p>
+                    <p class="font-medium text-teal-700">5. Resolution Proposed</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class="text-xs font-medium text-gray-700 mb-1 block">Note (optional)</label>
+                <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Add a note about this stage transition..."></textarea>
+              </div>
+              <div class="flex gap-3 justify-center">
+                <button class="px-4 py-2 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Cancel</button>
+                <button class="px-6 py-2 text-sm font-medium rounded-md text-white" style="background-color: #007F7E">Confirm Advance</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Stage History (5 cols) -->
+        <div class="col-span-5 space-y-5">
+
+          <!-- Full Complaint Lifecycle -->
+          <div class="bg-white rounded border border-gray-200 p-5">
+            <h3 class="text-sm font-semibold text-gray-900 mb-4">Complaint Lifecycle</h3>
+
+            <div class="space-y-3">
+              <!-- Stage 0: New — Completed -->
+              <div class="stage-step completed flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="pt-1.5">
+                  <p class="text-sm font-medium text-gray-900">0. New</p>
+                  <p class="text-xs text-gray-500">25 Jan 2026, 9:15 AM</p>
+                  <p class="text-xs text-gray-400 mt-0.5">Record created by Jessica Brown</p>
+                </div>
+              </div>
+
+              <!-- Stage 1: AP Assigned — Completed -->
+              <div class="stage-step completed flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="pt-1.5">
+                  <p class="text-sm font-medium text-gray-900">1. AP Assigned</p>
+                  <p class="text-xs text-gray-500">27 Jan 2026, 2:30 PM</p>
+                  <p class="text-xs text-gray-400 mt-0.5">Patrick Harrison assigned by Sian Henderson</p>
+                  <p class="text-[10px] text-gray-300">2 days in this stage</p>
+                </div>
+              </div>
+
+              <!-- Stage 2: AP Acknowledged — Completed -->
+              <div class="stage-step completed flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="pt-1.5">
+                  <p class="text-sm font-medium text-gray-900">2. AP Acknowledged</p>
+                  <p class="text-xs text-gray-500">28 Jan 2026, 10:00 AM</p>
+                  <p class="text-xs text-gray-400 mt-0.5">Patrick Harrison acknowledged</p>
+                  <p class="text-[10px] text-gray-300">1 day in this stage</p>
+                </div>
+              </div>
+
+              <!-- Stage 3: Owner Accepted — Current -->
+              <div class="stage-step current flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ring-4 ring-teal-100" style="background-color: #007F7E">
+                  3
+                </div>
+                <div class="pt-1.5">
+                  <p class="text-sm font-semibold text-teal-700">3. Owner Accepted</p>
+                  <p class="text-xs text-teal-600">30 Jan 2026, 11:45 AM</p>
+                  <p class="text-xs text-gray-400 mt-0.5">Patrick Harrison accepted ownership</p>
+                  <p class="text-[10px] text-teal-600 font-medium mt-1">
+                    <svg class="w-3 h-3 inline mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    27 days in this stage (current)
+                  </p>
+                </div>
+              </div>
+
+              <!-- Stage 4: Awaiting Info — Pending -->
+              <div class="stage-step flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold flex-shrink-0">4</div>
+                <div class="pt-1.5">
+                  <p class="text-sm font-medium text-gray-400">4. Awaiting Information</p>
+                  <p class="text-xs text-gray-300">Pending</p>
+                  <p class="text-[10px] text-gray-300 mt-0.5">Sub-stages: 4a Client, 4b Internal, 4c External</p>
+                </div>
+              </div>
+
+              <!-- Stage 5: Resolution Proposed — Pending -->
+              <div class="stage-step flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold flex-shrink-0">5</div>
+                <div class="pt-1.5">
+                  <p class="text-sm font-medium text-gray-400">5. Resolution Proposed</p>
+                  <p class="text-xs text-gray-300">Pending</p>
+                </div>
+              </div>
+
+              <!-- Stage 6: Closed — Pending -->
+              <div class="stage-step flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-xs font-bold flex-shrink-0">6</div>
+                <div class="pt-1.5">
+                  <p class="text-sm font-medium text-gray-400">6. Closed</p>
+                  <p class="text-xs text-gray-300">Pending</p>
+                  <p class="text-[10px] text-gray-300 mt-0.5">Sub-stages: 6a Resolved, 6b Unresolved, 6c Archived, 6d Consolidated</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Remediation Lifecycle Reference -->
+          <div class="bg-white rounded border border-gray-200 p-5">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-semibold text-gray-900">Remediation Lifecycle</h3>
+              <span class="text-[10px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">Reference only</span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex items-center gap-2 text-gray-500">
+                <div class="w-6 h-6 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-[10px] font-bold">0</div>
+                <span>New</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-500">
+                <div class="w-6 h-6 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-[10px] font-bold">1</div>
+                <span>Issues Assigned</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-500">
+                <div class="w-6 h-6 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-[10px] font-bold">2</div>
+                <span>Awaiting Info (2a/2b/2c)</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-500">
+                <div class="w-6 h-6 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-[10px] font-bold">3</div>
+                <span>Resolution Proposed</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-500">
+                <div class="w-6 h-6 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-[10px] font-bold">4</div>
+                <span>Closed (4a/4b/4c/4d)</span>
+              </div>
+              <div class="flex items-center gap-2 text-gray-500">
+                <div class="w-6 h-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-[10px] font-bold">5</div>
+                <span class="text-amber-600 font-medium">Converted to Complaint</span>
+              </div>
+            </div>
+            <p class="text-[11px] text-gray-400 mt-3 border-t border-gray-100 pt-3">When a remediation reaches stage 5, its type changes to Complaint and the complaint lifecycle takes over.</p>
+          </div>
+
+          <!-- Conversion Warning (for Remediations) -->
+          <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+              <div>
+                <p class="text-sm font-medium text-amber-800">Remediation Conversion</p>
+                <p class="text-xs text-amber-700 mt-1 leading-relaxed">If this were a Remediation at stage 5 ("Converted to Complaint"), the type would change to Complaint and the lifecycle would restart at stage 0. All remediation history would be preserved in the stage audit trail.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

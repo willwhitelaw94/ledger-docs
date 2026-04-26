@@ -1,0 +1,11 @@
+prefix: "056-FEX"
+title: "Workspace File Explorer"
+status: planned
+initiative: FL-financial-ledger
+priority: P2
+lead: William Whitelaw
+gates:
+  spec:
+    passed: true
+    date: 2026-03-20
+    notes: "6 user stories validated, 27 FRs, 10 spec clarifications + 20 business clarifications complete, INVEST criteria met"

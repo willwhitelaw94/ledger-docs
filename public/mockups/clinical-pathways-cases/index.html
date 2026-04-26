@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLI - Clinical Pathways / Cases Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4 overflow-x-auto sticky top-0 z-50">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">CLI - Clinical Cases</span>
+  <div class="flex gap-1 ml-4">
+    <button onclick="showScreen('screen1')" id="btn-screen1" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap tab-active">Case List</button>
+    <button onclick="showScreen('screen2')" id="btn-screen2" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Create Case</button>
+    <button onclick="showScreen('screen3')" id="btn-screen3" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Case Detail & Review</button>
+    <button onclick="showScreen('screen4')" id="btn-screen4" class="px-3 py-2 text-sm rounded-lg hover:bg-gray-100 whitespace-nowrap">Population Reporting</button>
+  </div>
+</nav>
+
+<!-- Screen 1: Case List on Package -->
+<div id="screen1" class="screen active p-6 max-w-5xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+      <h1 class="text-2xl font-bold text-gray-900">Cases</h1>
+    </div>
+    <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">+ Create Case</button>
+  </div>
+
+  <div class="space-y-3">
+    <!-- Active case with overdue review -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 border-l-4 border-l-red-500">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">Mandatory</span>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Active</span>
+            <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">Review Overdue</span>
+          </div>
+          <h3 class="font-medium text-gray-900">Post-Fall Monitoring &mdash; Bathroom Fall 10 Feb 2026</h3>
+          <p class="text-sm text-gray-500 mt-1">Monitoring ongoing after bathroom fall resulting in hip bruising. GP review completed. Falls prevention strategies in place.</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span>Review: <span class="text-red-600 font-medium">3 days overdue</span></span>
+            <span>Interval: Fortnightly</span>
+            <span>Assigned: Grayce M.</span>
+            <span>Linked: <a href="#" class="text-teal-700 hover:underline">INC-042 (Fall)</a></span>
+          </div>
+        </div>
+        <button class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Complete Review</button>
+      </div>
+    </div>
+
+    <!-- Active case, review upcoming -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 border-l-4 border-l-amber-500">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700">Recommended</span>
+            <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Active</span>
+          </div>
+          <h3 class="font-medium text-gray-900">Medication Review &mdash; Polypharmacy (8+ medications)</h3>
+          <p class="text-sm text-gray-500 mt-1">Client on 8 medications with potential interactions. Pharmacist review scheduled. Monitoring for side effects and adherence.</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span>Next review: <span class="text-gray-700 font-medium">25 Mar 2026</span></span>
+            <span>Interval: Monthly</span>
+            <span>Assigned: Grayce M.</span>
+            <span>Risks: <a href="#" class="text-teal-700 hover:underline">Medication Safety, Falls</a></span>
+          </div>
+        </div>
+        <a href="#" class="text-teal-700 text-sm font-medium hover:underline">View</a>
+      </div>
+    </div>
+
+    <!-- Escalated case -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 border-l-4 border-l-red-700">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">Mandatory</span>
+            <span class="inline-flex items-center rounded-full bg-red-200 px-2.5 py-0.5 text-xs font-medium text-red-800">Escalated</span>
+          </div>
+          <h3 class="font-medium text-gray-900">Skin Integrity &mdash; Pressure Injury Stage 2</h3>
+          <p class="text-sm text-gray-500 mt-1">Escalated from Recommended after wound deterioration noted during fortnightly review. Wound nurse referral in progress.</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+            <span>Next review: <span class="text-gray-700 font-medium">28 Mar 2026 (weekly)</span></span>
+            <span>Assigned: Dr. Chen (Clinician)</span>
+          </div>
+        </div>
+        <button class="bg-teal-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium">Complete Review</button>
+      </div>
+    </div>
+
+    <!-- Closed case -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 opacity-60">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">Self-Service</span>
+            <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">Closed</span>
+          </div>
+          <h3 class="font-medium text-gray-500">Hydration Monitoring</h3>
+          <p class="text-sm text-gray-400 mt-1">Closed: Goals met &mdash; client stable, drinking adequate fluids independently.</p>
+          <div class="flex items-center gap-4 mt-2 text-xs text-gray-400"><span>Closed: 1 Mar 2026</span></div>
+        </div>
+        <a href="#" class="text-gray-400 text-sm hover:underline">View History</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 2: Create Case -->
+<div id="screen2" class="screen p-6 max-w-3xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">Create Clinical Case</h1>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-5">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Case Type *</label>
+      <div class="grid grid-cols-3 gap-3">
+        <label class="flex flex-col border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-teal-500">
+          <input type="radio" name="type" class="sr-only">
+          <span class="text-sm font-medium text-gray-900">Mandatory</span>
+          <span class="text-xs text-gray-500 mt-1">Duty of care &mdash; cannot be declined</span>
+        </label>
+        <label class="flex flex-col border-2 border-teal-700 bg-teal-50 rounded-lg p-4 cursor-pointer">
+          <input type="radio" name="type" checked class="sr-only">
+          <span class="text-sm font-medium text-teal-700">Recommended</span>
+          <span class="text-xs text-gray-500 mt-1">Clinical follow-up pathway</span>
+        </label>
+        <label class="flex flex-col border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-teal-500">
+          <input type="radio" name="type" class="sr-only">
+          <span class="text-sm font-medium text-gray-900">Self-Service</span>
+          <span class="text-xs text-gray-500 mt-1">Low risk resources</span>
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Clinical Concern *</label>
+      <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-24" placeholder="Describe the clinical concern...">Post-fall monitoring — recipient fell on 2026-02-10 in bathroom, GP review completed. No fracture. Bruising to left hip. Mobility slightly reduced.</textarea>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Review Interval *</label>
+        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option>Weekly (7 days)</option>
+          <option selected>Fortnightly (14 days)</option>
+          <option>Monthly (30 days)</option>
+          <option>Quarterly (90 days)</option>
+          <option>Custom...</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Assigned To</label>
+        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option selected>Grayce Murazik (me)</option>
+          <option>Jenny Whitfield</option>
+          <option>Dr. Chen (Clinician)</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Trigger Source (optional)</label>
+      <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <option>Select...</option>
+        <option selected>INC-042 — Fall in bathroom (10 Feb 2026)</option>
+        <option>INC-038 — Medication error (28 Jan 2026)</option>
+        <option>Clinical Judgement</option>
+        <option>Assessment</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Link Risks (optional)</label>
+      <div class="flex flex-wrap gap-2">
+        <label class="inline-flex items-center gap-1.5 border-2 border-teal-700 bg-teal-50 rounded-lg px-3 py-2 text-sm cursor-pointer"><input type="checkbox" checked class="rounded text-teal-700"> Falls Risk</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer"><input type="checkbox" class="rounded text-teal-700"> Mobility</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer"><input type="checkbox" class="rounded text-teal-700"> Medication Safety</label>
+        <label class="inline-flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-2 text-sm cursor-pointer"><input type="checkbox" class="rounded text-teal-700"> Continence</label>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3 pt-2">
+      <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium">Cancel</button>
+      <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800">Create Case</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 3: Case Detail & Complete Review -->
+<div id="screen3" class="screen p-6 max-w-4xl mx-auto">
+  <div class="mb-6">
+    <p class="text-sm text-gray-500">Margaret Thompson &middot; KF-273342</p>
+    <h1 class="text-2xl font-bold text-gray-900">Post-Fall Monitoring</h1>
+    <div class="flex items-center gap-2 mt-2">
+      <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">Mandatory</span>
+      <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">Active</span>
+      <span class="text-xs text-gray-400">Created 10 Feb 2026 by Grayce M. &middot; Triggered by <a href="#" class="text-teal-700 hover:underline">INC-042</a></span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <div class="col-span-2 space-y-4">
+      <!-- Complete Review Form -->
+      <div class="bg-white rounded-xl shadow-sm border-2 border-teal-500 p-5">
+        <h3 class="font-medium text-gray-900 mb-3">Complete Review &mdash; Due 18 Mar 2026 (3 days overdue)</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Outcome *</label>
+            <div class="flex gap-3">
+              <label class="flex-1 flex items-center gap-2 border-2 border-teal-700 bg-teal-50 rounded-lg p-3 cursor-pointer"><input type="radio" name="outcome" checked class="text-teal-700"><span class="text-sm font-medium">Continue</span></label>
+              <label class="flex-1 flex items-center gap-2 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-gray-300"><input type="radio" name="outcome" class="text-teal-700"><span class="text-sm font-medium">Close</span></label>
+              <label class="flex-1 flex items-center gap-2 border border-gray-200 rounded-lg p-3 cursor-pointer hover:border-gray-300"><input type="radio" name="outcome" class="text-teal-700"><span class="text-sm font-medium">Escalate</span></label>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Clinical Notes *</label>
+            <textarea class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-20">Recipient progressing well. No further falls. Mobility improved with rollator. Continue fortnightly monitoring. Grab rail installation scheduled for next week.</textarea>
+          </div>
+          <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-800 w-full">Save Review &amp; Schedule Next (1 Apr 2026)</button>
+        </div>
+      </div>
+
+      <!-- Review History -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <h3 class="font-medium text-gray-900 mb-3">Review History</h3>
+        <div class="space-y-3">
+          <div class="border-l-2 border-teal-500 pl-4 py-2">
+            <div class="flex items-center gap-2"><span class="text-xs font-medium text-teal-700">Continue</span><span class="text-xs text-gray-400">4 Mar 2026 &middot; Grayce M.</span></div>
+            <p class="text-sm text-gray-600 mt-1">Client stable. Using rollator consistently. No falls since incident. GP cleared for light exercise. Continue monitoring.</p>
+          </div>
+          <div class="border-l-2 border-teal-500 pl-4 py-2">
+            <div class="flex items-center gap-2"><span class="text-xs font-medium text-teal-700">Continue</span><span class="text-xs text-gray-400">18 Feb 2026 &middot; Grayce M.</span></div>
+            <p class="text-sm text-gray-600 mt-1">Initial review post-fall. Bruising resolving. OT assessment requested for bathroom modifications. Rollator provided.</p>
+          </div>
+          <div class="border-l-2 border-gray-300 pl-4 py-2">
+            <div class="flex items-center gap-2"><span class="text-xs font-medium text-gray-500">Created</span><span class="text-xs text-gray-400">10 Feb 2026 &middot; Grayce M.</span></div>
+            <p class="text-sm text-gray-600 mt-1">Case created from incident INC-042 (bathroom fall). Initial assessment: moderate fall risk, left hip bruising, reduced mobility.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-4">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Details</h4>
+        <dl class="space-y-2 text-sm">
+          <div><dt class="text-gray-400 text-xs">Type</dt><dd class="font-medium text-red-700">Mandatory</dd></div>
+          <div><dt class="text-gray-400 text-xs">Interval</dt><dd>Fortnightly</dd></div>
+          <div><dt class="text-gray-400 text-xs">Assigned</dt><dd>Grayce Murazik</dd></div>
+          <div><dt class="text-gray-400 text-xs">Reviews</dt><dd>2 completed</dd></div>
+        </dl>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Linked Risks</h4>
+        <div class="space-y-1">
+          <a href="#" class="text-sm text-teal-700 hover:underline block">Falls Risk</a>
+          <a href="#" class="text-sm text-teal-700 hover:underline block">Mobility</a>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h4 class="text-xs font-semibold text-gray-500 uppercase mb-2">Linked Incidents</h4>
+        <a href="#" class="text-sm text-teal-700 hover:underline">INC-042 &mdash; Fall in bathroom</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Screen 4: Population Reporting -->
+<div id="screen4" class="screen p-6 max-w-6xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Clinical Cases &mdash; Population View</h1>
+    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>All Organisations</option><option selected>Trilogy Care Brisbane</option></select>
+  </div>
+
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-sm text-gray-500">Active Cases</p>
+      <p class="text-3xl font-bold text-gray-900">47</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-sm text-gray-500">Overdue Reviews</p>
+      <p class="text-3xl font-bold text-red-600">8</p>
+      <a href="#" class="text-xs text-teal-700 hover:underline">View list</a>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-sm text-gray-500">Escalated</p>
+      <p class="text-3xl font-bold text-amber-600">3</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <p class="text-sm text-gray-500">Closed This Month</p>
+      <p class="text-3xl font-bold text-green-600">12</p>
+    </div>
+  </div>
+
+  <!-- Case Type Distribution -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h3 class="font-medium text-gray-900 mb-3">By Case Type</h3>
+      <div class="space-y-2">
+        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-500">Mandatory</span><div class="flex-1 bg-gray-100 rounded-full h-4"><div class="bg-red-500 h-4 rounded-full" style="width:30%"></div></div><span class="text-sm font-medium w-8">14</span></div>
+        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-500">Recommended</span><div class="flex-1 bg-gray-100 rounded-full h-4"><div class="bg-amber-500 h-4 rounded-full" style="width:55%"></div></div><span class="text-sm font-medium w-8">26</span></div>
+        <div class="flex items-center gap-3"><span class="w-24 text-sm text-gray-500">Self-Service</span><div class="flex-1 bg-gray-100 rounded-full h-4"><div class="bg-gray-400 h-4 rounded-full" style="width:15%"></div></div><span class="text-sm font-medium w-8">7</span></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+      <h3 class="font-medium text-gray-900 mb-3">Review Completion Rate</h3>
+      <p class="text-4xl font-bold text-gray-900 mb-1">83%</p>
+      <p class="text-sm text-gray-500">39 of 47 reviews on time this period</p>
+      <div class="w-full bg-gray-100 rounded-full h-3 mt-3"><div class="bg-teal-500 h-3 rounded-full" style="width:83%"></div></div>
+    </div>
+  </div>
+
+  <!-- Overdue drill-down -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+    <h3 class="font-medium text-gray-900 mb-3">Overdue Reviews</h3>
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Case</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Days Overdue</th>
+          <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Assigned</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr><td class="px-4 py-2 text-sm">Margaret Thompson</td><td class="px-4 py-2 text-sm">Post-Fall Monitoring</td><td class="px-4 py-2"><span class="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">Mandatory</span></td><td class="px-4 py-2 text-sm text-red-600 font-medium">3</td><td class="px-4 py-2 text-sm text-gray-500">Grayce M.</td></tr>
+        <tr><td class="px-4 py-2 text-sm">Arthur Simmons</td><td class="px-4 py-2 text-sm">Wound Care Follow-up</td><td class="px-4 py-2"><span class="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">Mandatory</span></td><td class="px-4 py-2 text-sm text-red-600 font-medium">7</td><td class="px-4 py-2 text-sm text-gray-500">Jenny W.</td></tr>
+        <tr><td class="px-4 py-2 text-sm">Betty O'Malley</td><td class="px-4 py-2 text-sm">Nutrition Monitoring</td><td class="px-4 py-2"><span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">Recommended</span></td><td class="px-4 py-2 text-sm text-amber-600 font-medium">2</td><td class="px-4 py-2 text-sm text-gray-500">Alex K.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('tab-active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('btn-'+id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+epic_code: PMV
+epic_number: "027"
+name: Practice Management v2
+initiative: FL-financial-ledger
+status: complete
+stage: design
+gates:
+  idea:
+    passed: true
+    date: "2026-03-15"
+    notes: "William Whitelaw (PO/Dev), L effort (5 sprints), key risk: task mgmt scope creep"
+  spec:
+    passed: true
+    date: "2026-03-15"
+    notes: "7 stories validated, 39 FRs, 10 clarifications, all INVEST compliant, business alignment confirmed"
+created: "2026-03-15"
+author: William Whitelaw
+branch: feature/027-PMV-practice-management-v2
+depends_on:
+  - 015-ACT-accountant-practice-management
+  - 012-ATT-attachments
+  - 024-NTF-notifications-activity-feed

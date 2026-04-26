@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LES Mockup - Status Wizard Modals (All Variants)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="viewer-toolbar.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' },
+            info: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',500:'#43C0BE',700:'#007F7E',900:'#003D3D' },
+            success: { 50:'#F6FBFE',100:'#DBEFFA',200:'#BCE2F6',500:'#35A8E4',700:'#156F9D' },
+            warning: { 50:'#FFF9F5',100:'#FFDAC6',200:'#FFC19F',500:'#E0763C',700:'#9C481A' },
+            danger: { 50:'#FFF5F5',100:'#FFCCCE',200:'#FFA8AC',500:'#E04B51',700:'#9C262A' },
+          },
+          fontFamily: { sans: ['"Roboto Flex"', 'system-ui', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    .text-primary { color: #13171D; }
+    .text-secondary { color: #666666; }
+    .text-tertiary { color: #808080; }
+    .radio-card { transition: all 0.15s ease; cursor: pointer; }
+    .radio-card:hover { border-color: #43C0BE; background-color: #F0FAFA; }
+    .radio-card.selected { border-color: #007F7E; background-color: #F0FAFA; box-shadow: 0 0 0 2px rgba(67, 192, 190, 0.5); }
+    .lost-card { transition: all 0.15s ease; cursor: pointer; }
+    .lost-card:hover { border-color: #E04B51; background-color: #FFF5F5; }
+    .lost-card.selected { border-color: #9C262A; background-color: #FFF5F5; box-shadow: 0 0 0 2px rgba(255, 168, 172, 0.5); }
+    .intent-radio { transition: all 0.15s ease; cursor: pointer; }
+    .intent-radio:hover { border-color: #43C0BE; }
+    .intent-radio.selected { border-color: #007F7E; background-color: #F0FAFA; box-shadow: 0 0 0 2px rgba(67, 192, 190, 0.5); }
+    .select-styled {
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg%20xmlns%3d%22http%3a%2f%2fwww.w3.org%2f2000%2fsvg%22%20width%3d%2212%22%20height%3d%2212%22%20viewBox%3d%220%200%2012%2012%22%3e%3cpath%20fill%3d%22%23666666%22%20d%3d%22M2.22%204.47a.75.75%200%20011.06%200L6%207.19l2.72-2.72a.75.75%200%20011.06%201.06l-3.25%203.25a.75.75%200%2001-1.06%200L2.22%205.53a.75.75%200%20010-1.06z%22%2f%3e%3c%2fsvg%3e');
+      background-size: 12px;
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+      padding-right: 2rem;
+    }
+    .outcome-radio { transition: all 0.15s ease; cursor: pointer; }
+    .outcome-radio:hover { border-color: #43C0BE; background-color: #F0FAFA; }
+    .outcome-radio.selected { border-color: #007F7E; background-color: #F0FAFA; }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans min-h-screen">
+
+  <div class="max-w-[540px] mx-auto py-10 space-y-10">
+
+    <!-- Page Title -->
+    <div class="text-center mb-2">
+      <h1 class="text-xl font-semibold text-primary">LES Status Wizard Modals</h1>
+      <p class="text-sm text-secondary mt-1">All 4 variants shown below for review</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- A) MADE CONTACT WIZARD                                       -->
+    <!-- ============================================================ -->
+    <div class="rounded-lg bg-white shadow-xl overflow-hidden border border-gray-400/40" id="made-contact-modal">
+
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-success-100 flex items-center justify-center">
+              <svg class="w-4 h-4 text-success-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+            </div>
+            <h2 class="text-lg font-semibold text-primary">Update Status: Made Contact</h2>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="px-6 py-5 space-y-5">
+
+        <!-- Required Section -->
+        <div>
+          <div class="flex items-center gap-1.5 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-danger-500"></div>
+            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Required</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Journey Stage -->
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Journey Stage <span class="text-danger-500">*</span></label>
+              <select class="select-styled w-full rounded-[8px] border border-gray-300 bg-white px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                <option value="" disabled>Select journey stage</option>
+                <option>Pre-Care</option>
+                <option>ACAT Booked</option>
+                <option selected>Approved</option>
+                <option>Allocated</option>
+                <option>Active</option>
+                <option>Converted</option>
+              </select>
+            </div>
+
+            <!-- Lead Attribution -->
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Lead Attribution <span class="text-danger-500">*</span></label>
+              <select class="select-styled w-full rounded-[8px] border border-gray-300 bg-white px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                <option value="" disabled>Select attribution</option>
+                <option selected>Website — Google Search</option>
+                <option>Referral — GP</option>
+                <option>Referral — Hospital</option>
+                <option>Referral — Family/Friend</option>
+                <option>Phone Enquiry</option>
+                <option>My Aged Care</option>
+                <option>Zoho Import</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <!-- Purchase Intent -->
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Purchase Intent <span class="text-danger-500">*</span></label>
+              <div class="flex gap-2">
+                <div class="intent-radio flex-1 rounded-[8px] border border-gray-300 px-3 py-2.5 text-center" onclick="selectIntent(this)">
+                  <div class="flex items-center justify-center gap-1.5">
+                    <div class="w-2 h-2 rounded-full bg-danger-500"></div>
+                    <span class="text-sm font-medium text-primary">Hot</span>
+                  </div>
+                </div>
+                <div class="intent-radio selected flex-1 rounded-[8px] border px-3 py-2.5 text-center" onclick="selectIntent(this)">
+                  <div class="flex items-center justify-center gap-1.5">
+                    <div class="w-2 h-2 rounded-full bg-warning-500"></div>
+                    <span class="text-sm font-medium text-teal-700">Warm</span>
+                  </div>
+                </div>
+                <div class="intent-radio flex-1 rounded-[8px] border border-gray-300 px-3 py-2.5 text-center" onclick="selectIntent(this)">
+                  <div class="flex items-center justify-center gap-1.5">
+                    <div class="w-2 h-2 rounded-full bg-primary-blue-400"></div>
+                    <span class="text-sm font-medium text-primary">Cold</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-gray-200"></div>
+
+        <!-- Optional Section -->
+        <div>
+          <div class="flex items-center gap-1.5 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Optional</span>
+          </div>
+
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Contact Method -->
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1.5">Contact Method</label>
+                <select class="select-styled w-full rounded-[8px] border border-gray-300 bg-white px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                  <option value="" disabled selected>Select method</option>
+                  <option>Phone</option>
+                  <option>Email</option>
+                  <option>In Person</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <!-- Follow-up Date -->
+              <div>
+                <label class="text-xs font-semibold text-secondary block mb-1.5">Follow-up Date</label>
+                <input type="date" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Select date">
+              </div>
+            </div>
+
+            <!-- Outcome -->
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Outcome</label>
+              <input type="text" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500" placeholder="Brief outcome of the contact">
+            </div>
+
+            <!-- Notes -->
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Notes</label>
+              <textarea rows="3" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none" placeholder="Additional notes about this contact..."></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 bg-gray-50">
+        <button class="px-5 py-2.5 text-sm font-bold rounded-full text-gray-700 hover:bg-gray-100 transition-colors">Cancel</button>
+        <button class="px-5 py-2.5 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600 transition-colors shadow-sm">Save</button>
+      </div>
+    </div>
+
+    <!-- Label -->
+    <div class="text-center">
+      <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-success-100 text-success-700">A) Made Contact Wizard</span>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- B) ATTEMPTED CONTACT WIZARD                                  -->
+    <!-- ============================================================ -->
+    <div class="rounded-lg bg-white shadow-xl overflow-hidden border border-gray-400/40" id="attempted-contact-modal">
+
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-warning-100 flex items-center justify-center">
+              <svg class="w-4 h-4 text-warning-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 0m0 0l-1.414 1.414M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            </div>
+            <h2 class="text-lg font-semibold text-primary">Update Status: Attempted Contact</h2>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="px-6 py-5 space-y-5">
+
+        <!-- Required Section -->
+        <div>
+          <div class="flex items-center gap-1.5 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-danger-500"></div>
+            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Required</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Contact Method -->
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Contact Method <span class="text-danger-500">*</span></label>
+              <select class="select-styled w-full rounded-[8px] border border-gray-300 bg-white px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                <option value="" disabled>Select method</option>
+                <option selected>Phone</option>
+                <option>Email</option>
+                <option>In Person</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <!-- Contact Outcome -->
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Contact Outcome <span class="text-danger-500">*</span></label>
+              <div class="grid grid-cols-3 gap-2">
+                <div class="outcome-radio selected rounded-[8px] border px-3 py-2.5 text-center" onclick="selectOutcome(this)">
+                  <span class="text-xs font-medium text-teal-700">No Answer</span>
+                </div>
+                <div class="outcome-radio rounded-[8px] border border-gray-300 px-3 py-2.5 text-center" onclick="selectOutcome(this)">
+                  <span class="text-xs font-medium text-primary">Left Voicemail</span>
+                </div>
+                <div class="outcome-radio rounded-[8px] border border-gray-300 px-3 py-2.5 text-center" onclick="selectOutcome(this)">
+                  <span class="text-xs font-medium text-primary">Line Busy</span>
+                </div>
+                <div class="outcome-radio rounded-[8px] border border-gray-300 px-3 py-2.5 text-center" onclick="selectOutcome(this)">
+                  <span class="text-xs font-medium text-primary">Wrong Number</span>
+                </div>
+                <div class="outcome-radio rounded-[8px] border border-gray-300 px-3 py-2.5 text-center" onclick="selectOutcome(this)">
+                  <span class="text-xs font-medium text-primary">Email Bounced</span>
+                </div>
+                <div class="outcome-radio rounded-[8px] border border-gray-300 px-3 py-2.5 text-center" onclick="selectOutcome(this)">
+                  <span class="text-xs font-medium text-primary">Other</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-gray-200"></div>
+
+        <!-- Optional Section -->
+        <div>
+          <div class="flex items-center gap-1.5 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Optional</span>
+          </div>
+
+          <!-- Notes -->
+          <div>
+            <label class="text-xs font-semibold text-secondary block mb-1.5">Notes</label>
+            <textarea rows="3" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none" placeholder="Additional notes about this attempt..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 bg-gray-50">
+        <button class="px-5 py-2.5 text-sm font-bold rounded-full text-gray-700 hover:bg-gray-100 transition-colors">Cancel</button>
+        <button class="px-5 py-2.5 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600 transition-colors shadow-sm">Save</button>
+      </div>
+    </div>
+
+    <!-- Label -->
+    <div class="text-center">
+      <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-warning-100 text-warning-700">B) Attempted Contact Wizard</span>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- C) LOST WIZARD                                               -->
+    <!-- ============================================================ -->
+    <div class="rounded-lg bg-white shadow-xl overflow-hidden border border-gray-400/40" id="lost-modal">
+
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-danger-200 flex items-center justify-center">
+              <svg class="w-4 h-4 text-danger-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+            </div>
+            <h2 class="text-lg font-semibold text-primary">Update Status: Lost</h2>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="px-6 py-5 space-y-5">
+
+        <!-- Required Section -->
+        <div>
+          <div class="flex items-center gap-1.5 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-danger-500"></div>
+            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Required</span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Lost Type -->
+            <div>
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Lost Type <span class="text-danger-500">*</span></label>
+              <div class="grid grid-cols-3 gap-3">
+                <!-- Lost Lead (selected) -->
+                <div class="lost-card selected rounded-lg border p-3 text-center" onclick="selectLostType(this, 'lost-lead')">
+                  <div class="flex flex-col items-center gap-2">
+                    <div class="w-9 h-9 rounded-full bg-danger-200 flex items-center justify-center">
+                      <svg class="w-4.5 h-4.5 text-danger-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6"></path></svg>
+                    </div>
+                    <div>
+                      <span class="text-sm font-semibold text-danger-700 block">Lost Lead</span>
+                      <span class="text-[10px] text-secondary">Chose not to proceed</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Junk -->
+                <div class="lost-card rounded-lg border border-gray-200 p-3 text-center" onclick="selectLostType(this, 'junk')">
+                  <div class="flex flex-col items-center gap-2">
+                    <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
+                      <svg class="w-4.5 h-4.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </div>
+                    <div>
+                      <span class="text-sm font-semibold text-primary block">Junk</span>
+                      <span class="text-[10px] text-secondary">Invalid or spam</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Uncontactable -->
+                <div class="lost-card rounded-lg border border-gray-200 p-3 text-center" onclick="selectLostType(this, 'uncontactable')">
+                  <div class="flex flex-col items-center gap-2">
+                    <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
+                      <svg class="w-4.5 h-4.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 2l20 20"></path></svg>
+                    </div>
+                    <div>
+                      <span class="text-sm font-semibold text-primary block">Uncontactable</span>
+                      <span class="text-[10px] text-secondary">Cannot reach</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reason (dynamic based on Lost Type) -->
+            <div id="lost-reason-section">
+              <label class="text-xs font-semibold text-secondary block mb-1.5">Reason <span class="text-danger-500">*</span></label>
+              <select id="lost-reason-select" class="select-styled w-full rounded-[8px] border border-gray-300 bg-white px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                <option value="" disabled>Select reason</option>
+                <option selected>Chose competitor</option>
+                <option>Too expensive</option>
+                <option>Not ready</option>
+                <option>Changed mind</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-gray-200"></div>
+
+        <!-- Optional Section -->
+        <div>
+          <div class="flex items-center gap-1.5 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Optional</span>
+          </div>
+
+          <!-- Notes -->
+          <div>
+            <label class="text-xs font-semibold text-secondary block mb-1.5">Notes</label>
+            <textarea rows="3" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none" placeholder="Why was this lead lost? Any additional context..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 bg-gray-50">
+        <button class="px-5 py-2.5 text-sm font-bold rounded-full text-gray-700 hover:bg-gray-100 transition-colors">Cancel</button>
+        <button class="px-5 py-2.5 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600 transition-colors shadow-sm">Save</button>
+      </div>
+    </div>
+
+    <!-- Label -->
+    <div class="text-center">
+      <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-danger-200 text-danger-700">C) Lost Wizard</span>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- D) NOT CONTACTED WIZARD                                      -->
+    <!-- ============================================================ -->
+    <div class="rounded-lg bg-white shadow-xl overflow-hidden border border-gray-400/40" id="not-contacted-modal">
+
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h2 class="text-lg font-semibold text-primary">Update Status: Not Contacted</h2>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="px-6 py-5 space-y-5">
+
+        <!-- Warning Notice -->
+        <div class="flex items-start gap-3 rounded-[8px] border border-warning-200 bg-warning-50 px-4 py-3">
+          <svg class="w-5 h-5 text-warning-700 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+          <div>
+            <p class="text-sm font-medium text-warning-700">This will reset the lead's engagement status.</p>
+            <p class="text-xs text-secondary mt-0.5">The lead will be marked as not yet contacted. Any previous contact history will be preserved in the timeline.</p>
+          </div>
+        </div>
+
+        <!-- Optional Notes -->
+        <div>
+          <div class="flex items-center gap-1.5 mb-4">
+            <div class="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Optional</span>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-secondary block mb-1.5">Notes</label>
+            <textarea rows="3" class="w-full rounded-[8px] border border-gray-300 px-3 py-2.5 text-sm text-primary focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none" placeholder="Reason for resetting status..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 bg-gray-50">
+        <button class="px-5 py-2.5 text-sm font-bold rounded-full text-gray-700 hover:bg-gray-100 transition-colors">Cancel</button>
+        <button class="px-5 py-2.5 text-sm font-bold rounded-full bg-teal-700 text-white hover:bg-teal-600 transition-colors shadow-sm">Save</button>
+      </div>
+    </div>
+
+    <!-- Label -->
+    <div class="text-center">
+      <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700">D) Not Contacted Wizard</span>
+    </div>
+
+    <!-- Spacer -->
+    <div class="h-8"></div>
+
+  </div>
+
+  <script>
+    function selectIntent(el) {
+      el.parentElement.querySelectorAll('.intent-radio').forEach(r => r.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function selectOutcome(el) {
+      el.parentElement.querySelectorAll('.outcome-radio').forEach(r => r.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function selectLostType(card, type) {
+      document.querySelectorAll('.lost-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+
+      const select = document.getElementById('lost-reason-select');
+      select.innerHTML = '<option value="" disabled>Select reason</option>';
+
+      const reasons = {
+        'lost-lead': ['Chose competitor', 'Too expensive', 'Not ready', 'Changed mind', 'Other'],
+        'junk': ['Spam / telemarketer', 'Duplicate entry', 'Test entry', 'Not aged care related', 'Other'],
+        'uncontactable': ['Phone disconnected', 'No valid contact details', 'Deceased', 'Moved overseas', 'Other']
+      };
+
+      (reasons[type] || []).forEach((reason, idx) => {
+        const opt = document.createElement('option');
+        opt.textContent = reason;
+        opt.value = reason;
+        if (idx === 0) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Challenge: SR1 Registration & Onboarding - All Variations</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: {
+              50: '#F0FAFA', 100: '#D5F1F0', 200: '#BAE8E7', 300: '#94DBDA',
+              400: '#66CCCA', 500: '#43C0BE', 600: '#2F9E9C', 700: '#007F7E',
+              800: '#005656', 900: '#003D3D'
+            },
+            'primary-blue': {
+              50: '#F0F4FA', 100: '#D6E1F0', 200: '#BCCEE7', 300: '#96B2D9',
+              400: '#7197CC', 500: '#4B7BBE', 600: '#39639D', 700: '#2C4C79',
+              800: '#1E3452', 900: '#101C2D'
+            },
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    iframe { border: none; }
+    .markdown-body { font-size: 14px; line-height: 1.7; color: #e2e8f0; }
+    .markdown-body h1 { font-size: 1.5em; font-weight: 700; margin-bottom: 0.5em; border-bottom: 1px solid #334155; padding-bottom: 0.4em; color: #f1f5f9; }
+    .markdown-body h2 { font-size: 1.25em; font-weight: 600; margin-top: 1.2em; margin-bottom: 0.5em; color: #43C0BE; }
+    .markdown-body h3 { font-size: 1.1em; font-weight: 600; margin-top: 0.8em; color: #94a3b8; }
+    .markdown-body p { margin-bottom: 0.8em; }
+    .markdown-body ul, .markdown-body ol { margin-left: 1.5em; margin-bottom: 0.8em; }
+    .markdown-body li { margin-bottom: 0.3em; }
+    .markdown-body code { background: #1e293b; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; color: #43C0BE; }
+    .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 1em; font-size: 0.9em; }
+    .markdown-body th, .markdown-body td { border: 1px solid #334155; padding: 0.5em 0.75em; text-align: left; }
+    .markdown-body th { background: #1e293b; color: #43C0BE; font-weight: 600; }
+    .markdown-body strong { color: #f1f5f9; }
+    .markdown-body a { color: #43C0BE; text-decoration: underline; }
+    .markdown-light { font-size: 14px; line-height: 1.7; color: #334155; }
+    .markdown-light h1 { font-size: 1.5em; font-weight: 700; margin-bottom: 0.5em; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.4em; color: #0f172a; }
+    .markdown-light h2 { font-size: 1.25em; font-weight: 600; margin-top: 1.2em; margin-bottom: 0.5em; color: #007F7E; }
+    .markdown-light h3 { font-size: 1.1em; font-weight: 600; margin-top: 0.8em; color: #475569; }
+    .markdown-light p { margin-bottom: 0.8em; }
+    .markdown-light ul, .markdown-light ol { margin-left: 1.5em; margin-bottom: 0.8em; }
+    .markdown-light li { margin-bottom: 0.3em; }
+    .markdown-light table { width: 100%; border-collapse: collapse; margin-bottom: 1em; font-size: 0.9em; }
+    .markdown-light th, .markdown-light td { border: 1px solid #e2e8f0; padding: 0.5em 0.75em; text-align: left; }
+    .markdown-light th { background: #f8fafc; color: #007F7E; font-weight: 600; }
+    .markdown-light strong { color: #0f172a; }
+    .markdown-light a { color: #007F7E; text-decoration: underline; }
+    .student-btn-active { box-shadow: 0 0 0 2px rgba(67, 192, 190, 0.5); }
+    #main-panel { transition: transform 0.3s ease; }
+    #content-area { transition: padding-top 0.3s ease; }
+    .doc-scroll::-webkit-scrollbar { width: 6px; }
+    .doc-scroll::-webkit-scrollbar-track { background: #1e293b; }
+    .doc-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    .vote-card { transition: all 0.2s ease; }
+    .vote-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1); }
+    .vote-card.voted { border-color: #007F7E; background-color: #F0FAFA; }
+    .vote-card.voted .vote-check { display: flex; }
+    .vote-check { display: none; }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+  <!-- Toggle Button -->
+  <button onclick="togglePanel()" id="toggle-btn" class="fixed top-2 right-2 z-[100] w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded-lg flex items-center justify-center text-white shadow-lg transition" title="Toggle panel (Esc)">
+    <svg id="toggle-icon-down" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    <svg id="toggle-icon-up" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+  </button>
+
+  <!-- Main Panel -->
+  <div id="main-panel" class="fixed top-0 left-0 right-0 z-50">
+    <div class="bg-gray-800/95 backdrop-blur border-b border-gray-700 px-4 py-3">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 bg-teal-700 rounded flex items-center justify-center text-xs font-bold">TC</div>
+            <h1 class="text-base font-semibold text-white">SR1 Registration & Onboarding</h1>
+          </div>
+          <span class="text-gray-600">|</span>
+          <span class="text-gray-400 text-sm" id="current-view">Wizard Wayne — Registration</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="selectStudent(1)" id="btn-1" class="student-btn px-3 py-1.5 text-sm rounded-md font-medium transition-all">1. Wizard</button>
+          <button onclick="selectStudent(2)" id="btn-2" class="student-btn px-3 py-1.5 text-sm rounded-md font-medium transition-all">2. Gamified</button>
+          <button onclick="selectStudent(3)" id="btn-3" class="student-btn px-3 py-1.5 text-sm rounded-md font-medium transition-all">3. Mobile</button>
+          <button onclick="selectStudent(4)" id="btn-4" class="student-btn px-3 py-1.5 text-sm rounded-md font-medium transition-all">4. Split-Panel</button>
+        </div>
+      </div>
+    </div>
+    <div class="bg-gray-800/80 backdrop-blur px-4 py-2 border-b border-gray-700/50">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" id="student-icon">W</div>
+          <div>
+            <div class="font-medium text-sm" id="student-name">Wizard Wayne</div>
+            <div class="text-xs text-gray-400" id="student-motto">"One step at a time"</div>
+          </div>
+          <span class="text-gray-600 mx-1">|</span>
+          <div class="text-xs text-gray-500" id="student-focus">Classic step-by-step vertical progress sidebar, linear flow</div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-500" id="variation-label">Screen:</span>
+            <div class="flex items-center gap-1" id="variation-buttons"></div>
+          </div>
+          <span class="text-gray-700">|</span>
+          <button onclick="copyToFigma()" id="figma-copy-btn" class="flex items-center gap-1.5 px-2.5 py-1 text-xs bg-gray-700 hover:bg-gray-600 rounded text-gray-300 transition border border-gray-600" title="Copy current mockup to Figma clipboard (F)">
+            <svg width="12" height="12" viewBox="0 0 38 57" fill="currentColor"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>
+            Figma
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mockup Frame -->
+  <div id="content-area" class="pt-[104px]">
+    <iframe id="mockup-frame" src="" class="w-full" style="height: calc(100vh - 104px);"></iframe>
+  </div>
+
+  <!-- Comparison & Voting Section -->
+  <div id="comparison-section" class="bg-white">
+    <div class="bg-gray-900 py-6 text-center">
+      <button onclick="scrollToComparison()" class="inline-flex items-center gap-2 text-gray-400 hover:text-teal-500 transition text-sm">
+        <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        Scroll down for Comparison & Voting
+        <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+      </button>
+    </div>
+
+    <div class="border-b border-gray-200 bg-gradient-to-b from-gray-50 to-white">
+      <div class="max-w-5xl mx-auto px-8 py-12 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Pattern Analysis
+        </div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-3">Design Challenge Comparison</h2>
+        <p class="text-gray-500 max-w-2xl mx-auto">Side-by-side analysis of patterns from all 4 students. Vote on the patterns you want to adopt in the unified design.</p>
+      </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto px-8 py-8">
+      <div id="comparison-content" class="markdown-light"><p class="text-gray-400 italic">Loading comparison...</p></div>
+    </div>
+
+    <!-- Voting Section -->
+    <div class="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50" id="voting-section">
+      <div class="max-w-5xl mx-auto px-8 py-12">
+        <div class="text-center mb-10">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium mb-4">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Your Picks
+          </div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-3">Vote: Which Patterns Win?</h2>
+          <p class="text-gray-500 max-w-2xl mx-auto">Click to select the patterns you want in the final unified design.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'mobile-reg')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-green-100 text-green-700">Mobile Mo</span>
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-teal-100 text-teal-700">Sam</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Mobile-First Registration</h3>
+            <p class="text-sm text-gray-500">Full-width form with large touch targets + info panel on desktop.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'wizard-progress')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-100 text-purple-700">Wizard Wayne</span>
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-green-100 text-green-700">Mobile Mo</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Vertical Sidebar + Horizontal Dots</h3>
+            <p class="text-sm text-gray-500">Vertical sidebar on desktop, horizontal dots on mobile. Best of both.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'gamified-celebrations')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-700">Gamified Gina</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Micro-Celebrations on Step Completion</h3>
+            <p class="text-sm text-gray-500">Subtle animations and feedback when completing steps to boost completion rate.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'split-org-supplier')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-teal-100 text-teal-700">Split-Panel Sam</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Org/Supplier Info Split</h3>
+            <p class="text-sm text-gray-500">Read-only org info in left panel, editable supplier fields on right. Clearest mental model.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'dual-progress-rings')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-700">Gamified Gina</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Dual Progress Rings for Documents</h3>
+            <p class="text-sm text-gray-500">Separate progress rings for org vs supplier docs. Makes two-tier model visually clear.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'checklist-sidebar')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-teal-100 text-teal-700">Split-Panel Sam</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Document Checklist Sidebar</h3>
+            <p class="text-sm text-gray-500">Always-visible checklist in sidebar with upload area on right. Best overview of doc status.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'eftsure-three-dot')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-100 text-purple-700">Wizard Wayne</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Three-Dot EFTSure Traffic Light</h3>
+            <p class="text-sm text-gray-500">Simple three dots (green/yellow/gray) with connecting lines. Most scannable at a glance.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'mobile-rejection')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-green-100 text-green-700">Mobile Mo</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Inline Red Banner for Rejections</h3>
+            <p class="text-sm text-gray-500">Red border + inline reason text. Most readable on mobile without hover.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'dashed-add-entity')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-100 text-purple-700">Wizard Wayne</span>
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-700">Gamified Gina</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Dashed-Border Add Entity Card</h3>
+            <p class="text-sm text-gray-500">Established convention for "add new" actions. Optional completion rings from Gina.</p>
+          </div>
+
+          <div class="vote-card border-2 border-gray-200 rounded-xl p-5 cursor-pointer relative" onclick="toggleVote(this, 'welcome-back')">
+            <div class="vote-check absolute top-3 right-3 w-6 h-6 bg-teal-700 rounded-full items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-700">Gamified Gina</span>
+              <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-100 text-purple-700">Wizard Wayne</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-1">Welcome Back Banner with Resume Context</h3>
+            <p class="text-sm text-gray-500">Dismissible banner showing exact step and progress when returning to onboarding.</p>
+          </div>
+        </div>
+
+        <!-- Feedback -->
+        <div class="max-w-2xl mx-auto mb-8">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Additional feedback or direction</label>
+          <textarea id="feedback-text" rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 text-sm placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 resize-none" placeholder="Any comments on what's working, what's not, specific requests for the unified design..."></textarea>
+        </div>
+
+        <!-- Summary + Export -->
+        <div class="max-w-2xl mx-auto">
+          <div class="bg-gray-50 rounded-xl border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-gray-900">Your Selection</h3>
+              <span class="text-sm text-gray-500" id="vote-count">0 patterns selected</span>
+            </div>
+            <div id="vote-summary" class="text-sm text-gray-500 mb-4">Click the pattern cards above to make your selections.</div>
+            <button onclick="exportVotes()" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-6 rounded-lg transition flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+              Copy Selections to Clipboard
+            </button>
+            <p class="text-xs text-gray-400 text-center mt-3">Paste this back into the conversation to generate the unified design.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-200 bg-gray-50 py-6">
+      <div class="max-w-5xl mx-auto px-8 text-center text-xs text-gray-400">
+        Generated by <strong class="text-gray-500">/trilogy-mockup --challenge</strong> &middot; Trilogy Care Design System
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Hints -->
+  <div id="keyboard-hints" class="fixed bottom-3 left-3 text-[11px] text-gray-600 bg-gray-800/90 px-3 py-2 rounded-lg flex items-center gap-3 border border-gray-700/50">
+    <span><kbd class="bg-gray-700 px-1.5 py-0.5 rounded text-gray-400 font-mono text-[10px]">1</kbd>-<kbd class="bg-gray-700 px-1.5 py-0.5 rounded text-gray-400 font-mono text-[10px]">4</kbd> Students</span>
+    <span class="text-gray-700">|</span>
+    <span><kbd class="bg-gray-700 px-1.5 py-0.5 rounded text-gray-400 font-mono text-[10px]">F</kbd> Figma</span>
+    <span class="text-gray-700">|</span>
+    <span><kbd class="bg-gray-700 px-1.5 py-0.5 rounded text-gray-400 font-mono text-[10px]">Esc</kbd> Toggle</span>
+  </div>
+
+  <script>
+    const students = {
+      1: {
+        name: 'Wizard Wayne', motto: '"One step at a time"',
+        focus: 'Classic step-by-step vertical progress sidebar, horizontal stepper on mobile',
+        icon: 'W', iconBg: 'bg-purple-600', folder: 'student-1-wizard-wayne',
+        variations: {
+          registration: { label: 'Registration', file: 'student-1-wizard-wayne/01-registration.html' },
+          wizard: { label: 'Onboarding Wizard', file: 'student-1-wizard-wayne/02-onboarding-wizard.html' },
+          locations: { label: 'Locations', file: 'student-1-wizard-wayne/03-locations-step.html' },
+          documents: { label: 'Documents', file: 'student-1-wizard-wayne/04-documents-step.html' },
+          verification: { label: 'Verification', file: 'student-1-wizard-wayne/05-verification-dashboard.html' },
+          addentity: { label: 'Add Entity', file: 'student-1-wizard-wayne/06-add-supplier-entity.html' }
+        }
+      },
+      2: {
+        name: 'Gamified Gina', motto: '"Make progress feel rewarding"',
+        focus: 'Progress rings, completion %, micro-celebrations, achievement badges',
+        icon: 'G', iconBg: 'bg-amber-600', folder: 'student-2-gamified-gina',
+        variations: {
+          registration: { label: 'Registration', file: 'student-2-gamified-gina/01-registration.html' },
+          wizard: { label: 'Onboarding Wizard', file: 'student-2-gamified-gina/02-onboarding-wizard.html' },
+          locations: { label: 'Locations', file: 'student-2-gamified-gina/03-locations-step.html' },
+          documents: { label: 'Documents', file: 'student-2-gamified-gina/04-documents-step.html' },
+          verification: { label: 'Verification', file: 'student-2-gamified-gina/05-verification-dashboard.html' },
+          addentity: { label: 'Add Entity', file: 'student-2-gamified-gina/06-add-supplier-entity.html' }
+        }
+      },
+      3: {
+        name: 'Mobile Mo', motto: '"Thumb-friendly everything"',
+        focus: 'Bottom navigation, card-based steps, 48px touch targets, minimal chrome',
+        icon: 'M', iconBg: 'bg-green-600', folder: 'student-3-mobile-mo',
+        variations: {
+          registration: { label: 'Registration', file: 'student-3-mobile-mo/01-registration.html' },
+          wizard: { label: 'Onboarding Wizard', file: 'student-3-mobile-mo/02-onboarding-wizard.html' },
+          locations: { label: 'Locations', file: 'student-3-mobile-mo/03-locations-step.html' },
+          documents: { label: 'Documents', file: 'student-3-mobile-mo/04-documents-step.html' },
+          verification: { label: 'Verification', file: 'student-3-mobile-mo/05-verification-dashboard.html' },
+          addentity: { label: 'Add Entity', file: 'student-3-mobile-mo/06-add-supplier-entity.html' }
+        }
+      },
+      4: {
+        name: 'Split-Panel Sam', motto: '"Context always visible"',
+        focus: 'Persistent left panel with progress + context summary, scrollable right form',
+        icon: 'S', iconBg: 'bg-teal-700', folder: 'student-4-split-panel-sam',
+        variations: {
+          registration: { label: 'Registration', file: 'student-4-split-panel-sam/01-registration.html' },
+          wizard: { label: 'Onboarding Wizard', file: 'student-4-split-panel-sam/02-onboarding-wizard.html' },
+          locations: { label: 'Locations', file: 'student-4-split-panel-sam/03-locations-step.html' },
+          documents: { label: 'Documents', file: 'student-4-split-panel-sam/04-documents-step.html' },
+          verification: { label: 'Verification', file: 'student-4-split-panel-sam/05-verification-dashboard.html' },
+          addentity: { label: 'Add Entity', file: 'student-4-split-panel-sam/06-add-supplier-entity.html' }
+        }
+      }
+    };
+
+    let currentStudent = 1;
+    let currentVariation = 'registration';
+    let panelVisible = true;
+    const votes = {};
+
+    function togglePanel() {
+      panelVisible = !panelVisible;
+      const panel = document.getElementById('main-panel');
+      const content = document.getElementById('content-area');
+      if (panelVisible) {
+        panel.style.transform = 'translateY(0)'; content.style.paddingTop = '104px';
+        document.getElementById('mockup-frame').style.height = 'calc(100vh - 104px)';
+        document.getElementById('toggle-icon-down').classList.remove('hidden');
+        document.getElementById('toggle-icon-up').classList.add('hidden');
+      } else {
+        panel.style.transform = 'translateY(-100%)'; content.style.paddingTop = '0';
+        document.getElementById('mockup-frame').style.height = '100vh';
+        document.getElementById('toggle-icon-down').classList.add('hidden');
+        document.getElementById('toggle-icon-up').classList.remove('hidden');
+      }
+    }
+
+    function selectStudent(num) {
+      currentStudent = num;
+      const student = students[num];
+      document.querySelectorAll('.student-btn').forEach(btn => {
+        const btnNum = parseInt(btn.id.split('-')[1]);
+        btn.className = btnNum === num
+          ? 'student-btn px-3 py-1.5 text-sm rounded-md font-medium transition-all bg-teal-700 text-white student-btn-active'
+          : 'student-btn px-3 py-1.5 text-sm rounded-md font-medium transition-all bg-gray-700 hover:bg-gray-600 text-gray-300';
+      });
+      document.getElementById('student-name').textContent = student.name;
+      document.getElementById('student-motto').textContent = student.motto;
+      document.getElementById('student-focus').textContent = student.focus;
+      const icon = document.getElementById('student-icon');
+      icon.textContent = student.icon;
+      icon.className = `w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white ${student.iconBg}`;
+      const varContainer = document.getElementById('variation-buttons');
+      varContainer.innerHTML = '';
+      for (const [key, variation] of Object.entries(student.variations)) {
+        const btn = document.createElement('button');
+        btn.id = `var-btn-${key}`;
+        btn.textContent = variation.label;
+        btn.onclick = () => selectVariation(key);
+        btn.className = 'var-btn px-2.5 py-1 text-xs font-medium rounded transition-all whitespace-nowrap';
+        varContainer.appendChild(btn);
+      }
+      if (!student.variations[currentVariation]) currentVariation = Object.keys(student.variations)[0];
+      selectVariation(currentVariation);
+    }
+
+    function selectVariation(key) {
+      const student = students[currentStudent];
+      if (!student.variations[key]) return;
+      currentVariation = key;
+      document.querySelectorAll('.var-btn').forEach(btn => {
+        const btnKey = btn.id.replace('var-btn-', '');
+        const base = 'var-btn px-2.5 py-1 text-xs font-medium rounded transition-all whitespace-nowrap';
+        btn.className = btnKey === key ? `${base} bg-teal-700 text-white` : `${base} bg-gray-700 hover:bg-gray-600 text-gray-400`;
+      });
+      const variation = student.variations[key];
+      document.getElementById('mockup-frame').src = variation.file;
+      document.getElementById('current-view').textContent = `${student.name} — ${variation.label}`;
+    }
+
+    async function loadComparison() {
+      try {
+        const response = await fetch('comparison.md');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const text = await response.text();
+        document.getElementById('comparison-content').innerHTML = marked.parse(text);
+      } catch (e) {
+        document.getElementById('comparison-content').innerHTML = '<p class="text-gray-400 italic">Could not load comparison.md</p>';
+      }
+    }
+
+    function toggleVote(card, patternId) {
+      if (votes[patternId]) { delete votes[patternId]; card.classList.remove('voted'); }
+      else { votes[patternId] = card.querySelector('h3').textContent; card.classList.add('voted'); }
+      updateVoteSummary();
+    }
+
+    function updateVoteSummary() {
+      const count = Object.keys(votes).length;
+      document.getElementById('vote-count').textContent = `${count} pattern${count !== 1 ? 's' : ''} selected`;
+      const summaryEl = document.getElementById('vote-summary');
+      if (count === 0) { summaryEl.innerHTML = 'Click the pattern cards above to make your selections.'; summaryEl.className = 'text-sm text-gray-500 mb-4'; }
+      else { summaryEl.innerHTML = Object.values(votes).map(n => `<span class="inline-flex items-center gap-1 px-2 py-1 bg-teal-50 text-teal-700 rounded text-xs font-medium mr-1 mb-1">${n}</span>`).join(''); summaryEl.className = 'text-sm mb-4 flex flex-wrap'; }
+    }
+
+    function exportVotes() {
+      const selected = Object.values(votes);
+      const feedback = document.getElementById('feedback-text').value.trim();
+      let output = `## Design Challenge Selections — SR1 Registration & Onboarding\n\n### Adopted Patterns (${selected.length})\n`;
+      if (selected.length > 0) selected.forEach(p => { output += `- ${p}\n`; });
+      else output += `- None selected\n`;
+      if (feedback) output += `\n### Feedback\n${feedback}\n`;
+      output += `\n---\nPlease generate the unified design based on these selections.`;
+      navigator.clipboard.writeText(output).then(() => {
+        const btn = event.target.closest('button');
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+        btn.classList.add('bg-teal-800');
+        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('bg-teal-800'); }, 2000);
+      });
+    }
+
+    function scrollToComparison() { document.getElementById('comparison-section').scrollIntoView({ behavior: 'smooth' }); }
+
+    function copyToFigma() {
+      const student = students[currentStudent];
+      const variation = student.variations[currentVariation];
+      if (!variation) return;
+      window.open(variation.file + '#figmacapture&figmadelay=3000', '_blank');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.target.matches('input, textarea, select')) return;
+      if (e.key === 'Escape') { togglePanel(); return; }
+      if (e.key >= '1' && e.key <= '4') { selectStudent(parseInt(e.key)); return; }
+      if (e.key.toLowerCase() === 'f') { copyToFigma(); return; }
+    });
+
+    window.addEventListener('scroll', () => {
+      const hints = document.getElementById('keyboard-hints');
+      hints.style.opacity = window.scrollY > window.innerHeight * 0.5 ? '0' : '1';
+      hints.style.pointerEvents = window.scrollY > window.innerHeight * 0.5 ? 'none' : 'auto';
+    });
+
+    selectStudent(1);
+    loadComparison();
+  </script>
+</body>
+</html>

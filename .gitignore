@@ -1,0 +1,38 @@
+# Next.js build outputs
+.next
+out
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Local dev certificates (mkcert)
+.certs
+
+pnpm-lock.yaml
+
+# Plans
+.plans
+
+# CDK
+infra/cdk/node_modules
+infra/cdk/cdk.out
+infra/cdk/dist
+
+# Next.js generated
+next-env.d.ts
+.claude/settings.local.json
+tc-docs.code-workspace

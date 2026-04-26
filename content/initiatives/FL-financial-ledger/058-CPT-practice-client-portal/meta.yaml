@@ -1,0 +1,15 @@
+title: Practice Client Portal
+code: CPT
+number: "058"
+status: idea
+stage: idea
+effort: L
+created: 2026-03-20
+gates:
+  idea: pending
+  spec: pending
+  design: pending
+  architecture: pending
+  code_quality: pending
+  qa: pending
+  release: pending

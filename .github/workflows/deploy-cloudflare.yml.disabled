@@ -1,0 +1,57 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+      - demo-online-editing
+  workflow_dispatch:
+
+jobs:
+  deploy-docs:
+    name: Deploy Trilogy Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Index to Typesense
+        env:
+          TYPESENSE_ADMIN_KEY: ${{ secrets.TYPESENSE_ADMIN_KEY }}
+        run: npx tsx scripts/index-typesense.ts
+
+      - name: Build docs (SSR)
+        run: npm run build
+        env:
+          CI: true
+          NODE_OPTIONS: --max-old-space-size=8192
+          TYPESENSE_SEARCH_KEY: ${{ secrets.TYPESENSE_SEARCH_KEY }}
+          STUDIO_GITHUB_CLIENT_ID: ${{ secrets.STUDIO_GITHUB_CLIENT_ID }}
+          STUDIO_GITHUB_CLIENT_SECRET: ${{ secrets.STUDIO_GITHUB_CLIENT_SECRET }}
+          NUXT_TCID_CLIENT_ID: ${{ secrets.NUXT_TCID_CLIENT_ID }}
+          NUXT_TCID_CLIENT_SECRET: ${{ secrets.NUXT_TCID_CLIENT_SECRET }}
+          NUXT_TCID_ISSUER_URL: https://accounts.trilogycare.com.au
+          NUXT_PUBLIC_APP_URL: https://docs.trilogycare.com.au
+
+      - name: Seed D1 database with content
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_DEV_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEV_ACCOUNT_ID }}
+        run: bash scripts/seed-d1.sh dist
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_DEV_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_DEV_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=tc-docs --branch=${{ github.ref_name }} --commit-dirty=true

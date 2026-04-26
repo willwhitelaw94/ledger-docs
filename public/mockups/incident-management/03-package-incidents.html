@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Package Incidents — ICM</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwindcss.config={theme:{extend:{colors:{teal:{50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D'},'primary-blue':{50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D'}}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Roboto Flex', sans-serif; }
+    #app-sidebar { transition: width 0.2s ease; }
+    #app-sidebar.collapsed { width: 77px; }
+    #app-sidebar.collapsed .nav-label, #app-sidebar.collapsed .nav-section-title, #app-sidebar.collapsed .sidebar-brand-name, #app-sidebar.collapsed .sidebar-footer-text { display: none; }
+    #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+    .nav-item-active { background: rgba(0,127,126,0.12); color: #007F7E; font-weight: 600; }
+    .tab-active { border-bottom: 2px solid #007F7E; color: #007F7E; font-weight: 600; }
+  </style>
+  <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-100 flex">
+
+<!-- Sidebar -->
+<aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]" style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+  <div class="p-4 flex items-center gap-3">
+    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-sm font-bold">TC</div>
+    <span class="sidebar-brand-name text-sm font-semibold">Trilogy Care</span>
+  </div>
+  <nav class="flex-1 px-2 py-2 space-y-1 text-sm overflow-y-auto">
+    <div class="nav-section-title text-xs text-white/40 uppercase tracking-wider px-3 py-2">Staff</div>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-white/70 hover:bg-white/10">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="#" class="nav-item nav-item-active flex items-center gap-3 px-3 py-2 rounded-md">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+      <span class="nav-label">Packages</span>
+    </a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-white/70 hover:bg-white/10">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span class="nav-label">Incidents</span>
+    </a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-white/70 hover:bg-white/10">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <span class="nav-label">Tasks</span>
+    </a>
+  </nav>
+  <div class="p-3 border-t border-white/10">
+    <div class="flex items-center gap-3 px-2">
+      <div class="w-8 h-8 bg-teal-700 rounded-full flex items-center justify-center text-xs font-semibold">JD</div>
+      <div class="sidebar-footer-text"><div class="text-sm font-medium">Jane Doe</div><div class="text-xs text-white/50">Care Partner</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<div class="flex-1 flex flex-col ml-[240px] min-h-screen">
+  <!-- Package Header -->
+  <div class="bg-white border-b border-gray-200 px-6 py-4">
+    <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
+      <a href="#" class="hover:text-teal-700">Packages</a>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      <span class="text-gray-900 font-medium">Margaret Thompson — SAH-20241</span>
+    </div>
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-primary-blue-100 rounded-full flex items-center justify-center text-primary-blue-700 font-semibold text-lg">MT</div>
+        <div>
+          <h1 class="text-2xl font-semibold text-gray-900">Margaret Thompson</h1>
+          <p class="text-sm text-gray-500">SAH-20241 · Support at Home · DOB: 15 Mar 1942</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Package Tabs -->
+  <div class="bg-white border-b border-gray-200 px-6">
+    <nav class="flex gap-6 -mb-px">
+      <a href="#" class="py-3 px-1 text-sm text-gray-500 hover:text-gray-700">Overview</a>
+      <a href="#" class="py-3 px-1 text-sm text-gray-500 hover:text-gray-700">Care Plan</a>
+      <a href="#" class="py-3 px-1 text-sm text-gray-500 hover:text-gray-700">Documents</a>
+      <a href="#" class="py-3 px-1 text-sm tab-active">Incidents <span class="ml-1 inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-teal-100 text-teal-700">5</span></a>
+      <a href="#" class="py-3 px-1 text-sm text-gray-500 hover:text-gray-700">Notes</a>
+    </nav>
+  </div>
+
+  <!-- Incidents Tab Content -->
+  <div class="flex-1 p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-gray-900">Incident History</h2>
+      <button class="px-4 py-2 text-sm font-medium text-white bg-teal-700 rounded-md hover:bg-teal-800 flex items-center gap-2 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Report Incident
+      </button>
+    </div>
+
+    <!-- Incident Cards -->
+    <div class="space-y-3">
+      <!-- Incident 1 — Severe, SIRS, Active -->
+      <a href="02-incident-detail.html" class="block bg-white rounded-lg border border-gray-200 shadow-sm hover:border-teal-300 hover:shadow-md transition p-4">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-semibold text-gray-900">Fall in bathroom</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 text-red-700">Severe</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-700">SIRS P1</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-700">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                  Trend
+                </span>
+              </div>
+              <p class="text-sm text-gray-500">24 Feb 2026 at 07:15 — Reported by Jane Doe</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full bg-teal-100 text-teal-700">Escalated</span>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Incident 2 — Moderate, Resolved -->
+      <a href="#" class="block bg-white rounded-lg border border-gray-200 shadow-sm hover:border-teal-300 hover:shadow-md transition p-4">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-semibold text-gray-900">Medication error — wrong dosage</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-orange-100 text-orange-700">Moderate</span>
+              </div>
+              <p class="text-sm text-gray-500">8 Jan 2026 at 14:00 — Reported by Sarah Collins</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">Resolved</span>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Incident 3 — Low, Resolved -->
+      <a href="#" class="block bg-white rounded-lg border border-gray-200 shadow-sm hover:border-teal-300 hover:shadow-md transition p-4">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-semibold text-gray-900">Near miss — slippery floor in kitchen</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">Low</span>
+              </div>
+              <p class="text-sm text-gray-500">12 Nov 2025 at 09:30 — Reported by Jane Doe</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">Resolved</span>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Incident 4 — CRM Migrated -->
+      <a href="#" class="block bg-white rounded-lg border border-gray-200 shadow-sm hover:border-teal-300 hover:shadow-md transition p-4">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-semibold text-gray-900">Skin tear during transfer</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-100 text-gray-600">Clinical Notification</span>
+                <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-50 text-blue-600 border border-blue-100">Migrated from CRM</span>
+              </div>
+              <p class="text-sm text-gray-500">15 Sep 2025 at 11:00 — Originally in Zoho CRM</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">Resolved</span>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+
+      <!-- Incident 5 — CRM Migrated, old -->
+      <a href="#" class="block bg-white rounded-lg border border-gray-200 shadow-sm hover:border-teal-300 hover:shadow-md transition p-4">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-semibold text-gray-900">Verbal aggression from neighbour</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">Low</span>
+                <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-50 text-blue-600 border border-blue-100">Migrated from CRM</span>
+              </div>
+              <p class="text-sm text-gray-500">3 Jul 2025 at 16:45 — Originally in Zoho CRM</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">Resolved</span>
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

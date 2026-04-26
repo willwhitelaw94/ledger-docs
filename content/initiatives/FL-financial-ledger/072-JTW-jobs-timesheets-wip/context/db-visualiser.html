@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>072-JTW Database Schema — Practice Jobs, Timesheets & WIP</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f172a;color:#e2e8f0;overflow:hidden;height:100vh}
+#app{display:flex;height:100vh}
+#sidebar{width:280px;background:#1e293b;border-right:1px solid #334155;display:flex;flex-direction:column;z-index:10}
+#sidebar h2{padding:16px;font-size:14px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid #334155}
+#sidebar .epic-title{padding:12px 16px;font-size:15px;font-weight:600;color:#43C0BE;border-bottom:1px solid #334155}
+#search{margin:12px;padding:8px 12px;background:#0f172a;border:1px solid #334155;border-radius:6px;color:#e2e8f0;font-size:13px;outline:none}
+#search:focus{border-color:#43C0BE}
+#search::placeholder{color:#64748b}
+.domain-filters{padding:8px 16px;border-bottom:1px solid #334155}
+.domain-filter{display:flex;align-items:center;gap:8px;padding:4px 0;cursor:pointer;font-size:13px}
+.domain-filter input{accent-color:#43C0BE}
+.domain-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+#table-list{flex:1;overflow-y:auto;padding:8px}
+.table-item{padding:8px 12px;border-radius:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.table-item:hover{background:#334155}
+.table-item.primary{color:#e2e8f0;font-weight:500}
+.table-item.related{color:#64748b}
+.table-item .badge{font-size:10px;padding:1px 6px;border-radius:3px;font-weight:600}
+.badge-primary{background:#007F7E33;color:#43C0BE}
+.badge-related{background:#47556933;color:#94a3b8}
+#canvas-container{flex:1;position:relative;overflow:hidden}
+canvas{display:block}
+#info-bar{position:absolute;bottom:0;left:0;right:0;height:32px;background:#1e293b;border-top:1px solid #334155;display:flex;align-items:center;padding:0 16px;gap:24px;font-size:12px;color:#64748b;z-index:5}
+#minimap{position:absolute;bottom:44px;right:12px;width:180px;height:120px;background:#1e293bdd;border:1px solid #334155;border-radius:6px;z-index:5}
+#controls{position:absolute;top:12px;right:12px;display:flex;gap:6px;z-index:5}
+#controls button{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px}
+#controls button:hover{background:#334155;color:#e2e8f0}
+#tooltip{position:absolute;display:none;background:#1e293bf0;border:1px solid #334155;border-radius:8px;padding:12px;max-width:320px;z-index:20;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+#tooltip .tt-title{font-size:14px;font-weight:600;color:#e2e8f0;margin-bottom:4px}
+#tooltip .tt-domain{font-size:11px;color:#94a3b8;margin-bottom:8px}
+#tooltip .tt-col{display:flex;gap:6px;padding:2px 0;font-size:12px;align-items:center}
+#tooltip .tt-col-name{color:#e2e8f0;font-family:monospace}
+#tooltip .tt-col-type{color:#64748b;font-family:monospace;font-size:11px}
+.tt-badge{font-size:9px;padding:1px 4px;border-radius:2px;font-weight:700}
+.tt-pk{background:#fbbf2433;color:#fbbf24}
+.tt-fk{background:#f472b633;color:#f472b6}
+.tt-idx{background:#818cf833;color:#818cf8}
+.tt-fk-target{font-size:10px;color:#94a3b8;margin-left:auto;font-family:monospace}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="sidebar">
+<div class="epic-title">072-JTW — Jobs, Timesheets & WIP</div>
+<h2>Domains</h2>
+<div class="domain-filters" id="domain-filters"></div>
+<h2>Tables</h2>
+<input type="text" id="search" placeholder="Search tables...">
+<div id="table-list"></div>
+</div>
+<div id="canvas-container">
+<canvas id="canvas"></canvas>
+<div id="controls">
+<button onclick="fitAll()">Fit All</button>
+<button onclick="resetLayout()">Re-layout</button>
+<button onclick="zoomIn()">+</button>
+<button onclick="zoomOut()">−</button>
+</div>
+<canvas id="minimap"></canvas>
+<div id="info-bar">
+<span id="info-tables"></span>
+<span id="info-rels"></span>
+<span id="info-zoom"></span>
+</div>
+</div>
+</div>
+<div id="tooltip"></div>
+
+<script>
+const DOMAIN_COLOURS = {
+  practice:'#007F7E', auth:'#64748b', workspace:'#3b82f6', jobs:'#f59e0b', misc:'#475569'
+};
+
+const tables = [
+  {
+    name:'practice_jobs', domain:'practice', primary:true,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'practice_id',t:'BIGINT',fk:'practices.id',idx:true},
+      {n:'workspace_id',t:'BIGINT',fk:'workspaces.id',nullable:true},{n:'name',t:'VARCHAR(255)'},
+      {n:'description',t:'TEXT',nullable:true},{n:'status',t:"VARCHAR(20)",def:"'active'"},
+      {n:'time_budget_minutes',t:'INT',nullable:true},{n:'due_date',t:'DATE',nullable:true,idx:true},
+      {n:'assignee_id',t:'BIGINT',fk:'users.id',nullable:true,idx:true},
+      {n:'created_by_user_id',t:'BIGINT',fk:'users.id'},
+      {n:'project_job_id',t:'BIGINT',fk:'project_jobs.id',nullable:true},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'practice_job_status_log', domain:'practice', primary:true,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'practice_job_id',t:'BIGINT',fk:'practice_jobs.id'},
+      {n:'user_id',t:'BIGINT',fk:'users.id',nullable:true},
+      {n:'from_status',t:'VARCHAR(20)',nullable:true},{n:'to_status',t:'VARCHAR(20)'},
+      {n:'created_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'practice_staff_allocations', domain:'practice', primary:true,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'practice_job_id',t:'BIGINT',fk:'practice_jobs.id'},
+      {n:'user_id',t:'BIGINT',fk:'users.id'},{n:'budgeted_minutes',t:'INT'},
+      {n:'member_removed_at',t:'TIMESTAMP',nullable:true},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'practice_time_entries', domain:'practice', primary:true,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'practice_id',t:'BIGINT',fk:'practices.id',idx:true},
+      {n:'user_id',t:'BIGINT',fk:'users.id',idx:true},
+      {n:'practice_job_id',t:'BIGINT',fk:'practice_jobs.id',idx:true},
+      {n:'date',t:'DATE',idx:true},{n:'duration_minutes',t:'INT'},
+      {n:'description',t:'TEXT',nullable:true},{n:'billable',t:'BOOLEAN',def:'true'},
+      {n:'timer_started_at',t:'TIMESTAMP',nullable:true},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'practices', domain:'practice', primary:false,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'name',t:'VARCHAR(255)'},{n:'abn',t:'VARCHAR(255)',nullable:true},
+      {n:'logo_url',t:'VARCHAR(255)',nullable:true},{n:'email',t:'VARCHAR(255)',nullable:true},
+      {n:'phone',t:'VARCHAR(255)',nullable:true},{n:'invite_token',t:'VARCHAR(255)',nullable:true},
+      {n:'created_by_user_id',t:'BIGINT',fk:'users.id'},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'practice_users', domain:'practice', primary:false,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'practice_id',t:'BIGINT',fk:'practices.id'},
+      {n:'user_id',t:'BIGINT',fk:'users.id'},{n:'role',t:"VARCHAR(255)",def:"'member'"},
+      {n:'weekly_capacity_minutes',t:'INT',def:'2400'},
+      {n:'cost_rate_cents',t:'INT',nullable:true},
+      {n:'timesheet_submission_day',t:'TINYINT',def:'1'},
+      {n:'timesheet_submission_hour',t:'TINYINT',def:'9'},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'practice_tasks', domain:'practice', primary:false,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'practice_id',t:'BIGINT',fk:'practices.id'},
+      {n:'workspace_id',t:'BIGINT',fk:'workspaces.id',nullable:true},
+      {n:'assignee_id',t:'BIGINT',fk:'users.id',nullable:true},
+      {n:'created_by_user_id',t:'BIGINT',fk:'users.id',nullable:true},
+      {n:'template_id',t:'BIGINT',nullable:true},
+      {n:'practice_job_id',t:'BIGINT',fk:'practice_jobs.id',nullable:true},
+      {n:'title',t:'VARCHAR(255)'},{n:'description',t:'TEXT',nullable:true},
+      {n:'status',t:"VARCHAR(255)",def:"'to_do'"},{n:'visibility',t:'VARCHAR(255)',nullable:true},
+      {n:'due_date',t:'DATE',nullable:true},{n:'sort_order',t:'INT',def:'0'},
+      {n:'completed_at',t:'TIMESTAMP',nullable:true},{n:'job_completed_at',t:'TIMESTAMP',nullable:true},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'workspaces', domain:'workspace', primary:false,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'tenant_id',t:'VARCHAR(255)'},
+      {n:'organisation_id',t:'BIGINT',fk:'organisations.id'},{n:'name',t:'VARCHAR(255)'},
+      {n:'slug',t:'VARCHAR(255)'},{n:'industry',t:'VARCHAR(255)',nullable:true},
+      {n:'base_currency',t:"VARCHAR(3)",def:"'AUD'"},
+      {n:'fiscal_year_start_month',t:'TINYINT',def:'7'},
+      {n:'is_locked',t:'BOOLEAN',def:'false'},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'users', domain:'auth', primary:false,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'name',t:'VARCHAR(255)'},{n:'email',t:'VARCHAR(255)'},
+      {n:'email_verified_at',t:'TIMESTAMP',nullable:true},{n:'password',t:'VARCHAR(255)'},
+      {n:'remember_token',t:'VARCHAR(100)',nullable:true},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  },
+  {
+    name:'project_jobs', domain:'jobs', primary:false,
+    columns:[
+      {n:'id',t:'BIGINT',pk:true},{n:'workspace_id',t:'BIGINT',fk:'workspaces.id'},
+      {n:'code',t:'VARCHAR(255)'},{n:'name',t:'VARCHAR(255)'},
+      {n:'description',t:'TEXT',nullable:true},{n:'status',t:"VARCHAR(255)",def:"'active'"},
+      {n:'contact_id',t:'BIGINT',fk:'contacts.id',nullable:true},
+      {n:'start_date',t:'DATE',nullable:true},{n:'end_date',t:'DATE',nullable:true},
+      {n:'budget',t:'BIGINT',def:'0'},{n:'currency',t:"VARCHAR(3)",def:"'AUD'"},
+      {n:'created_at',t:'TIMESTAMP'},{n:'updated_at',t:'TIMESTAMP'}
+    ]
+  }
+];
+
+// Build FK relationships
+const relationships = [];
+tables.forEach(t => {
+  t.columns.forEach(c => {
+    if (c.fk) {
+      const [targetTable] = c.fk.split('.');
+      if (tables.find(tt => tt.name === targetTable)) {
+        relationships.push({from:t.name, fromCol:c.n, to:targetTable, toCol:c.fk.split('.')[1]});
+      }
+    }
+  });
+});
+
+// Layout
+const NODE_W = 240;
+const COL_H = 22;
+const HEADER_H = 36;
+const PAD = 12;
+let nodes = {};
+let cam = {x:0, y:0, zoom:1};
+let drag = null;
+let pan = null;
+let hoveredNode = null;
+let selectedNode = null;
+let domainVisibility = {};
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const mmCanvas = document.getElementById('minimap');
+const mmCtx = mmCanvas.getContext('2d');
+
+function initLayout() {
+  const primaries = tables.filter(t=>t.primary);
+  const related = tables.filter(t=>!t.primary);
+  // Primary tables in a row
+  primaries.forEach((t,i) => {
+    nodes[t.name] = {x: 100 + i * 300, y: 100, w: NODE_W, h: HEADER_H + t.columns.length * COL_H + PAD*2, table:t};
+  });
+  // Related tables below
+  related.forEach((t,i) => {
+    nodes[t.name] = {x: 50 + i * 280, y: 500, w: NODE_W, h: HEADER_H + t.columns.length * COL_H + PAD*2, table:t};
+  });
+  // Force-directed settle
+  for (let iter=0;iter<200;iter++) forceStep();
+}
+
+function forceStep() {
+  const ns = Object.values(nodes);
+  const forces = {};
+  ns.forEach(n => forces[n.table.name]={fx:0,fy:0});
+
+  // Repulsion
+  for (let i=0;i<ns.length;i++) {
+    for (let j=i+1;j<ns.length;j++) {
+      let dx=ns[j].x-ns[i].x, dy=ns[j].y-ns[i].y;
+      let d=Math.sqrt(dx*dx+dy*dy)||1;
+      let f = 80000/(d*d);
+      forces[ns[i].table.name].fx -= f*dx/d;
+      forces[ns[i].table.name].fy -= f*dy/d;
+      forces[ns[j].table.name].fx += f*dx/d;
+      forces[ns[j].table.name].fy += f*dy/d;
+    }
+  }
+
+  // FK attraction
+  relationships.forEach(r => {
+    const a=nodes[r.from], b=nodes[r.to];
+    if(!a||!b) return;
+    let dx=b.x-a.x, dy=b.y-a.y;
+    let d=Math.sqrt(dx*dx+dy*dy)||1;
+    let f=(d-300)*0.01;
+    forces[r.from].fx += f*dx/d;
+    forces[r.from].fy += f*dy/d;
+    forces[r.to].fx -= f*dx/d;
+    forces[r.to].fy -= f*dy/d;
+  });
+
+  // Domain clustering
+  ns.forEach(n => {
+    const peers = ns.filter(m => m.table.domain===n.table.domain && m!==n);
+    peers.forEach(p => {
+      let dx=p.x-n.x, dy=p.y-n.y;
+      let d=Math.sqrt(dx*dx+dy*dy)||1;
+      forces[n.table.name].fx += (dx/d)*0.3;
+      forces[n.table.name].fy += (dy/d)*0.3;
+    });
+  });
+
+  // Apply
+  ns.forEach(n => {
+    const f=forces[n.table.name];
+    n.x += Math.max(-5,Math.min(5,f.fx*0.1));
+    n.y += Math.max(-5,Math.min(5,f.fy*0.1));
+  });
+}
+
+function resetLayout() { initLayout(); draw(); }
+
+function resize() {
+  const c = document.getElementById('canvas-container');
+  canvas.width = c.clientWidth;
+  canvas.height = c.clientHeight;
+  mmCanvas.width = 180;
+  mmCanvas.height = 120;
+  draw();
+}
+
+function screenToWorld(sx,sy) {
+  return {x:(sx-canvas.width/2)/cam.zoom+cam.x, y:(sy-canvas.height/2)/cam.zoom+cam.y};
+}
+function worldToScreen(wx,wy) {
+  return {x:(wx-cam.x)*cam.zoom+canvas.width/2, y:(wy-cam.y)*cam.zoom+canvas.height/2};
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.save();
+  ctx.translate(canvas.width/2, canvas.height/2);
+  ctx.scale(cam.zoom, cam.zoom);
+  ctx.translate(-cam.x, -cam.y);
+
+  // Draw relationships
+  relationships.forEach(r => {
+    const a=nodes[r.from], b=nodes[r.to];
+    if(!a||!b) return;
+    if(!domainVisibility[a.table.domain] || !domainVisibility[b.table.domain]) return;
+    const fromIdx = a.table.columns.findIndex(c=>c.n===r.fromCol);
+    const ax=a.x+a.w, ay=a.y+HEADER_H+PAD+fromIdx*COL_H+COL_H/2;
+    const bx=b.x, by=b.y+HEADER_H/2;
+    const isHighlighted = selectedNode && (selectedNode===r.from||selectedNode===r.to);
+    ctx.beginPath();
+    ctx.strokeStyle = isHighlighted ? '#f472b6' : '#33415566';
+    ctx.lineWidth = isHighlighted ? 2 : 1;
+    const cp = Math.abs(ax-bx)*0.4;
+    ctx.moveTo(ax,ay);
+    ctx.bezierCurveTo(ax+cp,ay, bx-cp,by, bx,by);
+    ctx.stroke();
+    // Arrow
+    if(isHighlighted) {
+      ctx.fillStyle='#f472b6';
+      ctx.beginPath();
+      ctx.moveTo(bx,by-4);ctx.lineTo(bx-8,by);ctx.lineTo(bx,by+4);ctx.fill();
+    }
+  });
+
+  // Draw nodes
+  Object.values(nodes).forEach(n => {
+    if(!domainVisibility[n.table.domain]) return;
+    const isPrimary = n.table.primary;
+    const isSelected = selectedNode===n.table.name;
+    const domainCol = DOMAIN_COLOURS[n.table.domain]||'#475569';
+
+    // Shadow
+    ctx.fillStyle = '#0003';
+    roundRect(ctx, n.x+3, n.y+3, n.w, n.h, 8, true, false);
+
+    // Card bg
+    ctx.fillStyle = isPrimary ? '#1e293b' : '#1a2332';
+    ctx.strokeStyle = isSelected ? '#43C0BE' : (isPrimary ? domainCol+'99' : '#33415566');
+    ctx.lineWidth = isSelected ? 2 : 1;
+    roundRect(ctx, n.x, n.y, n.w, n.h, 8, true, true);
+
+    // Header
+    ctx.fillStyle = isPrimary ? domainCol+'33' : '#0f172a55';
+    roundRectTop(ctx, n.x, n.y, n.w, HEADER_H, 8);
+
+    // Header text
+    ctx.fillStyle = isPrimary ? '#e2e8f0' : '#94a3b8';
+    ctx.font = `${isPrimary?'bold ':''} 13px -apple-system, sans-serif`;
+    ctx.fillText(n.table.name, n.x+12, n.y+HEADER_H/2+4);
+
+    // Primary badge
+    if(isPrimary) {
+      const badge = 'NEW';
+      ctx.font = '9px -apple-system, sans-serif';
+      const bw = ctx.measureText(badge).width+8;
+      ctx.fillStyle = domainCol+'44';
+      roundRect(ctx, n.x+n.w-bw-8, n.y+10, bw, 16, 3, true, false);
+      ctx.fillStyle = domainCol;
+      ctx.fillText(badge, n.x+n.w-bw-4, n.y+22);
+    }
+
+    // Columns
+    n.table.columns.forEach((c,i) => {
+      const cy = n.y + HEADER_H + PAD + i * COL_H;
+      // Hover highlight
+      ctx.font = '12px monospace';
+      ctx.fillStyle = c.pk ? '#fbbf24' : (c.fk ? '#f472b6' : (isPrimary?'#cbd5e1':'#64748b'));
+      ctx.fillText(c.n, n.x+12, cy+14);
+
+      // Type
+      ctx.font = '10px monospace';
+      ctx.fillStyle = '#475569';
+      const typeX = n.x + 140;
+      ctx.fillText(c.t, typeX, cy+14);
+
+      // Badges
+      let bx = n.x + n.w - 10;
+      if(c.idx) { bx-=22; drawBadge(ctx,bx,cy+3,'IDX','#818cf8','#818cf822'); }
+      if(c.fk) { bx-=20; drawBadge(ctx,bx,cy+3,'FK','#f472b6','#f472b622'); }
+      if(c.pk) { bx-=20; drawBadge(ctx,bx,cy+3,'PK','#fbbf24','#fbbf2422'); }
+    });
+  });
+
+  ctx.restore();
+  drawMinimap();
+  updateInfoBar();
+}
+
+function drawBadge(ctx,x,y,text,color,bg) {
+  ctx.font='bold 8px -apple-system,sans-serif';
+  const w=ctx.measureText(text).width+4;
+  ctx.fillStyle=bg;
+  ctx.fillRect(x,y,w,14);
+  ctx.fillStyle=color;
+  ctx.fillText(text,x+2,y+10);
+}
+
+function roundRect(ctx,x,y,w,h,r,fill,stroke) {
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+  if(fill) ctx.fill(); if(stroke) ctx.stroke();
+}
+
+function roundRectTop(ctx,x,y,w,h,r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h);ctx.lineTo(x,y+h);
+  ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+  ctx.fill();
+}
+
+function drawMinimap() {
+  mmCtx.clearRect(0,0,180,120);
+  mmCtx.fillStyle='#0f172a';
+  mmCtx.fillRect(0,0,180,120);
+  const ns=Object.values(nodes).filter(n=>domainVisibility[n.table.domain]);
+  if(!ns.length) return;
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  ns.forEach(n=>{minX=Math.min(minX,n.x);minY=Math.min(minY,n.y);maxX=Math.max(maxX,n.x+n.w);maxY=Math.max(maxY,n.y+n.h)});
+  const pad=40; minX-=pad;minY-=pad;maxX+=pad;maxY+=pad;
+  const scaleX=180/(maxX-minX), scaleY=120/(maxY-minY), s=Math.min(scaleX,scaleY);
+  const ox=(180-(maxX-minX)*s)/2, oy=(120-(maxY-minY)*s)/2;
+  ns.forEach(n=>{
+    mmCtx.fillStyle=n.table.primary?DOMAIN_COLOURS[n.table.domain]||'#475569':'#334155';
+    mmCtx.fillRect(ox+(n.x-minX)*s, oy+(n.y-minY)*s, n.w*s, n.h*s);
+  });
+  // Viewport rect
+  const tl=screenToWorld(0,0), br=screenToWorld(canvas.width,canvas.height);
+  mmCtx.strokeStyle='#43C0BE';mmCtx.lineWidth=1;
+  mmCtx.strokeRect(ox+(tl.x-minX)*s, oy+(tl.y-minY)*s, (br.x-tl.x)*s, (br.y-tl.y)*s);
+}
+
+function updateInfoBar() {
+  const vis=Object.values(nodes).filter(n=>domainVisibility[n.table.domain]).length;
+  document.getElementById('info-tables').textContent=`${vis} tables`;
+  document.getElementById('info-rels').textContent=`${relationships.length} relationships`;
+  document.getElementById('info-zoom').textContent=`${Math.round(cam.zoom*100)}%`;
+}
+
+function fitAll() {
+  const ns=Object.values(nodes).filter(n=>domainVisibility[n.table.domain]);
+  if(!ns.length) return;
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  ns.forEach(n=>{minX=Math.min(minX,n.x);minY=Math.min(minY,n.y);maxX=Math.max(maxX,n.x+n.w);maxY=Math.max(maxY,n.y+n.h)});
+  cam.x=(minX+maxX)/2; cam.y=(minY+maxY)/2;
+  const sx=canvas.width/(maxX-minX+100), sy=(canvas.height-32)/(maxY-minY+100);
+  cam.zoom=Math.min(sx,sy,2);
+  draw();
+}
+
+function zoomIn(){cam.zoom=Math.min(cam.zoom*1.2,4);draw()}
+function zoomOut(){cam.zoom=Math.max(cam.zoom/1.2,0.1);draw()}
+
+function nodeAt(wx,wy) {
+  const ns=Object.values(nodes).filter(n=>domainVisibility[n.table.domain]);
+  for(let i=ns.length-1;i>=0;i--) {
+    const n=ns[i];
+    if(wx>=n.x&&wx<=n.x+n.w&&wy>=n.y&&wy<=n.y+n.h) return n;
+  }
+  return null;
+}
+
+function showTooltip(n,sx,sy) {
+  const tip=document.getElementById('tooltip');
+  let html=`<div class="tt-title">${n.table.name}</div>`;
+  html+=`<div class="tt-domain">${n.table.domain} domain${n.table.primary?' • PRIMARY':' • related'}</div>`;
+  n.table.columns.forEach(c=>{
+    html+=`<div class="tt-col"><span class="tt-col-name">${c.n}</span><span class="tt-col-type">${c.t}${c.nullable?' ?':''}</span>`;
+    if(c.pk) html+=`<span class="tt-badge tt-pk">PK</span>`;
+    if(c.fk) html+=`<span class="tt-badge tt-fk">FK</span>`;
+    if(c.idx) html+=`<span class="tt-badge tt-idx">IDX</span>`;
+    if(c.fk) html+=`<span class="tt-fk-target">→ ${c.fk}</span>`;
+    html+=`</div>`;
+  });
+  tip.innerHTML=html;
+  tip.style.display='block';
+  tip.style.left=Math.min(sx+16, window.innerWidth-340)+'px';
+  tip.style.top=Math.min(sy+16, window.innerHeight-tip.offsetHeight-20)+'px';
+}
+
+function hideTooltip() { document.getElementById('tooltip').style.display='none'; }
+
+// Event handlers
+canvas.addEventListener('mousedown', e => {
+  const w=screenToWorld(e.offsetX,e.offsetY);
+  const n=nodeAt(w.x,w.y);
+  if(n) { drag={node:n,ox:w.x-n.x,oy:w.y-n.y}; selectedNode=n.table.name; }
+  else { pan={sx:e.offsetX,sy:e.offsetY,cx:cam.x,cy:cam.y}; selectedNode=null; }
+  draw();
+});
+
+canvas.addEventListener('mousemove', e => {
+  if(drag) {
+    const w=screenToWorld(e.offsetX,e.offsetY);
+    drag.node.x=w.x-drag.ox; drag.node.y=w.y-drag.oy;
+    hideTooltip(); draw();
+  } else if(pan) {
+    cam.x=pan.cx-(e.offsetX-pan.sx)/cam.zoom;
+    cam.y=pan.cy-(e.offsetY-pan.sy)/cam.zoom;
+    hideTooltip(); draw();
+  } else {
+    const w=screenToWorld(e.offsetX,e.offsetY);
+    const n=nodeAt(w.x,w.y);
+    if(n) { canvas.style.cursor='grab'; showTooltip(n,e.clientX,e.clientY); }
+    else { canvas.style.cursor='default'; hideTooltip(); }
+  }
+});
+
+canvas.addEventListener('mouseup', ()=>{ drag=null; pan=null; });
+canvas.addEventListener('mouseleave', ()=>{ drag=null; pan=null; hideTooltip(); });
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY > 0 ? 0.9 : 1.1;
+  const w = screenToWorld(e.offsetX, e.offsetY);
+  cam.zoom = Math.max(0.1, Math.min(4, cam.zoom * factor));
+  // Zoom toward cursor
+  const w2 = screenToWorld(e.offsetX, e.offsetY);
+  cam.x -= (w2.x - w.x);
+  cam.y -= (w2.y - w.y);
+  draw();
+}, {passive:false});
+
+// Sidebar
+function buildSidebar() {
+  const domains = [...new Set(tables.map(t=>t.domain))];
+  const df = document.getElementById('domain-filters');
+  domains.forEach(d => {
+    domainVisibility[d] = true;
+    const label = document.createElement('label');
+    label.className='domain-filter';
+    label.innerHTML=`<input type="checkbox" checked data-domain="${d}"><span class="domain-dot" style="background:${DOMAIN_COLOURS[d]||'#475569'}"></span>${d}`;
+    label.querySelector('input').addEventListener('change', e => {
+      domainVisibility[d] = e.target.checked; draw(); filterTableList();
+    });
+    df.appendChild(label);
+  });
+  filterTableList();
+}
+
+function filterTableList() {
+  const query = document.getElementById('search').value.toLowerCase();
+  const list = document.getElementById('table-list');
+  list.innerHTML = '';
+  tables.filter(t => domainVisibility[t.domain] && t.name.includes(query)).forEach(t => {
+    const item = document.createElement('div');
+    item.className = `table-item ${t.primary?'primary':'related'}`;
+    item.innerHTML = `<span class="domain-dot" style="background:${DOMAIN_COLOURS[t.domain]||'#475569'}"></span>${t.name}<span class="badge ${t.primary?'badge-primary':'badge-related'}">${t.primary?'NEW':'REF'}</span>`;
+    item.addEventListener('click', () => {
+      const n = nodes[t.name];
+      if(n) { cam.x=n.x+n.w/2; cam.y=n.y+n.h/2; cam.zoom=1.2; selectedNode=t.name; draw(); }
+    });
+    list.appendChild(item);
+  });
+}
+
+document.getElementById('search').addEventListener('input', filterTableList);
+
+// Init
+window.addEventListener('resize', resize);
+initLayout();
+buildSidebar();
+resize();
+setTimeout(fitAll, 100);
+</script>
+</body>
+</html>

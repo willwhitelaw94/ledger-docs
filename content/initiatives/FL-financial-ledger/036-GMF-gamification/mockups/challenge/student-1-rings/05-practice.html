@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ring Rachel — Practice View</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    @keyframes ring-draw { from { stroke-dashoffset: var(--circ); } }
+    .ring-anim { animation: ring-draw 1.2s ease-out forwards; }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fade-up 0.4s ease-out forwards; }
+    .d1 { animation-delay: 0.1s; opacity: 0; }
+    .d2 { animation-delay: 0.2s; opacity: 0; }
+    .d3 { animation-delay: 0.3s; opacity: 0; }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }
+  </script>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-60 bg-gray-900 border-r border-gray-800 min-h-screen flex-shrink-0 p-4 space-y-2">
+    <div class="flex items-center gap-2 mb-6 px-2">
+      <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-sm font-bold">M</div>
+      <span class="font-semibold text-sm">MoneyQuest</span>
+    </div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-purple-600/20 border border-purple-500/30 rounded-lg animate-pulse"></div>
+    <div class="mt-6 h-px bg-gray-800"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+    <div class="h-9 bg-gray-800 rounded-lg animate-pulse"></div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto p-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8 fade-up">
+      <div>
+        <h1 class="text-2xl font-bold">Practice Health</h1>
+        <p class="text-gray-400 text-sm mt-1">Parker & Co &middot; 11 workspaces managed</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <select class="bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-gray-300">
+          <option>Sort: Health %</option>
+          <option>Sort: Name A-Z</option>
+          <option>Sort: Last Activity</option>
+          <option>Sort: Risk First</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Summary Rings Row -->
+    <div class="grid grid-cols-3 gap-6 mb-10 fade-up d1">
+      <!-- Healthy -->
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-6 flex items-center gap-5" style="box-shadow: 0 0 20px rgba(0,127,126,0.08);">
+        <div class="relative w-24 h-24 flex-shrink-0">
+          <svg viewBox="0 0 96 96" class="w-full h-full">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#1e293b" stroke-width="7"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#14b8a6" stroke-width="7"
+              stroke-linecap="round" transform="rotate(-90 48 48)"
+              stroke-dasharray="251" stroke-dashoffset="0"
+              style="--circ:251" class="ring-anim"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-3xl font-bold text-teal-400">8</span>
+          </div>
+        </div>
+        <div>
+          <p class="text-lg font-semibold text-teal-400">Healthy</p>
+          <p class="text-xs text-gray-500">90%+ completion</p>
+          <p class="text-xs text-gray-600 mt-1">All habits on track</p>
+        </div>
+      </div>
+
+      <!-- At Risk -->
+      <div class="bg-gray-900 border border-amber-500/20 rounded-xl p-6 flex items-center gap-5" style="box-shadow: 0 0 20px rgba(245,158,11,0.08);">
+        <div class="relative w-24 h-24 flex-shrink-0">
+          <svg viewBox="0 0 96 96" class="w-full h-full">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#1e293b" stroke-width="7"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#f59e0b" stroke-width="7"
+              stroke-linecap="round" transform="rotate(-90 48 48)"
+              stroke-dasharray="251" stroke-dashoffset="126"
+              style="--circ:251" class="ring-anim"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-3xl font-bold text-amber-400">2</span>
+          </div>
+        </div>
+        <div>
+          <p class="text-lg font-semibold text-amber-400">At Risk</p>
+          <p class="text-xs text-gray-500">50-89% completion</p>
+          <p class="text-xs text-gray-600 mt-1">Needs attention</p>
+        </div>
+      </div>
+
+      <!-- Neglected -->
+      <div class="bg-gray-900 border border-gray-700/40 rounded-xl p-6 flex items-center gap-5">
+        <div class="relative w-24 h-24 flex-shrink-0">
+          <svg viewBox="0 0 96 96" class="w-full h-full">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#1e293b" stroke-width="7"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#6b7280" stroke-width="7"
+              stroke-linecap="round" transform="rotate(-90 48 48)"
+              stroke-dasharray="251" stroke-dashoffset="201"
+              style="--circ:251" class="ring-anim"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-3xl font-bold text-gray-400">1</span>
+          </div>
+        </div>
+        <div>
+          <p class="text-lg font-semibold text-gray-400">Neglected</p>
+          <p class="text-xs text-gray-500">&lt;50% completion</p>
+          <p class="text-xs text-gray-600 mt-1">Intervention needed</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workspace Cards Grid -->
+    <h2 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4 fade-up d2">Workspaces</h2>
+    <div class="grid grid-cols-3 gap-4 fade-up d2">
+
+      <!-- Workspace: Healthy -->
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-5 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.05);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#14b8a6" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="7"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-teal-400">95%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Acme Pty Ltd</p>
+            <p class="text-[11px] text-gray-500">Sarah Mitchell &middot; 14w streak</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">Recon: daily</span>
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">Invoice: 24h</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-5 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.05);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#14b8a6" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="0"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-teal-400">100</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Blue Mountain Cafe</p>
+            <p class="text-[11px] text-gray-500">Emma Watson &middot; 22w streak</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">All clear</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-5 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.05);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#14b8a6" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="12"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-teal-400">92%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Greenfield Trades</p>
+            <p class="text-[11px] text-gray-500">Mike Johnson &middot; 8w streak</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">Recon: daily</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-5 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.05);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#14b8a6" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="14"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-teal-400">90%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Harbour Legal</p>
+            <p class="text-[11px] text-gray-500">James Chen &middot; 6w streak</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">Invoice: on time</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-5 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.05);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#14b8a6" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="10"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-teal-400">93%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Sunrise Physio</p>
+            <p class="text-[11px] text-gray-500">Lisa Taylor &middot; 11w streak</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">All habits</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-5 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.05);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#14b8a6" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="12"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-teal-400">92%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Metro Dental</p>
+            <p class="text-[11px] text-gray-500">Lisa Taylor &middot; 9w streak</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">Recon: daily</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-5 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.05);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#14b8a6" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="7"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-teal-400">95%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Riverside Plumbing</p>
+            <p class="text-[11px] text-gray-500">Sarah Mitchell &middot; 10w streak</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">All clear</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-900 border border-teal-500/20 rounded-xl p-5 hover:border-teal-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(0,127,126,0.05);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#14b8a6" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="10"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-teal-400">93%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Coastal Electrical</p>
+            <p class="text-[11px] text-gray-500">James Chen &middot; 5w streak</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-400">Recon: daily</span>
+        </div>
+      </div>
+
+      <!-- At Risk workspace -->
+      <div class="bg-gray-900 border border-amber-500/20 rounded-xl p-5 hover:border-amber-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(245,158,11,0.06);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#f59e0b" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="44"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-amber-400">70%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Quick Print Co</p>
+            <p class="text-[11px] text-amber-400">Recon 3 days late</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400">Recon: behind</span>
+          <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400">Invoice: late</span>
+        </div>
+      </div>
+
+      <!-- At Risk workspace 2 -->
+      <div class="bg-gray-900 border border-amber-500/20 rounded-xl p-5 hover:border-amber-500/40 transition-colors cursor-pointer" style="box-shadow: 0 0 16px rgba(245,158,11,0.06);">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#f59e0b" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="58"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-amber-400">60%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate">Valley Construction</p>
+            <p class="text-[11px] text-amber-400">No login in 5 days</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400">Inactive</span>
+        </div>
+      </div>
+
+      <!-- Neglected workspace -->
+      <div class="bg-gray-900 border border-gray-700/40 rounded-xl p-5 hover:border-gray-600 transition-colors cursor-pointer">
+        <div class="flex items-center gap-4 mb-3">
+          <div class="relative w-14 h-14 flex-shrink-0">
+            <svg viewBox="0 0 56 56" class="w-full h-full">
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#1e293b" stroke-width="5"/>
+              <circle cx="28" cy="28" r="23" fill="none" stroke="#6b7280" stroke-width="5"
+                stroke-linecap="round" transform="rotate(-90 28 28)"
+                stroke-dasharray="145" stroke-dashoffset="109"
+                style="--circ:145" class="ring-anim"/>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-500">25%</div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-sm font-semibold truncate text-gray-400">Outback Motors</p>
+            <p class="text-[11px] text-red-400">No activity 14 days</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span class="px-1.5 py-0.5 rounded bg-red-500/10 text-red-400">Neglected</span>
+          <span class="px-1.5 py-0.5 rounded bg-gray-800 text-gray-500">Streak broken</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

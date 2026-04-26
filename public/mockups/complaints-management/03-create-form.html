@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Feedback Record</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+            'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Roboto Flex', ui-sans-serif, system-ui, sans-serif; }
+    #app-sidebar { transition: width 0.2s ease; }
+    #app-sidebar.collapsed { width: 77px; }
+    #app-sidebar.collapsed .nav-label,
+    #app-sidebar.collapsed .nav-section-title,
+    #app-sidebar.collapsed .sidebar-brand-name,
+    #app-sidebar.collapsed .sidebar-footer { display: none; }
+    #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+    .nav-item-active { background: rgba(0,127,126,0.12); color: #007F7E; font-weight: 600; }
+    .nav-item-active svg { color: #007F7E; }
+    .field-label { font-size: 0.75rem; font-weight: 500; color: #6B7280; margin-bottom: 4px; display: block; }
+    .field-label .required { color: #EF4444; margin-left: 2px; }
+    .form-input { width: 100%; border: 1px solid #D1D5DB; border-radius: 8px; padding: 8px 12px; font-size: 0.875rem; color: #111827; outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+    .form-input:focus { border-color: #007F7E; box-shadow: 0 0 0 3px rgba(67, 192, 190, 0.2); }
+    .form-input::placeholder { color: #9CA3AF; }
+    textarea.form-input { min-height: 80px; resize: vertical; }
+    select.form-input { appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 8px center; background-repeat: no-repeat; background-size: 20px; padding-right: 32px; }
+  </style>
+</head>
+<body class="bg-gray-100 flex">
+
+  <!-- Sidebar (same as record-list) -->
+  <aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]"
+    style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-white/10">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background-color: #007F7E">
+        <span class="text-white font-bold text-sm">TC</span>
+      </div>
+      <span class="sidebar-brand-name text-sm font-semibold tracking-wide">Trilogy Care</span>
+    </div>
+    <nav class="flex-1 py-3 px-3 space-y-1 overflow-y-auto">
+      <p class="nav-section-title text-[10px] uppercase tracking-wider text-white/40 px-2 pt-2 pb-1">Staff</p>
+      <a class="nav-item flex items-center gap-3 px-3 py-2 rounded-md text-sm text-white/70 hover:text-white hover:bg-white/5 transition">
+        <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <a class="nav-item nav-item-active flex items-center gap-3 px-3 py-2 rounded-md text-sm transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        <span class="nav-label">Packages</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer border-t border-white/10 px-4 py-3">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-xs font-semibold">SH</div>
+        <div class="text-xs">
+          <div class="font-medium text-white/90">Sian Henderson</div>
+          <div class="text-white/40">Compliance Manager</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col ml-[240px] min-h-screen">
+
+    <!-- Page Header -->
+    <div class="bg-white border-b border-gray-200 px-6 py-4">
+      <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
+        <a href="01-record-list.html" class="hover:text-teal-700 flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Back to Feedback Records
+        </a>
+        <span class="text-gray-300">&middot;</span>
+        <span>Margaret Thompson — HCP-00471</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <h1 class="text-xl font-semibold text-gray-900">New Feedback Record</h1>
+        <div class="flex items-center gap-3">
+          <button class="px-4 py-2 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Cancel</button>
+          <button class="px-4 py-2 text-sm font-medium rounded-md text-white shadow-sm" style="background-color: #007F7E">Create Record</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Content -->
+    <div class="p-6 max-w-5xl">
+
+      <!-- Type Selection -->
+      <div class="bg-white rounded border border-gray-200 p-5 mb-5">
+        <h3 class="text-sm font-semibold text-gray-900 mb-4">Record Type</h3>
+        <div class="flex gap-4">
+          <label class="flex-1 relative cursor-pointer">
+            <input type="radio" name="type" value="complaint" class="peer sr-only" checked>
+            <div class="border-2 border-gray-200 rounded-lg p-4 transition peer-checked:border-teal-600 peer-checked:bg-teal-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900">Complaint</p>
+                  <p class="text-xs text-gray-500">Formal complaint with triage, full lifecycle, and action plan</p>
+                </div>
+              </div>
+            </div>
+          </label>
+          <label class="flex-1 relative cursor-pointer">
+            <input type="radio" name="type" value="remediation" class="peer sr-only">
+            <div class="border-2 border-gray-200 rounded-lg p-4 transition peer-checked:border-teal-600 peer-checked:bg-teal-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900">Remediation</p>
+                  <p class="text-xs text-gray-500">Lighter-weight issue resolved at care partner level</p>
+                </div>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Section: Complainant Details -->
+      <div class="bg-white rounded border border-gray-200 p-5 mb-5">
+        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          Complainant Details
+        </h3>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+          <div>
+            <label class="field-label">Complainant Name <span class="required">*</span></label>
+            <input type="text" class="form-input" placeholder="Full name of person making the complaint">
+          </div>
+          <div>
+            <label class="field-label">Complainant Type <span class="required">*</span></label>
+            <select class="form-input">
+              <option value="">Select type...</option>
+              <option>Client (Self)</option>
+              <option>Anonymous</option>
+              <option>Supporter</option>
+              <option>Coordinator</option>
+              <option>Supplier</option>
+              <option>Registered Representative</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Source <span class="required">*</span></label>
+            <select class="form-input">
+              <option value="">Select source...</option>
+              <option>Verbal Report</option>
+              <option>Email Report</option>
+              <option>ORM Report</option>
+              <option>External Escalation Trigger</option>
+              <option>ACQSC</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Linked to Incident?</label>
+            <select class="form-input">
+              <option value="">Select...</option>
+              <option>Yes</option>
+              <option>No</option>
+              <option>Unsure</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Classification -->
+      <div class="bg-white rounded border border-gray-200 p-5 mb-5">
+        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+          Classification
+        </h3>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+          <div>
+            <label class="field-label">Triage Category <span class="required">*</span></label>
+            <select class="form-input">
+              <option value="">Select triage level...</option>
+              <option>Urgent</option>
+              <option>Medium</option>
+              <option>Standard</option>
+            </select>
+            <p class="text-[11px] text-gray-400 mt-1">Complaint-only field. Sets resolution deadline.</p>
+          </div>
+          <div>
+            <label class="field-label">Primary Department <span class="required">*</span></label>
+            <select class="form-input">
+              <option value="">Select department...</option>
+              <option>Care - Self-Managed</option>
+              <option>Care - Coordinated</option>
+              <option>Accounts Payable</option>
+              <option>Accounts Receivable</option>
+              <option>Clinical</option>
+              <option>Operations</option>
+              <option>Quality</option>
+              <option>IT</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <label class="field-label">Categories of Concern <span class="required">*</span></label>
+            <div class="border border-gray-300 rounded-lg p-3 grid grid-cols-3 gap-2">
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Communication
+              </label>
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Care Quality
+              </label>
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Timeliness
+              </label>
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Billing / Budget
+              </label>
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Staff Conduct
+              </label>
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Safety
+              </label>
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Service Delivery
+              </label>
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Coordination
+              </label>
+              <label class="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500"> Other
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Safety Concerns?</label>
+            <select class="form-input">
+              <option value="">Select...</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Confidential?</label>
+            <select class="form-input">
+              <option value="">Select...</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+            <p class="text-[11px] text-gray-400 mt-1">Confidential records are only visible to users with confidential access.</p>
+          </div>
+          <div>
+            <label class="field-label">Priority Resolution?</label>
+            <div class="mt-1.5">
+              <label class="inline-flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                <input type="checkbox" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500 h-4 w-4">
+                Fast-track this record
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: People & Ownership -->
+      <div class="bg-white rounded border border-gray-200 p-5 mb-5">
+        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          People & Ownership
+        </h3>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+          <div>
+            <label class="field-label">Accountable Person</label>
+            <select class="form-input">
+              <option value="">Select user...</option>
+              <option>Patrick Harrison</option>
+              <option>Jessica Brown</option>
+              <option>Sian Henderson</option>
+              <option>Michael Chen</option>
+            </select>
+            <p class="text-[11px] text-gray-400 mt-1">Person responsible for resolving this record.</p>
+          </div>
+          <div>
+            <label class="field-label">Quality Support Lead</label>
+            <select class="form-input">
+              <option value="">Select user...</option>
+              <option>Sian Henderson</option>
+              <option>Patrick Harrison</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Escalation Point</label>
+            <select class="form-input">
+              <option value="">Select user...</option>
+              <option>Patrick Harrison</option>
+              <option>Sian Henderson</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Due Date</label>
+            <input type="date" class="form-input">
+            <p class="text-[11px] text-gray-400 mt-1">Auto-calculated from triage category if left blank.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Description & Content -->
+      <div class="bg-white rounded border border-gray-200 p-5 mb-5">
+        <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Description & Content
+        </h3>
+        <div class="space-y-4">
+          <div>
+            <label class="field-label">Description of Concerns <span class="required">*</span></label>
+            <textarea class="form-input" rows="4" placeholder="Describe the complaint or issue in detail..."></textarea>
+          </div>
+          <div>
+            <label class="field-label">Desired Outcome</label>
+            <textarea class="form-input" rows="3" placeholder="What does the complainant want to happen?"></textarea>
+          </div>
+          <div>
+            <label class="field-label">Background / Events</label>
+            <textarea class="form-input" rows="3" placeholder="Context, history, and relevant background events..."></textarea>
+          </div>
+          <div>
+            <label class="field-label">Specific Language Used</label>
+            <textarea class="form-input" rows="2" placeholder="Exact words used by the complainant (if relevant)..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Resolution (shown for context, mostly populated later) -->
+      <div class="bg-white rounded border border-gray-200 p-5 mb-5 opacity-60">
+        <h3 class="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Resolution
+          <span class="text-[10px] font-normal text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">Populated during investigation</span>
+        </h3>
+        <p class="text-xs text-gray-400 mb-4">These fields are typically filled in as the investigation progresses. You can leave them blank on creation.</p>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+          <div>
+            <label class="field-label">What Caused the Issue</label>
+            <select class="form-input" disabled>
+              <option>Select root cause...</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Actions Taken to Address</label>
+            <select class="form-input" disabled>
+              <option>Select action...</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Actions to Prevent Recurrence</label>
+            <select class="form-input" disabled>
+              <option>Select prevention...</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Contributing Details</label>
+            <select class="form-input" disabled>
+              <option>Select contributing factor...</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Actions -->
+      <div class="flex items-center justify-between py-4 border-t border-gray-200">
+        <p class="text-xs text-gray-400">All required fields (<span class="text-red-500">*</span>) must be completed before saving.</p>
+        <div class="flex items-center gap-3">
+          <button class="px-4 py-2 text-sm font-medium rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Cancel</button>
+          <button class="px-6 py-2 text-sm font-medium rounded-md text-white shadow-sm" style="background-color: #007F7E">
+            Create Feedback Record
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

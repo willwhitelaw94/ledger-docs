@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Organisation Identity — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">SOI — Supplier Org Identity</span>
+  <button onclick="show('join')" id="nav-join" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Join Existing Org</button>
+  <button onclick="show('team')" id="nav-team" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Team Management</button>
+  <button onclick="show('org')" id="nav-org" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Organisation Page</button>
+  <button onclick="show('invite')" id="nav-invite" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Invite Team Member</button>
+  <button onclick="show('admin')" id="nav-admin" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Admin Multi-Business</button>
+</nav>
+
+<!-- Join Existing Org -->
+<div id="join" class="screen active p-6 max-w-2xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Supplier Registration</h1>
+  <p class="text-sm text-gray-500 mb-6">ABN detected as existing organisation</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="text-sm font-medium text-gray-700">Your ABN</label>
+        <input type="text" value="12 345 678 901" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" readonly>
+      </div>
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+        <div class="flex items-start gap-3">
+          <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div>
+            <h3 class="text-sm font-semibold text-blue-900">This organisation is already registered</h3>
+            <p class="text-sm text-blue-800 mt-1"><strong>Sunrise Cleaning Pty Ltd</strong> (ABN 12 345 678 901) already has a supplier account on TC Portal.</p>
+            <p class="text-sm text-blue-700 mt-2">Instead of creating a new account, you can request to join the existing organisation. An administrator will review your request.</p>
+          </div>
+        </div>
+      </div>
+      <div><label class="text-sm font-medium text-gray-700">Your Name</label><input type="text" placeholder="Enter your full name" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+      <div><label class="text-sm font-medium text-gray-700">Your Email</label><input type="email" placeholder="you@company.com" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+      <div><label class="text-sm font-medium text-gray-700">Reason for joining</label><textarea class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="2" placeholder="e.g. I am a new employee at Sunrise Cleaning"></textarea></div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg">Register as New Organisation</button>
+      <button class="px-5 py-2.5 bg-teal-700 text-white text-sm font-medium rounded-lg">Request to Join</button>
+    </div>
+  </div>
+</div>
+
+<!-- Team Management -->
+<div id="team" class="screen p-6 max-w-4xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Organisation Team</h1>
+    <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Invite Member</button>
+  </div>
+
+  <!-- Pending requests -->
+  <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+    <h3 class="text-sm font-semibold text-amber-800 mb-2">Pending Join Requests (1)</h3>
+    <div class="flex items-center justify-between bg-white rounded-lg p-3 border border-amber-200">
+      <div><p class="text-sm font-medium text-gray-900">Sarah Mitchell</p><p class="text-xs text-gray-500">sarah@sunrisecleaning.com.au &middot; Requested 20 Mar 2026</p></div>
+      <div class="flex gap-2">
+        <button class="px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg">Approve</button>
+        <button class="px-3 py-1.5 bg-red-600 text-white text-xs font-medium rounded-lg">Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead><tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200"><th class="px-6 py-3 text-left">Member</th><th class="px-4 py-3 text-left">Email</th><th class="px-4 py-3 text-left">Role</th><th class="px-4 py-3 text-left">Joined</th><th class="px-4 py-3 text-left">Actions</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr><td class="px-6 py-3"><div class="flex items-center gap-2"><div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center text-teal-700 text-xs font-bold">JD</div><span class="text-sm font-medium">John Davis</span></div></td><td class="px-4 py-3 text-sm text-gray-500">john@sunrisecleaning.com.au</td><td class="px-4 py-3"><span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full font-medium">Administrator</span></td><td class="px-4 py-3 text-sm text-gray-500">15 Jan 2025</td><td class="px-4 py-3 text-xs text-gray-400">You</td></tr>
+        <tr><td class="px-6 py-3"><div class="flex items-center gap-2"><div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 text-xs font-bold">AL</div><span class="text-sm font-medium">Anna Lee</span></div></td><td class="px-4 py-3 text-sm text-gray-500">anna@sunrisecleaning.com.au</td><td class="px-4 py-3"><select class="border border-gray-300 rounded px-2 py-1 text-xs"><option>Staff</option><option>Administrator</option></select></td><td class="px-4 py-3 text-sm text-gray-500">1 Mar 2026</td><td class="px-4 py-3"><button class="text-xs text-red-600 hover:underline">Remove</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Unified Organisation Page -->
+<div id="org" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Organisation</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-3 border-b border-gray-200 flex gap-4">
+      <button class="text-sm font-medium text-teal-700 border-b-2 border-teal-700 pb-2">Business Details</button>
+      <button class="text-sm text-gray-500 pb-2" onclick="show('team')">Team</button>
+      <button class="text-sm text-gray-500 pb-2">Settings</button>
+    </div>
+    <div class="p-6">
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-gray-500 font-medium">Legal Trading Name</label>
+            <div class="mt-1 flex items-center gap-2">
+              <span class="text-sm font-medium text-gray-900">Sunrise Cleaning Pty Ltd</span>
+              <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Verified</span>
+              <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-gray-500 font-medium">ABN</label>
+            <div class="mt-1 flex items-center gap-2">
+              <span class="text-sm font-medium text-gray-900">12 345 678 901</span>
+              <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Verified</span>
+              <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Legal name and ABN are managed by Trilogy Care. <a href="#" class="text-teal-700 underline">Something wrong? Contact us</a>
+        </p>
+        <div class="border-t border-gray-100 pt-4 grid grid-cols-2 gap-4">
+          <div><label class="text-xs text-gray-500 font-medium">Trading Name</label><input type="text" value="Sunrise Cleaning" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+          <div><label class="text-xs text-gray-500 font-medium">GST Registered</label><p class="mt-1 text-sm font-medium text-green-700">Yes</p></div>
+          <div><label class="text-xs text-gray-500 font-medium">Entity Type</label><p class="mt-1 text-sm font-medium">Australian Private Company</p></div>
+          <div><label class="text-xs text-gray-500 font-medium">Primary Contact</label><input type="text" value="john@sunrisecleaning.com.au" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Invite -->
+<div id="invite" class="screen p-6 max-w-2xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Invite Team Member</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+    <div><label class="text-sm font-medium text-gray-700">Email Address</label><input type="email" placeholder="colleague@company.com" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></div>
+    <div><label class="text-sm font-medium text-gray-700">Role</label>
+      <div class="mt-2 flex gap-3">
+        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg cursor-pointer flex-1"><input type="radio" name="role" class="text-teal-700"><div><span class="text-sm font-medium">Staff</span><p class="text-xs text-gray-500">View and submit invoices</p></div></label>
+        <label class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg cursor-pointer flex-1"><input type="radio" name="role" class="text-teal-700"><div><span class="text-sm font-medium">Administrator</span><p class="text-xs text-gray-500">Full access + manage team</p></div></label>
+      </div>
+    </div>
+    <div class="bg-blue-50 rounded-lg p-3"><p class="text-xs text-blue-700">Invitation link valid for 7 days. Invited users are automatically joined to your organisation — no separate approval needed.</p></div>
+    <button class="w-full py-2.5 bg-teal-700 text-white text-sm font-medium rounded-lg">Send Invitation</button>
+  </div>
+</div>
+
+<!-- Admin Multi-Business -->
+<div id="admin" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">TC Admin — Organisation View</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <div><h2 class="text-lg font-semibold text-gray-900">ABN: 12 345 678 901</h2><p class="text-sm text-gray-500">Sunrise Group Holdings Pty Ltd</p></div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-gray-500">Viewing:</span>
+        <select class="border border-teal-500 bg-teal-50 rounded-lg px-3 py-1.5 text-sm font-medium text-teal-700">
+          <option>Sunrise Cleaning (active)</option>
+          <option>Sunrise Care Services</option>
+        </select>
+      </div>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-3 gap-4">
+        <div class="border border-gray-200 rounded-lg p-4"><span class="text-xs text-gray-500">Team Members</span><p class="text-xl font-bold text-gray-900 mt-1">3</p></div>
+        <div class="border border-gray-200 rounded-lg p-4"><span class="text-xs text-gray-500">Active Invoices</span><p class="text-xl font-bold text-gray-900 mt-1">12</p></div>
+        <div class="border border-gray-200 rounded-lg p-4"><span class="text-xs text-gray-500">Locations</span><p class="text-xl font-bold text-gray-900 mt-1">2</p></div>
+      </div>
+      <p class="text-xs text-gray-500 mt-4 italic">Switching businesses updates all context-sensitive data (team, locations, prices, invoices) for the selected entity.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

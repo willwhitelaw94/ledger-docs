@@ -1,0 +1,15 @@
+title: Financial Learning Hub
+code: EDU
+number: "062"
+status: spec
+stage: spec
+effort: XL
+created: "2026-03-22"
+gates:
+  idea: pending
+  spec: pending
+  design: pending
+  architecture: pending
+  code_quality: pending
+  qa: pending
+  release: pending

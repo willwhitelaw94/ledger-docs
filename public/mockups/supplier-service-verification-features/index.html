@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Service Verification — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">SVF — Service Verification</span>
+  <button onclick="show('summary')" id="nav-summary" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Compliance Summary</button>
+  <button onclick="show('checklist')" id="nav-checklist" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Service Checklist</button>
+  <button onclick="show('billing')" id="nav-billing" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Billing Indicators</button>
+  <button onclick="show('officer')" id="nav-officer" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Officer Review</button>
+  <button onclick="show('matrix')" id="nav-matrix" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Compliance Matrix</button>
+</nav>
+
+<!-- Supplier Compliance Summary -->
+<div id="summary" class="screen active p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Compliance Summary</h1>
+  <p class="text-sm text-gray-500 mb-6">Allied Health Group Pty Ltd &middot; ABN: 12 345 678 901</p>
+
+  <div class="space-y-4">
+    <!-- Organisation-level -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+        <h2 class="text-sm font-semibold text-gray-700">Organisation-Level Verification</h2>
+        <span class="px-2.5 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">Verified</span>
+      </div>
+      <div class="px-6 py-3 grid grid-cols-3 gap-3">
+        <div class="flex items-center gap-2"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg><span class="text-sm text-gray-700">ABN Active</span></div>
+        <div class="flex items-center gap-2"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg><span class="text-sm text-gray-700">Public Liability</span></div>
+        <div class="flex items-center gap-2"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/></svg><span class="text-sm text-gray-700">Workers Comp</span></div>
+      </div>
+    </div>
+
+    <!-- Service-level -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="px-6 py-3 bg-gray-50 border-b border-gray-200">
+        <h2 class="text-sm font-semibold text-gray-700">Service-Level Verification</h2>
+      </div>
+      <div class="divide-y divide-gray-100">
+        <div class="px-6 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3"><span class="text-sm font-medium text-gray-900">Physiotherapy</span></div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-500">3/3 docs</span>
+            <span class="px-2.5 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">Verified</span>
+          </div>
+        </div>
+        <div class="px-6 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-3"><span class="text-sm font-medium text-gray-900">Occupational Therapy</span></div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-500">2/3 docs</span>
+            <span class="px-2.5 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">Pending</span>
+          </div>
+        </div>
+        <div class="px-6 py-3 flex items-center justify-between bg-red-50">
+          <div class="flex items-center gap-3"><span class="text-sm font-medium text-gray-900">Speech Pathology</span></div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-red-600">AHPRA expired</span>
+            <span class="px-2.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium">Expired</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Service Checklist -->
+<div id="checklist" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Service Compliance Checklist</h1>
+  <p class="text-sm text-gray-500 mb-6">Occupational Therapy — Allied Health Group</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="divide-y divide-gray-100">
+      <div class="px-6 py-4 flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="flex-1">
+          <span class="text-sm font-medium text-gray-900">AHPRA Registration</span>
+          <p class="text-xs text-gray-500">Valid until 30 Sep 2026 &middot; Approved by J. Smith</p>
+        </div>
+        <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Verified</span>
+      </div>
+      <div class="px-6 py-4 flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="flex-1">
+          <span class="text-sm font-medium text-gray-900">Professional Indemnity Insurance</span>
+          <p class="text-xs text-gray-500">Coverage: $10M &middot; Expires 31 Dec 2026</p>
+        </div>
+        <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Verified</span>
+      </div>
+      <div class="px-6 py-4 flex items-center gap-3 bg-amber-50">
+        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="flex-1">
+          <span class="text-sm font-medium text-gray-900">Police Check (National)</span>
+          <p class="text-xs text-amber-700">Missing — required for this service type</p>
+          <p class="text-xs text-gray-400 mt-0.5">Tip: Upload your current National Police Check certificate showing clearance date.</p>
+        </div>
+        <button class="px-3 py-1.5 bg-teal-700 text-white text-xs font-medium rounded-lg">Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Billing Verification Indicators -->
+<div id="billing" class="screen p-6 max-w-5xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Bill #TC-4510 — Verification Status</h1>
+  <p class="text-sm text-gray-500 mb-6">Allied Health Group &middot; Each line item shows supplier and service verification.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead><tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200"><th class="px-6 py-3 text-left">Line Item</th><th class="px-4 py-3 text-right">Amount</th><th class="px-4 py-3 text-center">Supplier Level</th><th class="px-4 py-3 text-center">Service Level</th><th class="px-4 py-3 text-left">Action</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-3 text-sm">Physiotherapy — home visit</td>
+          <td class="px-4 py-3 text-sm text-right">$185.00</td>
+          <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Verified</span></td>
+          <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Verified</span></td>
+          <td class="px-4 py-3 text-xs text-gray-400">Proceed</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 text-sm">OT assessment</td>
+          <td class="px-4 py-3 text-sm text-right">$175.00</td>
+          <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Verified</span></td>
+          <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full">Pending</span></td>
+          <td class="px-4 py-3"><button class="text-xs text-amber-700 hover:underline">Hold — Compliance</button></td>
+        </tr>
+        <tr class="bg-red-50">
+          <td class="px-6 py-3 text-sm">Speech pathology session</td>
+          <td class="px-4 py-3 text-sm text-right">$195.00</td>
+          <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">Verified</span></td>
+          <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full">Expired</span></td>
+          <td class="px-4 py-3"><button class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded font-medium">On Hold — Compliance</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Officer Review -->
+<div id="officer" class="screen p-6 max-w-3xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Document Review — Compliance Officer</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-sm font-semibold text-gray-900">Police Check — Allied Health Group (OT Service)</h2>
+      <p class="text-xs text-gray-500">Uploaded 20 Mar 2026 by supplier</p>
+    </div>
+    <div class="p-6 space-y-4">
+      <div class="bg-gray-100 rounded-lg p-8 text-center border border-gray-200">
+        <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <p class="text-sm text-gray-500">police_check_national_2026.pdf</p>
+        <button class="mt-2 text-xs text-teal-700 hover:underline">View Full Document</button>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-gray-700">Review Notes</label>
+        <textarea class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm" rows="3" placeholder="Add notes about your review..."></textarea>
+      </div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg">Reject with Reason</button>
+      <button class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg">Approve Document</button>
+    </div>
+  </div>
+</div>
+
+<!-- Compliance Matrix Admin -->
+<div id="matrix" class="screen p-6 max-w-5xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Compliance Matrix</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead><tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200"><th class="px-6 py-3 text-left">Service Type</th><th class="px-4 py-3 text-left">Required Document</th><th class="px-4 py-3 text-center">Scope</th><th class="px-4 py-3 text-center">Required</th><th class="px-4 py-3 text-left">Expiry Rules</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr><td class="px-6 py-3 text-sm font-medium" rowspan="3">Allied Health</td><td class="px-4 py-3 text-sm">AHPRA Registration</td><td class="px-4 py-3 text-center text-xs">Service</td><td class="px-4 py-3 text-center"><span class="text-green-600">Yes</span></td><td class="px-4 py-3 text-xs text-gray-500">Annual renewal</td></tr>
+        <tr><td class="px-4 py-3 text-sm">Professional Indemnity</td><td class="px-4 py-3 text-center text-xs">Organisation</td><td class="px-4 py-3 text-center"><span class="text-green-600">Yes</span></td><td class="px-4 py-3 text-xs text-gray-500">Annual renewal</td></tr>
+        <tr><td class="px-4 py-3 text-sm">Police Check (National)</td><td class="px-4 py-3 text-center text-xs">Service</td><td class="px-4 py-3 text-center"><span class="text-green-600">Yes</span></td><td class="px-4 py-3 text-xs text-gray-500">Max 3 years</td></tr>
+        <tr><td class="px-6 py-3 text-sm font-medium" rowspan="2">Domestic Assistance</td><td class="px-4 py-3 text-sm">Public Liability Insurance</td><td class="px-4 py-3 text-center text-xs">Organisation</td><td class="px-4 py-3 text-center"><span class="text-green-600">Yes</span></td><td class="px-4 py-3 text-xs text-gray-500">Annual renewal</td></tr>
+        <tr><td class="px-4 py-3 text-sm">Workers Compensation</td><td class="px-4 py-3 text-center text-xs">Organisation</td><td class="px-4 py-3 text-center"><span class="text-green-600">Yes</span></td><td class="px-4 py-3 text-xs text-gray-500">Annual renewal</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

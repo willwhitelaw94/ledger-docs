@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Rule Preview — MoneyQuest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { teal: { 50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf', 500: '#43C0BE', 600: '#0d9488', 700: '#007F7E', 800: '#115e59', 900: '#134e4a' } } } }
+    }
+  </script>
+  <style>
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-slide-down { animation: slideDown 0.25s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+  </style>
+</head>
+<body class="bg-gray-50 flex">
+
+<!-- Sidebar -->
+<aside class="w-60 bg-white border-r border-gray-200 flex flex-col shrink-0 h-screen sticky top-0">
+    <div class="px-4 py-4 border-b border-gray-100">
+        <div class="flex items-center gap-2.5">
+            <div class="h-8 w-8 rounded-lg bg-teal-700 flex items-center justify-center text-xs font-bold text-white">MQ</div>
+            <div class="h-4 w-24 rounded bg-gray-200 animate-pulse"></div>
+        </div>
+        <p class="mt-2 text-[9px] text-gray-300 uppercase tracking-widest text-center">Framing only</p>
+    </div>
+    <div class="px-3 py-3"><div class="h-8 rounded-lg bg-gray-100 animate-pulse"></div></div>
+    <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-24 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-16 rounded bg-gray-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-teal-50"><div class="h-4 w-4 rounded bg-teal-200 animate-pulse"></div><div class="h-3.5 w-18 rounded bg-teal-200 animate-pulse"></div></div>
+        <div class="flex items-center gap-2.5 px-3 py-2"><div class="h-4 w-4 rounded bg-gray-200 animate-pulse"></div><div class="h-3.5 w-20 rounded bg-gray-200 animate-pulse"></div></div>
+    </nav>
+    <div class="border-t border-gray-100 px-3 py-3">
+        <div class="flex items-center gap-2.5"><div class="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div><div class="flex-1 space-y-1.5"><div class="h-3 w-24 rounded bg-gray-200 animate-pulse"></div><div class="h-2.5 w-20 rounded bg-gray-100 animate-pulse"></div></div></div>
+    </div>
+</aside>
+
+<!-- Main -->
+<main class="flex-1 flex flex-col min-h-screen">
+  <header class="bg-white border-b border-gray-200 px-6 py-4">
+    <nav class="text-xs text-gray-400 mb-1">
+      <span>Settings</span> <span class="mx-1">/</span>
+      <span>Banking</span> <span class="mx-1">/</span>
+      <span class="text-gray-700 font-medium">Reconciliation Rules</span>
+    </nav>
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-xl font-semibold text-gray-900">Reconciliation Rules</h1>
+        <p class="text-sm text-gray-500 mt-0.5">Auto-code recurring transactions. Rules are applied in priority order — first match wins.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-1 p-6 space-y-6">
+
+    <!-- ===== INLINE RULE WITH EXPANDED TEST PREVIEW ===== -->
+    <div class="animate-slide-down">
+      <div class="bg-white border-2 border-teal-200 rounded-lg shadow-sm shadow-teal-100/50">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-4 py-3 border-b border-teal-100 bg-teal-50/30">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span class="text-sm font-semibold text-teal-800">New Rule</span>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Rule form (compact) -->
+        <div class="px-4 py-4">
+          <div class="flex items-center gap-3 text-sm">
+            <span class="text-gray-500 font-medium w-8 shrink-0">If</span>
+            <span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-md font-medium border border-blue-200">Bank Feed</span>
+            <span class="text-gray-400">description</span>
+            <span class="text-gray-700 bg-gray-100 px-2.5 py-1 rounded-md border border-gray-200 text-xs">contains</span>
+            <code class="bg-amber-50 text-amber-800 px-2.5 py-1 rounded-md text-xs font-mono font-semibold border border-amber-200">OFFICEWORKS</code>
+          </div>
+          <div class="flex items-center gap-3 text-sm mt-2">
+            <span class="text-gray-500 font-medium w-8 shrink-0">Then</span>
+            <span class="text-gray-400">code to</span>
+            <span class="text-gray-900 bg-gray-100 px-2.5 py-1 rounded-md border border-gray-200 text-xs font-medium">Office Supplies</span>
+            <span class="text-gray-400">with</span>
+            <span class="text-teal-700 bg-teal-50 px-2 py-1 rounded-md text-xs font-medium border border-teal-200">GST</span>
+          </div>
+        </div>
+
+        <!-- ===== TEST PREVIEW PANEL ===== -->
+        <div class="border-t border-teal-100 animate-fade-in">
+          <div class="px-4 py-3 bg-gray-50/80 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              <span class="text-sm font-semibold text-gray-900">Test Preview</span>
+              <span class="text-xs text-gray-400">Last 90 days · unreconciled</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                6 matches
+              </span>
+            </div>
+          </div>
+
+          <!-- Matched transactions table -->
+          <div class="overflow-hidden">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
+                  <th class="text-left px-4 py-2 font-medium">Date</th>
+                  <th class="text-left px-4 py-2 font-medium">Description</th>
+                  <th class="text-right px-4 py-2 font-medium">Amount</th>
+                  <th class="text-left px-4 py-2 font-medium">Would Code To</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-teal-50/30 transition">
+                  <td class="px-4 py-2.5 text-gray-500 tabular-nums">12 Mar 2026</td>
+                  <td class="px-4 py-2.5">
+                    <span class="text-gray-900">OFFICEWORKS DIRECT 4829</span>
+                    <mark class="bg-amber-200/50 text-amber-900 rounded px-0.5 mx-0.5 font-mono text-xs">OFFICEWORKS</mark>
+                  </td>
+                  <td class="px-4 py-2.5 text-right tabular-nums text-red-600 font-medium">-$142.50</td>
+                  <td class="px-4 py-2.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-gray-900 font-medium">Office Supplies</span>
+                      <span class="text-xs bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded">GST</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-teal-50/30 transition">
+                  <td class="px-4 py-2.5 text-gray-500 tabular-nums">28 Feb 2026</td>
+                  <td class="px-4 py-2.5">
+                    <span class="text-gray-900">OFFICEWORKS ONLINE ORD#9182</span>
+                    <mark class="bg-amber-200/50 text-amber-900 rounded px-0.5 mx-0.5 font-mono text-xs">OFFICEWORKS</mark>
+                  </td>
+                  <td class="px-4 py-2.5 text-right tabular-nums text-red-600 font-medium">-$89.95</td>
+                  <td class="px-4 py-2.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-gray-900 font-medium">Office Supplies</span>
+                      <span class="text-xs bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded">GST</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-teal-50/30 transition">
+                  <td class="px-4 py-2.5 text-gray-500 tabular-nums">15 Feb 2026</td>
+                  <td class="px-4 py-2.5">
+                    <span class="text-gray-900">OFFICEWORKS DIRECT 4829</span>
+                    <mark class="bg-amber-200/50 text-amber-900 rounded px-0.5 mx-0.5 font-mono text-xs">OFFICEWORKS</mark>
+                  </td>
+                  <td class="px-4 py-2.5 text-right tabular-nums text-red-600 font-medium">-$267.00</td>
+                  <td class="px-4 py-2.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-gray-900 font-medium">Office Supplies</span>
+                      <span class="text-xs bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded">GST</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-teal-50/30 transition">
+                  <td class="px-4 py-2.5 text-gray-500 tabular-nums">02 Feb 2026</td>
+                  <td class="px-4 py-2.5">
+                    <span class="text-gray-900">OFFICEWORKS BIZLINK</span>
+                    <mark class="bg-amber-200/50 text-amber-900 rounded px-0.5 mx-0.5 font-mono text-xs">OFFICEWORKS</mark>
+                  </td>
+                  <td class="px-4 py-2.5 text-right tabular-nums text-red-600 font-medium">-$54.20</td>
+                  <td class="px-4 py-2.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-gray-900 font-medium">Office Supplies</span>
+                      <span class="text-xs bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded">GST</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-teal-50/30 transition">
+                  <td class="px-4 py-2.5 text-gray-500 tabular-nums">18 Jan 2026</td>
+                  <td class="px-4 py-2.5">
+                    <span class="text-gray-900">OFFICEWORKS ONLINE ORD#8344</span>
+                    <mark class="bg-amber-200/50 text-amber-900 rounded px-0.5 mx-0.5 font-mono text-xs">OFFICEWORKS</mark>
+                  </td>
+                  <td class="px-4 py-2.5 text-right tabular-nums text-red-600 font-medium">-$199.00</td>
+                  <td class="px-4 py-2.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-gray-900 font-medium">Office Supplies</span>
+                      <span class="text-xs bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded">GST</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-teal-50/30 transition">
+                  <td class="px-4 py-2.5 text-gray-500 tabular-nums">05 Jan 2026</td>
+                  <td class="px-4 py-2.5">
+                    <span class="text-gray-900">OFFICEWORKS DIRECT 4829</span>
+                    <mark class="bg-amber-200/50 text-amber-900 rounded px-0.5 mx-0.5 font-mono text-xs">OFFICEWORKS</mark>
+                  </td>
+                  <td class="px-4 py-2.5 text-right tabular-nums text-red-600 font-medium">-$38.90</td>
+                  <td class="px-4 py-2.5">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-gray-900 font-medium">Office Supplies</span>
+                      <span class="text-xs bg-teal-50 text-teal-700 px-1.5 py-0.5 rounded">GST</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Summary + save -->
+          <div class="px-4 py-3 bg-gray-50/80 border-t border-gray-100 flex items-center justify-between">
+            <div class="flex items-center gap-4 text-xs text-gray-500">
+              <span>Total: <strong class="text-gray-900">$791.55</strong></span>
+              <span>·</span>
+              <span>All 6 transactions would be coded to <strong class="text-teal-700">Office Supplies (GST)</strong></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <div class="w-8 h-5 bg-gray-300 rounded-full relative">
+                  <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+                </div>
+                <span class="text-xs text-gray-600">Auto-post</span>
+              </label>
+              <button class="px-3 py-1.5 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition">Cancel</button>
+              <button class="px-4 py-1.5 text-xs font-medium text-white bg-teal-700 rounded-md hover:bg-teal-800 transition shadow-sm flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Save Rule
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Auto-post warning example ===== -->
+    <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 flex items-start gap-3 animate-fade-in">
+      <svg class="w-5 h-5 text-amber-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+      <div>
+        <p class="text-sm font-medium text-amber-800">Auto-post warning (shown when toggle is on)</p>
+        <p class="text-xs text-amber-700 mt-0.5">Matching transactions will be <strong>posted directly to the ledger</strong> without appearing in the review queue. You can still reverse posted entries from the journal.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

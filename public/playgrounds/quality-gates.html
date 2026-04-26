@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC Portal - Quality Gates Checklist</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --bg-surface: #16213e;
+    --bg-card: #0f3460;
+    --bg-hover: #1a3a6a;
+    --teal-700: #007F7E;
+    --teal-500: #43C0BE;
+    --teal-400: #5ed4d2;
+    --blue-700: #2C4C79;
+    --blue-600: #3a5f94;
+    --text-primary: #e8e8f0;
+    --text-secondary: #a0a0b8;
+    --text-muted: #6a6a80;
+    --red-500: #ef4444;
+    --red-400: #f87171;
+    --red-bg: rgba(239,68,68,0.08);
+    --green-500: #22c55e;
+    --green-400: #4ade80;
+    --green-bg: rgba(34,197,94,0.1);
+    --yellow-500: #eab308;
+    --yellow-400: #facc15;
+    --border: rgba(255,255,255,0.06);
+    --border-active: rgba(67,192,190,0.3);
+    --radius: 8px;
+    --radius-lg: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.3);
+    --transition: 0.2s ease;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  code, .mono {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  }
+
+  /* Header */
+  .header {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal-500);
+    letter-spacing: -0.3px;
+  }
+
+  .header h1 span {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .epic-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .epic-input-group label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .epic-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    color: var(--text-primary);
+    font-size: 14px;
+    width: 220px;
+    outline: none;
+    transition: border-color var(--transition);
+  }
+
+  .epic-input:focus {
+    border-color: var(--teal-500);
+  }
+
+  /* Overall Progress */
+  .overall-progress {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0 0;
+  }
+
+  .gate-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition);
+    border: 2px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .gate-dot.active {
+    border-color: var(--teal-500);
+    color: var(--teal-500);
+    box-shadow: 0 0 0 3px rgba(67,192,190,0.15);
+  }
+
+  .gate-dot.complete {
+    background: var(--teal-700);
+    border-color: var(--teal-700);
+    color: #fff;
+  }
+
+  .gate-dot.partial {
+    border-color: var(--yellow-500);
+    color: var(--yellow-500);
+  }
+
+  .gate-connector {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    min-width: 8px;
+    max-width: 60px;
+    transition: background var(--transition);
+  }
+
+  .gate-connector.complete {
+    background: var(--teal-700);
+  }
+
+  /* Tab Bar */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    padding: 0 24px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-bar::-webkit-scrollbar { height: 0; }
+
+  .tab {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+
+  .tab:hover {
+    color: var(--text-primary);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .tab.active {
+    color: var(--teal-500);
+    border-bottom-color: var(--teal-500);
+  }
+
+  .tab-badge {
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tab.active .tab-badge {
+    background: rgba(67,192,190,0.15);
+    color: var(--teal-500);
+  }
+
+  .tab-badge.complete {
+    background: rgba(34,197,94,0.15);
+    color: var(--green-400);
+  }
+
+  /* Main Content */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  /* Gate Header */
+  .gate-header {
+    margin-bottom: 24px;
+  }
+
+  .gate-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .gate-header h2 .gate-num {
+    color: var(--teal-500);
+  }
+
+  .gate-question {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .gate-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .gate-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .gate-meta-item code {
+    color: var(--teal-400);
+    font-size: 12px;
+    background: rgba(67,192,190,0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* Progress Bar */
+  .gate-progress {
+    margin-bottom: 20px;
+  }
+
+  .progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+  }
+
+  .progress-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease, background 0.4s ease;
+    background: var(--blue-700);
+  }
+
+  .progress-bar-fill.half { background: var(--yellow-500); }
+  .progress-bar-fill.done { background: var(--green-500); }
+
+  /* Passed Banner */
+  .gate-passed {
+    background: var(--green-bg);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .gate-passed.visible { display: block; }
+
+  .gate-passed-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green-400);
+    margin-bottom: 4px;
+  }
+
+  .gate-passed-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .gate-passed-text code {
+    color: var(--teal-400);
+    background: rgba(67,192,190,0.1);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Checklist Item */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background var(--transition);
+    user-select: none;
+  }
+
+  .check-item:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .check-item input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid var(--text-muted);
+    border-radius: 4px;
+    margin-top: 2px;
+    cursor: pointer;
+    position: relative;
+    transition: all var(--transition);
+    background: transparent;
+  }
+
+  .check-item input[type="checkbox"]:checked {
+    background: var(--teal-700);
+    border-color: var(--teal-700);
+  }
+
+  .check-item input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 6px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .check-item-content {
+    flex: 1;
+  }
+
+  .check-item-label {
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: color var(--transition);
+  }
+
+  .check-item.checked .check-item-label {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: rgba(255,255,255,0.15);
+  }
+
+  .check-item-why {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  .check-item.unchecked-highlight .check-item-label {
+    color: var(--red-400);
+    font-weight: 600;
+  }
+
+  .check-item.unchecked-highlight .check-item-why {
+    color: var(--red-400);
+    opacity: 0.7;
+  }
+
+  /* Actions */
+  .actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+  }
+
+  .btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .btn-teal {
+    background: var(--teal-700);
+    border-color: var(--teal-700);
+    color: #fff;
+  }
+
+  .btn-teal:hover {
+    background: var(--teal-500);
+    border-color: var(--teal-500);
+    color: #fff;
+  }
+
+  .btn-danger {
+    border-color: rgba(239,68,68,0.2);
+    color: var(--red-400);
+  }
+
+  .btn-danger:hover {
+    background: var(--red-bg);
+    border-color: var(--red-500);
+  }
+
+  /* Skip Gate Section */
+  .skip-section {
+    margin-top: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .skip-toggle {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+    transition: all var(--transition);
+  }
+
+  .skip-toggle:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-primary);
+  }
+
+  .skip-arrow {
+    transition: transform var(--transition);
+    font-size: 10px;
+  }
+
+  .skip-arrow.open { transform: rotate(90deg); }
+
+  .skip-content {
+    padding: 0 16px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    font-size: 13px;
+    color: var(--red-400);
+    line-height: 1.7;
+  }
+
+  .skip-content.open {
+    max-height: 500px;
+    padding: 0 16px 16px;
+  }
+
+  /* Prompt Output */
+  .prompt-output {
+    margin-top: 32px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+  }
+
+  .prompt-output-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .prompt-output-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  }
+
+  .prompt-output-text .highlight { color: var(--teal-400); }
+  .prompt-output-text .warn { color: var(--yellow-400); }
+  .prompt-output-text .pass { color: var(--green-400); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--teal-700);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 200;
+  }
+
+  .toast.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header-top { flex-direction: column; align-items: flex-start; }
+    .epic-input { width: 100%; }
+    .tab { padding: 10px 12px; font-size: 12px; }
+    .main { padding: 16px; }
+    .gate-header h2 { font-size: 20px; }
+    .gate-dot { width: 26px; height: 26px; font-size: 10px; }
+    .overall-progress { gap: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>Quality Gates <span>Checklist</span></h1>
+    <div class="epic-input-group">
+      <label for="epicName">Epic:</label>
+      <input type="text" id="epicName" class="epic-input" placeholder="e.g. Check-Ins" />
+    </div>
+  </div>
+  <div class="overall-progress" id="overallProgress"></div>
+</div>
+
+<div class="tab-bar" id="tabBar"></div>
+
+<div class="main" id="mainContent"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const GATES = [
+  {
+    id: 0,
+    name: 'Idea',
+    question: 'Is this idea clear enough to invest in?',
+    skill: '/trilogy-idea-handover',
+    linear: 'Create epic -> Planned',
+    owner: 'Product Owner',
+    skipConsequence: 'Without a clear idea gate, teams build solutions to undefined problems. You will burn weeks of design and dev time only to learn the problem was misunderstood, the wrong users were targeted, or there was no real business impact. The HOD will challenge the project mid-flight, causing costly restarts.',
+    sections: [
+      {
+        title: 'Problem Statement Clarity',
+        items: [
+          { label: 'Problem articulated without solution', why: 'Focus on the pain, not the fix' },
+          { label: 'Specific affected users identified', why: 'Who suffers from this?' },
+          { label: 'Current workaround described', why: 'How are they coping today?' },
+          { label: 'Business impact stated', why: 'Why should we invest?' },
+          { label: 'Single sentence summary possible', why: "If you can't say it simply, it's not clear" },
+        ]
+      },
+      {
+        title: 'Brief Quality',
+        items: [
+          { label: '1-2 pages maximum', why: 'Brevity forces clarity' },
+          { label: 'No technical jargon', why: 'Business stakeholders must understand it' },
+          { label: 'No implementation details', why: "That's for later phases" },
+          { label: 'Problem/solution ratio favours problem', why: 'Understand before solving' },
+        ]
+      },
+      {
+        title: 'RACI & HOD',
+        items: [
+          { label: 'RACI table complete', why: 'Clear ownership' },
+          { label: 'HOD is Accountable (A)', why: 'Executive sponsorship' },
+          { label: 'HOD has acknowledged the brief', why: 'Not just listed -- engaged' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 1,
+    name: 'Spec',
+    question: 'Is this spec ready for design?',
+    skill: '/trilogy-spec-handover',
+    linear: 'stays in Planned',
+    owner: 'PM / Product',
+    skipConsequence: 'Skipping the spec gate means designers work from assumptions, not requirements. You will get beautiful mockups that miss edge cases, lack testable acceptance criteria, and force repeated rework. Dev estimates will be wild guesses. QA will have no source of truth for what "correct" means.',
+    sections: [
+      {
+        title: 'Product Best Practices',
+        items: [
+          { label: 'Problem statement clear', why: 'Foundation for everything that follows' },
+          { label: 'User personas defined', why: 'Know who you are building for' },
+          { label: 'Jobs-to-be-done articulated', why: 'What outcome does the user need?' },
+          { label: 'Success metrics defined', why: 'How will you know it worked?' },
+          { label: 'Constraints documented', why: 'Budget, timeline, technical limits' },
+          { label: 'Assumptions explicit', why: 'Hidden assumptions cause hidden failures' },
+        ]
+      },
+      {
+        title: 'Content Quality',
+        items: [
+          { label: 'No implementation details', why: 'Spec is about what, not how' },
+          { label: 'Business language throughout', why: 'Accessible to all stakeholders' },
+          { label: 'User value clearly stated', why: 'Every requirement tied to user benefit' },
+          { label: 'Measurable success criteria', why: 'If you cannot measure it, you cannot verify it' },
+        ]
+      },
+      {
+        title: 'Requirement Completeness',
+        items: [
+          { label: 'All requirements testable (Given/When/Then)', why: 'If it is not testable, it is not a requirement' },
+          { label: 'Edge cases documented', why: 'Happy path alone is not enough' },
+          { label: 'Dependencies listed', why: 'Know what blocks you before you start' },
+          { label: 'Out of scope defined', why: 'Prevents scope creep' },
+        ]
+      },
+      {
+        title: 'INVEST (per story)',
+        items: [
+          { label: 'Independent -- Can be delivered standalone', why: 'No hidden coupling' },
+          { label: 'Negotiable -- Details flexible', why: 'Room for design and dev input' },
+          { label: 'Valuable -- User/business value clear', why: 'No value, no story' },
+          { label: 'Estimable -- Scope well-defined', why: 'Can the team size this?' },
+          { label: 'Small -- Single user flow', why: 'Fits in a sprint' },
+          { label: 'Testable -- Acceptance scenarios defined', why: 'QA can verify completion' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Design',
+    question: 'Is the design complete and ready for Dev?',
+    skill: '/trilogy-design-handover',
+    linear: 'Design -> Dev',
+    owner: 'Designer / Product',
+    skipConsequence: 'Without design validation, developers become designers. They will make inconsistent UI decisions, miss responsive breakpoints, ignore error/empty/loading states, and create accessibility gaps. The result is a fragmented user experience that requires extensive rework after QA.',
+    sections: [
+      {
+        title: 'Design Completeness',
+        items: [
+          { label: 'UI mockups exist', why: 'Visual reference for developers' },
+          { label: 'User flows documented', why: 'How users navigate through the feature' },
+          { label: 'Component decisions made (reusing or creating?)', why: 'Avoid reinventing existing components' },
+          { label: 'Responsive approach defined', why: 'Desktop, tablet, and mobile layouts' },
+          { label: 'Accessibility considered', why: 'WCAG 2.1 AA compliance' },
+          { label: 'Edge cases visualized (error, empty, loading states)', why: 'The unhappy paths matter' },
+          { label: 'Stakeholder sign-off', why: 'Agreement before investment' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: 'Architecture',
+    question: 'Will the structure hold?',
+    skill: '/speckit-plan',
+    linear: 'stays in Dev',
+    owner: 'Architect / Developer',
+    skipConsequence: 'Skipping architecture review leads to solutions that fight the codebase. You will create tech debt through wrong patterns, miss integration points that cause late-stage failures, and build data models that cannot support future requirements. Refactoring costs 5-10x more than planning.',
+    sections: [
+      {
+        title: 'Architecture Review',
+        items: [
+          { label: 'Architecture approach clear', why: 'Everyone agrees on the how' },
+          { label: 'Existing patterns leveraged', why: 'Consistency reduces complexity' },
+          { label: 'No impossible requirements', why: 'Catch infeasibility before coding' },
+          { label: 'Data model understood', why: 'Schema drives everything' },
+          { label: 'Integration points mapped', why: 'Know where systems touch' },
+          { label: 'Risk areas noted', why: 'Plan for what could go wrong' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: 'Code Quality',
+    question: 'Is the code ready to inspect?',
+    skill: '/trilogy-dev-handover',
+    linear: 'Dev -> QA',
+    owner: 'Developer',
+    skipConsequence: 'Pushing untested, unlinted code to QA wastes everyone\'s time. QA will find bugs that tests should have caught, report style issues that Pint would fix, and block on crashes that phpstan would have flagged. The feedback loop doubles in length. Dev credibility erodes.',
+    sections: [
+      {
+        title: 'Automated Checks',
+        items: [
+          { label: 'Tests pass (php artisan test --compact)', why: 'Green suite is the baseline' },
+          { label: 'Coverage >80% (php artisan test --coverage --min=80)', why: 'Untested code is unverified code' },
+          { label: 'Linting clean (vendor/bin/pint --test)', why: 'Consistent formatting across the team' },
+          { label: 'Static analysis (vendor/bin/phpstan analyse)', why: 'Catch type errors before runtime' },
+          { label: 'No console errors (Browser DevTools)', why: 'Frontend must be clean too' },
+        ]
+      },
+      {
+        title: 'Acceptance Criteria',
+        items: [
+          { label: 'All AC from spec.md implemented', why: 'The spec is the contract' },
+          { label: 'Edge cases handled', why: 'Not just the happy path' },
+          { label: 'Design followed', why: 'Pixel-level fidelity matters' },
+        ]
+      },
+      {
+        title: 'Best Practices',
+        items: [
+          { label: 'Laravel conventions followed', why: 'Do it the Laravel way' },
+          { label: 'Vue TypeScript standards met (lang="ts", no any)', why: 'Type safety prevents bugs' },
+          { label: 'Dev notes for QA written', why: 'Help QA test effectively' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 5,
+    name: 'QA',
+    question: 'Does it actually work?',
+    skill: '/trilogy-qa-handover',
+    linear: 'QA -> Release',
+    owner: 'QA Tester',
+    skipConsequence: 'Releasing without QA means users become your testers. Bugs hit production, cross-browser issues appear on client demos, accessibility failures expose legal risk, and performance problems surface under real load. Hotfixes disrupt the next sprint. Trust is expensive to rebuild.',
+    sections: [
+      {
+        title: 'QA Verification',
+        items: [
+          { label: 'Feature works as described', why: 'Matches spec and design' },
+          { label: 'UI matches design', why: 'Visual fidelity verified' },
+          { label: 'Cross-browser tested (Chrome, Safari, Firefox)', why: 'Users do not all use Chrome' },
+          { label: 'Responsive tested (Desktop 1920, Tablet 768, Mobile 375)', why: 'Every breakpoint matters' },
+          { label: 'Accessibility passed (WCAG 2.1 AA)', why: 'Inclusive design is required' },
+          { label: 'No Sev 1-3 bugs', why: 'Blocking or major issues resolved' },
+          { label: 'Performance acceptable', why: 'Fast enough for real usage' },
+          { label: 'Test report complete', why: 'Documented evidence of testing' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 6,
+    name: 'Release',
+    question: 'May this enter the city?',
+    skill: '/trilogy-ship',
+    linear: 'Release -> Completed',
+    owner: 'PO + Stakeholders',
+    skipConsequence: 'Shipping without release validation means features go live without stakeholder alignment, missing analytics, no rollback plan, and incomplete documentation. When something breaks in production, you will scramble without a plan. When stakeholders see the feature, they may reject it entirely.',
+    sections: [
+      {
+        title: 'Product Review',
+        items: [
+          { label: 'Delivers business value', why: 'The whole point of building it' },
+          { label: 'User story and AC confirmed complete', why: 'Nothing left undone' },
+          { label: 'Documentation reviewed', why: 'Users and support can understand it' },
+          { label: 'Analytics verified', why: 'Can we measure success?' },
+          { label: 'Product Owner approved', why: 'Final product sign-off' },
+        ]
+      },
+      {
+        title: 'Business Stakeholder (UAT)',
+        items: [
+          { label: 'Aligns with business goals', why: 'Strategic fit confirmed' },
+          { label: 'Content accuracy validated', why: 'Real-world data checks out' },
+          { label: 'Business Stakeholder approved', why: 'Business sign-off' },
+        ]
+      },
+      {
+        title: 'Pre-Release',
+        items: [
+          { label: 'Feature flags configured (Pennant)', why: 'Controlled rollout ready' },
+          { label: 'Environment variables ready', why: 'Config will not block deployment' },
+          { label: 'Rollback plan exists', why: 'Always have an exit strategy' },
+          { label: 'Release notes prepared', why: 'Communicate what shipped' },
+        ]
+      }
+    ]
+  }
+];
+
+// --- State ---
+let currentGate = 0;
+let epicName = '';
+
+function storageKey() {
+  return `tc-qg-${epicName || '__default'}`;
+}
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(storageKey()) || '{}');
+  } catch { return {}; }
+}
+
+function saveState(state) {
+  localStorage.setItem(storageKey(), JSON.stringify(state));
+}
+
+function getItemKey(gateId, sectionIdx, itemIdx) {
+  return `g${gateId}-s${sectionIdx}-i${itemIdx}`;
+}
+
+function isChecked(gateId, sectionIdx, itemIdx) {
+  const state = loadState();
+  return !!state[getItemKey(gateId, sectionIdx, itemIdx)];
+}
+
+function toggleItem(gateId, sectionIdx, itemIdx) {
+  const state = loadState();
+  const key = getItemKey(gateId, sectionIdx, itemIdx);
+  state[key] = !state[key];
+  saveState(state);
+  render();
+}
+
+function getGateStats(gateId) {
+  const gate = GATES[gateId];
+  let total = 0, checked = 0;
+  gate.sections.forEach((section, si) => {
+    section.items.forEach((item, ii) => {
+      total++;
+      if (isChecked(gateId, si, ii)) checked++;
+    });
+  });
+  return { total, checked };
+}
+
+function resetGate(gateId) {
+  const state = loadState();
+  const gate = GATES[gateId];
+  gate.sections.forEach((section, si) => {
+    section.items.forEach((item, ii) => {
+      delete state[getItemKey(gateId, si, ii)];
+    });
+  });
+  saveState(state);
+  render();
+}
+
+function exportGate(gateId) {
+  const gate = GATES[gateId];
+  const stats = getGateStats(gateId);
+  const missing = [];
+  gate.sections.forEach((section, si) => {
+    section.items.forEach((item, ii) => {
+      if (!isChecked(gateId, si, ii)) missing.push(item.label);
+    });
+  });
+
+  const epic = epicName || 'Unnamed';
+  let md = `## Gate ${gate.id} (${gate.name}) -- ${stats.checked}/${stats.total} items passed`;
+  md += `\n**Epic:** ${epic}\n`;
+  if (missing.length === 0) {
+    md += `\nAll items passed. Run \`${gate.skill}\` to proceed.\n`;
+  } else {
+    md += `\n**Missing:**\n`;
+    missing.forEach(m => { md += `- [ ] ${m}\n`; });
+    md += `\nRun \`${gate.skill}\` when all items pass.\n`;
+  }
+
+  navigator.clipboard.writeText(md).then(() => showToast('Copied to clipboard'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  setTimeout(() => t.classList.remove('visible'), 2000);
+}
+
+// --- Render ---
+function render() {
+  renderOverallProgress();
+  renderTabs();
+  renderGateContent();
+}
+
+function renderOverallProgress() {
+  const container = document.getElementById('overallProgress');
+  let html = '';
+  GATES.forEach((gate, i) => {
+    const stats = getGateStats(gate.id);
+    const isComplete = stats.checked === stats.total;
+    const isPartial = stats.checked > 0 && !isComplete;
+    const isActive = i === currentGate;
+
+    let cls = 'gate-dot';
+    if (isActive) cls += ' active';
+    if (isComplete) cls += ' complete';
+    else if (isPartial) cls += ' partial';
+
+    html += `<div class="${cls}" onclick="currentGate=${i};render()" title="Gate ${gate.id}: ${gate.name} (${stats.checked}/${stats.total})">${gate.id}</div>`;
+    if (i < GATES.length - 1) {
+      const connCls = isComplete ? 'gate-connector complete' : 'gate-connector';
+      html += `<div class="${connCls}"></div>`;
+    }
+  });
+  container.innerHTML = html;
+}
+
+function renderTabs() {
+  const container = document.getElementById('tabBar');
+  let html = '';
+  GATES.forEach((gate, i) => {
+    const stats = getGateStats(gate.id);
+    const isActive = i === currentGate;
+    const isComplete = stats.checked === stats.total;
+    let badgeCls = 'tab-badge';
+    if (isComplete) badgeCls += ' complete';
+    html += `<div class="tab${isActive ? ' active' : ''}" onclick="currentGate=${i};render()">
+      Gate ${gate.id}: ${gate.name}
+      <span class="${badgeCls}">${stats.checked}/${stats.total}</span>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderGateContent() {
+  const gate = GATES[currentGate];
+  const stats = getGateStats(gate.id);
+  const allPassed = stats.checked === stats.total;
+  const pct = stats.total > 0 ? Math.round((stats.checked / stats.total) * 100) : 0;
+
+  let fillCls = 'progress-bar-fill';
+  if (allPassed) fillCls += ' done';
+  else if (pct >= 50) fillCls += ' half';
+
+  let html = '';
+
+  // Gate header
+  html += `<div class="gate-header">
+    <h2><span class="gate-num">Gate ${gate.id}</span> ${gate.name}</h2>
+    <div class="gate-question">"${gate.question}"</div>
+    <div class="gate-meta">
+      <span class="gate-meta-item">Skill: <code>${gate.skill}</code></span>
+      <span class="gate-meta-item">Linear: ${gate.linear}</span>
+      <span class="gate-meta-item">Owner: ${gate.owner}</span>
+    </div>
+  </div>`;
+
+  // Progress
+  html += `<div class="gate-progress">
+    <div class="progress-text">
+      <span>${stats.checked} of ${stats.total} items checked</span>
+      <span>${pct}%</span>
+    </div>
+    <div class="progress-bar-track">
+      <div class="${fillCls}" style="width:${pct}%"></div>
+    </div>
+  </div>`;
+
+  // Passed banner
+  html += `<div class="gate-passed ${allPassed ? 'visible' : ''}">
+    <div class="gate-passed-title">GATE PASSED</div>
+    <div class="gate-passed-text">All ${stats.total} items verified. Run <code>${gate.skill}</code> to transition${gate.linear.includes('->') ? ': ' + gate.linear : ' (Linear: ' + gate.linear + ')'}.</div>
+  </div>`;
+
+  // Actions
+  html += `<div class="actions">
+    <button class="btn btn-teal" onclick="exportGate(${gate.id})">Export as Markdown</button>
+    <button class="btn btn-danger" onclick="if(confirm('Reset all checks for Gate ${gate.id}?')) resetGate(${gate.id})">Reset Gate</button>
+  </div>`;
+
+  // Sections with checklist items
+  gate.sections.forEach((section, si) => {
+    html += `<div class="section">
+      <div class="section-title">${section.title}</div>`;
+    section.items.forEach((item, ii) => {
+      const checked = isChecked(gate.id, si, ii);
+      let itemCls = 'check-item';
+      if (checked) itemCls += ' checked';
+      // Highlight unchecked items only when reviewing (more than half checked)
+      if (!checked && pct >= 70) itemCls += ' unchecked-highlight';
+
+      html += `<div class="${itemCls}" onclick="toggleItem(${gate.id},${si},${ii})">
+        <input type="checkbox" ${checked ? 'checked' : ''} tabindex="-1" />
+        <div class="check-item-content">
+          <div class="check-item-label">${item.label}</div>
+          <div class="check-item-why">${item.why}</div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  // Skip gate section
+  html += `<div class="skip-section">
+    <button class="skip-toggle" onclick="toggleSkip(this)">
+      <span class="skip-arrow">&#9654;</span>
+      What happens if you skip this gate?
+    </button>
+    <div class="skip-content">${gate.skipConsequence}</div>
+  </div>`;
+
+  // Prompt output
+  const missing = [];
+  gate.sections.forEach((section, si) => {
+    section.items.forEach((item, ii) => {
+      if (!isChecked(gate.id, si, ii)) missing.push(item.label);
+    });
+  });
+
+  const epic = epicName || 'Unnamed';
+  let prompt = '';
+  if (allPassed) {
+    prompt = `<span class="pass">Gate ${gate.id} (${gate.name}) -- ${stats.checked}/${stats.total} checks passed for epic '${epic}'.</span> All items verified. Run <span class="highlight">${gate.skill}</span> to transition${gate.linear.includes('->') ? ' ' + gate.linear : ''}.`;
+  } else {
+    const missingStr = missing.slice(0, 3).join(', ') + (missing.length > 3 ? `, +${missing.length - 3} more` : '');
+    prompt = `<span class="warn">Gate ${gate.id} (${gate.name}) -- ${stats.checked}/${stats.total} checks passed for epic '${epic}'.</span> Missing: ${missingStr}. Run <span class="highlight">${gate.skill}</span> when all items pass${gate.linear.includes('->') ? ' to transition ' + gate.linear : ''}.`;
+  }
+
+  html += `<div class="prompt-output">
+    <div class="prompt-output-label">Status Output</div>
+    <div class="prompt-output-text">${prompt}</div>
+  </div>`;
+
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function toggleSkip(btn) {
+  const arrow = btn.querySelector('.skip-arrow');
+  const content = btn.nextElementSibling;
+  arrow.classList.toggle('open');
+  content.classList.toggle('open');
+}
+
+// --- Epic name handling ---
+const epicInput = document.getElementById('epicName');
+
+// Load saved epic name
+const savedEpic = localStorage.getItem('tc-qg-current-epic') || '';
+epicInput.value = savedEpic;
+epicName = savedEpic;
+
+epicInput.addEventListener('input', (e) => {
+  epicName = e.target.value.trim();
+  localStorage.setItem('tc-qg-current-epic', epicName);
+  render();
+});
+
+// Initial render
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01 Dashboard — Ambient Alex</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    @keyframes pulse-amber { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .pulse-amber { animation: pulse-amber 2s ease-in-out infinite; }
+    @keyframes progress-ring { 0% { stroke-dashoffset: 100; } 100% { stroke-dashoffset: 25; } }
+    .progress-ring-circle { animation: progress-ring 1.5s ease-out forwards; }
+    @keyframes fade-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fade-in 0.5s ease-out; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+  <div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col fixed inset-y-0 left-0 z-50" style="top: 88px;">
+      <!-- Workspace -->
+      <div class="px-4 py-4 border-b border-gray-800">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-500 to-cyan-400 flex items-center justify-center text-sm font-bold text-white">M</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold text-white truncate">Mason & Co</div>
+            <div class="text-xs text-gray-500">Business</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-800/60 text-white text-sm font-medium">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+          <span class="ml-auto text-[10px] text-gray-500 font-mono bg-gray-800 px-1 rounded">D</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm group">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M3 6h18M3 14h18M3 18h18"/></svg>
+          Banking
+          <!-- Ambient: streak flame -->
+          <span class="ml-auto flex items-center gap-1">
+            <span class="text-orange-400 text-xs" title="7-week reconcile streak">&#x1F525; 7</span>
+            <span class="text-[10px] text-gray-600 font-mono bg-gray-800 px-1 rounded">A</span>
+          </span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm group relative">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Invoices
+          <!-- Ambient: at-risk pulse dot -->
+          <span class="ml-auto flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400 pulse-amber" title="3 overdue invoices"></span>
+            <span class="text-[10px] text-gray-600 font-mono bg-gray-800 px-1 rounded">I</span>
+          </span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+          Bills
+          <span class="ml-auto text-[10px] text-gray-600 font-mono bg-gray-800 px-1 rounded">B</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Journal Entries
+          <span class="ml-auto text-[10px] text-gray-600 font-mono bg-gray-800 px-1 rounded">J</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Contacts
+          <span class="ml-auto text-[10px] text-gray-600 font-mono bg-gray-800 px-1 rounded">C</span>
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          Jobs
+        </a>
+
+        <div class="pt-3 pb-1 px-3">
+          <div class="text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Reports</div>
+        </div>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Profit & Loss
+        </a>
+
+        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          Balance Sheet
+        </a>
+
+        <div class="pt-3 pb-1 px-3">
+          <div class="text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Ambient</div>
+        </div>
+
+        <a href="03-challenges.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-800/40 text-gray-400 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Challenges
+          <span class="ml-auto text-xs text-sky-400 font-medium">2</span>
+        </a>
+      </nav>
+
+      <!-- User (with badge count) -->
+      <div class="px-3 py-3 border-t border-gray-800">
+        <div class="flex items-center gap-3 px-2">
+          <div class="relative">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white">EM</div>
+            <!-- Ambient: badge count on avatar -->
+            <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-sky-500 text-[9px] font-bold text-white flex items-center justify-center">12</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium text-white truncate">Emma Mason</div>
+            <div class="text-xs text-gray-500">Bookkeeper</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64">
+
+      <!-- Ambient Status Bar -->
+      <div class="bg-gray-900/60 border-b border-gray-800/50 px-6 py-2 fade-in">
+        <div class="flex items-center gap-6 text-xs text-gray-400">
+          <span class="flex items-center gap-1.5">
+            <span class="text-orange-400">&#x1F525;</span>
+            <span class="text-gray-300 font-medium">7-week</span> reconcile streak
+          </span>
+          <span class="w-px h-3 bg-gray-700"></span>
+          <span class="flex items-center gap-1.5">
+            <span class="text-sky-400">&#x2B50;</span>
+            <span class="text-gray-300 font-medium">12</span> badges earned
+          </span>
+          <span class="w-px h-3 bg-gray-700"></span>
+          <span class="flex items-center gap-1.5">
+            <span class="text-teal-400">&#x23F1;</span>
+            <span class="text-gray-300 font-medium">14h</span> saved this month
+          </span>
+          <span class="ml-auto text-gray-600 text-[11px]">Ambient stats &middot; updates live</span>
+        </div>
+      </div>
+
+      <!-- Page Header -->
+      <div class="px-8 py-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-semibold text-white">Dashboard</h1>
+            <p class="text-sm text-gray-500 mt-1">Mason & Co &middot; March 2026</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button class="px-3 py-2 text-sm bg-gray-800 text-gray-300 rounded-lg border border-gray-700 hover:bg-gray-700">Export</button>
+            <button class="px-4 py-2 text-sm bg-sky-600 text-white rounded-lg hover:bg-sky-500 font-medium">New Transaction</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Grid -->
+      <div class="px-8 pb-8 grid grid-cols-3 gap-5">
+
+        <!-- Cash Position -->
+        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-medium text-gray-400">Cash Position</h3>
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="text-3xl font-semibold text-white">$124,850</div>
+          <div class="text-sm text-teal-400 mt-1">+$8,240 this week</div>
+          <div class="mt-4 h-1 bg-gray-800 rounded-full overflow-hidden">
+            <div class="h-full bg-teal-500/60 rounded-full" style="width: 72%;"></div>
+          </div>
+        </div>
+
+        <!-- Outstanding Invoices -->
+        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-medium text-gray-400">Outstanding Invoices</h3>
+            <!-- Ambient: amber pulse for overdue -->
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 pulse-amber" title="3 overdue"></span>
+          </div>
+          <div class="text-3xl font-semibold text-white">$31,200</div>
+          <div class="text-sm text-amber-400 mt-1">3 overdue &middot; $12,400</div>
+          <div class="mt-4 flex gap-1.5">
+            <div class="flex-1 h-1 bg-teal-500/40 rounded-full" title="Current"></div>
+            <div class="flex-1 h-1 bg-amber-500/40 rounded-full" title="30 days"></div>
+            <div class="flex-1 h-1 bg-red-500/40 rounded-full" title="60+ days"></div>
+          </div>
+        </div>
+
+        <!-- Reconciliation (with ambient progress ring) -->
+        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5 relative">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-medium text-gray-400">Reconciliation</h3>
+            <!-- Ambient: progress ring around icon -->
+            <div class="relative w-8 h-8">
+              <svg class="w-8 h-8 -rotate-90" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1f2937" stroke-width="3"/>
+                <circle class="progress-ring-circle" cx="18" cy="18" r="15.9" fill="none" stroke="#0ea5e9" stroke-width="3" stroke-dasharray="100" stroke-dashoffset="100" stroke-linecap="round"/>
+              </svg>
+              <span class="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-sky-400">75%</span>
+            </div>
+          </div>
+          <div class="text-3xl font-semibold text-white">142 / 189</div>
+          <div class="text-sm text-sky-400 mt-1">47 remaining this week</div>
+          <div class="mt-4 h-1 bg-gray-800 rounded-full overflow-hidden">
+            <div class="h-full bg-sky-500/60 rounded-full" style="width: 75%;"></div>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="col-span-2 bg-gray-900 rounded-xl border border-gray-800 p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-medium text-gray-400">Recent Transactions</h3>
+            <a href="#" class="text-xs text-sky-400 hover:text-sky-300">View all</a>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between py-2 border-b border-gray-800/50">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 text-xs">&#x2191;</div>
+                <div>
+                  <div class="text-sm text-white">Invoice #1047 — Acme Corp</div>
+                  <div class="text-xs text-gray-500">Mar 18, 2026</div>
+                </div>
+              </div>
+              <span class="text-sm font-medium text-teal-400">+$4,200.00</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-gray-800/50">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 text-xs">&#x2193;</div>
+                <div>
+                  <div class="text-sm text-white">Bill — Office Supplies Ltd</div>
+                  <div class="text-xs text-gray-500">Mar 17, 2026</div>
+                </div>
+              </div>
+              <span class="text-sm font-medium text-red-400">-$890.00</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-gray-800/50">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 text-xs">&#x2191;</div>
+                <div>
+                  <div class="text-sm text-white">Invoice #1046 — Beta Industries</div>
+                  <div class="text-xs text-gray-500">Mar 16, 2026</div>
+                </div>
+              </div>
+              <span class="text-sm font-medium text-teal-400">+$7,500.00</span>
+            </div>
+            <div class="flex items-center justify-between py-2">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 text-xs">&#x2193;</div>
+                <div>
+                  <div class="text-sm text-white">Payroll — March W3</div>
+                  <div class="text-xs text-gray-500">Mar 15, 2026</div>
+                </div>
+              </div>
+              <span class="text-sm font-medium text-red-400">-$18,400.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="bg-gray-900 rounded-xl border border-gray-800 p-5">
+          <h3 class="text-sm font-medium text-gray-400 mb-4">This Month</h3>
+          <div class="space-y-4">
+            <div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-400">Revenue</span>
+                <span class="text-white font-medium">$48,200</span>
+              </div>
+              <div class="mt-1.5 h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-teal-500/50 rounded-full" style="width: 82%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-400">Expenses</span>
+                <span class="text-white font-medium">$31,600</span>
+              </div>
+              <div class="mt-1.5 h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-red-500/30 rounded-full" style="width: 54%;"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gray-400">Net Profit</span>
+                <span class="text-teal-400 font-medium">$16,600</span>
+              </div>
+              <div class="mt-1.5 h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-teal-500/40 rounded-full" style="width: 34%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Ambient Bottom Status Bar -->
+      <div class="fixed bottom-0 left-64 right-0 bg-gray-900/80 backdrop-blur border-t border-gray-800/50 px-6 py-1.5 z-40">
+        <div class="flex items-center gap-6 text-[11px] text-gray-500">
+          <span>Week 12 of 2026</span>
+          <span class="w-px h-3 bg-gray-800"></span>
+          <span class="flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+            Reconciliation on track
+          </span>
+          <span class="w-px h-3 bg-gray-800"></span>
+          <span class="flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            3 invoices need attention
+          </span>
+          <span class="ml-auto text-gray-600">Last sync: 2 min ago</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

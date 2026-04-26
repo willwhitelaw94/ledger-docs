@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CM Activities (CMA) - Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-btn.active{background:#007F7E;color:#fff}.tab-btn{transition:all .15s}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<nav class="bg-white border-b border-gray-200 px-4 py-2 flex items-center gap-2 text-sm flex-wrap">
+  <span class="font-bold text-primary-blue-700">CMA - CM Activities</span><span class="text-gray-400">|</span>
+  <button onclick="show('dashboard')" class="tab-btn active px-3 py-1 rounded-lg text-xs font-medium" id="btn-dashboard">Alert Dashboard</button>
+  <button onclick="show('review')" class="tab-btn bg-gray-100 px-3 py-1 rounded-lg text-xs font-medium" id="btn-review">Review Communication</button>
+  <button onclick="show('coverage')" class="tab-btn bg-gray-100 px-3 py-1 rounded-lg text-xs font-medium" id="btn-coverage">Coverage Report</button>
+  <button onclick="show('activity')" class="tab-btn bg-gray-100 px-3 py-1 rounded-lg text-xs font-medium" id="btn-activity">Activity Log</button>
+</nav>
+<div class="flex min-h-[calc(100vh-44px)]">
+<aside class="w-56 bg-gray-900 text-gray-300 text-sm hidden md:block flex-shrink-0">
+  <div class="p-4 border-b border-gray-700"><span class="text-white font-bold text-base">TC Portal</span></div>
+  <nav class="p-2 space-y-1">
+    <a class="block px-3 py-2 rounded-lg text-gray-400">Dashboard</a>
+    <a class="block px-3 py-2 rounded-lg text-gray-400">Clients</a>
+    <a class="block px-3 py-2 rounded-lg bg-teal-700 text-white">CMA Alerts</a>
+    <a class="block px-3 py-2 rounded-lg text-gray-400">Calls</a>
+    <a class="block px-3 py-2 rounded-lg text-gray-400">Threads</a>
+  </nav>
+</aside>
+<main class="flex-1 p-6 overflow-auto">
+
+<!-- Alert Dashboard -->
+<div id="dashboard" class="screen active">
+  <div class="flex items-center justify-between mb-6">
+    <div><h1 class="text-xl font-bold text-gray-900">CMA Alert Dashboard</h1><p class="text-sm text-gray-500">Care Partner: Sarah Mitchell | March 2026</p></div>
+    <div class="flex gap-2">
+      <span class="bg-red-100 text-red-800 text-xs font-medium px-3 py-1 rounded-full">3 Overdue</span>
+      <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-3 py-1 rounded-full">12 Due Today</span>
+      <span class="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">31 Completed</span>
+    </div>
+  </div>
+  <!-- Stats Row -->
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Active Alerts</p><p class="text-2xl font-bold text-gray-900">23</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Approval Rate</p><p class="text-2xl font-bold text-green-700">87%</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Avg Response Time</p><p class="text-2xl font-bold text-gray-900">1.4 hrs</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Delivery Success</p><p class="text-2xl font-bold text-teal-700">96%</p></div>
+  </div>
+  <!-- Alerts Table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-gray-50 text-gray-500 text-xs uppercase"><tr><th class="px-4 py-3 text-left">Client</th><th class="px-4 py-3 text-left">Trigger</th><th class="px-4 py-3 text-left">Due Date</th><th class="px-4 py-3 text-left">Status</th><th class="px-4 py-3 text-left">Actions</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="bg-red-50"><td class="px-4 py-3 font-medium">Margaret Wilson</td><td class="px-4 py-3"><span class="bg-red-100 text-red-800 text-xs px-2 py-0.5 rounded-full">Service Gap</span></td><td class="px-4 py-3 text-red-600 font-medium">18 Mar (Overdue)</td><td class="px-4 py-3"><span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full">Pending</span></td><td class="px-4 py-3"><button class="bg-teal-700 text-white px-3 py-1 rounded-lg text-xs">Review</button></td></tr>
+        <tr class="bg-red-50"><td class="px-4 py-3 font-medium">Arthur Brown</td><td class="px-4 py-3"><span class="bg-orange-100 text-orange-800 text-xs px-2 py-0.5 rounded-full">Incident Follow-up</span></td><td class="px-4 py-3 text-red-600 font-medium">19 Mar (Overdue)</td><td class="px-4 py-3"><span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full">Pending</span></td><td class="px-4 py-3"><button class="bg-teal-700 text-white px-3 py-1 rounded-lg text-xs">Review</button></td></tr>
+        <tr><td class="px-4 py-3 font-medium">Dorothy Chen</td><td class="px-4 py-3"><span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">Well-being Check</span></td><td class="px-4 py-3">20 Mar</td><td class="px-4 py-3"><span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full">Pending</span></td><td class="px-4 py-3"><button class="bg-teal-700 text-white px-3 py-1 rounded-lg text-xs">Review</button></td></tr>
+        <tr><td class="px-4 py-3 font-medium">Jean Patterson</td><td class="px-4 py-3"><span class="bg-purple-100 text-purple-800 text-xs px-2 py-0.5 rounded-full">Spending Alert</span></td><td class="px-4 py-3">20 Mar</td><td class="px-4 py-3"><span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">Snoozed to 25 Mar</span></td><td class="px-4 py-3"><button class="border border-gray-300 px-3 py-1 rounded-lg text-xs">View</button></td></tr>
+        <tr><td class="px-4 py-3 font-medium">Robert Hughes</td><td class="px-4 py-3"><span class="bg-gray-100 text-gray-700 text-xs px-2 py-0.5 rounded-full">CMA Needed</span></td><td class="px-4 py-3">20 Mar</td><td class="px-4 py-3"><span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full">Pending</span></td><td class="px-4 py-3"><button class="bg-teal-700 text-white px-3 py-1 rounded-lg text-xs">Review</button></td></tr>
+        <tr><td class="px-4 py-3 font-medium">Helen O'Brien</td><td class="px-4 py-3"><span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">Well-being Check</span></td><td class="px-4 py-3">21 Mar</td><td class="px-4 py-3"><span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">Approved</span></td><td class="px-4 py-3"><span class="text-xs text-gray-500">Sent 10:15am</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Review Communication -->
+<div id="review" class="screen">
+  <div class="mb-6"><h1 class="text-xl font-bold text-gray-900">Review Draft Communication</h1><p class="text-sm text-gray-500">Dorothy Chen - Well-being Check-in</p></div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center gap-2 mb-4"><span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">Well-being Check-in</span><span class="text-xs text-gray-500">Due: 20 March 2026</span></div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+        <input type="text" value="Checking in with you, Dorothy - Trilogy Care" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email Body</label>
+        <textarea rows="10" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm mb-4">Dear Dorothy,
+
+I hope this message finds you well. As your Care Partner at Trilogy Care, I wanted to reach out and see how things have been going for you.
+
+It's been a little while since we last connected, and I wanted to check:
+
+- How are you finding your current care services?
+- Are there any changes in your needs we should discuss?
+- Is there anything else Trilogy Care can help you with?
+
+Please feel free to reply to this email or call me on 1300 854 568 if you'd like to have a chat.
+
+Warm regards,
+Sarah Mitchell
+Care Partner | Trilogy Care</textarea>
+        <div class="flex gap-3">
+          <button class="bg-teal-700 text-white px-4 py-2 rounded-lg text-sm">Approve & Send</button>
+          <button class="border border-gray-300 px-4 py-2 rounded-lg text-sm">Edit & Approve</button>
+          <button class="border border-red-300 text-red-600 px-4 py-2 rounded-lg text-sm">Reject</button>
+          <button class="border border-gray-300 px-4 py-2 rounded-lg text-sm">Snooze</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-4">
+        <h3 class="font-semibold text-sm text-gray-900 mb-3">Client Context</h3>
+        <dl class="space-y-2 text-sm">
+          <div><dt class="text-gray-500 text-xs">Package</dt><dd class="font-medium">SAH Level 3 - DC-789012</dd></div>
+          <div><dt class="text-gray-500 text-xs">Last Contact</dt><dd class="font-medium">18 Feb 2026 (31 days ago)</dd></div>
+          <div><dt class="text-gray-500 text-xs">Email</dt><dd class="font-medium">dorothy.chen@email.com</dd></div>
+          <div><dt class="text-gray-500 text-xs">Preferred Channel</dt><dd class="font-medium">Email</dd></div>
+        </dl>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <h3 class="font-semibold text-sm text-gray-900 mb-3">Trigger Details</h3>
+        <p class="text-xs text-gray-500 mb-2">Generated by Databricks on 15 Mar 2026</p>
+        <p class="text-sm text-gray-700">No direct care management activity recorded for 31 days. Monthly minimum CMA threshold approaching.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Coverage Report -->
+<div id="coverage" class="screen">
+  <div class="flex items-center justify-between mb-6">
+    <div><h1 class="text-xl font-bold text-gray-900">Monthly CMA Coverage Report</h1><p class="text-sm text-gray-500">March 2026 | Operations Manager View</p></div>
+    <button class="border border-gray-300 px-4 py-2 rounded-lg text-sm">Export CSV</button>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Clients with CMA</p><p class="text-2xl font-bold text-green-700">8,742 / 10,156</p><p class="text-xs text-gray-500">86.1% coverage</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Clients Without CMA</p><p class="text-2xl font-bold text-red-600">1,414</p><p class="text-xs text-gray-500">10 days remaining</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500">Expired Alerts</p><p class="text-2xl font-bold text-orange-600">23</p><p class="text-xs text-gray-500">From Feb 2026</p></div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-4 py-3 border-b border-gray-200 bg-gray-50"><h3 class="font-semibold text-sm text-gray-700">Clients Without CMA This Month - By Care Partner</h3></div>
+    <table class="w-full text-sm">
+      <thead class="bg-gray-50 text-gray-500 text-xs uppercase"><tr><th class="px-4 py-3 text-left">Care Partner</th><th class="px-4 py-3 text-left">Total Clients</th><th class="px-4 py-3 text-left">CMA Done</th><th class="px-4 py-3 text-left">Outstanding</th><th class="px-4 py-3 text-left">Coverage</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr><td class="px-4 py-3 font-medium">Sarah Mitchell</td><td class="px-4 py-3">47</td><td class="px-4 py-3">39</td><td class="px-4 py-3 text-red-600">8</td><td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-24 bg-gray-200 rounded-full h-2"><div class="bg-teal-700 h-2 rounded-full" style="width:83%"></div></div><span class="text-xs">83%</span></div></td></tr>
+        <tr><td class="px-4 py-3 font-medium">James Cooper</td><td class="px-4 py-3">52</td><td class="px-4 py-3">48</td><td class="px-4 py-3 text-red-600">4</td><td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-24 bg-gray-200 rounded-full h-2"><div class="bg-teal-700 h-2 rounded-full" style="width:92%"></div></div><span class="text-xs">92%</span></div></td></tr>
+        <tr><td class="px-4 py-3 font-medium">Emma Taylor</td><td class="px-4 py-3">38</td><td class="px-4 py-3">38</td><td class="px-4 py-3 text-green-600">0</td><td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-24 bg-gray-200 rounded-full h-2"><div class="bg-green-600 h-2 rounded-full" style="width:100%"></div></div><span class="text-xs text-green-600 font-medium">100%</span></div></td></tr>
+        <tr><td class="px-4 py-3 font-medium">David Kim</td><td class="px-4 py-3">44</td><td class="px-4 py-3">35</td><td class="px-4 py-3 text-red-600">9</td><td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-24 bg-gray-200 rounded-full h-2"><div class="bg-orange-500 h-2 rounded-full" style="width:80%"></div></div><span class="text-xs">80%</span></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Activity Log -->
+<div id="activity" class="screen">
+  <div class="mb-6"><h1 class="text-xl font-bold text-gray-900">Care Management Activity Log</h1><p class="text-sm text-gray-500">Auto-generated from approved CMA communications</p></div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-gray-50 text-gray-500 text-xs uppercase"><tr><th class="px-4 py-3 text-left">Date</th><th class="px-4 py-3 text-left">Client</th><th class="px-4 py-3 text-left">Activity Type</th><th class="px-4 py-3 text-left">Duration</th><th class="px-4 py-3 text-left">Trigger</th><th class="px-4 py-3 text-left">Approved By</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr><td class="px-4 py-3 text-gray-500">21 Mar 10:15</td><td class="px-4 py-3 font-medium">Helen O'Brien</td><td class="px-4 py-3">Email - Well-being Check</td><td class="px-4 py-3">15 min</td><td class="px-4 py-3"><span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">Well-being</span></td><td class="px-4 py-3">Sarah Mitchell</td></tr>
+        <tr><td class="px-4 py-3 text-gray-500">20 Mar 14:30</td><td class="px-4 py-3 font-medium">Frank Butler</td><td class="px-4 py-3">Email - Spending Alert</td><td class="px-4 py-3">15 min</td><td class="px-4 py-3"><span class="bg-purple-100 text-purple-800 text-xs px-2 py-0.5 rounded-full">Spending</span></td><td class="px-4 py-3">Sarah Mitchell</td></tr>
+        <tr><td class="px-4 py-3 text-gray-500">20 Mar 09:45</td><td class="px-4 py-3 font-medium">Grace Williams</td><td class="px-4 py-3">Email - Service Gap</td><td class="px-4 py-3">15 min</td><td class="px-4 py-3"><span class="bg-red-100 text-red-800 text-xs px-2 py-0.5 rounded-full">Service Gap</span></td><td class="px-4 py-3">Sarah Mitchell</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</main></div>
+<script>function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active');b.classList.add('bg-gray-100')});document.getElementById('btn-'+id).classList.add('active');document.getElementById('btn-'+id).classList.remove('bg-gray-100')}</script>
+</body></html>

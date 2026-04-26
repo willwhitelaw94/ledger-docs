@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Docs AI — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">SDOC — Supplier Docs AI</span>
+  <button onclick="show('classify')" id="nav-classify" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Auto-Classification</button>
+  <button onclick="show('extract')" id="nav-extract" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Data Extraction</button>
+  <button onclick="show('expiry')" id="nav-expiry" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Expiry Monitoring</button>
+  <button onclick="show('dashboard')" id="nav-dashboard" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Compliance Dashboard</button>
+</nav>
+
+<!-- Auto-Classification -->
+<div id="classify" class="screen active p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Document Auto-Classification</h1>
+  <p class="text-sm text-gray-500 mb-6">AI automatically identifies document type when a supplier uploads a file.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200"><h2 class="text-sm font-semibold text-gray-700">Recently Processed Documents</h2></div>
+    <div class="divide-y divide-gray-200">
+      <div class="px-6 py-4 flex items-center gap-4">
+        <div class="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-violet-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2l1.5 4.5H16l-3.5 2.5L14 14l-4-3-4 3 1.5-5L4 6.5h4.5z"/></svg></div>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">QBE_Insurance_Certificate_2026.pdf</p>
+          <p class="text-xs text-gray-500">Uploaded by Sunrise Cleaning &middot; 2 minutes ago</p>
+        </div>
+        <span class="px-2.5 py-0.5 bg-violet-100 text-violet-800 rounded-full text-xs font-medium">AI: Public Liability Insurance (96%)</span>
+        <span class="px-2.5 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">Auto-classified</span>
+      </div>
+      <div class="px-6 py-4 flex items-center gap-4">
+        <div class="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-violet-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2l1.5 4.5H16l-3.5 2.5L14 14l-4-3-4 3 1.5-5L4 6.5h4.5z"/></svg></div>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">ABR_Certificate.pdf</p>
+          <p class="text-xs text-gray-500">Uploaded by Allied Health Group &middot; 15 minutes ago</p>
+        </div>
+        <span class="px-2.5 py-0.5 bg-violet-100 text-violet-800 rounded-full text-xs font-medium">AI: ABN Certificate (92%)</span>
+        <span class="px-2.5 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">Auto-classified</span>
+      </div>
+      <div class="px-6 py-4 flex items-center gap-4 bg-amber-50">
+        <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">scan_001.pdf</p>
+          <p class="text-xs text-gray-500">Uploaded by Metro Nursing &middot; 1 hour ago</p>
+        </div>
+        <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">AI: Police Check? (62%)</span>
+        <span class="px-2.5 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs">Needs Review</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Data Extraction -->
+<div id="extract" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Extracted Data — Review</h1>
+  <p class="text-sm text-gray-500 mb-6">AI-extracted fields from QBE_Insurance_Certificate_2026.pdf. Confirm or correct values.</p>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+      <div><h2 class="text-sm font-semibold">Public Liability Insurance</h2><p class="text-xs text-gray-500">Sunrise Cleaning Pty Ltd</p></div>
+      <span class="px-2.5 py-0.5 bg-violet-100 text-violet-800 rounded-full text-xs font-medium">AI Extraction: 94%</span>
+    </div>
+    <div class="p-6 space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs text-gray-500 font-medium">Policy Number</label>
+          <div class="mt-1 flex items-center gap-2">
+            <input type="text" value="QBE-PLI-2026-4521" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <span class="text-xs text-violet-600">AI</span>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 font-medium">Insurer</label>
+          <div class="mt-1 flex items-center gap-2">
+            <input type="text" value="QBE Insurance Group" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+            <span class="text-xs text-violet-600">AI</span>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 font-medium">Coverage Amount</label>
+          <input type="text" value="$20,000,000.00" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 font-medium">Insured Party</label>
+          <input type="text" value="Sunrise Cleaning Pty Ltd" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 font-medium">Start Date</label>
+          <input type="text" value="1 Jan 2026" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        </div>
+        <div>
+          <label class="text-xs text-gray-500 font-medium">Expiry Date</label>
+          <input type="text" value="31 Dec 2026" class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-green-50 border-green-300">
+        </div>
+      </div>
+
+      <!-- ABN Validation -->
+      <div class="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div>
+          <p class="text-sm font-medium text-green-800">ABN Verified via ABR</p>
+          <p class="text-xs text-green-700">ABN 98 765 432 109 is active &middot; Entity name matches: Sunrise Cleaning Pty Ltd</p>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+      <button class="px-4 py-2 border border-gray-300 text-sm rounded-lg">Reject &amp; Re-upload</button>
+      <button class="px-4 py-2 bg-teal-700 text-white text-sm font-medium rounded-lg">Confirm &amp; Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Expiry Monitoring -->
+<div id="expiry" class="screen p-6 max-w-5xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Document Expiry Monitor</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full">
+      <thead><tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200"><th class="px-6 py-3 text-left">Supplier</th><th class="px-4 py-3 text-left">Document</th><th class="px-4 py-3 text-left">Expiry Date</th><th class="px-4 py-3 text-left">Status</th><th class="px-4 py-3 text-left">Last Reminder</th></tr></thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="bg-red-50">
+          <td class="px-6 py-3 text-sm font-medium">Metro Nursing Services</td>
+          <td class="px-4 py-3 text-sm">Professional Indemnity</td>
+          <td class="px-4 py-3 text-sm text-red-600 font-medium">1 Mar 2026 (expired)</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium">Expired</span></td>
+          <td class="px-4 py-3 text-xs text-gray-500">Sent 1 Mar (expiry notice)</td>
+        </tr>
+        <tr class="bg-amber-50">
+          <td class="px-6 py-3 text-sm font-medium">Allied Health Group</td>
+          <td class="px-4 py-3 text-sm">Workers Compensation</td>
+          <td class="px-4 py-3 text-sm text-amber-600 font-medium">15 Apr 2026 (25 days)</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">Expiring Soon</span></td>
+          <td class="px-4 py-3 text-xs text-gray-500">Sent 15 Mar (30-day)</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 text-sm font-medium">Sunrise Cleaning</td>
+          <td class="px-4 py-3 text-sm">Public Liability</td>
+          <td class="px-4 py-3 text-sm text-gray-500">31 Dec 2026</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">Valid</span></td>
+          <td class="px-4 py-3 text-xs text-gray-400">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Compliance Dashboard -->
+<div id="dashboard" class="screen p-6 max-w-7xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Document Compliance Overview</h1>
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-green-200 p-4 bg-green-50"><p class="text-xs text-green-600 uppercase">Valid</p><p class="text-3xl font-bold text-green-700 mt-1">42,891</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4 bg-amber-50"><p class="text-xs text-amber-600 uppercase">Expiring Soon</p><p class="text-3xl font-bold text-amber-700 mt-1">1,234</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-red-200 p-4 bg-red-50"><p class="text-xs text-red-600 uppercase">Expired</p><p class="text-3xl font-bold text-red-700 mt-1">89</p></div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4"><p class="text-xs text-gray-500 uppercase">Missing</p><p class="text-3xl font-bold text-gray-900 mt-1">312</p></div>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4">Suppliers Requiring Attention</h2>
+    <div class="space-y-2">
+      <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200">
+        <div><span class="text-sm font-medium">Metro Nursing Services</span><span class="text-xs text-gray-500 ml-2">2 expired documents</span></div>
+        <button class="text-xs text-teal-700 hover:underline">View Details</button>
+      </div>
+      <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg border border-amber-200">
+        <div><span class="text-sm font-medium">Allied Health Group</span><span class="text-xs text-gray-500 ml-2">1 expiring, 1 missing</span></div>
+        <button class="text-xs text-teal-700 hover:underline">View Details</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

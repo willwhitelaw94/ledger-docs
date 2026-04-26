@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COL2 - VC Approval & Reconciliation Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { 'tc-teal': { 500: '#43C0BE', 700: '#007F7E' }, 'tc-blue': { 700: '#2C4C79' } } } } }</script>
+<style>.tab-active{border-bottom:2px solid #007F7E;color:#007F7E;font-weight:600}.tab-inactive{color:#6b7280}.tab-inactive:hover{color:#374151}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-tc-teal-700 flex items-center justify-center text-white font-bold text-sm">TC</div>
+    <span class="text-sm text-gray-500">Finance</span>
+    <span class="text-sm text-gray-300">/</span>
+    <span class="text-sm font-medium text-gray-800">VC Dashboard</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <span class="text-xs text-gray-400">MYOB synced: 14 Mar 2026, 11:00 AM</span>
+    <div class="w-8 h-8 rounded-full bg-tc-blue-700 flex items-center justify-center text-white text-xs font-medium">FP</div>
+  </div>
+</div>
+<div class="bg-white border-b border-gray-200 px-6">
+  <nav class="flex gap-6">
+    <button onclick="showScreen('approval')" id="tab-approval" class="py-3 text-sm tab-active">VC Approval Queue</button>
+    <button onclick="showScreen('reconciliation')" id="tab-reconciliation" class="py-3 text-sm tab-inactive">VC Reconciliation</button>
+    <button onclick="showScreen('history')" id="tab-history" class="py-3 text-sm tab-inactive">VC History</button>
+  </nav>
+</div>
+
+<!-- Approval Queue -->
+<div id="screen-approval" class="max-w-6xl mx-auto p-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">VC Approval Queue</h1>
+      <p class="text-sm text-gray-500 mt-1">Pending voluntary contribution funding streams requiring Finance approval</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Export CSV</button>
+      <button class="px-4 py-2 text-sm bg-tc-teal-700 text-white rounded-lg">Approve Selected (3)</button>
+    </div>
+  </div>
+  <!-- Summary -->
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Pending Approval</div>
+      <div class="text-2xl font-semibold text-amber-600 mt-1">7</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Total Pending Amount</div>
+      <div class="text-2xl font-semibold text-gray-900 mt-1">$12,450.00</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Approved This Month</div>
+      <div class="text-2xl font-semibold text-green-600 mt-1">23</div>
+    </div>
+  </div>
+  <!-- Table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-4 py-3"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-tc-teal-700"></th>
+          <th class="px-4 py-3">Client / Package</th>
+          <th class="px-4 py-3">Amount</th>
+          <th class="px-4 py-3">Period</th>
+          <th class="px-4 py-3">Added By</th>
+          <th class="px-4 py-3">Date Added</th>
+          <th class="px-4 py-3">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-4"><input type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-tc-teal-700"></td>
+          <td class="px-4 py-4"><div class="text-sm font-medium text-gray-900">Margaret Thompson</div><div class="text-xs text-gray-500">KF-273342</div></td>
+          <td class="px-4 py-4 text-sm font-medium">$2,500.00</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Q1 2026</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Sarah Mitchell (CP)</td>
+          <td class="px-4 py-4 text-sm text-gray-500">12 Mar 2026</td>
+          <td class="px-4 py-4"><button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Approve</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-4"><input type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-tc-teal-700"></td>
+          <td class="px-4 py-4"><div class="text-sm font-medium text-gray-900">Robert Jenkins</div><div class="text-xs text-gray-500">KF-284561</div></td>
+          <td class="px-4 py-4 text-sm font-medium">$1,800.00</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Q1 2026</td>
+          <td class="px-4 py-4 text-sm text-gray-500">James O'Brien (CP)</td>
+          <td class="px-4 py-4 text-sm text-gray-500">11 Mar 2026</td>
+          <td class="px-4 py-4"><button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Approve</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-4"><input type="checkbox" checked class="h-4 w-4 rounded border-gray-300 text-tc-teal-700"></td>
+          <td class="px-4 py-4"><div class="text-sm font-medium text-gray-900">Dorothy Walsh</div><div class="text-xs text-gray-500">KF-291845</div></td>
+          <td class="px-4 py-4 text-sm font-medium">$3,200.00</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Q4 2025 (retro)</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Sarah Mitchell (CP)</td>
+          <td class="px-4 py-4 text-sm text-gray-500">10 Mar 2026</td>
+          <td class="px-4 py-4"><button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Approve</button></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-4"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-tc-teal-700"></td>
+          <td class="px-4 py-4"><div class="text-sm font-medium text-gray-900">Henry Nguyen</div><div class="text-xs text-gray-500">KF-301982</div></td>
+          <td class="px-4 py-4 text-sm font-medium">$950.00</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Q1 2026</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Lisa Park (CP)</td>
+          <td class="px-4 py-4 text-sm text-gray-500">9 Mar 2026</td>
+          <td class="px-4 py-4"><button class="px-3 py-1.5 text-xs bg-tc-teal-700 text-white rounded-lg">Approve</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Reconciliation -->
+<div id="screen-reconciliation" class="max-w-6xl mx-auto p-6 hidden">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">VC Reconciliation</h1>
+      <p class="text-sm text-gray-500 mt-1">AR Invoice Payments linked to VC funding streams</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <option>All Statuses</option>
+        <option>Not Yet Invoiced</option>
+        <option>Partially Paid</option>
+        <option>Fully Paid</option>
+      </select>
+      <input type="text" placeholder="Search by client or invoice..." class="border border-gray-300 rounded-lg px-3 py-2 text-sm w-64">
+      <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Export</button>
+    </div>
+  </div>
+  <!-- Summary metrics -->
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Total VC Approved</div>
+      <div class="text-2xl font-semibold text-gray-900 mt-1">$48,250.00</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Total Invoiced</div>
+      <div class="text-2xl font-semibold text-amber-600 mt-1">$38,400.00</div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div class="text-sm text-gray-500">Total Paid (from payments)</div>
+      <div class="text-2xl font-semibold text-green-600 mt-1">$31,200.00</div>
+    </div>
+  </div>
+  <!-- Reconciliation table -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-4 py-3">Client</th>
+          <th class="px-4 py-3">AR Invoice</th>
+          <th class="px-4 py-3">Payment Ref</th>
+          <th class="px-4 py-3 text-right">Payment Amt</th>
+          <th class="px-4 py-3">Payment Date</th>
+          <th class="px-4 py-3">Method</th>
+          <th class="px-4 py-3">Invoice Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-4"><div class="text-sm font-medium text-gray-900">Margaret Thompson</div><div class="text-xs text-gray-500">KF-273342</div></td>
+          <td class="px-4 py-4 text-sm text-tc-teal-700 font-medium">AR-2026-0341</td>
+          <td class="px-4 py-4 text-sm text-gray-500">PAY-8921</td>
+          <td class="px-4 py-4 text-sm text-right font-medium">$2,500.00</td>
+          <td class="px-4 py-4 text-sm text-gray-500">5 Mar 2026</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Direct Debit</td>
+          <td class="px-4 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Fully Paid</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-4"><div class="text-sm font-medium text-gray-900">Robert Jenkins</div><div class="text-xs text-gray-500">KF-284561</div></td>
+          <td class="px-4 py-4 text-sm text-tc-teal-700 font-medium">AR-2026-0298</td>
+          <td class="px-4 py-4 text-sm text-gray-500">PAY-8845</td>
+          <td class="px-4 py-4 text-sm text-right font-medium">$900.00</td>
+          <td class="px-4 py-4 text-sm text-gray-500">28 Feb 2026</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Bank Transfer</td>
+          <td class="px-4 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Partially Paid</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-4"><div class="text-sm font-medium text-gray-900">Robert Jenkins</div><div class="text-xs text-gray-500">KF-284561</div></td>
+          <td class="px-4 py-4 text-sm text-tc-teal-700 font-medium">AR-2026-0298</td>
+          <td class="px-4 py-4 text-sm text-gray-500">PAY-8901</td>
+          <td class="px-4 py-4 text-sm text-right font-medium">$900.00</td>
+          <td class="px-4 py-4 text-sm text-gray-500">10 Mar 2026</td>
+          <td class="px-4 py-4 text-sm text-gray-500">Bank Transfer</td>
+          <td class="px-4 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Fully Paid</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-4"><div class="text-sm font-medium text-gray-900">Dorothy Walsh</div><div class="text-xs text-gray-500">KF-291845</div></td>
+          <td class="px-4 py-4 text-sm text-gray-400">--</td>
+          <td class="px-4 py-4 text-sm text-gray-400">--</td>
+          <td class="px-4 py-4 text-sm text-right text-gray-400">--</td>
+          <td class="px-4 py-4 text-sm text-gray-400">--</td>
+          <td class="px-4 py-4 text-sm text-gray-400">--</td>
+          <td class="px-4 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">Not Yet Invoiced</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- History -->
+<div id="screen-history" class="max-w-5xl mx-auto p-6 hidden">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-900">VC Funding History</h1>
+      <p class="text-sm text-gray-500 mt-1">All voluntary contributions across all packages</p>
+    </div>
+    <button class="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Export CSV</button>
+  </div>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th class="px-6 py-3">Client / Package</th>
+          <th class="px-6 py-3 text-right">Amount</th>
+          <th class="px-6 py-3">Period</th>
+          <th class="px-6 py-3">Added By</th>
+          <th class="px-6 py-3">Approved By</th>
+          <th class="px-6 py-3">Invoice Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4"><div class="text-sm font-medium text-gray-900">Margaret Thompson</div><div class="text-xs text-gray-500">KF-273342</div></td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$2,500.00</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Q1 2026</td>
+          <td class="px-6 py-4 text-sm text-gray-500">S. Mitchell &bull; 12 Mar</td>
+          <td class="px-6 py-4 text-sm text-gray-500">F. Patel &bull; 13 Mar</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4"><div class="text-sm font-medium text-gray-900">Robert Jenkins</div><div class="text-xs text-gray-500">KF-284561</div></td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$1,800.00</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Q1 2026</td>
+          <td class="px-6 py-4 text-sm text-gray-500">J. O'Brien &bull; 11 Mar</td>
+          <td class="px-6 py-4 text-sm text-gray-500">F. Patel &bull; 12 Mar</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span></td>
+        </tr>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4"><div class="text-sm font-medium text-gray-900">Margaret Thompson</div><div class="text-xs text-gray-500">KF-273342</div></td>
+          <td class="px-6 py-4 text-sm text-right font-medium">$1,500.00</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Q4 2025</td>
+          <td class="px-6 py-4 text-sm text-gray-500">S. Mitchell &bull; 3 Oct</td>
+          <td class="px-6 py-4 text-sm text-gray-500">F. Patel &bull; 4 Oct</td>
+          <td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Paid</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  document.querySelectorAll('[id^="screen-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => { el.classList.remove('tab-active'); el.classList.add('tab-inactive'); });
+  document.getElementById('screen-' + id).classList.remove('hidden');
+  document.getElementById('tab-' + id).classList.remove('tab-inactive');
+  document.getElementById('tab-' + id).classList.add('tab-active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      # Usage dashboard core
+      - 'src/app/dashboard/usage/**'
+      - 'src/app/api/usage/**'
+      - 'src/lib/usage/**'
+      - 'src/lib/db/**'
+      # Database
+      - 'scripts/seed-devs.ts'
+      - 'drizzle/**'
+      - 'drizzle.config.ts'
+      # Shared dependencies (layouts, components, theme, middleware, auth)
+      - 'src/app/layout.tsx'
+      - 'src/app/dashboard/layout.tsx'
+      - 'src/app/globals.css'
+      - 'src/app/api/auth/**'
+      - 'src/proxy.ts'
+      - 'src/components/**'
+      - 'src/lib/**'
+      # Root build config
+      - 'next.config.ts'
+      - 'tsconfig.json'
+      - 'postcss.config.mjs'
+      # Package dependencies
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Deploy to production
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}

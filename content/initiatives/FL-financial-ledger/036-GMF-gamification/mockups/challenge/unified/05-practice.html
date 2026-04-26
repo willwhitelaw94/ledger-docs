@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Dashboard — MoneyQuest Gamification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    @keyframes ring-fill { from { stroke-dashoffset: var(--circ); } to { stroke-dashoffset: var(--target); } }
+    .health-ring { animation: ring-fill 1.2s ease-out forwards; }
+    @keyframes ring-fill-summary-healthy { from { stroke-dashoffset: 314; } to { stroke-dashoffset: 84.8; } }
+    @keyframes ring-fill-summary-risk { from { stroke-dashoffset: 314; } to { stroke-dashoffset: 257.5; } }
+    @keyframes ring-fill-summary-neglected { from { stroke-dashoffset: 314; } to { stroke-dashoffset: 285.7; } }
+    .ring-summary-healthy { animation: ring-fill-summary-healthy 1.2s ease-out forwards; stroke-dashoffset: 314; }
+    .ring-summary-risk { animation: ring-fill-summary-risk 1.2s ease-out 0.2s forwards; stroke-dashoffset: 314; }
+    .ring-summary-neglected { animation: ring-fill-summary-neglected 1.2s ease-out 0.4s forwards; stroke-dashoffset: 314; }
+    @keyframes pulse-amber { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .pulse-amber { animation: pulse-amber 2s ease-in-out infinite; }
+    @keyframes badge-pop { 0% { transform: scale(0.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    .badge-dropdown { display: none; }
+    .badge-dropdown.open { display: block; animation: badge-pop 0.2s ease-out; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="w-60 bg-gray-900 border-r border-gray-800 flex flex-col fixed inset-y-0 left-0 z-50">
+    <div class="p-4 border-b border-gray-800">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-[#007F7E] rounded-lg flex items-center justify-center text-sm font-bold text-white">MQ</div>
+        <span class="text-base font-semibold text-white">MoneyQuest</span>
+      </div>
+    </div>
+    <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto">
+      <a href="01-dashboard.html" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm">
+        <span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>Dashboard</span>
+      </a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm">
+        <span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>Banking</span>
+        <span class="flex items-center gap-1 text-xs font-medium text-orange-400">🔥 7</span>
+      </a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm">
+        <span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Invoices</span>
+        <span class="w-2 h-2 rounded-full bg-amber-500 pulse-amber"></span>
+      </a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Bills</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Contacts</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Jobs</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>Journal Entries</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Reports</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg bg-[#007F7E]/15 text-[#43C0BE] text-sm font-medium"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>Practice</span></a>
+      <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 text-sm"><span class="flex items-center gap-2.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>Settings</span></a>
+    </nav>
+    <div class="p-3 border-t border-gray-800 relative">
+      <button onclick="document.getElementById('badge-dropdown').classList.toggle('open')" class="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-gray-800/50 text-left">
+        <div class="relative">
+          <div class="w-9 h-9 rounded-full bg-[#007F7E] flex items-center justify-center text-sm font-semibold text-white">SC</div>
+          <span class="absolute -top-1 -right-1 w-5 h-5 bg-violet-600 rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-gray-900">8</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium text-gray-200 truncate">Sarah Chen</p>
+          <p class="text-xs text-gray-500 truncate">Practice Manager</p>
+        </div>
+      </button>
+      <div id="badge-dropdown" class="badge-dropdown absolute bottom-full left-2 right-2 mb-2 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl overflow-hidden" style="max-height: 480px; overflow-y: auto;">
+        <div class="p-4 border-b border-gray-800">
+          <p class="text-sm font-semibold text-white">Sarah Chen</p>
+          <p class="text-xs text-gray-400">Practice Manager &middot; Smith & Co</p>
+          <div class="flex gap-4 mt-3">
+            <div class="text-center"><span class="text-sm font-bold text-white">8</span><p class="text-[10px] text-gray-500">Badges</p></div>
+            <div class="text-center"><span class="text-sm font-bold text-white">14 wk</span><p class="text-[10px] text-gray-500">Streak</p></div>
+            <div class="text-center"><span class="text-sm font-bold text-white">120h</span><p class="text-[10px] text-gray-500">Saved</p></div>
+          </div>
+        </div>
+        <div class="p-4">
+          <p class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-3">Badges Earned</p>
+          <div class="grid grid-cols-4 gap-2">
+            <div title="Practice Leader"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-amber-500 shadow-[0_0_8px_rgba(217,119,6,0.4)] mx-auto">&#x1F451;</div></div>
+            <div title="Client Champion"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-[#007F7E] shadow-[0_0_8px_rgba(0,127,126,0.4)] mx-auto">&#x1F465;</div></div>
+            <div title="All Clear Master"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-[#007F7E] shadow-[0_0_8px_rgba(0,127,126,0.4)] mx-auto">&#x2705;</div></div>
+            <div title="Streak Legend"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-amber-500 shadow-[0_0_8px_rgba(217,119,6,0.4)] mx-auto">&#x1F525;</div></div>
+            <div title="Data Expert"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-gray-400 shadow-[0_0_8px_rgba(156,163,175,0.3)] mx-auto">&#x1F4CA;</div></div>
+            <div title="Time Saver"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-[#007F7E] shadow-[0_0_8px_rgba(0,127,126,0.4)] mx-auto">&#x26A1;</div></div>
+            <div title="Perfect Quarter"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-amber-500 shadow-[0_0_8px_rgba(217,119,6,0.4)] mx-auto">&#x2B50;</div></div>
+            <div title="Mentor"><div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg ring-2 ring-gray-400 shadow-[0_0_8px_rgba(156,163,175,0.3)] mx-auto">&#x1F393;</div></div>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 p-2">
+          <a href="#" class="block px-3 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg">Settings</a>
+          <a href="#" class="block px-3 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg">Sign out</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="ml-60 flex-1 p-8">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-white">Client Workspace Health</h1>
+        <p class="text-sm text-gray-400 mt-1">Smith & Co Financial Advisors</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-gray-500">Sort by:</span>
+        <select class="bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#007F7E]">
+          <option>Health %</option>
+          <option>Last Activity</option>
+          <option>Name</option>
+          <option>Challenges Adopted</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Summary Stat Rings -->
+    <div class="grid grid-cols-3 gap-6 mb-8">
+      <!-- Healthy -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 flex items-center gap-5">
+        <div class="relative" style="width: 80px; height: 80px;">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <defs>
+              <linearGradient id="grad-healthy" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#007F7E"/>
+                <stop offset="100%" stop-color="#43C0BE"/>
+              </linearGradient>
+            </defs>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#1f2937" stroke-width="6" opacity="0.5"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="url(#grad-healthy)" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="201" transform="rotate(-90 40 40)"
+              class="ring-summary-healthy" style="stroke-dasharray: 201; stroke-dashoffset: 201; animation: ring-fill-summary-healthy 1.2s ease-out forwards; filter: drop-shadow(0 0 6px rgba(0,127,126,0.4))"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-[#43C0BE]">73%</div>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-white">8</p>
+          <p class="text-sm text-gray-400">Healthy</p>
+        </div>
+      </div>
+      <!-- At Risk -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 flex items-center gap-5">
+        <div class="relative" style="width: 80px; height: 80px;">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <defs>
+              <linearGradient id="grad-risk" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#D97706"/>
+                <stop offset="100%" stop-color="#F59E0B"/>
+              </linearGradient>
+            </defs>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#1f2937" stroke-width="6" opacity="0.5"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="url(#grad-risk)" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="201" transform="rotate(-90 40 40)"
+              class="ring-summary-risk" style="stroke-dasharray: 201; stroke-dashoffset: 201; animation: ring-fill-summary-risk 1.2s ease-out 0.2s forwards; filter: drop-shadow(0 0 6px rgba(217,119,6,0.4))"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-amber-400">18%</div>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-white">2</p>
+          <p class="text-sm text-gray-400">At Risk</p>
+        </div>
+      </div>
+      <!-- Neglected -->
+      <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 flex items-center gap-5">
+        <div class="relative" style="width: 80px; height: 80px;">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#1f2937" stroke-width="6" opacity="0.5"/>
+            <circle cx="40" cy="40" r="32" fill="none" stroke="#6b7280" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="201" transform="rotate(-90 40 40)"
+              class="ring-summary-neglected" style="stroke-dasharray: 201; stroke-dashoffset: 201; animation: ring-fill-summary-neglected 1.2s ease-out 0.4s forwards; filter: drop-shadow(0 0 4px rgba(107,114,128,0.3))"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-gray-400">9%</div>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-white">1</p>
+          <p class="text-sm text-gray-400">Neglected</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workspace Grid -->
+    <div class="grid grid-cols-3 gap-4" id="workspace-grid">
+    </div>
+  </main>
+
+  <script>
+    const workspaces = [
+      { name: 'Trilogy Care', health: 98, lastReconciled: '2 days ago', streak: '12 weeks', challenges: '3/3', status: 'healthy' },
+      { name: 'Smith Family Trust', health: 95, lastReconciled: '1 day ago', streak: '8 weeks', challenges: '2/3', status: 'healthy' },
+      { name: 'Coastal Developments', health: 94, lastReconciled: '3 days ago', streak: '10 weeks', challenges: '3/3', status: 'healthy' },
+      { name: 'Mason & Co', health: 92, lastReconciled: '1 day ago', streak: '7 weeks', challenges: '2/2', status: 'healthy' },
+      { name: 'Greenfield Agriculture', health: 97, lastReconciled: 'Today', streak: '14 weeks', challenges: '3/3', status: 'healthy' },
+      { name: 'Blue Wave Marine', health: 91, lastReconciled: '4 days ago', streak: '5 weeks', challenges: '2/3', status: 'healthy' },
+      { name: 'Summit Legal', health: 93, lastReconciled: '2 days ago', streak: '9 weeks', challenges: '3/3', status: 'healthy' },
+      { name: 'Heritage Interiors', health: 90, lastReconciled: '5 days ago', streak: '4 weeks', challenges: '2/2', status: 'healthy' },
+      { name: 'Pacific Traders', health: 72, lastReconciled: '12 days ago', streak: '2 weeks', challenges: '1/3', status: 'risk' },
+      { name: 'Redwood Consulting', health: 58, lastReconciled: '18 days ago', streak: '0 weeks', challenges: '0/3', status: 'risk' },
+      { name: 'Northside Electrical', health: 30, lastReconciled: '34 days ago', streak: '0 weeks', challenges: '0/2', status: 'neglected' },
+    ];
+
+    const grid = document.getElementById('workspace-grid');
+    const circ = 2 * Math.PI * 36; // r=36
+
+    workspaces.forEach((ws, i) => {
+      const offset = circ * (1 - ws.health / 100);
+      let ringColor, borderClass, glowColor;
+      if (ws.status === 'healthy') {
+        ringColor = 'url(#grad-ws-teal)';
+        borderClass = '';
+        glowColor = 'rgba(0,127,126,0.3)';
+      } else if (ws.status === 'risk') {
+        ringColor = 'url(#grad-ws-amber)';
+        borderClass = 'border-l-4 border-l-amber-500';
+        glowColor = 'rgba(217,119,6,0.3)';
+      } else {
+        ringColor = '#6b7280';
+        borderClass = 'border-l-4 border-l-red-500';
+        glowColor = 'rgba(107,114,128,0.2)';
+      }
+
+      const delay = (i * 0.1).toFixed(1);
+      const streakEmoji = ws.streak !== '0 weeks' ? ' \uD83D\uDD25' : '';
+      const healthLabel = ws.status === 'healthy' ? 'text-[#43C0BE]' : ws.status === 'risk' ? 'text-amber-400' : 'text-gray-500';
+
+      grid.innerHTML += `
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 ${borderClass} hover:border-gray-700 transition-colors">
+          <p class="text-sm font-semibold text-white mb-4">${ws.name}</p>
+          <div class="flex items-center gap-4 mb-4">
+            <div class="relative" style="width: 80px; height: 80px;">
+              <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="36" fill="none" stroke="#1f2937" stroke-width="5" opacity="0.5"/>
+                <circle cx="40" cy="40" r="36" fill="none" stroke="${ringColor}" stroke-width="5" stroke-linecap="round"
+                  stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${circ.toFixed(1)}"
+                  transform="rotate(-90 40 40)"
+                  style="animation: ws-ring-${i} 1.2s ease-out ${delay}s forwards; filter: drop-shadow(0 0 5px ${glowColor})"/>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="text-lg font-bold ${healthLabel}">${ws.health}%</span>
+              </div>
+            </div>
+            <div class="flex-1 space-y-1.5 text-xs text-gray-400">
+              <p>Last reconciled: <span class="text-gray-300">${ws.lastReconciled}</span></p>
+              <p>Streak: <span class="text-gray-300">${ws.streak}${streakEmoji}</span></p>
+              <p>Challenges: <span class="text-gray-300">${ws.challenges} adopted</span></p>
+            </div>
+          </div>
+          <a href="#" class="text-xs text-[#43C0BE] hover:text-[#5ED4D2] font-medium">View workspace &rarr;</a>
+        </div>
+      `;
+    });
+
+    // Generate keyframes for each workspace ring
+    const styleEl = document.createElement('style');
+    let css = `
+      <defs>
+        <linearGradient id="grad-ws-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#007F7E"/>
+          <stop offset="100%" stop-color="#43C0BE"/>
+        </linearGradient>
+        <linearGradient id="grad-ws-amber" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#D97706"/>
+          <stop offset="100%" stop-color="#F59E0B"/>
+        </linearGradient>
+      </defs>
+    `;
+    // Add SVG defs to each SVG
+    document.querySelectorAll('#workspace-grid svg').forEach(svg => {
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      defs.innerHTML = `
+        <linearGradient id="grad-ws-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#007F7E"/>
+          <stop offset="100%" stop-color="#43C0BE"/>
+        </linearGradient>
+        <linearGradient id="grad-ws-amber" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#D97706"/>
+          <stop offset="100%" stop-color="#F59E0B"/>
+        </linearGradient>
+      `;
+      svg.insertBefore(defs, svg.firstChild);
+    });
+
+    css = '';
+    workspaces.forEach((ws, i) => {
+      const offset = circ * (1 - ws.health / 100);
+      css += `@keyframes ws-ring-${i} { from { stroke-dashoffset: ${circ.toFixed(1)}; } to { stroke-dashoffset: ${offset.toFixed(1)}; } }\n`;
+    });
+    styleEl.textContent = css;
+    document.head.appendChild(styleEl);
+  </script>
+
+  <!-- Summary ring animation overrides for correct dasharray -->
+  <style>
+    @keyframes ring-fill-summary-healthy { from { stroke-dashoffset: 201; } to { stroke-dashoffset: 54.3; } }
+    @keyframes ring-fill-summary-risk { from { stroke-dashoffset: 201; } to { stroke-dashoffset: 164.8; } }
+    @keyframes ring-fill-summary-neglected { from { stroke-dashoffset: 201; } to { stroke-dashoffset: 182.9; } }
+  </style>
+
+  <script src="viewer-toolbar.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On Hold Bills Flow — Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwindcss.config={theme:{extend:{colors:{teal:{700:'#007F7E',500:'#43C0BE'},'primary-blue':{700:'#2C4C79'}}}}}</script>
+<style>.tab-active{color:#007F7E;border-bottom:2px solid #007F7E;font-weight:600}.screen{display:none}.screen.active{display:block}</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-6 overflow-x-auto">
+  <span class="text-sm font-bold text-primary-blue-700 whitespace-nowrap">OHB — On Hold Bills</span>
+  <button onclick="show('diagnosis')" id="nav-diagnosis" class="tab-active text-sm px-3 py-1 whitespace-nowrap">Multi-Issue Diagnosis</button>
+  <button onclick="show('dept-routing')" id="nav-dept-routing" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Department Routing</button>
+  <button onclick="show('comms')" id="nav-comms" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Communication Types</button>
+  <button onclick="show('cadence')" id="nav-cadence" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Cadence Timeline</button>
+  <button onclick="show('resubmit')" id="nav-resubmit" class="text-sm px-3 py-1 text-gray-500 whitespace-nowrap">Linked Resubmissions</button>
+</nav>
+
+<!-- Multi-Issue Diagnosis (right panel in bill edit) -->
+<div id="diagnosis" class="screen active p-6 max-w-7xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Multi-Issue Diagnosis Panel</h1>
+  <p class="text-sm text-gray-500 mb-6">Collapsible right panel on Bills/Edit showing all issues identified upfront.</p>
+
+  <div class="flex gap-6">
+    <!-- Bill content (simplified) -->
+    <div class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold text-gray-900">Bill #TC-4518 — Sunrise Cleaning</h2>
+        <span class="px-2.5 py-0.5 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">On Hold</span>
+      </div>
+      <div class="space-y-3 text-sm text-gray-600">
+        <div class="flex justify-between"><span>Client:</span><span class="font-medium text-gray-900">Robert Chen</span></div>
+        <div class="flex justify-between"><span>Amount:</span><span class="font-medium text-gray-900">$1,250.00</span></div>
+        <div class="flex justify-between"><span>Submitted:</span><span class="font-medium text-gray-900">15 Mar 2026</span></div>
+        <div class="flex justify-between"><span>Submission:</span><span class="font-medium text-gray-900">#3 (resubmission)</span></div>
+      </div>
+    </div>
+
+    <!-- OHB Diagnosis Panel -->
+    <div class="w-96 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex-shrink-0">
+      <div class="px-4 py-3 bg-gray-900 text-white flex items-center justify-between">
+        <span class="text-sm font-semibold">Issue Diagnosis</span>
+        <span class="px-2 py-0.5 bg-red-500 text-white rounded-full text-xs font-medium">3 issues</span>
+      </div>
+
+      <!-- Traffic light checklist -->
+      <div class="divide-y divide-gray-100">
+        <!-- BLOCKING (red) -->
+        <div class="px-4 py-3 bg-red-50 border-l-4 border-red-500">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+              <span class="text-sm font-medium text-gray-900">ABN/GST Error</span>
+            </div>
+            <span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">Blocking</span>
+          </div>
+          <p class="text-xs text-gray-600 mt-1 ml-4.5">ABN does not match registered GST status. Touches invoice.</p>
+          <div class="mt-2 ml-4.5 flex items-center gap-2">
+            <span class="text-xs text-gray-400">Dept: Accounts</span>
+            <span class="text-xs text-gray-400">&middot;</span>
+            <span class="text-xs text-red-600 font-medium">Auto-reject eligible (99%)</span>
+          </div>
+        </div>
+
+        <div class="px-4 py-3 bg-red-50 border-l-4 border-red-500">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+              <span class="text-sm font-medium text-gray-900">Calculation Error</span>
+            </div>
+            <span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">Blocking</span>
+          </div>
+          <p class="text-xs text-gray-600 mt-1 ml-4.5">Line items total $1,175 but invoice shows $1,250. Difference: $75.</p>
+          <div class="mt-2 ml-4.5 flex items-center gap-2">
+            <span class="text-xs text-gray-400">Dept: Accounts</span>
+            <span class="text-xs text-gray-400">&middot;</span>
+            <span class="text-xs text-red-600 font-medium">Auto-reject eligible (99%)</span>
+          </div>
+        </div>
+
+        <!-- WARNINGS (amber) -->
+        <div class="px-4 py-3 bg-amber-50 border-l-4 border-amber-400">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 bg-amber-400 rounded-full"></span>
+              <span class="text-sm font-medium text-gray-900">Client Approval Required</span>
+            </div>
+            <span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-xs">Awaiting</span>
+          </div>
+          <p class="text-xs text-gray-600 mt-1 ml-4.5">Service not pre-authorised by care coordinator. Requires internal action.</p>
+          <div class="mt-2 ml-4.5 flex items-center gap-2">
+            <span class="text-xs text-gray-400">Dept: Care</span>
+            <span class="text-xs text-gray-400">&middot;</span>
+            <span class="text-xs text-amber-600">Resolution outreach sent</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Communication type -->
+      <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-gray-500 uppercase font-medium">Communication Type</span>
+          <span class="px-2.5 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-medium">Reject-Resubmit</span>
+        </div>
+        <p class="text-xs text-gray-500">Includes resubmit link &middot; All 3 issues listed</p>
+      </div>
+
+      <div class="px-4 py-3 border-t border-gray-200 flex gap-2">
+        <button class="flex-1 px-3 py-2 bg-teal-700 text-white text-xs font-medium rounded-lg">Send Communication</button>
+        <button class="px-3 py-2 border border-gray-300 text-xs rounded-lg">Re-validate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Department Routing -->
+<div id="dept-routing" class="screen p-6 max-w-7xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Department Queue — Care Team</h1>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center gap-4">
+      <button class="px-3 py-1 bg-teal-700 text-white text-xs rounded-full font-medium">Care (6)</button>
+      <button class="px-3 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Compliance (4)</button>
+      <button class="px-3 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">Accounts (8)</button>
+    </div>
+    <table class="w-full">
+      <thead>
+        <tr class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+          <th class="px-6 py-3 text-left">Bill</th>
+          <th class="px-4 py-3 text-left">Reason</th>
+          <th class="px-4 py-3 text-left">Client</th>
+          <th class="px-4 py-3 text-left">Status</th>
+          <th class="px-4 py-3 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-3 text-sm font-medium">#TC-4518</td>
+          <td class="px-4 py-3 text-sm">Client approval required</td>
+          <td class="px-4 py-3 text-sm">Robert Chen</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs">Awaiting</span></td>
+          <td class="px-4 py-3 flex gap-2">
+            <button class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Resolved</button>
+            <button class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded">Unresolved</button>
+          </td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 text-sm font-medium">#TC-4502</td>
+          <td class="px-4 py-3 text-sm">Service not pre-authorised</td>
+          <td class="px-4 py-3 text-sm">Dorothy Walsh</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs">Resolved</span></td>
+          <td class="px-4 py-3 text-xs text-gray-400">Resolved by J. Smith</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Communication Types -->
+<div id="comms" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Three Communication Types</h1>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white rounded-xl shadow-sm border-2 border-red-200 p-6">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-medium">Reject-Resubmit</span>
+      </div>
+      <p class="text-sm text-gray-700 mb-3">Bill has invoice-touching issues the supplier can fix.</p>
+      <ul class="text-xs text-gray-600 space-y-1.5">
+        <li class="flex items-center gap-1"><span class="text-green-600">&#10003;</span> Resubmit link included</li>
+        <li class="flex items-center gap-1"><span class="text-green-600">&#10003;</span> All fixable issues listed</li>
+        <li class="flex items-center gap-1"><span class="text-red-500">&#10005;</span> No cadence applied</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border-2 border-gray-800 p-6">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 bg-gray-800 text-white rounded-full text-xs font-medium">Reject Period</span>
+      </div>
+      <p class="text-sm text-gray-700 mb-3">Permanent blocker (e.g., supplier terminated).</p>
+      <ul class="text-xs text-gray-600 space-y-1.5">
+        <li class="flex items-center gap-1"><span class="text-red-500">&#10005;</span> No resubmit link</li>
+        <li class="flex items-center gap-1"><span class="text-green-600">&#10003;</span> "Do not resubmit" message</li>
+        <li class="flex items-center gap-1"><span class="text-red-500">&#10005;</span> No cadence applied</li>
+      </ul>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border-2 border-amber-300 p-6">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">On Hold</span>
+      </div>
+      <p class="text-sm text-gray-700 mb-3">Internal issues — supplier has no action needed.</p>
+      <ul class="text-xs text-gray-600 space-y-1.5">
+        <li class="flex items-center gap-1"><span class="text-red-500">&#10005;</span> No resubmit link</li>
+        <li class="flex items-center gap-1"><span class="text-green-600">&#10003;</span> "No action needed" message</li>
+        <li class="flex items-center gap-1"><span class="text-green-600">&#10003;</span> Day 0-3-7-10 cadence</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Cadence Timeline -->
+<div id="cadence" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">ON HOLD Cadence Timeline</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-medium text-gray-900">Bill #TC-4530</span>
+        <span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">On Hold — Day 5</span>
+      </div>
+      <span class="text-sm text-gray-500">Auto-reject in 5 days</span>
+    </div>
+
+    <div class="relative">
+      <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+      <div class="space-y-8">
+        <div class="flex items-start gap-4 relative">
+          <div class="w-8 h-8 bg-teal-700 rounded-full flex items-center justify-center flex-shrink-0 z-10"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+          <div><p class="text-sm font-medium text-gray-900">Day 0 — On Hold Communication Sent</p><p class="text-xs text-gray-500">16 Mar 2026 &middot; "No action needed from you" sent to supplier</p></div>
+        </div>
+        <div class="flex items-start gap-4 relative">
+          <div class="w-8 h-8 bg-teal-700 rounded-full flex items-center justify-center flex-shrink-0 z-10"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
+          <div><p class="text-sm font-medium text-gray-900">Day 3 — Reminder Sent</p><p class="text-xs text-gray-500">19 Mar 2026 &middot; Reminder to internal team; status update to supplier</p></div>
+        </div>
+        <div class="flex items-start gap-4 relative">
+          <div class="w-8 h-8 bg-amber-400 rounded-full flex items-center justify-center flex-shrink-0 z-10 animate-pulse"><span class="text-white text-xs font-bold">!</span></div>
+          <div><p class="text-sm font-medium text-gray-900">Day 7 — Warning (upcoming)</p><p class="text-xs text-gray-500">23 Mar 2026 &middot; Final warning before auto-reject</p></div>
+        </div>
+        <div class="flex items-start gap-4 relative">
+          <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0 z-10"><span class="text-gray-500 text-xs font-bold">X</span></div>
+          <div><p class="text-sm font-medium text-gray-400">Day 10 — Auto-Reject</p><p class="text-xs text-gray-400">26 Mar 2026 &middot; Bill auto-rejected with REJECTED FINAL outcome</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Linked Resubmissions -->
+<div id="resubmit" class="screen p-6 max-w-4xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Linked Resubmission Chain</h1>
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-sm font-semibold text-gray-700">Submission History for Sunrise Cleaning — Invoice #SC-2026-041</h2>
+    </div>
+    <div class="divide-y divide-gray-200">
+      <div class="px-6 py-4 flex items-center gap-4 bg-red-50">
+        <span class="text-xs font-mono text-gray-400 w-16">SUB-001</span>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">Original submission</p>
+          <p class="text-xs text-gray-500">5 Mar 2026 &middot; Rejected: ABN error + Calculation error</p>
+        </div>
+        <span class="px-2.5 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-medium">Rejected</span>
+      </div>
+      <div class="px-6 py-4 flex items-center gap-4 bg-red-50">
+        <span class="text-xs font-mono text-gray-400 w-16">SUB-002</span>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">Resubmission #1</p>
+          <p class="text-xs text-gray-500">8 Mar 2026 &middot; ABN fixed, calculation still wrong &middot; NEW: Missing itemisation</p>
+        </div>
+        <span class="px-2.5 py-0.5 bg-red-100 text-red-800 rounded-full text-xs font-medium">Rejected</span>
+      </div>
+      <div class="px-6 py-4 flex items-center gap-4 bg-amber-50">
+        <span class="text-xs font-mono text-gray-400 w-16">SUB-003</span>
+        <div class="flex-1">
+          <p class="text-sm font-medium text-gray-900">Resubmission #2 (current)</p>
+          <p class="text-xs text-gray-500">15 Mar 2026 &middot; In diagnosis...</p>
+        </div>
+        <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">In Review</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>{b.classList.remove('tab-active');b.classList.add('text-gray-500')});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('tab-active');
+  document.getElementById('nav-'+id).classList.remove('text-gray-500');
+}
+</script>
+</body>
+</html>

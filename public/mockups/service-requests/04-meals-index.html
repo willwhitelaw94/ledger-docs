@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meals — Recipient Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'teal': { 50:'#F0FAFA',100:'#D5F1F0',200:'#BAE8E7',300:'#94DBDA',400:'#66CCCA',500:'#43C0BE',600:'#2F9E9C',700:'#007F7E',800:'#005656',900:'#003D3D' },
+                        'primary-blue': { 50:'#F0F4FA',100:'#D6E1F0',200:'#BCCEE7',300:'#96B2D9',400:'#7197CC',500:'#4B7BBE',600:'#39639D',700:'#2C4C79',800:'#1E3452',900:'#101C2D' }
+                    },
+                    fontFamily: { sans: ['Roboto Flex','Inter','system-ui','sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        #app-sidebar { transition: width 0.2s ease; }
+        #app-sidebar.collapsed { width: 77px; }
+        #app-sidebar.collapsed .nav-label, #app-sidebar.collapsed .nav-section-title, #app-sidebar.collapsed .sidebar-brand-name, #app-sidebar.collapsed .sidebar-footer { display: none; }
+        #app-sidebar.collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+        #app-sidebar.collapsed ~ .main-content { margin-left: 77px; }
+    </style>
+    <script src="viewer-toolbar.js" defer></script>
+</head>
+<body class="bg-gray-100 flex min-h-screen font-sans text-gray-900">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="app-sidebar" class="fixed left-0 bottom-0 w-[240px] text-white flex flex-col z-[100]" style="top: var(--toolbar-h, 0px); background-color: #2C4C79">
+        <div class="flex items-center gap-3 px-5 py-4 border-b border-white/10">
+            <div class="w-8 h-8 bg-teal-700 rounded-lg flex items-center justify-center text-sm font-bold">TC</div>
+            <span class="sidebar-brand-name text-sm font-semibold tracking-wide">Trilogy Care</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-3 px-3 space-y-1">
+            <div class="nav-section-title text-[10px] uppercase tracking-wider text-white/40 px-2 pb-1 pt-2">Staff</div>
+            <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/5">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm" style="background: rgba(67,192,190,0.15); color: #43C0BE; font-weight: 600;">
+                <svg class="w-5 h-5 shrink-0" style="color: #43C0BE" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                <span class="nav-label">Recipients</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer border-t border-white/10 px-4 py-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-teal-700 flex items-center justify-center text-xs font-semibold">JD</div>
+                <div class="text-xs"><div class="text-white font-medium">Jane Doe</div><div class="text-white/50">Coordinator</div></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content flex-1 flex flex-col ml-[240px] min-h-screen">
+
+        <!-- Recipient Profile Header -->
+        <div class="bg-white border-b border-gray-200 px-6 py-5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+                    </button>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full bg-primary-blue-100 flex items-center justify-center text-primary-blue-700 font-semibold text-lg">MT</div>
+                        <div>
+                            <h1 class="text-xl font-semibold text-gray-900">Margaret Thompson</h1>
+                            <div class="flex items-center gap-3 text-sm text-gray-500 mt-0.5">
+                                <span>DOB: 15/03/1942</span>
+                                <span class="text-gray-300">|</span>
+                                <span>CRN: 400-123-456A</span>
+                                <span class="text-gray-300">|</span>
+                                <span class="inline-flex items-center gap-1 text-green-600">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Active Care Plan
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tabs -->
+        <div class="bg-white border-b border-gray-200 px-6">
+            <nav class="flex gap-6 -mb-px overflow-x-auto">
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Overview</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Care Plan</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Needs</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Risks</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Budget</a>
+                <a href="01-cab-charge-index.html" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Cab Charge</a>
+                <a href="#" class="py-3 px-1 text-sm font-semibold text-teal-700 border-b-2 border-teal-700 whitespace-nowrap">Meals</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Documents</a>
+                <a href="#" class="py-3 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 border-b-2 border-transparent whitespace-nowrap">Timeline</a>
+            </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="p-6 space-y-4">
+
+            <!-- Tab Header -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Meal Requests</h2>
+                    <p class="text-sm text-gray-500 mt-0.5">Manage meal service requests for this recipient</p>
+                </div>
+                <a href="05-meals-create.html" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md text-white bg-teal-700 hover:bg-teal-800 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                    New Request
+                </a>
+            </div>
+
+            <!-- Table Card -->
+            <div class="bg-white rounded border border-gray-200 shadow-sm overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200 bg-gray-50">
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">ID</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Stage</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Provider</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Budget</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">State</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Existing Customer</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-600 text-xs uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <!-- Row 1: Active - Requested -->
+                        <tr class="hover:bg-gray-50 cursor-pointer">
+                            <td class="py-3 px-4 font-medium text-teal-700">ML00892</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                    Requested
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-700">Gourmet Meals</td>
+                            <td class="py-3 px-4 text-gray-700">$80.00 <span class="text-gray-400">/week</span></td>
+                            <td class="py-3 px-4 text-gray-700">Queensland</td>
+                            <td class="py-3 px-4 text-gray-700">No</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Row 2: Active - Finalised -->
+                        <tr class="hover:bg-gray-50 cursor-pointer">
+                            <td class="py-3 px-4 font-medium text-teal-700">ML00745</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Finalised
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-700">LiteNeasy</td>
+                            <td class="py-3 px-4 text-gray-700">$120.00 <span class="text-gray-400">/fortnight</span></td>
+                            <td class="py-3 px-4 text-gray-700">Queensland</td>
+                            <td class="py-3 px-4 text-gray-700">Yes</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Row 3: Zoho Import - Cancelled -->
+                        <tr class="hover:bg-gray-50 cursor-pointer bg-gray-50/50">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-gray-500">ML00310</span>
+                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-200 text-gray-600">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/></svg>
+                                        Zoho
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                    Cancelled
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-500">Meals On Wheels</td>
+                            <td class="py-3 px-4 text-gray-500">$60.00 <span class="text-gray-400">/week</span></td>
+                            <td class="py-3 px-4 text-gray-500">Queensland</td>
+                            <td class="py-3 px-4 text-gray-500">Yes</td>
+                            <td class="py-3 px-4 text-right">
+                                <button class="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Legend -->
+            <div class="flex items-center gap-4 text-xs text-gray-500">
+                <span class="flex items-center gap-1.5">
+                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-gray-200 text-gray-600">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"/></svg>
+                        Zoho
+                    </span>
+                    = Imported from Zoho (read-only)
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('#app-sidebar .border-b')?.addEventListener('click', () => {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelector('.main-content').style.marginLeft = document.getElementById('app-sidebar').classList.contains('collapsed') ? '77px' : '240px';
+        });
+    </script>
+</body>
+</html>

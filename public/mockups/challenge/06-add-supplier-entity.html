@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Entity - Gamified Gina</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{teal:{50:"#F0FAFA",100:"#D5F1F0",200:"#BAE8E7",300:"#94DBDA",400:"#66CCCA",500:"#43C0BE",600:"#2F9E9C",700:"#007F7E",800:"#005656",900:"#003D3D"},"primary-blue":{50:"#F0F4FA",100:"#D6E1F0",200:"#BCCEE7",300:"#96B2D9",400:"#7197CC",500:"#4B7BBE",600:"#39639D",700:"#2C4C79",800:"#1E3452",900:"#101C2D"}}}}}</script>
+<style>@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(0,127,126,0.4)}70%{box-shadow:0 0 0 6px rgba(0,127,126,0)}100%{box-shadow:0 0 0 0 rgba(0,127,126,0)}}.step-pulse{animation:pulse-ring 2s infinite}</style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+<script src="viewer-toolbar.js"></script>
+
+  <header class="bg-white border-b border-gray-200 px-6 py-3"><div class="flex items-center justify-between"><div class="flex items-center gap-6"><div class="flex items-center gap-2"><div class="w-7 h-7 bg-teal-700 rounded flex items-center justify-center text-white font-bold text-xs">TC</div><span class="font-semibold text-primary-blue-700">Trilogy Care</span></div><nav class="hidden md:flex items-center gap-1"><a href="#" class="px-3 py-2 text-sm font-medium text-teal-700 bg-teal-50 rounded-md">Dashboard</a></nav></div><span class="text-sm text-gray-600">Acme Allied Health</span></div></header>
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-6"><div><h1 class="text-2xl font-bold text-gray-900">Your Supplier Entities</h1><p class="text-sm text-gray-500 mt-1">Acme Allied Health Services Pty Ltd &middot; ABN 51 824 753 556</p></div></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5"><div class="flex items-center justify-between mb-3"><h3 class="font-semibold text-gray-900">Acme Cleaning Services</h3><span class="text-xs font-medium bg-green-50 text-green-700 px-2 py-1 rounded-full">VERIFIED</span></div><div class="space-y-2 mb-4"><div class="flex items-center gap-2 text-sm text-gray-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>3 locations</div></div><button class="w-full border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-50 transition text-sm">Manage</button></div>
+      <div class="bg-white rounded-xl border border-teal-200 shadow-sm p-5"><div class="flex items-center justify-between mb-3"><h3 class="font-semibold text-gray-900">Acme Gardening</h3><span class="text-xs font-medium bg-teal-50 text-teal-700 px-2 py-1 rounded-full">ONBOARDING</span></div><div class="mb-4"><div class="flex items-center justify-between text-xs mb-1"><span class="text-gray-500">Progress</span><span class="font-medium text-teal-700">2 of 5</span></div><div class="w-full bg-gray-200 rounded-full h-1.5"><div class="bg-teal-700 h-1.5 rounded-full" style="width:40%"></div></div></div><button class="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-2 px-4 rounded-lg transition text-sm">Continue Onboarding</button></div>
+    </div>
+    <button class="w-full md:w-1/2 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-teal-500 hover:bg-teal-50 transition group"><div class="flex flex-col items-center gap-2"><div class="w-12 h-12 bg-gray-100 group-hover:bg-teal-100 rounded-full flex items-center justify-center transition"><svg class="w-6 h-6 text-gray-400 group-hover:text-teal-700 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></div><span class="font-medium text-gray-600 group-hover:text-teal-700 transition">Add Supplier Entity</span><span class="text-xs text-gray-400">Another service line or trading name</span></div></button>
+  </main>
+</body>
+</html>
